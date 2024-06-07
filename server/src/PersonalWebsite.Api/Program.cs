@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddMongoClient(builder.Configuration.GetConnectionString("PersonalWebsiteDb"));
+builder.Services.AddInfrastructureServices();
 
 builder.Services.Configure<MongoDbConfiguration>(builder.Configuration.GetSection("MongoDbConfiguration"));
 
