@@ -25,12 +25,22 @@ public class PictureRepository : IPictureRepository
         return pictures.Select(picture => PictureMapper.ToDomain(picture));
     }
 
-    public async Task AddAsync(Picture picture) =>
-        await _pictures.InsertOneAsync(PictureMapper.ToDocument(picture));
+    public async Task<Picture> AddAsync(Picture picture)
+    {
+        var pictureDocument = PictureMapper.ToDocument(picture);
+        await _pictures.InsertOneAsync(pictureDocument);
+        picture.Id = pictureDocument.Id;
+
+        return picture;
+    }
 
     public async Task RemoveAsync(string id) =>
         await _pictures.DeleteOneAsync(picture => picture.Id == id);
 
-    public async Task UpdateAsync(string id, Picture updatedPicture) =>
+    public async Task<Picture> UpdateAsync(string id, Picture updatedPicture)
+    {
         await _pictures.ReplaceOneAsync(picture => picture.Id == id, PictureMapper.ToDocument(updatedPicture));
+
+        return updatedPicture;
+    }
 }

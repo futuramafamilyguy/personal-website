@@ -1,3 +1,4 @@
+using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
 
@@ -8,8 +9,10 @@ builder.Services.Configure<MongoDbConfiguration>(builder.Configuration.GetSectio
 
 builder.Services.AddMongoClient(builder.Configuration.GetConnectionString("PersonalWebsiteDb"));
 builder.Services.AddHostedService<ConfigureMongoDbIndexesService>();
+builder.Services.AddCoreServices();
 builder.Services.AddInfrastructureServices();
 
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
