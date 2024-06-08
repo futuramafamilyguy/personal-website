@@ -4,10 +4,11 @@ using PersonalWebsite.Infrastructure.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddMongoClient(builder.Configuration.GetConnectionString("PersonalWebsiteDb"));
-builder.Services.AddInfrastructureServices();
-
 builder.Services.Configure<MongoDbConfiguration>(builder.Configuration.GetSection("MongoDbConfiguration"));
+
+builder.Services.AddMongoClient(builder.Configuration.GetConnectionString("PersonalWebsiteDb"));
+builder.Services.AddHostedService<ConfigureMongoDbIndexesService>();
+builder.Services.AddInfrastructureServices();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
