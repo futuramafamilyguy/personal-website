@@ -9,10 +9,10 @@ public class PictureDocument
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
 
-    [BsonElement("pictureName")]
+    [BsonElement("picture_name")]
     public required string Name { get; set; }
 
-    [BsonElement("yearWatched")]
+    [BsonElement("year_watched")]
     public required int Year { get; set; }
 
     [BsonElement("zinger")]
