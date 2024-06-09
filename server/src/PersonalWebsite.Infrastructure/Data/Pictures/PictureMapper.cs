@@ -10,7 +10,8 @@ public static class PictureMapper
             Id = document.Id,
             Name = document.Name,
             Year = document.Year,
-            Zinger = document.Zinger
+            Zinger = document.Zinger,
+            IsFavorite = document.IsFavorite
         };
 
     public static PictureDocument ToDocument(Picture picture)
@@ -19,6 +20,7 @@ public static class PictureMapper
             Id = picture.Id,
             Name = picture.Name,
             Year = picture.Year,
-            Zinger = picture.Zinger
+            Zinger = picture.Zinger,
+            IsFavorite = picture.IsFavorite
         };
 }

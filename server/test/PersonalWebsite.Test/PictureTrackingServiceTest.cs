@@ -21,6 +21,20 @@ public class PictureTrackingServiceTest
             Times.Once());
     }
 
+    [Fact]
+    public async Task GetFavoritePicturesAsync_ShouldCallGetFavoriteByYearAsync()
+    {
+        var repository = new Mock<IPictureRepository>();
+        var yearWatched = 2020;
+        var sut = new PictureTrackingService(repository.Object);
+
+        await sut.GetFavoritePicturesAsync(yearWatched);
+
+        repository.Verify(
+            x => x.GetFavoriteByYearAsync(yearWatched),
+            Times.Once());
+    }
+
     [Theory]
     [InlineData("bazinga")]
     [InlineData(null)]
@@ -74,6 +88,20 @@ public class PictureTrackingServiceTest
 
         repository.Verify(
             x => x.RemoveAsync(pictureId),
+            Times.Once());
+    }
+
+    [Fact]
+    public async Task ToggleFavoriteAsync_ShouldCallToggleFavoriteStatusAsync()
+    {
+        var repository = new Mock<IPictureRepository>();
+        var pictureId = "123";
+        var sut = new PictureTrackingService(repository.Object);
+
+        await sut.ToggleFavoriteAsync(pictureId);
+
+        repository.Verify(
+            x => x.ToggleFavoriteStatusAsync(pictureId),
             Times.Once());
     }
 }

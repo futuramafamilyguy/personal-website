@@ -23,6 +23,14 @@ public class PicturesController : ControllerBase
         return Ok(pictures);
     }
 
+    [HttpGet("{year}/favorites")]
+    public async Task<ActionResult> GetFavoritePicturesAsync(int year)
+    {
+        var pictures = await _pictureTrackingService.GetFavoritePicturesAsync(year);
+
+        return Ok(pictures);
+    }
+
     [HttpPost("{year}")]
     public async Task<ActionResult> CreatePictureAsync(int year, [FromBody]CreatePictureRequest request)
     {
@@ -39,6 +47,14 @@ public class PicturesController : ControllerBase
         if (request is null) return BadRequest("Picture data is null");
 
         var picture = await _pictureTrackingService.UpdatePictureAsync(id, request.Name, request.Year, request.Zinger);
+
+        return Ok(picture);
+    }
+
+    [HttpPut("{year}/{id}/favorite")]
+    public async Task<ActionResult> ToggleFavoriteAsync(string id)
+    {
+        var picture = await _pictureTrackingService.ToggleFavoriteAsync(id);
 
         return Ok(picture);
     }

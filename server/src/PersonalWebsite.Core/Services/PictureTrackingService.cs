@@ -15,6 +15,9 @@ public class PictureTrackingService : IPictureTrackingService
     public async Task<IEnumerable<Picture>> GetPicturesAsync(int year)
         => await _pictureRepository.GetByYearAsync(year);
 
+    public async Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int year)
+        => await _pictureRepository.GetFavoriteByYearAsync(year);
+
     public async Task<Picture> AddPictureAsync(string name, int year, string? zinger)
     {
         var picture = await _pictureRepository.AddAsync(new Picture
@@ -36,6 +39,13 @@ public class PictureTrackingService : IPictureTrackingService
             Year = year,
             Zinger = zinger
         });
+
+        return updatedPicture;
+    }
+
+    public async Task<Picture> ToggleFavoriteAsync(string id)
+    {
+        var updatedPicture = await _pictureRepository.ToggleFavoriteStatusAsync(id);
 
         return updatedPicture;
     }

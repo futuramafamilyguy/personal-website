@@ -22,7 +22,15 @@ public class PictureRepository : IPictureRepository
         var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Year, year);
         var pictures = await _pictures.Find(filter).ToListAsync();
         
-        return pictures.Select(picture => PictureMapper.ToDomain(picture));
+        return pictures.Select(PictureMapper.ToDomain);
+    }
+
+    public async Task<IEnumerable<Picture>> GetFavoriteByYearAsync(int year)
+    {
+        var filter = Builders<PictureDocument>.Filter.Where(picture => picture.Year == year && picture.IsFavorite);
+        var pictures = await _pictures.Find(filter).ToListAsync();
+
+        return pictures.Select(PictureMapper.ToDomain);
     }
 
     public async Task<Picture> AddAsync(Picture picture)
@@ -42,5 +50,17 @@ public class PictureRepository : IPictureRepository
         await _pictures.ReplaceOneAsync(picture => picture.Id == id, PictureMapper.ToDocument(updatedPicture));
 
         return updatedPicture;
+    }
+
+    public async Task<Picture> ToggleFavoriteStatusAsync(string id)
+    {
+        var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Id, id);
+        var updatedPicture = await _pictures.Find(filter).FirstOrDefaultAsync();
+
+        updatedPicture.IsFavorite = !updatedPicture.IsFavorite;
+        var updateQuery = Builders<PictureDocument>.Update.Set(picture => picture.IsFavorite, updatedPicture.IsFavorite);
+        await _pictures.UpdateOneAsync(filter, updateQuery);
+
+        return PictureMapper.ToDomain(updatedPicture);
     }
 }

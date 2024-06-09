@@ -17,4 +17,7 @@ public class PictureDocument
 
     [BsonElement("zinger")]
     public string? Zinger { get; set; }
+
+    [BsonElement("favorite")]
+    public bool IsFavorite { get; set; }
 }
