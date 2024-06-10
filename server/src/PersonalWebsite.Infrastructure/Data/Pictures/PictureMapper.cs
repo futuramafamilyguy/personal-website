@@ -1,4 +1,5 @@
 ﻿using PersonalWebsite.Core.Models;
+using PersonalWebsite.Infrastructure.Data.Cinemas;
 
 namespace PersonalWebsite.Infrastructure.Data.Pictures;
 
@@ -10,6 +11,7 @@ public static class PictureMapper
             Id = document.Id,
             Name = document.Name,
             Year = document.Year,
+            Cinema = CinemaMapper.ToDomain(document.Cinema),
             Zinger = document.Zinger,
             IsFavorite = document.IsFavorite
         };
@@ -20,6 +22,7 @@ public static class PictureMapper
             Id = picture.Id,
             Name = picture.Name,
             Year = picture.Year,
+            Cinema = CinemaMapper.ToDocument(picture.Cinema),
             Zinger = picture.Zinger,
             IsFavorite = picture.IsFavorite
         };

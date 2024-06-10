@@ -8,7 +8,9 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddCoreServices(this IServiceCollection services)
     {
-        services.AddScoped<IPictureTrackingService, PictureTrackingService>();
+        services.AddScoped<IPictureService, PictureService>();
+        services.AddScoped<ICinemaService, CinemaService>();
+        services.AddScoped<IPictureCinemaOrchestrator, PictureCinemaOrchestrator>();
 
         return services;
     }

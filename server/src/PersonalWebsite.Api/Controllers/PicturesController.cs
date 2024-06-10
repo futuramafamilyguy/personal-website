@@ -8,11 +8,15 @@ namespace PersonalWebsite.Api.Controllers;
 [Route("[controller]")]
 public class PicturesController : ControllerBase
 {
-    private readonly IPictureTrackingService _pictureTrackingService;
+    private readonly IPictureService _pictureTrackingService;
+    private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
 
-    public PicturesController(IPictureTrackingService pictureTrackingService)
+    public PicturesController(
+        IPictureService pictureTrackingService,
+        IPictureCinemaOrchestrator pictureCinemaOrchestrator)
     {
         _pictureTrackingService = pictureTrackingService;
+        _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
     }
 
     [HttpGet("{year}")]
@@ -36,7 +40,7 @@ public class PicturesController : ControllerBase
     {
         if (request is null) return BadRequest("Picture data is null");
 
-        var picture = await _pictureTrackingService.AddPictureAsync(request.Name, year, request.Zinger);
+        var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(request.Name, year, request.CinemaId, request.Zinger);
 
         return Ok(picture);
     }
@@ -46,7 +50,7 @@ public class PicturesController : ControllerBase
     {
         if (request is null) return BadRequest("Picture data is null");
 
-        var picture = await _pictureTrackingService.UpdatePictureAsync(id, request.Name, request.Year, request.Zinger);
+        var picture = await _pictureCinemaOrchestrator.UpdatePictureWithCinemaAsync(id, request.Name, request.Year, request.CinemaId, request.Zinger);
 
         return Ok(picture);
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
+using PersonalWebsite.Infrastructure.Data.Cinemas;
 using PersonalWebsite.Infrastructure.Data.Pictures;
 
 namespace PersonalWebsite.Infrastructure;
@@ -15,6 +16,7 @@ public static class ServiceExtensions
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
         services.AddScoped<IPictureRepository, PictureRepository>();
+        services.AddScoped<ICinemaRepository, CinemaRepository>();
 
         return services;
     }

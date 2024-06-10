@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
+using PersonalWebsite.Infrastructure.Data.Cinemas;
 
 namespace PersonalWebsite.Infrastructure.Data.Pictures;
 
@@ -56,11 +57,24 @@ public class PictureRepository : IPictureRepository
     {
         var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Id, id);
         var updatedPicture = await _pictures.Find(filter).FirstOrDefaultAsync();
-
         updatedPicture.IsFavorite = !updatedPicture.IsFavorite;
         var updateQuery = Builders<PictureDocument>.Update.Set(picture => picture.IsFavorite, updatedPicture.IsFavorite);
         await _pictures.UpdateOneAsync(filter, updateQuery);
 
         return PictureMapper.ToDomain(updatedPicture);
+    }
+
+    public async Task UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema)
+    {
+        var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Cinema.Id, cinemaId);
+        var updateQuery = Builders<PictureDocument>.Update.Set(picture => picture.Cinema, CinemaMapper.ToDocument(updatedCinema));
+        await _pictures.UpdateManyAsync(filter, updateQuery);
+    }
+
+    public async Task<bool> CheckCinemaAssociationExistenceAsync(string cinemaId)
+    {
+        var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Cinema.Id, cinemaId);
+
+        return await _pictures.Find(filter).AnyAsync();
     }
 }

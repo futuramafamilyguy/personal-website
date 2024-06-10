@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using PersonalWebsite.Infrastructure.Data.Cinemas;
 
 namespace PersonalWebsite.Infrastructure.Data.Pictures;
 
@@ -14,6 +15,9 @@ public class PictureDocument
 
     [BsonElement("year_watched")]
     public required int Year { get; set; }
+
+    [BsonElement("cinema")]
+    public required CinemaDocument Cinema { get; set; }
 
     [BsonElement("zinger")]
     public string? Zinger { get; set; }
