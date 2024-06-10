@@ -68,6 +68,6 @@ public class PicturesController : ControllerBase
     {
         await _pictureTrackingService.RemovePictureAsync(id);
 
-        return Ok();
+        return NoContent();
     }
 }

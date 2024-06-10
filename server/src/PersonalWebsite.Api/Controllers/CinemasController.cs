@@ -53,7 +53,7 @@ public class CinemasController : ControllerBase
         {
             await _pictureCinemaOrchestrator.ValidateAndDeleteCinema(id);
 
-            return Ok();
+            return NoContent();
         }
         catch (InvalidOperationException ex)
         {
