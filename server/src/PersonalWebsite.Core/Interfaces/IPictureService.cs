@@ -12,4 +12,5 @@ public interface IPictureService
     Task UpdateCinemaOfPicturesAsync(string cinemaId, Cinema cinema);
     Task RemovePictureAsync(string id);
     Task<bool> CheckIfAnyPicturesAssociatedWithCinemaAsync(string id);
+    Task<IEnumerable<int>> GetActiveYearsAsync();
 }

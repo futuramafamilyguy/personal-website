@@ -60,4 +60,7 @@ public class PictureService : IPictureService
 
     public async Task<bool> CheckIfAnyPicturesAssociatedWithCinemaAsync(string cinemaId) =>
         await _pictureRepository.CheckCinemaAssociationExistenceAsync(cinemaId);
+
+    public async Task<IEnumerable<int>> GetActiveYearsAsync() =>
+        await _pictureRepository.GetActiveYearsAsync();
 }

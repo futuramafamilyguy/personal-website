@@ -201,4 +201,20 @@ public class PictureServiceTests
             x => x.CheckCinemaAssociationExistenceAsync(cinemaId),
             Times.Once());
     }
+
+    [Fact]
+    public async Task GetActiveYearsAsync_ShouldCallGetActiveYearsAsync()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPictureRepository>();
+        var sut = new PictureService(repositoryMock.Object);
+
+        // act
+        await sut.GetActiveYearsAsync();
+
+        // assert
+        repositoryMock.Verify(
+            x => x.GetActiveYearsAsync(),
+            Times.Once());
+    }
 }

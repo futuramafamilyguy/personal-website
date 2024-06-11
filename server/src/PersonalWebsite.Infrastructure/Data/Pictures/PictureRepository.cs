@@ -77,4 +77,15 @@ public class PictureRepository : IPictureRepository
 
         return await _pictures.Find(filter).AnyAsync();
     }
+
+    public async Task<IEnumerable<int>> GetActiveYearsAsync()
+    {
+        var activeYears = await _pictures
+            .Aggregate()
+            .Group(picture => picture.Year, group => new { Year = group.Key })
+            .Project(group => group.Year)
+            .ToListAsync();
+
+        return activeYears;
+    }
 }

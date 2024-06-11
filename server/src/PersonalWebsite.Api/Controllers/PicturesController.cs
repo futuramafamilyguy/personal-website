@@ -8,21 +8,21 @@ namespace PersonalWebsite.Api.Controllers;
 [Route("[controller]")]
 public class PicturesController : ControllerBase
 {
-    private readonly IPictureService _pictureTrackingService;
+    private readonly IPictureService _pictureService;
     private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
 
     public PicturesController(
         IPictureService pictureTrackingService,
         IPictureCinemaOrchestrator pictureCinemaOrchestrator)
     {
-        _pictureTrackingService = pictureTrackingService;
+        _pictureService = pictureTrackingService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
     }
 
     [HttpGet("{year}")]
     public async Task<ActionResult> GetPicturesAsync(int year)
     {
-        var pictures = await _pictureTrackingService.GetPicturesAsync(year);
+        var pictures = await _pictureService.GetPicturesAsync(year);
 
         return Ok(pictures);
     }
@@ -30,7 +30,7 @@ public class PicturesController : ControllerBase
     [HttpGet("{year}/favorites")]
     public async Task<ActionResult> GetFavoritePicturesAsync(int year)
     {
-        var pictures = await _pictureTrackingService.GetFavoritePicturesAsync(year);
+        var pictures = await _pictureService.GetFavoritePicturesAsync(year);
 
         return Ok(pictures);
     }
@@ -58,7 +58,7 @@ public class PicturesController : ControllerBase
     [HttpPut("{year}/{id}/favorite")]
     public async Task<ActionResult> ToggleFavoriteAsync(string id)
     {
-        var picture = await _pictureTrackingService.ToggleFavoriteAsync(id);
+        var picture = await _pictureService.ToggleFavoriteAsync(id);
 
         return Ok(picture);
     }
@@ -66,8 +66,16 @@ public class PicturesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeletePictureAsync(string id)
     {
-        await _pictureTrackingService.RemovePictureAsync(id);
+        await _pictureService.RemovePictureAsync(id);
 
         return NoContent();
+    }
+
+    [HttpGet("active-years")]
+    public async Task<ActionResult> GetActiveYearsAsync()
+    {
+        var activeYears = await _pictureService.GetActiveYearsAsync();
+
+        return Ok(activeYears);
     }
 }
