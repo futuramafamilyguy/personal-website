@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
     <>
-      <h1>Allen</h1>
+      <NavBar />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
