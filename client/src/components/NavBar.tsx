@@ -24,7 +24,7 @@ function NavBar() {
               <Link to="/about">About</Link>
             </Nav.Link>
             <Nav.Link>
-              <Link to="/pictures">Pictures</Link>
+              <Link to="/letterboxc">Letterboxc</Link>
             </Nav.Link>
           </Nav>
         </Container>

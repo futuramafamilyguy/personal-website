@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import NavBar from "./components/NavBar";
 import AboutPage from "./pages/AboutPage/AboutPage";
-import PicturesPage from "./pages/PicturesPage";
+import LetterboxcPage from "./pages/LetterboxcPage/LetterboxcPage";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<AboutPage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/pictures" element={<PicturesPage />} />
+        <Route path="/letterboxc" element={<LetterboxcPage />} />
       </Routes>
     </>
   );
