@@ -1,4 +1,4 @@
-import profileImage from "../../assets/about-me.jpg";
+import profileImage from "../../assets/allen-icon.jpeg";
 import styles from "./AboutPage.module.css";
 
 function AboutPage() {
@@ -11,7 +11,7 @@ function AboutPage() {
           <br />
           <p>
             Welcome to my website where I log movies I watch throughout the year
-            and provide hot takes on them because I'm entitled to opinions which
+            and blog about my hot takes because I'm entitled to opinions which
             must therefore mean my only course of action is to share them with
             the the world.
           </p>

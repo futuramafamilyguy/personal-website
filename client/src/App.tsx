@@ -5,6 +5,7 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import LetterboxcPage from "./pages/LetterboxcPage/LetterboxcPage";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./reset.css";
 
 function App() {
   return (
