@@ -6,4 +6,5 @@ public class UpdatePictureRequest
     public required int Year { get; set; }
     public required string CinemaId { get; set; }
     public string? Zinger { get; set; }
+    public string? Alias { get; set; }
 }

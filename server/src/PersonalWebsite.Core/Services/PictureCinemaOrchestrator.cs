@@ -14,18 +14,18 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         _cinemaService = cinemaService;
     }
 
-    public async Task<Picture> AddPictureWithCinemaAsync(string pictureName, int year, string cinemaId, string? zinger)
+    public async Task<Picture> AddPictureWithCinemaAsync(string pictureName, int year, string cinemaId, string? zinger, string? alias)
     {
         var cinema = await _cinemaService.GetCinemaAsync(cinemaId);
-        var picture = await _pictureService.AddPictureAsync(pictureName, year, cinema, zinger);
+        var picture = await _pictureService.AddPictureAsync(pictureName, year, cinema, zinger, alias);
 
         return picture;
     }
 
-    public async Task<Picture> UpdatePictureWithCinemaAsync(string pictureId, string pictureName, int year, string cinemaId, string? zinger)
+    public async Task<Picture> UpdatePictureWithCinemaAsync(string pictureId, string pictureName, int year, string cinemaId, string? zinger, string? alias)
     {
         var cinema = await _cinemaService.GetCinemaAsync(cinemaId);
-        var updatedPicture = await _pictureService.UpdatePictureAsync(pictureId, pictureName, year, cinema, zinger);
+        var updatedPicture = await _pictureService.UpdatePictureAsync(pictureId, pictureName, year, cinema, zinger, alias);
 
         return updatedPicture;
     }

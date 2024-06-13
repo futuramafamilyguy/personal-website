@@ -18,20 +18,21 @@ public class PictureService : IPictureService
     public async Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int year) =>
         await _pictureRepository.GetFavoriteByYearAsync(year);
 
-    public async Task<Picture> AddPictureAsync(string name, int year, Cinema cinema, string? zinger)
+    public async Task<Picture> AddPictureAsync(string name, int year, Cinema cinema, string? zinger, string? alias)
     {
         var picture = await _pictureRepository.AddAsync(new Picture
         {
             Name = name,
             Year = year,
             Cinema = cinema,
-            Zinger = zinger
+            Zinger = zinger,
+            Alias = alias
         });
 
         return picture;
     }
 
-    public async Task<Picture> UpdatePictureAsync(string id, string name, int year, Cinema cinema, string? zinger)
+    public async Task<Picture> UpdatePictureAsync(string id, string name, int year, Cinema cinema, string? zinger, string? alias)
     {
         var updatedPicture = await _pictureRepository.UpdateAsync(id, new Picture
         {
@@ -39,7 +40,8 @@ public class PictureService : IPictureService
             Name = name,
             Year = year,
             Cinema = cinema,
-            Zinger = zinger
+            Zinger = zinger,
+            Alias = alias
         });
 
         return updatedPicture;

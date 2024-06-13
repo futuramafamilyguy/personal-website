@@ -40,7 +40,7 @@ public class PicturesController : ControllerBase
     {
         if (request is null) return BadRequest("Picture data is null");
 
-        var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(request.Name, year, request.CinemaId, request.Zinger);
+        var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(request.Name, year, request.CinemaId, request.Zinger, request.Alias);
 
         return Ok(picture);
     }
@@ -50,7 +50,7 @@ public class PicturesController : ControllerBase
     {
         if (request is null) return BadRequest("Picture data is null");
 
-        var picture = await _pictureCinemaOrchestrator.UpdatePictureWithCinemaAsync(id, request.Name, request.Year, request.CinemaId, request.Zinger);
+        var picture = await _pictureCinemaOrchestrator.UpdatePictureWithCinemaAsync(id, request.Name, request.Year, request.CinemaId, request.Zinger, request.Alias);
 
         return Ok(picture);
     }

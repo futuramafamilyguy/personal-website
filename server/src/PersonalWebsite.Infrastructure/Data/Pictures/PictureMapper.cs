@@ -13,7 +13,8 @@ public static class PictureMapper
             Year = document.Year,
             Cinema = CinemaMapper.ToDomain(document.Cinema),
             Zinger = document.Zinger,
-            IsFavorite = document.IsFavorite
+            IsFavorite = document.IsFavorite,
+            Alias = document.Alias
         };
 
     public static PictureDocument ToDocument(Picture picture)
@@ -24,6 +25,7 @@ public static class PictureMapper
             Year = picture.Year,
             Cinema = CinemaMapper.ToDocument(picture.Cinema),
             Zinger = picture.Zinger,
-            IsFavorite = picture.IsFavorite
+            IsFavorite = picture.IsFavorite,
+            Alias = picture.Alias
         };
 }

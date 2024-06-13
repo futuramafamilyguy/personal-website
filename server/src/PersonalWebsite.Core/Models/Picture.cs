@@ -8,4 +8,5 @@ public class Picture
     public required Cinema Cinema { get; set; }
     public string? Zinger { get; set; }
     public bool IsFavorite { get; set; } = false;
+    public string? Alias { get; set; }
 }

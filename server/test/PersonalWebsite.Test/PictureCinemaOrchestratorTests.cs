@@ -8,10 +8,8 @@ namespace PersonalWebsite.Test;
 
 public class PictureCinemaOrchestratorTests
 {
-    [Theory]
-    [InlineData("bazinga")]
-    [InlineData(null)]
-    public async Task AddPictureWithCinemaAsync_ShouldCallAddPictureAsync(string zinger)
+    [Fact]
+    public async Task AddPictureWithCinemaAsync_ShouldCallAddPictureAsync()
     {
         // arrange
         var pictureServiceMock = new Mock<IPictureService>();
@@ -22,6 +20,8 @@ public class PictureCinemaOrchestratorTests
 
         var pictureName = "cars";
         var year = 2020;
+        var zinger = "bazinga";
+        var alias = "car";
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -37,7 +37,7 @@ public class PictureCinemaOrchestratorTests
             .ReturnsAsync(cinema);
 
         // act
-        await sut.AddPictureWithCinemaAsync(pictureName, year, cinemaId, zinger);
+        await sut.AddPictureWithCinemaAsync(pictureName, year, cinemaId, zinger, alias);
 
         // assert
         cinemaServiceMock.Verify(
@@ -50,14 +50,13 @@ public class PictureCinemaOrchestratorTests
                 It.Is((Cinema cinema) => cinema.Id == cinemaId
                     && cinema.Name == cinemaName
                     && cinema.City == city),
-                zinger),
+                zinger,
+                alias),
             Times.Once());
     }
 
-    [Theory]
-    [InlineData("bazinga")]
-    [InlineData(null)]
-    public async Task UpdatePictureWithCinemaAsync_ShouldCallUpdatePictureAsync(string zinger)
+    [Fact]
+    public async Task UpdatePictureWithCinemaAsync_ShouldCallUpdatePictureAsync()
     {
         // arrange
         var pictureServiceMock = new Mock<IPictureService>();
@@ -69,6 +68,8 @@ public class PictureCinemaOrchestratorTests
         var pictureId = "123";
         var pictureName = "cars";
         var year = 2020;
+        var zinger = "bazinga";
+        var alias = "car";
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -84,7 +85,7 @@ public class PictureCinemaOrchestratorTests
             .ReturnsAsync(cinema);
 
         // act
-        await sut.UpdatePictureWithCinemaAsync(pictureId, pictureName, year, cinemaId, zinger);
+        await sut.UpdatePictureWithCinemaAsync(pictureId, pictureName, year, cinemaId, zinger, alias);
 
         // assert
         cinemaServiceMock.Verify(
@@ -96,7 +97,8 @@ public class PictureCinemaOrchestratorTests
                 pictureName,
                 year,
                 cinema,
-                zinger),
+                zinger,
+                alias),
             Times.Once());
     }
 

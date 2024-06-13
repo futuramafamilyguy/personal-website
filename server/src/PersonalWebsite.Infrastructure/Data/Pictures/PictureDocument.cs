@@ -24,4 +24,7 @@ public class PictureDocument
 
     [BsonElement("favorite")]
     public bool IsFavorite { get; set; }
+
+    [BsonElement("picture_alias")]
+    public string? Alias { get; set; }
 }

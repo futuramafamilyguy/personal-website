@@ -11,8 +11,8 @@ namespace PersonalWebsite.Core.Interfaces;
 /// </remarks>
 public interface IPictureCinemaOrchestrator
 {
-    Task<Picture> AddPictureWithCinemaAsync(string pictureName, int year, string cinemaId, string? zinger);
-    Task<Picture> UpdatePictureWithCinemaAsync(string pictureId, string pictureName, int year, string cinemaId, string? zinger);
+    Task<Picture> AddPictureWithCinemaAsync(string pictureName, int year, string cinemaId, string? zinger, string? alias);
+    Task<Picture> UpdatePictureWithCinemaAsync(string pictureId, string pictureName, int year, string cinemaId, string? zinger, string? alias);
     Task<Cinema> UpdateCinemaAndAssociatedPicturesAsync(string cinemaId, string cinemaName, string city);
     Task ValidateAndDeleteCinema(string cinemaId);
 }

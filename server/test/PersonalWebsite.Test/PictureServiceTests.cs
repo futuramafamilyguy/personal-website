@@ -43,10 +43,8 @@ public class PictureServiceTests
             Times.Once());
     }
 
-    [Theory]
-    [InlineData("bazinga")]
-    [InlineData(null)]
-    public async Task AddPictureAsync_ShouldCallAddAsync(string zinger)
+    [Fact]
+    public async Task AddPictureAsync_ShouldCallAddAsync()
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
@@ -54,6 +52,8 @@ public class PictureServiceTests
         
         var pictureName = "cars";
         var yearWatched = 2020;
+        var zinger = "bazinga";
+        var alias = "car";
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -66,7 +66,7 @@ public class PictureServiceTests
         };
 
         // act
-        await sut.AddPictureAsync(pictureName, yearWatched, cinema, zinger);
+        await sut.AddPictureAsync(pictureName, yearWatched, cinema, zinger, alias);
 
         // assert
         repositoryMock.Verify(
@@ -80,10 +80,8 @@ public class PictureServiceTests
                 Times.Once());
     }
 
-    [Theory]
-    [InlineData("bazinga")]
-    [InlineData(null)]
-    public async Task UpdatePictureAsync_ShouldCallUpdateAsync(string updatedZinger)
+    [Fact]
+    public async Task UpdatePictureAsync_ShouldCallUpdateAsync()
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
@@ -92,6 +90,8 @@ public class PictureServiceTests
         var pictureId = "123";
         var updatedPictureName = "cars";
         var updatedYearWatched = 2020;
+        var updatedZinger = "bazinga";
+        var updatedAlias = "car";
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -109,7 +109,8 @@ public class PictureServiceTests
             updatedPictureName,
             updatedYearWatched,
             updatedCinema,
-            updatedZinger);
+            updatedZinger,
+            updatedAlias);
 
         // assert
         repositoryMock.Verify(
