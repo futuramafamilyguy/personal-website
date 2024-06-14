@@ -32,6 +32,7 @@ const Pagination: React.FC<PaginationProps> = ({
         text="Prev"
         onClick={handlePrevClick}
         disabled={currentPage === 1}
+        selected={false}
       />
       <span className={styles.paginationSpan}>
         {currentPage}/{totalPages}
@@ -40,20 +41,9 @@ const Pagination: React.FC<PaginationProps> = ({
         text="Next"
         onClick={handleNextClick}
         disabled={currentPage === totalPages}
+        selected={false}
       />
     </span>
-
-    // <div className="pagination">
-    // <button onClick={handlePrevClick} disabled={currentPage === 1}>
-    //   Previous
-    // </button>
-    // <span>
-    //   Page {currentPage} of {totalPages}
-    // </span>
-    // <button onClick={handleNextClick} disabled={currentPage === totalPages}>
-    //   Next
-    // </button>
-    // </div>
   );
 };
 
