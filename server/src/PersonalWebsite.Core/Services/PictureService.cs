@@ -12,8 +12,8 @@ public class PictureService : IPictureService
         _pictureRepository = pictureRepository;
     }
 
-    public async Task<IEnumerable<Picture>> GetPicturesAsync(int year) =>
-        await _pictureRepository.GetByYearAsync(year);
+    public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetPicturesAsync(int year, int pageNumber, int pageSize) =>
+        await _pictureRepository.GetByYearAsync(year, pageNumber, pageSize);
 
     public async Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int year) =>
         await _pictureRepository.GetFavoriteByYearAsync(year);

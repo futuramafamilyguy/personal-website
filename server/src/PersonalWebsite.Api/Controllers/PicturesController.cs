@@ -20,11 +20,11 @@ public class PicturesController : ControllerBase
     }
 
     [HttpGet("{year}")]
-    public async Task<ActionResult> GetPicturesAsync(int year)
+    public async Task<ActionResult> GetPicturesAsync(int year, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = int.MaxValue)
     {
-        var pictures = await _pictureService.GetPicturesAsync(year);
+        var pictures = await _pictureService.GetPicturesAsync(year, pageNumber, pageSize);
 
-        return Ok(pictures);
+        return Ok(new { pictures.Pictures, pictures.TotalCount });
     }
 
     [HttpGet("{year}/favorites")]

@@ -16,12 +16,15 @@ public class PictureServiceTests
 
         var yearWatched = 2020;
 
+        var pageNumber = 1;
+        var pageSize = int.MaxValue;
+
         // act
-        await sut.GetPicturesAsync(yearWatched);
+        await sut.GetPicturesAsync(yearWatched, pageNumber, pageSize);
 
         // assert
         repositoryMock.Verify(
-            x => x.GetByYearAsync(yearWatched),
+            x => x.GetByYearAsync(yearWatched, pageNumber, pageSize),
             Times.Once());
     }
 

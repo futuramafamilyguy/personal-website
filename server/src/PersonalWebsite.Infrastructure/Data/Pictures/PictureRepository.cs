@@ -18,12 +18,16 @@ public class PictureRepository : IPictureRepository
         _pictures = database.GetCollection<PictureDocument>(_settings.PicturesCollectionName);
     }
 
-    public async Task<IEnumerable<Picture>> GetByYearAsync(int year)
+    public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetByYearAsync(int year, int pageNumber, int pageSize)
     {
         var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Year, year);
-        var pictures = await _pictures.Find(filter).ToListAsync();
+        var totalCount = await _pictures.CountDocumentsAsync(filter);
+        var pictures = await _pictures.Find(filter)
+            .Skip((pageNumber - 1) * pageSize)
+            .Limit(pageSize)
+            .ToListAsync();
         
-        return pictures.Select(PictureMapper.ToDomain);
+        return (pictures.Select(PictureMapper.ToDomain), totalCount);
     }
 
     public async Task<IEnumerable<Picture>> GetFavoriteByYearAsync(int year)

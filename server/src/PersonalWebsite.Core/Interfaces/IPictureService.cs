@@ -4,7 +4,7 @@ namespace PersonalWebsite.Core.Interfaces;
 
 public interface IPictureService
 {
-    Task<IEnumerable<Picture>> GetPicturesAsync(int year);
+    Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetPicturesAsync(int year, int pageNumber, int pageSize);
     Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int year);
     Task<Picture> AddPictureAsync(string name, int year, Cinema cinema, string? zinger, string? alias);
     Task<Picture> UpdatePictureAsync(string id, string name, int year, Cinema cinema, string? zinger, string? alias);
