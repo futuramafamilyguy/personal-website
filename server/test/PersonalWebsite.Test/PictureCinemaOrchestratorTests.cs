@@ -70,6 +70,7 @@ public class PictureCinemaOrchestratorTests
         var year = 2020;
         var zinger = "bazinga";
         var alias = "car";
+        var imageUrl = "domain/images/image.jpg";
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -85,7 +86,7 @@ public class PictureCinemaOrchestratorTests
             .ReturnsAsync(cinema);
 
         // act
-        await sut.UpdatePictureWithCinemaAsync(pictureId, pictureName, year, cinemaId, zinger, alias);
+        await sut.UpdatePictureWithCinemaAsync(pictureId, pictureName, year, cinemaId, zinger, alias, imageUrl);
 
         // assert
         cinemaServiceMock.Verify(
@@ -98,7 +99,8 @@ public class PictureCinemaOrchestratorTests
                 year,
                 cinema,
                 zinger,
-                alias),
+                alias,
+                imageUrl),
             Times.Once());
     }
 

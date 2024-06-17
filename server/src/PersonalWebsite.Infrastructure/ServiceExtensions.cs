@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
 using PersonalWebsite.Infrastructure.Data.Pictures;
+using PersonalWebsite.Infrastructure.Images;
 
 namespace PersonalWebsite.Infrastructure;
 
@@ -17,6 +18,7 @@ public static class ServiceExtensions
     {
         services.AddScoped<IPictureRepository, PictureRepository>();
         services.AddScoped<ICinemaRepository, CinemaRepository>();
+        services.AddScoped<IImageStorage, FileImageStorage>();
 
         return services;
     }

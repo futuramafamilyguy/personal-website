@@ -1,11 +1,13 @@
 using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
+using PersonalWebsite.Infrastructure.Images;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.Configure<MongoDbConfiguration>(builder.Configuration.GetSection("MongoDbConfiguration"));
+builder.Services.Configure<FileImageStorageConfiguration>(builder.Configuration.GetSection("FileImageStorageConfiguration"));
 
 builder.Services.AddMongoClient(builder.Configuration.GetConnectionString("PersonalWebsiteDb"));
 builder.Services.AddHostedService<ConfigureMongoDbIndexesService>();
@@ -36,6 +38,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

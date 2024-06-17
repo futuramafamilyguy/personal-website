@@ -29,6 +29,24 @@ public class PictureServiceTests
     }
 
     [Fact]
+    public async Task GetPictureAsync_ShouldCallGetAsync()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPictureRepository>();
+        var sut = new PictureService(repositoryMock.Object);
+
+        var id = "123";
+
+        // act
+        await sut.GetPictureAsync(id);
+
+        // assert
+        repositoryMock.Verify(
+            x => x.GetAsync(id),
+            Times.Once());
+    }
+
+    [Fact]
     public async Task GetFavoritePicturesAsync_ShouldCallGetFavoriteByYearAsync()
     {
         // arrange
@@ -95,6 +113,7 @@ public class PictureServiceTests
         var updatedYearWatched = 2020;
         var updatedZinger = "bazinga";
         var updatedAlias = "car";
+        var updatedImageUrl = "domain/images/image.jpg";
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -113,7 +132,8 @@ public class PictureServiceTests
             updatedYearWatched,
             updatedCinema,
             updatedZinger,
-            updatedAlias);
+            updatedAlias,
+            updatedImageUrl);
 
         // assert
         repositoryMock.Verify(

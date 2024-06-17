@@ -14,7 +14,8 @@ public static class PictureMapper
             Cinema = CinemaMapper.ToDomain(document.Cinema),
             Zinger = document.Zinger,
             IsFavorite = document.IsFavorite,
-            Alias = document.Alias
+            Alias = document.Alias,
+            ImageUrl = document.ImageUrl,
         };
 
     public static PictureDocument ToDocument(Picture picture)
@@ -26,6 +27,7 @@ public static class PictureMapper
             Cinema = CinemaMapper.ToDocument(picture.Cinema),
             Zinger = picture.Zinger,
             IsFavorite = picture.IsFavorite,
-            Alias = picture.Alias
+            Alias = picture.Alias,
+            ImageUrl = picture.ImageUrl,
         };
 }

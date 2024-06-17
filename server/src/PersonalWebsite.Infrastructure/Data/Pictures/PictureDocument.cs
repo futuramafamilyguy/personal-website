@@ -27,4 +27,7 @@ public class PictureDocument
 
     [BsonElement("picture_alias")]
     public string? Alias { get; set; }
+
+    [BsonElement("image_url")]
+    public string? ImageUrl { get; set; }
 }

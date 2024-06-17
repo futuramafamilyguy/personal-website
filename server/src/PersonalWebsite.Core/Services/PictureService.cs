@@ -15,6 +15,9 @@ public class PictureService : IPictureService
     public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetPicturesAsync(int year, int pageNumber, int pageSize) =>
         await _pictureRepository.GetByYearAsync(year, pageNumber, pageSize);
 
+    public async Task<Picture> GetPictureAsync(string id) =>
+        await _pictureRepository.GetAsync(id);
+
     public async Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int year) =>
         await _pictureRepository.GetFavoriteByYearAsync(year);
 
@@ -32,7 +35,7 @@ public class PictureService : IPictureService
         return picture;
     }
 
-    public async Task<Picture> UpdatePictureAsync(string id, string name, int year, Cinema cinema, string? zinger, string? alias)
+    public async Task<Picture> UpdatePictureAsync(string id, string name, int year, Cinema cinema, string? zinger, string? alias, string? imageUrl)
     {
         var updatedPicture = await _pictureRepository.UpdateAsync(id, new Picture
         {
@@ -41,7 +44,8 @@ public class PictureService : IPictureService
             Year = year,
             Cinema = cinema,
             Zinger = zinger,
-            Alias = alias
+            Alias = alias,
+            ImageUrl = imageUrl
         });
 
         return updatedPicture;

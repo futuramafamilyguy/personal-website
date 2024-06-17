@@ -9,4 +9,5 @@ public class Picture
     public string? Zinger { get; set; }
     public bool IsFavorite { get; set; } = false;
     public string? Alias { get; set; }
+    public string? ImageUrl { get; set; }
 }

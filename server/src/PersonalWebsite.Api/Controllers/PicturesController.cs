@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalWebsite.Api.DTOs;
+using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Interfaces;
+using PersonalWebsite.Infrastructure.Images;
 
 namespace PersonalWebsite.Api.Controllers;
 
@@ -10,13 +12,16 @@ public class PicturesController : ControllerBase
 {
     private readonly IPictureService _pictureService;
     private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
+    private readonly IImageStorage _imageStorage;
 
     public PicturesController(
         IPictureService pictureTrackingService,
-        IPictureCinemaOrchestrator pictureCinemaOrchestrator)
+        IPictureCinemaOrchestrator pictureCinemaOrchestrator,
+        IImageStorage imageStorage)
     {
         _pictureService = pictureTrackingService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
+        _imageStorage = imageStorage;
     }
 
     [HttpGet("{year}")]
@@ -50,7 +55,8 @@ public class PicturesController : ControllerBase
     {
         if (request is null) return BadRequest("Picture data is null");
 
-        var picture = await _pictureCinemaOrchestrator.UpdatePictureWithCinemaAsync(id, request.Name, request.Year, request.CinemaId, request.Zinger, request.Alias);
+        var picture = await _pictureCinemaOrchestrator
+            .UpdatePictureWithCinemaAsync(id, request.Name, request.Year, request.CinemaId, request.Zinger, request.Alias, request.ImageUrl);
 
         return Ok(picture);
     }
@@ -76,6 +82,53 @@ public class PicturesController : ControllerBase
     {
         var activeYears = await _pictureService.GetActiveYearsAsync();
 
-        return Ok(activeYears);
+        return Ok(new { ActiveYears = activeYears });
+    }
+
+    [HttpPost("{pictureId}/image")]
+    public async Task<ActionResult> UploadImageAsync(string pictureId, IFormFile imageFile)
+    {
+        if (imageFile == null || imageFile.Length == 0)
+        {
+            return BadRequest("No file uploaded or file is empty");
+        }
+
+        try
+        {
+            using var stream = imageFile.OpenReadStream();
+            var fileExtension = Path.GetExtension(imageFile.FileName);
+            var uniqueFileName = $"{pictureId}{fileExtension}";
+            await _imageStorage.SaveImageAsync(stream, uniqueFileName, ImageCategory.Picture);
+
+            var imageUrl = _imageStorage.GetImageUrl(uniqueFileName, ImageCategory.Picture);
+
+            return Ok(new { ImageUrl = imageUrl });
+        }
+        catch (InvalidImageFormatException)
+        {
+            return BadRequest($"{Path.GetExtension(imageFile.FileName)} is an invalid image format");
+        }
+        catch (ImageStorageException)
+        {
+            return StatusCode(500, "An error occurred while saving the image");
+        }
+    }
+
+    [HttpDelete("{pictureId}/image")]
+    public async Task<ActionResult> DeleteImageAsync(string pictureId)
+    {
+        var picture = await _pictureService.GetPictureAsync(pictureId);
+        var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl);
+
+        try
+        {
+            await _imageStorage.RemoveImageAsync(imageFileName, ImageCategory.Picture);
+
+            return NoContent();
+        }
+        catch (FileNotFoundException)
+        {
+            return NotFound($"No image found for picture {pictureId}");
+        }
     }
 }
