@@ -1,5 +1,4 @@
 import usePictures from "../..//hooks/usePictures";
-import CapsuleButton from "../CapsuleButton/CapsuleButton";
 import Loading from "../Loading/Loading";
 import MediaCard from "../MediaCard/MediaCard";
 import Pagination from "../Pagination/Pagination";
@@ -11,28 +10,12 @@ const PictureContainer: React.FC = () => {
     currentPage,
     totalPages,
     loading,
-    year,
     emptyMediaCardArray,
     setCurrentPage,
-    setYear,
   } = usePictures(1);
-
-  const years = [2024, 2023, 2022];
 
   return (
     <>
-      <div className={styles.activeYearsArea}>
-        {years.map((y) => (
-          <CapsuleButton
-            key={y}
-            text={y.toString()}
-            onClick={() => setYear(y)}
-            disabled={false}
-            selected={year === y}
-          />
-        ))}
-      </div>
-
       {loading ? (
         <Loading />
       ) : (

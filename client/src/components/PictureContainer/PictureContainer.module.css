@@ -11,13 +11,6 @@
   box-sizing: border-box;
 }
 
-.activeYearsArea {
-  display: flex;
-  justify-content: flex-start;
-  gap: 10px;
-  margin: 20px 20px 0px 20px;
-}
-
 .emptyMediaCard {
   position: flex;
   width: 220px;

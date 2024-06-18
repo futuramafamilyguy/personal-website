@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+import { useYear } from "../contexts/YearContext";
 import { Picture } from "../types/Picture";
 
 const usePictures = (initialPage: number) => {
@@ -18,17 +19,13 @@ const usePictures = (initialPage: number) => {
   };
 
   const [pictures, setPictures] = useState<Picture[]>([]);
-  const [year, setYear] = useState(() => {
-    let currentDate = new Date();
-    let currentYear = currentDate.getFullYear();
-    return currentYear;
-  });
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(() =>
     calculateItemsPerPage()
   );
   const [loading, setLoading] = useState(false);
+  const year = useYear();
 
   // fill any empty spaces in the flex content area with empty media cards so the positioning isnt scuffed AF
   const emptyMediaCardArray = Array.from(
@@ -74,10 +71,8 @@ const usePictures = (initialPage: number) => {
     currentPage,
     totalPages,
     loading,
-    year,
     emptyMediaCardArray,
     setCurrentPage,
-    setYear,
   };
 };
 

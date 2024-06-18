@@ -1,4 +1,6 @@
+import ActiveYearsContainer from "../../components/ActiveYearsContainer/ActiveYearsContainer";
 import PictureContainer from "../../components/PictureContainer/PictureContainer";
+import { YearProvider } from "../../contexts/YearContext.tsx";
 import styles from "./LetterboxcPage.module.css";
 
 function LetterboxcPage() {
@@ -10,7 +12,10 @@ function LetterboxcPage() {
           <br />
           <p>Pictures I've seen at the cinemas over the past few years.</p>
         </div>
-        <PictureContainer />
+        <YearProvider>
+          <ActiveYearsContainer />
+          <PictureContainer />
+        </YearProvider>
       </div>
     </>
   );
