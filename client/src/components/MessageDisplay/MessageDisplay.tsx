@@ -11,7 +11,7 @@ const MessageDisplay: React.FC<MessageDisplayProps> = ({
 }) => {
   return (
     <div className={styles.textArea}>
-      {imageUrl !== null && <img className={styles.image} src={imageUrl} />}
+      {imageUrl ? <img className={styles.image} src={imageUrl} /> : null}
 
       <h4>{message}</h4>
     </div>
