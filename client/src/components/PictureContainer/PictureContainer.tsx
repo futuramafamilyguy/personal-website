@@ -1,11 +1,14 @@
+import { useState } from "react";
+
 import usePictures from "../..//hooks/usePictures";
-import MessageDisplay from "../MessageDisplay/MessageDisplay";
-import MediaCard from "../MediaCard/MediaCard";
-import Pagination from "../Pagination/Pagination";
-import styles from "./PictureContainer.module.css";
-import megamind from "../../assets/megamind.png";
 import notFoundBoy from "../../assets/404boy.png";
 import notFoundGirl from "../../assets/404girl.png";
+import megamind from "../../assets/megamind.png";
+import MediaCard from "../MediaCard/MediaCard";
+import MessageDisplay from "../MessageDisplay/MessageDisplay";
+import Pagination from "../Pagination/Pagination";
+import PictureModal from "../PictureModal/PictureModal";
+import styles from "./PictureContainer.module.css";
 
 const PictureContainer: React.FC = () => {
   const {
@@ -17,6 +20,31 @@ const PictureContainer: React.FC = () => {
     setCurrentPage,
   } = usePictures(1);
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [pictureIndex, setPictureIndex] = useState<number | null>(null);
+
+  const openModal = (index: number) => {
+    setPictureIndex(index);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setPictureIndex(null);
+    setModalOpen(false);
+  };
+
+  const handlePrev = () => {
+    if (pictureIndex !== null) {
+      setPictureIndex((pictureIndex - 1 + pictures.length) % pictures.length);
+    }
+  };
+
+  const handleNext = () => {
+    if (pictureIndex !== null) {
+      setPictureIndex((pictureIndex + 1) % pictures.length);
+    }
+  };
+
   const renderContent = () => {
     if (loading) {
       return <MessageDisplay message={"Loading..."} />;
@@ -25,7 +53,7 @@ const PictureContainer: React.FC = () => {
         return (
           <>
             <div className={styles.pictureContainer}>
-              {pictures.map((picture) => (
+              {pictures.map((picture, index) => (
                 <MediaCard
                   key={picture.id}
                   imageUrl={
@@ -33,12 +61,21 @@ const PictureContainer: React.FC = () => {
                     (Math.random() < 0.5 ? notFoundBoy : notFoundGirl)
                   }
                   title={picture.alias ?? picture.name}
+                  onClick={() => openModal(index)}
                 />
               ))}
               {currentPage === totalPages &&
                 emptyMediaCardArray.map((index) => (
                   <div className={styles.emptyMediaCard} key={index}></div>
                 ))}
+
+              <PictureModal
+                isOpen={modalOpen}
+                onClose={closeModal}
+                picture={pictureIndex !== null ? pictures[pictureIndex] : null}
+                onPrev={handlePrev}
+                onNext={handleNext}
+              ></PictureModal>
             </div>
 
             <Pagination
