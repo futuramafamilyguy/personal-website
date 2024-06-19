@@ -1,8 +1,6 @@
 import { useState } from "react";
 
 import usePictures from "../..//hooks/usePictures";
-import notFoundBoy from "../../assets/404boy.png";
-import notFoundGirl from "../../assets/404girl.png";
 import megamind from "../../assets/megamind.png";
 import MediaCard from "../MediaCard/MediaCard";
 import MessageDisplay from "../MessageDisplay/MessageDisplay";
@@ -56,10 +54,7 @@ const PictureContainer: React.FC = () => {
               {pictures.map((picture, index) => (
                 <MediaCard
                   key={picture.id}
-                  imageUrl={
-                    picture.imageUrl ??
-                    (Math.random() < 0.5 ? notFoundBoy : notFoundGirl)
-                  }
+                  imageUrl={picture.imageUrl}
                   title={picture.alias ?? picture.name}
                   onClick={() => openModal(index)}
                 />

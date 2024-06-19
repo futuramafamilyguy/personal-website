@@ -5,6 +5,9 @@ import { useYear } from "../contexts/YearContext";
 import { Picture } from "../types/Picture";
 import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 
+import notFoundBoy from "../assets/404boy.png";
+import notFoundGirl from "../assets/404girl.png";
+
 const usePictures = (initialPage: number) => {
   const calculateItemsPerPage = () => {
     // using hard-coded values here since flex box dimensions are inconsistent
@@ -55,9 +58,12 @@ const usePictures = (initialPage: number) => {
           const response = await axios(
             `https://localhost:7044/pictures/${year}/favorites`
           );
-  
           const data = response.data;
-          setPictures(data);
+          const updatedPictures = (<Picture[]>data).map(picture => ({
+            ...picture,
+            imageUrl: setDefaultImageUrl(picture.imageUrl),
+          }));
+          setPictures(updatedPictures);
           setTotalPages(1);
         } else {
           const response = await axios(
@@ -65,7 +71,12 @@ const usePictures = (initialPage: number) => {
           );
   
           const data = response.data;
-          setPictures(data.pictures);
+          const updatedPictures = (<Picture[]>data.pictures).map(picture => ({
+            ...picture,
+            imageUrl: setDefaultImageUrl(picture.imageUrl),
+          }));
+          console.log(updatedPictures);
+          setPictures(updatedPictures);
           setTotalPages(Math.ceil(data.totalCount / itemsPerPage));
         }
         
@@ -78,6 +89,10 @@ const usePictures = (initialPage: number) => {
 
     fetchPictures();
   }, [year, currentPage, itemsPerPage, viewFavorite]);
+
+  const setDefaultImageUrl = (imageUrl: string) => {
+    return imageUrl || (Math.random() < 0.5 ? notFoundBoy : notFoundGirl);
+  };
 
   return {
     pictures,
