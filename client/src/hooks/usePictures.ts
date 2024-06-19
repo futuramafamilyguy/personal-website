@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { useYear } from "../contexts/YearContext";
 import { Picture } from "../types/Picture";
+import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 
 const usePictures = (initialPage: number) => {
   const calculateItemsPerPage = () => {
@@ -26,6 +27,7 @@ const usePictures = (initialPage: number) => {
   );
   const [loading, setLoading] = useState(false);
   const year = useYear();
+  const viewFavorite = useViewFavorite();
 
   // fill any empty spaces in the flex content area with empty media cards so the positioning isnt scuffed AF
   const emptyMediaCardArray = Array.from(
@@ -49,13 +51,24 @@ const usePictures = (initialPage: number) => {
     const fetchPictures = async () => {
       setLoading(true);
       try {
-        const response = await axios(
-          `https://localhost:7044/pictures/${year}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`
-        );
-
-        const data = response.data;
-        setPictures(data.pictures);
-        setTotalPages(Math.ceil(data.totalCount / itemsPerPage));
+        if (viewFavorite) {
+          const response = await axios(
+            `https://localhost:7044/pictures/${year}/favorites`
+          );
+  
+          const data = response.data;
+          setPictures(data);
+          setTotalPages(1);
+        } else {
+          const response = await axios(
+            `https://localhost:7044/pictures/${year}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`
+          );
+  
+          const data = response.data;
+          setPictures(data.pictures);
+          setTotalPages(Math.ceil(data.totalCount / itemsPerPage));
+        }
+        
       } catch (error) {
         console.error("Failed to fetch pictures", error);
       } finally {
@@ -64,7 +77,7 @@ const usePictures = (initialPage: number) => {
     };
 
     fetchPictures();
-  }, [year, currentPage, itemsPerPage]);
+  }, [year, currentPage, itemsPerPage, viewFavorite]);
 
   return {
     pictures,
