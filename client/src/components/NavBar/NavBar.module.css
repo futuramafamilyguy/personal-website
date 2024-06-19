@@ -1,0 +1,53 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 10px 20px;
+  z-index: 1000;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  background-color: #1a1a1a;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.menuItem {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.menuLink {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.menuLink:hover {
+  background-color: #333333;
+  border-radius: 5px;
+}
+
+.menuLink:hover {
+  background-color: #333333;
+  border-radius: 5px;
+}
