@@ -70,6 +70,8 @@ const PictureContainer: React.FC = () => {
                 picture={pictureIndex !== null ? pictures[pictureIndex] : null}
                 onPrev={handlePrev}
                 onNext={handleNext}
+                prev={pictureIndex !== 0}
+                next={pictureIndex !== pictures.length - 1}
               ></PictureModal>
             </div>
 

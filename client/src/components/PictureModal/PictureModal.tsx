@@ -10,6 +10,8 @@ interface PictureModalProps {
   picture: Picture | null;
   onPrev: () => void;
   onNext: () => void;
+  prev: boolean;
+  next: boolean;
 }
 
 const PictureModal: React.FC<PictureModalProps> = ({
@@ -18,6 +20,8 @@ const PictureModal: React.FC<PictureModalProps> = ({
   picture,
   onPrev,
   onNext,
+  prev,
+  next,
 }) => {
   if (!isOpen) return null;
 
@@ -39,18 +43,22 @@ const PictureModal: React.FC<PictureModalProps> = ({
           >{`${picture?.cinema.name}, ${picture?.cinema.city}`}</p>
         </div>
       </div>
-      <button
-        className={`${styles.arrowButton} ${styles.left}`}
-        onClick={onPrev}
-      >
-        &lt;
-      </button>
-      <button
-        className={`${styles.arrowButton} ${styles.right}`}
-        onClick={onNext}
-      >
-        &gt;
-      </button>
+      {prev ? (
+        <button
+          className={`${styles.arrowButton} ${styles.left}`}
+          onClick={onPrev}
+        >
+          &lt;
+        </button>
+      ) : null}
+      {next ? (
+        <button
+          className={`${styles.arrowButton} ${styles.right}`}
+          onClick={onNext}
+        >
+          &gt;
+        </button>
+      ) : null}
       {picture?.zinger ? (
         <div className={styles.zinger}>{`"${picture?.zinger}"`}</div>
       ) : null}
