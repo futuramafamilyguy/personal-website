@@ -8,17 +8,15 @@ function AboutPage() {
         <img src={profileImage} alt="me" className={styles.profileImage} />
         <div className={styles.introBox}>
           <h5>Kia ora, Allen here.</h5>
-          <br />
-          <p>
+          <p className={styles.p}>
             Welcome to my website where I log movies I watch throughout the year
             and blog about my hot takes because I'm entitled to opinions which
-            must therefore mean my only course of action is to share them with
-            the the world.
+            of course means that I must share them with the world.
           </p>
-          <p>
+          <p className={styles.p}>
             Thanks for visiting and enjoy my hotter than Taylor Swift takes.
           </p>
-          <p>
+          <p className={styles.p}>
             As a side note, I will not refer to movies as films so as to not
             sound pretentious and instead use much more down to earth terms like
             pictures.
