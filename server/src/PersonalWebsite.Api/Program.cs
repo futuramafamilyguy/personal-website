@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using PersonalWebsite.Api.Authentication;
 using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
@@ -8,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.Configure<MongoDbConfiguration>(builder.Configuration.GetSection("MongoDbConfiguration"));
 builder.Services.Configure<FileImageStorageConfiguration>(builder.Configuration.GetSection("FileImageStorageConfiguration"));
+builder.Services.Configure<BasicAuthConfiguration>(builder.Configuration.GetSection("BasicAuthConfiguration"));
 
 builder.Services.AddMongoClient(builder.Configuration.GetConnectionString("PersonalWebsiteDb"));
 builder.Services.AddHostedService<ConfigureMongoDbIndexesService>();
@@ -29,6 +32,19 @@ builder.Services.AddCors(options =>
     );
 });
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = "BasicAuth";
+    options.DefaultChallengeScheme = "BasicAuth";
+}).AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuth", null);
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AuthenticatedPolicy", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+});
 
 var app = builder.Build();
 
@@ -43,6 +59,7 @@ app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
