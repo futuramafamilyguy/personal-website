@@ -20,7 +20,7 @@ const App: React.FC = () => {
     <>
       <NavBar logoSrc={logo} menuItems={menuItems} />
       {/* space dedicated to the navbar when it's at the top of the page */}
-      <div style={{ marginTop: "50px" }}>
+      <div style={{ marginTop: "60px" }}>
         <Routes>
           <Route path="/" element={<AboutPage />} />
           <Route path="/about" element={<AboutPage />} />

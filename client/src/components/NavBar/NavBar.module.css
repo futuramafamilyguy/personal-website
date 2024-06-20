@@ -7,6 +7,8 @@
   color: #fff;
   padding: 10px 20px;
   z-index: 1000;
+  align-items: center;
+  display: flex;
 }
 
 .sticky {
@@ -17,8 +19,8 @@
 }
 
 .logo {
-  width: 30px;
-  height: 30px;
+  width: 43px;
+  height: 40px;
   border-radius: 50%;
   overflow: hidden;
   margin-right: 20px;
@@ -32,6 +34,7 @@
 }
 
 .menuItem {
+  font-weight: 600;
   display: inline-block;
   margin-left: 20px;
 }
