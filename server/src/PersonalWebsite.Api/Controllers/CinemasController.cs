@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using PersonalWebsite.Api.DTOs;
 using PersonalWebsite.Core.Interfaces;
 
@@ -12,11 +11,16 @@ public class CinemasController : ControllerBase
 {
     private readonly ICinemaService _cinemaService;
     private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
+    private readonly ILogger<CinemasController> _logger;
 
-    public CinemasController(ICinemaService cinemaService, IPictureCinemaOrchestrator pictureCinemaOrchestrator)
+    public CinemasController(
+        ICinemaService cinemaService,
+        IPictureCinemaOrchestrator pictureCinemaOrchestrator,
+        ILogger<CinemasController> logger)
     {
         _cinemaService = cinemaService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
+        _logger = logger;
     }
 
     [HttpGet("")]
@@ -61,7 +65,8 @@ public class CinemasController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
-            return Conflict(new { message = ex.Message });
+            _logger.LogError(ex, $"Failed to delete cinema {id}");
+            return Conflict($"Failed to delete cinema {id}");
         }
     }
 }

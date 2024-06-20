@@ -11,7 +11,9 @@ public class PictureRepository : IPictureRepository
     private readonly IMongoCollection<PictureDocument> _pictures;
     private readonly MongoDbConfiguration _settings;
 
-    public PictureRepository(IMongoClient client, IOptions<MongoDbConfiguration> settings)
+    public PictureRepository(
+        IMongoClient client,
+        IOptions<MongoDbConfiguration> settings)
     {
         _settings = settings.Value;
         var database = client.GetDatabase(_settings.DatabaseName);
@@ -76,11 +78,13 @@ public class PictureRepository : IPictureRepository
         return PictureMapper.ToDomain(updatedPicture);
     }
 
-    public async Task UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema)
+    public async Task<long> UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema)
     {
         var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Cinema.Id, cinemaId);
         var updateQuery = Builders<PictureDocument>.Update.Set(picture => picture.Cinema, CinemaMapper.ToDocument(updatedCinema));
-        await _pictures.UpdateManyAsync(filter, updateQuery);
+        var result = await _pictures.UpdateManyAsync(filter, updateQuery);
+
+        return result.MatchedCount;
     }
 
     public async Task<bool> CheckCinemaAssociationExistenceAsync(string cinemaId)

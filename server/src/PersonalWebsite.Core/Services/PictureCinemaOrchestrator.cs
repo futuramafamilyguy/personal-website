@@ -1,4 +1,5 @@
-﻿using PersonalWebsite.Core.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 
 namespace PersonalWebsite.Core.Services;
@@ -7,11 +8,16 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
 {
     private readonly IPictureService _pictureService;
     private readonly ICinemaService _cinemaService;
+    private readonly ILogger<PictureCinemaOrchestrator> _logger;
 
-    public PictureCinemaOrchestrator(IPictureService pictureService, ICinemaService cinemaService)
+    public PictureCinemaOrchestrator(
+        IPictureService pictureService,
+        ICinemaService cinemaService,
+        ILogger<PictureCinemaOrchestrator> logger)
     {
         _pictureService = pictureService;
         _cinemaService = cinemaService;
+        _logger = logger;
     }
 
     public async Task<Picture> AddPictureWithCinemaAsync(string pictureName, int year, string cinemaId, string? zinger, string? alias)
@@ -33,7 +39,8 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
     public async Task<Cinema> UpdateCinemaAndAssociatedPicturesAsync(string cinemaId, string cinemaName, string city)
     {
         var updatedCinema = await _cinemaService.UpdateCinemaAsync(cinemaId, cinemaName, city);
-        await _pictureService.UpdateCinemaOfPicturesAsync(cinemaId, updatedCinema);
+        var updatedCount = await _pictureService.UpdateCinemaOfPicturesAsync(cinemaId, updatedCinema);
+        _logger.LogInformation($"Updated cinema info of {updatedCount} pictures that are associated with cinema {cinemaId}");
 
         return updatedCinema;
     }

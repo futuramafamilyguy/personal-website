@@ -10,7 +10,7 @@ public interface IPictureService
     Task<Picture> AddPictureAsync(string name, int year, Cinema cinema, string? zinger, string? alias);
     Task<Picture> UpdatePictureAsync(string id, string name, int year, Cinema cinema, string? zinger, string? alias, string? imageUrl);
     Task<Picture> ToggleFavoriteAsync(string id);
-    Task UpdateCinemaOfPicturesAsync(string cinemaId, Cinema cinema);
+    Task<long> UpdateCinemaOfPicturesAsync(string cinemaId, Cinema cinema);
     Task RemovePictureAsync(string id);
     Task<bool> CheckIfAnyPicturesAssociatedWithCinemaAsync(string id);
     Task<IEnumerable<int>> GetActiveYearsAsync();

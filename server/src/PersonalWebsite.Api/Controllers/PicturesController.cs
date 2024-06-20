@@ -14,15 +14,18 @@ public class PicturesController : ControllerBase
     private readonly IPictureService _pictureService;
     private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
     private readonly IImageStorage _imageStorage;
+    private readonly ILogger<PicturesController> _logger;
 
     public PicturesController(
         IPictureService pictureTrackingService,
         IPictureCinemaOrchestrator pictureCinemaOrchestrator,
-        IImageStorage imageStorage)
+        IImageStorage imageStorage,
+        ILogger<PicturesController> logger)
     {
         _pictureService = pictureTrackingService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
         _imageStorage = imageStorage;
+        _logger = logger;
     }
 
     [HttpGet("{year}")]
@@ -106,6 +109,7 @@ public class PicturesController : ControllerBase
     {
         if (imageFile == null || imageFile.Length == 0)
         {
+            _logger.LogError("No file uploaded or file is empty");
             return BadRequest("No file uploaded or file is empty");
         }
 
@@ -120,22 +124,24 @@ public class PicturesController : ControllerBase
 
             return Ok(new { ImageUrl = imageUrl });
         }
-        catch (InvalidImageFormatException)
+        catch (InvalidImageFormatException ex)
         {
+            _logger.LogError(ex, $"{imageFile.FileName} has an invalid file extension");
             return BadRequest($"{Path.GetExtension(imageFile.FileName)} is an invalid image format");
         }
-        catch (ImageStorageException)
+        catch (ImageStorageException ex)
         {
+            _logger.LogError(ex, $"An error occurred while saving the image {imageFile.FileName} for picture {pictureId}");
             return StatusCode(500, "An error occurred while saving the image");
         }
-    }
+    } 
 
     [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpDelete("{pictureId}/image")]
     public async Task<ActionResult> DeleteImageAsync(string pictureId)
     {
         var picture = await _pictureService.GetPictureAsync(pictureId);
-        var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl);
+        var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl!);
 
         try
         {
@@ -143,8 +149,9 @@ public class PicturesController : ControllerBase
 
             return NoContent();
         }
-        catch (FileNotFoundException)
+        catch (FileNotFoundException ex)
         {
+            _logger.LogError(ex, $"Cannot find image at {picture.ImageUrl}");
             return NotFound($"No image found for picture {pictureId}");
         }
     }

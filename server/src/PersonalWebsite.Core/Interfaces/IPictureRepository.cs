@@ -10,7 +10,7 @@ public interface IPictureRepository
     Task<Picture> AddAsync(Picture picture);
     Task<Picture> UpdateAsync(string id, Picture picture);
     Task<Picture> ToggleFavoriteStatusAsync(string id);
-    Task UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema);
+    Task<long> UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema);
     Task RemoveAsync(string id);
     Task<bool> CheckCinemaAssociationExistenceAsync(string cinemaId);
     Task<IEnumerable<int>> GetActiveYearsAsync();

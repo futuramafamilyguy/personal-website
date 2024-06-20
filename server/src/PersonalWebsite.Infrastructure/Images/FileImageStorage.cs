@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Interfaces;
 
@@ -7,10 +8,12 @@ namespace PersonalWebsite.Infrastructure.Images;
 public class FileImageStorage : IImageStorage
 {
     private readonly FileImageStorageConfiguration _configuration;
+    private readonly ILogger<FileImageStorage> _logger;
 
-    public FileImageStorage(IOptions<FileImageStorageConfiguration> configuration)
+    public FileImageStorage(IOptions<FileImageStorageConfiguration> configuration, ILogger<FileImageStorage> logger)
     {
         _configuration = configuration.Value;
+        _logger = logger;
     }
 
     public async Task<string> SaveImageAsync(Stream fileStream, string fileName, ImageCategory category)
@@ -27,6 +30,7 @@ public class FileImageStorage : IImageStorage
 
             using var stream = new FileStream(filePath, FileMode.Create);
             await fileStream.CopyToAsync(stream);
+            _logger.LogInformation($"{category} image created at {filePath}");
 
             return fileName;
         }
@@ -44,6 +48,7 @@ public class FileImageStorage : IImageStorage
             throw new FileNotFoundException($"Image {filePath} not found");
         }
         await Task.Run(() => File.Delete(filePath));
+        _logger.LogInformation($"{category} image deleted at {filePath}");
     }
 
     public string GetImageUrl(string fileName, ImageCategory category)
@@ -89,6 +94,7 @@ public class FileImageStorage : IImageStorage
         if (!Directory.Exists(imagesDirectoryPath))
         {
             Directory.CreateDirectory(imagesDirectoryPath);
+            _logger.LogInformation($"Image directory for {category} created at {imagesDirectoryPath}");
         }
     }
 }

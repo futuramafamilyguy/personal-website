@@ -58,7 +58,7 @@ public class PictureService : IPictureService
         return updatedPicture;
     }
 
-    public async Task UpdateCinemaOfPicturesAsync(string cinemaId, Cinema cinema) =>
+    public async Task<long> UpdateCinemaOfPicturesAsync(string cinemaId, Cinema cinema) =>
         await _pictureRepository.UpdateCinemaInfoAsync(cinemaId, cinema);
 
     public async Task RemovePictureAsync(string id) =>
