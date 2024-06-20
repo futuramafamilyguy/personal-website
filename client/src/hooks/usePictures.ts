@@ -1,12 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-import { useYear } from "../contexts/YearContext";
-import { Picture } from "../types/Picture";
-import { useViewFavorite } from "../contexts/ViewFavoriteContext";
-
 import notFoundBoy from "../assets/404boy.png";
 import notFoundGirl from "../assets/404girl.png";
+import { useViewFavorite } from "../contexts/ViewFavoriteContext";
+import { useYear } from "../contexts/YearContext";
+import { Picture } from "../types/Picture";
 
 const usePictures = (initialPage: number) => {
   const calculateItemsPerPage = () => {
@@ -75,12 +74,11 @@ const usePictures = (initialPage: number) => {
             ...picture,
             imageUrl: setDefaultImageUrl(picture.imageUrl),
           }));
-          console.log(updatedPictures);
           setPictures(updatedPictures);
           setTotalPages(Math.ceil(data.totalCount / itemsPerPage));
         }
-        
       } catch (error) {
+        setPictures([]);
         console.error("Failed to fetch pictures", error);
       } finally {
         setLoading(false);
