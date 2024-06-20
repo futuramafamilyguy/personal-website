@@ -32,6 +32,16 @@ public class PicturesController : ControllerBase
         return Ok(new { pictures.Pictures, pictures.TotalCount });
     }
 
+    // this endpoint is just here for testing purposes and isn't used in prod
+    // it's mostly here so postman scripts can populate existing picture fields to avoid typing everything out when testing update picture endpoint
+    [HttpGet("{year}/{id}")]
+    public async Task<ActionResult> GetPictureAsync(string id)
+    {
+        var picture = await _pictureService.GetPictureAsync(id);
+
+        return Ok(picture);
+    }
+
     [HttpGet("{year}/favorites")]
     public async Task<ActionResult> GetFavoritePicturesAsync(int year)
     {
