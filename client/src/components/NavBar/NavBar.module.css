@@ -7,8 +7,18 @@
   color: #fff;
   padding: 10px 20px;
   z-index: 1000;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.navLeft,
+.navRight {
   align-items: center;
   display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .sticky {
@@ -53,4 +63,20 @@
 .menuLink:hover {
   background-color: #333333;
   border-radius: 5px;
+}
+
+.externalLink {
+  color: white;
+  text-decoration: none;
+}
+
+.externalLink:hover {
+  text-decoration: underline;
+}
+
+.externalLink img {
+  margin-left: 5px;
+  margin-bottom: 3px;
+  width: 18px;
+  height: 18px;
 }
