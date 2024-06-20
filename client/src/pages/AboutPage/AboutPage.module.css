@@ -56,3 +56,7 @@
 .introBox p {
   padding-top: 10px;
 }
+
+.introBox h5 {
+  font-weight: 600;
+}

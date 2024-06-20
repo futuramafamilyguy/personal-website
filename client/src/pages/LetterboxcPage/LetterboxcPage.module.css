@@ -32,3 +32,7 @@
   color: white;
   z-index: 1;
 }
+
+.descriptionBox h4 {
+  font-weight: 600;
+}
