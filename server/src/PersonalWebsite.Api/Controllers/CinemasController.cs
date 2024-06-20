@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using PersonalWebsite.Api.DTOs;
 using PersonalWebsite.Core.Interfaces;
@@ -26,6 +27,7 @@ public class CinemasController : ControllerBase
         return Ok(cinemas);
     }
 
+    [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPost("")]
     public async Task<ActionResult> CreateCinemaAsync([FromBody]CreateCinemaRequest request)
     {
@@ -36,6 +38,7 @@ public class CinemasController : ControllerBase
         return Ok(cinema);
     }
 
+    [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateCinemaAsync(string id, [FromBody]CreateCinemaRequest request)
     {
@@ -46,6 +49,7 @@ public class CinemasController : ControllerBase
         return Ok(updatedCinema);
     }
 
+    [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteCinemaAsync(string id)
     {

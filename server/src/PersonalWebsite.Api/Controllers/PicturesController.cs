@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PersonalWebsite.Api.DTOs;
 using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Interfaces;
@@ -50,6 +51,7 @@ public class PicturesController : ControllerBase
         return Ok(pictures);
     }
 
+    [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPost("{year}")]
     public async Task<ActionResult> CreatePictureAsync(int year, [FromBody]CreatePictureRequest request)
     {
@@ -60,6 +62,7 @@ public class PicturesController : ControllerBase
         return Ok(picture);
     }
 
+    [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdatePictureAsync(string id, [FromBody]UpdatePictureRequest request)
     {
@@ -71,6 +74,7 @@ public class PicturesController : ControllerBase
         return Ok(picture);
     }
 
+    [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPut("{year}/{id}/favorite")]
     public async Task<ActionResult> ToggleFavoriteAsync(string id)
     {
@@ -79,6 +83,7 @@ public class PicturesController : ControllerBase
         return Ok(picture);
     }
 
+    [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeletePictureAsync(string id)
     {
@@ -95,6 +100,7 @@ public class PicturesController : ControllerBase
         return Ok(new { ActiveYears = activeYears });
     }
 
+    [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPost("{pictureId}/image")]
     public async Task<ActionResult> UploadImageAsync(string pictureId, IFormFile imageFile)
     {
@@ -124,6 +130,7 @@ public class PicturesController : ControllerBase
         }
     }
 
+    [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpDelete("{pictureId}/image")]
     public async Task<ActionResult> DeleteImageAsync(string pictureId)
     {
