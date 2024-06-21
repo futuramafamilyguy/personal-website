@@ -4,16 +4,18 @@ import { useYear, useYearUpdate } from "../../contexts/YearContext";
 import CapsuleButton from "../CapsuleButton/CapsuleButton";
 import styles from "./ActiveYearsContainer.module.css";
 
+import api from "../../api";
+
 const ActiveYearsContainer: React.FC = () => {
   const year = useYear();
   const updateYear = useYearUpdate();
   const [activeYears, setActiveYears] = useState<number[]>([]);
 
   useEffect(() => {
-    fetch("https://localhost:7044/pictures/active-years")
-      .then((response) => response.json())
-      .then((data) => {
-        const startingYear = Math.min(...data.activeYears);
+    const fetchActiveYears = async () => {
+      try {
+        const response = await api.get("/pictures/active-years");
+        const startingYear = Math.min(...response.data.activeYears);
         const activeYears = [];
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear();
@@ -22,8 +24,12 @@ const ActiveYearsContainer: React.FC = () => {
         }
 
         setActiveYears(activeYears);
-      })
-      .catch((error) => console.error("Error fetching years:", error));
+      } catch (error) {
+        console.error("Error fetching active years:", error);
+      }
+    };
+
+    fetchActiveYears();
   }, []);
 
   return (

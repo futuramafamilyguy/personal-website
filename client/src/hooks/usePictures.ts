@@ -7,6 +7,8 @@ import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 import { useYear } from "../contexts/YearContext";
 import { Picture } from "../types/Picture";
 
+import api from "../api";
+
 const usePictures = (initialPage: number) => {
   const calculateItemsPerPage = () => {
     // using hard-coded values here since flex box dimensions are inconsistent
@@ -54,8 +56,8 @@ const usePictures = (initialPage: number) => {
       setLoading(true);
       try {
         if (viewFavorite) {
-          const response = await axios(
-            `https://localhost:7044/pictures/${year}/favorites`
+          const response = await api.get(
+            `/pictures/${year}/favorites`
           );
           const data = response.data;
           const updatedPictures = (<Picture[]>data).map(picture => ({
@@ -65,8 +67,8 @@ const usePictures = (initialPage: number) => {
           setPictures(updatedPictures);
           setTotalPages(1);
         } else {
-          const response = await axios(
-            `https://localhost:7044/pictures/${year}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`
+          const response = await api.get(
+            `/pictures/${year}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`
           );
   
           const data = response.data;
