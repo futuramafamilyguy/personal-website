@@ -20,21 +20,44 @@
   z-index: -1;
 }
 
-.descriptionBox {
+.contentArea {
+  width: calc(100% - 40px);
+  margin: 20px 20px 20px 20px;
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.left {
+  flex-grow: 1;
+  width: 33%;
+  margin-right: 10px;
+}
+.right {
+  flex-grow: 1;
+  width: 33%;
+  margin-left: 10px;
+}
+
+.textBox {
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
-  margin: 20px 20px 0px 20px;
   color: white;
   z-index: 1;
-  max-width: 40%;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-.descriptionBox h4 {
+.textBox h4,
+.textBox h5 {
   font-weight: 600;
 }
 
-.descriptionBox p:not(:first-of-type) {
+.textBox p:not(:first-of-type),
+.right p {
   padding-top: 10px;
 }
 
