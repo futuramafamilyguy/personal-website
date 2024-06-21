@@ -8,8 +8,8 @@ const ComingSoonPage: React.FC = () => (
           <h4>Coming Soon</h4>
           <br />
           <p>
-            Following the industry standards I have decided to release the
-            website incomplete without all the features I promised. They will
+            Following industry standards I have decided to release the website
+            incomplete without all the features I had promised. They will
             eventually be implemented making this the biggest comeback in the
             industry.
           </p>
