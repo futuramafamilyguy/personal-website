@@ -14,11 +14,7 @@ public class CinemaService : ICinemaService
 
     public async Task<Cinema> AddCinemaAsync(string name, string city)
     {
-        var cinema = await _cinemaRepository.AddAsync(new Cinema
-        {
-            Name = name,
-            City = city
-        });
+        var cinema = await _cinemaRepository.AddAsync(new Cinema { Name = name, City = city });
 
         return cinema;
     }
@@ -37,17 +33,19 @@ public class CinemaService : ICinemaService
         return cinema;
     }
 
-    public async Task RemoveCinemaAsync(string id) =>
-        await _cinemaRepository.RemoveAsync(id);
+    public async Task RemoveCinemaAsync(string id) => await _cinemaRepository.RemoveAsync(id);
 
     public async Task<Cinema> UpdateCinemaAsync(string id, string name, string city)
     {
-        var updatedCinema = await _cinemaRepository.UpdateAsync(id, new Cinema
-        {
-            Id = id,
-            Name = name,
-            City = city
-        });
+        var updatedCinema = await _cinemaRepository.UpdateAsync(
+            id,
+            new Cinema
+            {
+                Id = id,
+                Name = name,
+                City = city
+            }
+        );
 
         return updatedCinema;
     }

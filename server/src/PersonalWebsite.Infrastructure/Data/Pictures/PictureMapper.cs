@@ -5,8 +5,8 @@ namespace PersonalWebsite.Infrastructure.Data.Pictures;
 
 public static class PictureMapper
 {
-    public static Picture ToDomain(PictureDocument document)
-        => new Picture
+    public static Picture ToDomain(PictureDocument document) =>
+        new Picture
         {
             Id = document.Id,
             Name = document.Name,
@@ -18,8 +18,8 @@ public static class PictureMapper
             ImageUrl = document.ImageUrl,
         };
 
-    public static PictureDocument ToDocument(Picture picture)
-        => new PictureDocument
+    public static PictureDocument ToDocument(Picture picture) =>
+        new PictureDocument
         {
             Id = picture.Id,
             Name = picture.Name,

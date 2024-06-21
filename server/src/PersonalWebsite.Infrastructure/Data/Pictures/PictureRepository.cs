@@ -11,9 +11,7 @@ public class PictureRepository : IPictureRepository
     private readonly IMongoCollection<PictureDocument> _pictures;
     private readonly MongoDbConfiguration _settings;
 
-    public PictureRepository(
-        IMongoClient client,
-        IOptions<MongoDbConfiguration> settings)
+    public PictureRepository(IMongoClient client, IOptions<MongoDbConfiguration> settings)
     {
         _settings = settings.Value;
         var database = client.GetDatabase(_settings.DatabaseName);
@@ -28,21 +26,28 @@ public class PictureRepository : IPictureRepository
         return PictureMapper.ToDomain(picture);
     }
 
-    public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetByYearAsync(int year, int pageNumber, int pageSize)
+    public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetByYearAsync(
+        int year,
+        int pageNumber,
+        int pageSize
+    )
     {
         var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Year, year);
         var totalCount = await _pictures.CountDocumentsAsync(filter);
-        var pictures = await _pictures.Find(filter)
+        var pictures = await _pictures
+            .Find(filter)
             .Skip((pageNumber - 1) * pageSize)
             .Limit(pageSize)
             .ToListAsync();
-        
+
         return (pictures.Select(PictureMapper.ToDomain), totalCount);
     }
 
     public async Task<IEnumerable<Picture>> GetFavoriteByYearAsync(int year)
     {
-        var filter = Builders<PictureDocument>.Filter.Where(picture => picture.Year == year && picture.IsFavorite);
+        var filter = Builders<PictureDocument>.Filter.Where(picture =>
+            picture.Year == year && picture.IsFavorite
+        );
         var pictures = await _pictures.Find(filter).ToListAsync();
 
         return pictures.Select(PictureMapper.ToDomain);
@@ -62,7 +67,10 @@ public class PictureRepository : IPictureRepository
 
     public async Task<Picture> UpdateAsync(string id, Picture updatedPicture)
     {
-        await _pictures.ReplaceOneAsync(picture => picture.Id == id, PictureMapper.ToDocument(updatedPicture));
+        await _pictures.ReplaceOneAsync(
+            picture => picture.Id == id,
+            PictureMapper.ToDocument(updatedPicture)
+        );
 
         return updatedPicture;
     }
@@ -72,7 +80,10 @@ public class PictureRepository : IPictureRepository
         var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Id, id);
         var updatedPicture = await _pictures.Find(filter).FirstOrDefaultAsync();
         updatedPicture.IsFavorite = !updatedPicture.IsFavorite;
-        var updateQuery = Builders<PictureDocument>.Update.Set(picture => picture.IsFavorite, updatedPicture.IsFavorite);
+        var updateQuery = Builders<PictureDocument>.Update.Set(
+            picture => picture.IsFavorite,
+            updatedPicture.IsFavorite
+        );
         await _pictures.UpdateOneAsync(filter, updateQuery);
 
         return PictureMapper.ToDomain(updatedPicture);
@@ -81,7 +92,10 @@ public class PictureRepository : IPictureRepository
     public async Task<long> UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema)
     {
         var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Cinema.Id, cinemaId);
-        var updateQuery = Builders<PictureDocument>.Update.Set(picture => picture.Cinema, CinemaMapper.ToDocument(updatedCinema));
+        var updateQuery = Builders<PictureDocument>.Update.Set(
+            picture => picture.Cinema,
+            CinemaMapper.ToDocument(updatedCinema)
+        );
         var result = await _pictures.UpdateManyAsync(filter, updateQuery);
 
         return result.MatchedCount;

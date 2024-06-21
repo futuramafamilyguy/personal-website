@@ -10,17 +10,26 @@ public class FileImageStorage : IImageStorage
     private readonly FileImageStorageConfiguration _configuration;
     private readonly ILogger<FileImageStorage> _logger;
 
-    public FileImageStorage(IOptions<FileImageStorageConfiguration> configuration, ILogger<FileImageStorage> logger)
+    public FileImageStorage(
+        IOptions<FileImageStorageConfiguration> configuration,
+        ILogger<FileImageStorage> logger
+    )
     {
         _configuration = configuration.Value;
         _logger = logger;
     }
 
-    public async Task<string> SaveImageAsync(Stream fileStream, string fileName, ImageCategory category)
+    public async Task<string> SaveImageAsync(
+        Stream fileStream,
+        string fileName,
+        ImageCategory category
+    )
     {
         if (!IsValidImageFormat(fileName))
         {
-            throw new InvalidImageFormatException($"The image format of {fileName} is not supported.");
+            throw new InvalidImageFormatException(
+                $"The image format of {fileName} is not supported."
+            );
         }
 
         try
@@ -37,7 +46,7 @@ public class FileImageStorage : IImageStorage
         catch (IOException ex)
         {
             throw new ImageStorageException("An error occurred while saving the image.", ex);
-        } 
+        }
     }
 
     public async Task RemoveImageAsync(string fileName, ImageCategory category)
@@ -51,8 +60,8 @@ public class FileImageStorage : IImageStorage
         _logger.LogInformation($"{category} image deleted at {filePath}");
     }
 
-    public string GetImageUrl(string fileName, ImageCategory category)
-        => $"{_configuration.BaseImageUrl}/{GetSubDirectory(category)}/{fileName}";
+    public string GetImageUrl(string fileName, ImageCategory category) =>
+        $"{_configuration.BaseImageUrl}/{GetSubDirectory(category)}/{fileName}";
 
     public string GetImageFileNameFromUrl(string imageUrl)
     {
@@ -71,7 +80,7 @@ public class FileImageStorage : IImageStorage
 
     private string GetSubDirectory(ImageCategory category)
     {
-        switch(category)
+        switch (category)
         {
             case ImageCategory.Picture:
                 return _configuration.PictureImageSubDirectory;
@@ -82,7 +91,10 @@ public class FileImageStorage : IImageStorage
 
     private string GetImageFilePath(string fileName, ImageCategory category)
     {
-        var imagesDirectoryPath = Path.Combine(_configuration.RootImageDirectoryPath, GetSubDirectory(category));
+        var imagesDirectoryPath = Path.Combine(
+            _configuration.RootImageDirectoryPath,
+            GetSubDirectory(category)
+        );
         var filePath = Path.Combine(imagesDirectoryPath, fileName);
 
         return filePath;
@@ -90,11 +102,16 @@ public class FileImageStorage : IImageStorage
 
     private void CreateImageDirectoryIfNotExists(ImageCategory category)
     {
-        var imagesDirectoryPath = Path.Combine(_configuration.RootImageDirectoryPath, GetSubDirectory(category));
+        var imagesDirectoryPath = Path.Combine(
+            _configuration.RootImageDirectoryPath,
+            GetSubDirectory(category)
+        );
         if (!Directory.Exists(imagesDirectoryPath))
         {
             Directory.CreateDirectory(imagesDirectoryPath);
-            _logger.LogInformation($"Image directory for {category} created at {imagesDirectoryPath}");
+            _logger.LogInformation(
+                $"Image directory for {category} created at {imagesDirectoryPath}"
+            );
         }
     }
 }

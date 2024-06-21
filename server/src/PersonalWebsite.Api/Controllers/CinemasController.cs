@@ -16,7 +16,8 @@ public class CinemasController : ControllerBase
     public CinemasController(
         ICinemaService cinemaService,
         IPictureCinemaOrchestrator pictureCinemaOrchestrator,
-        ILogger<CinemasController> logger)
+        ILogger<CinemasController> logger
+    )
     {
         _cinemaService = cinemaService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
@@ -33,9 +34,10 @@ public class CinemasController : ControllerBase
 
     [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPost("")]
-    public async Task<ActionResult> CreateCinemaAsync([FromBody]CreateCinemaRequest request)
+    public async Task<ActionResult> CreateCinemaAsync([FromBody] CreateCinemaRequest request)
     {
-        if (request is null) return BadRequest("Cinema data is null");
+        if (request is null)
+            return BadRequest("Cinema data is null");
 
         var cinema = await _cinemaService.AddCinemaAsync(request.Name, request.City);
 
@@ -44,11 +46,19 @@ public class CinemasController : ControllerBase
 
     [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateCinemaAsync(string id, [FromBody]CreateCinemaRequest request)
+    public async Task<ActionResult> UpdateCinemaAsync(
+        string id,
+        [FromBody] CreateCinemaRequest request
+    )
     {
-        if (request is null) return BadRequest("Cinema data is null");
+        if (request is null)
+            return BadRequest("Cinema data is null");
 
-        var updatedCinema = await _pictureCinemaOrchestrator.UpdateCinemaAndAssociatedPicturesAsync(id, request.Name, request.City);
+        var updatedCinema = await _pictureCinemaOrchestrator.UpdateCinemaAndAssociatedPicturesAsync(
+            id,
+            request.Name,
+            request.City
+        );
 
         return Ok(updatedCinema);
     }

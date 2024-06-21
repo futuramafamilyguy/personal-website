@@ -16,7 +16,8 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object);
+            cinemaServiceMock.Object
+        );
 
         var pictureName = "cars";
         var year = 2020;
@@ -33,26 +34,29 @@ public class PictureCinemaOrchestratorTests
             City = city
         };
 
-        cinemaServiceMock.Setup(x => x.GetCinemaAsync(cinemaId))
-            .ReturnsAsync(cinema);
+        cinemaServiceMock.Setup(x => x.GetCinemaAsync(cinemaId)).ReturnsAsync(cinema);
 
         // act
         await sut.AddPictureWithCinemaAsync(pictureName, year, cinemaId, zinger, alias);
 
         // assert
-        cinemaServiceMock.Verify(
-            x => x.GetCinemaAsync(cinemaId),
-            Times.Once());
+        cinemaServiceMock.Verify(x => x.GetCinemaAsync(cinemaId), Times.Once());
         pictureServiceMock.Verify(
-            x => x.AddPictureAsync(
-                pictureName,
-                year,
-                It.Is((Cinema cinema) => cinema.Id == cinemaId
-                    && cinema.Name == cinemaName
-                    && cinema.City == city),
-                zinger,
-                alias),
-            Times.Once());
+            x =>
+                x.AddPictureAsync(
+                    pictureName,
+                    year,
+                    It.Is(
+                        (Cinema cinema) =>
+                            cinema.Id == cinemaId
+                            && cinema.Name == cinemaName
+                            && cinema.City == city
+                    ),
+                    zinger,
+                    alias
+                ),
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -63,7 +67,8 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object);
+            cinemaServiceMock.Object
+        );
 
         var pictureId = "123";
         var pictureName = "cars";
@@ -82,26 +87,26 @@ public class PictureCinemaOrchestratorTests
             City = city
         };
 
-        cinemaServiceMock.Setup(x => x.GetCinemaAsync(cinemaId))
-            .ReturnsAsync(cinema);
+        cinemaServiceMock.Setup(x => x.GetCinemaAsync(cinemaId)).ReturnsAsync(cinema);
 
         // act
-        await sut.UpdatePictureWithCinemaAsync(pictureId, pictureName, year, cinemaId, zinger, alias, imageUrl);
+        await sut.UpdatePictureWithCinemaAsync(
+            pictureId,
+            pictureName,
+            year,
+            cinemaId,
+            zinger,
+            alias,
+            imageUrl
+        );
 
         // assert
-        cinemaServiceMock.Verify(
-            x => x.GetCinemaAsync(cinemaId),
-            Times.Once());
+        cinemaServiceMock.Verify(x => x.GetCinemaAsync(cinemaId), Times.Once());
         pictureServiceMock.Verify(
-            x => x.UpdatePictureAsync(
-                pictureId,
-                pictureName,
-                year,
-                cinema,
-                zinger,
-                alias,
-                imageUrl),
-            Times.Once());
+            x =>
+                x.UpdatePictureAsync(pictureId, pictureName, year, cinema, zinger, alias, imageUrl),
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -112,7 +117,8 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object);
+            cinemaServiceMock.Object
+        );
 
         var cinemaId = "123";
         var updatedCinemaName = "Alice";
@@ -124,7 +130,8 @@ public class PictureCinemaOrchestratorTests
             City = updatedCity
         };
 
-        cinemaServiceMock.Setup(x => x.UpdateCinemaAsync(cinemaId, updatedCinemaName, updatedCity))
+        cinemaServiceMock
+            .Setup(x => x.UpdateCinemaAsync(cinemaId, updatedCinemaName, updatedCity))
             .ReturnsAsync(updatedCinema);
 
         // act
@@ -133,10 +140,12 @@ public class PictureCinemaOrchestratorTests
         // assert
         cinemaServiceMock.Verify(
             x => x.UpdateCinemaAsync(cinemaId, updatedCinemaName, updatedCity),
-            Times.Once());
+            Times.Once()
+        );
         pictureServiceMock.Verify(
             x => x.UpdateCinemaOfPicturesAsync(cinemaId, updatedCinema),
-            Times.Once());
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -147,13 +156,14 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object);
+            cinemaServiceMock.Object
+        );
 
         var cinemaId = "123";
 
-        pictureServiceMock.Setup(x => x.CheckIfAnyPicturesAssociatedWithCinemaAsync(cinemaId))
+        pictureServiceMock
+            .Setup(x => x.CheckIfAnyPicturesAssociatedWithCinemaAsync(cinemaId))
             .ReturnsAsync(false);
-
 
         // act
         await sut.ValidateAndDeleteCinema(cinemaId);
@@ -161,10 +171,9 @@ public class PictureCinemaOrchestratorTests
         // assert
         pictureServiceMock.Verify(
             x => x.CheckIfAnyPicturesAssociatedWithCinemaAsync(cinemaId),
-            Times.Once());
-        cinemaServiceMock.Verify(
-            x => x.RemoveCinemaAsync(cinemaId),
-            Times.Once());
+            Times.Once()
+        );
+        cinemaServiceMock.Verify(x => x.RemoveCinemaAsync(cinemaId), Times.Once());
     }
 
     [Fact]
@@ -175,19 +184,24 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object);
+            cinemaServiceMock.Object
+        );
 
         var cinemaId = "123";
 
-        pictureServiceMock.Setup(x => x.CheckIfAnyPicturesAssociatedWithCinemaAsync(cinemaId))
+        pictureServiceMock
+            .Setup(x => x.CheckIfAnyPicturesAssociatedWithCinemaAsync(cinemaId))
             .ReturnsAsync(true);
-        
+
         // act
         var action = async () => await sut.ValidateAndDeleteCinema(cinemaId);
 
         // assert
-        await action.Should()
+        await action
+            .Should()
             .ThrowAsync<InvalidOperationException>()
-            .WithMessage("Cinema 123 cannot be deleted because one or more pictures are still associated with the cinema");
+            .WithMessage(
+                "Cinema 123 cannot be deleted because one or more pictures are still associated with the cinema"
+            );
     }
 }

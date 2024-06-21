@@ -25,7 +25,8 @@ public class PictureServiceTests
         // assert
         repositoryMock.Verify(
             x => x.GetByYearAsync(yearWatched, pageNumber, pageSize),
-            Times.Once());
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -41,9 +42,7 @@ public class PictureServiceTests
         await sut.GetPictureAsync(id);
 
         // assert
-        repositoryMock.Verify(
-            x => x.GetAsync(id),
-            Times.Once());
+        repositoryMock.Verify(x => x.GetAsync(id), Times.Once());
     }
 
     [Fact]
@@ -59,9 +58,7 @@ public class PictureServiceTests
         await sut.GetFavoritePicturesAsync(yearWatched);
 
         // assert
-        repositoryMock.Verify(
-            x => x.GetFavoriteByYearAsync(yearWatched),
-            Times.Once());
+        repositoryMock.Verify(x => x.GetFavoriteByYearAsync(yearWatched), Times.Once());
     }
 
     [Fact]
@@ -70,7 +67,7 @@ public class PictureServiceTests
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
         var sut = new PictureService(repositoryMock.Object);
-        
+
         var pictureName = "cars";
         var yearWatched = 2020;
         var zinger = "bazinga";
@@ -91,14 +88,20 @@ public class PictureServiceTests
 
         // assert
         repositoryMock.Verify(
-            x => x.AddAsync(
-                It.Is((Picture picture) => picture.Name == pictureName
-                    && picture.Year == yearWatched
-                    && picture.Zinger == zinger
-                    && picture.Cinema.Id == cinemaId
-                    && picture.Cinema.Name == cinemaName
-                    && picture.Cinema.City == city)),
-                Times.Once());
+            x =>
+                x.AddAsync(
+                    It.Is(
+                        (Picture picture) =>
+                            picture.Name == pictureName
+                            && picture.Year == yearWatched
+                            && picture.Zinger == zinger
+                            && picture.Cinema.Id == cinemaId
+                            && picture.Cinema.Name == cinemaName
+                            && picture.Cinema.City == city
+                    )
+                ),
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -133,19 +136,26 @@ public class PictureServiceTests
             updatedCinema,
             updatedZinger,
             updatedAlias,
-            updatedImageUrl);
+            updatedImageUrl
+        );
 
         // assert
         repositoryMock.Verify(
-            x => x.UpdateAsync(
-                pictureId,
-                It.Is((Picture picture) => picture.Name == updatedPictureName
-                    && picture.Year == updatedYearWatched
-                    && picture.Zinger == updatedZinger
-                    && picture.Cinema.Id == cinemaId
-                    && picture.Cinema.Name == cinemaName
-                    && picture.Cinema.City == city)),
-                Times.Once());
+            x =>
+                x.UpdateAsync(
+                    pictureId,
+                    It.Is(
+                        (Picture picture) =>
+                            picture.Name == updatedPictureName
+                            && picture.Year == updatedYearWatched
+                            && picture.Zinger == updatedZinger
+                            && picture.Cinema.Id == cinemaId
+                            && picture.Cinema.Name == cinemaName
+                            && picture.Cinema.City == city
+                    )
+                ),
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -161,9 +171,7 @@ public class PictureServiceTests
         await sut.RemovePictureAsync(pictureId);
 
         // assert
-        repositoryMock.Verify(
-            x => x.RemoveAsync(pictureId),
-            Times.Once());
+        repositoryMock.Verify(x => x.RemoveAsync(pictureId), Times.Once());
     }
 
     [Fact]
@@ -179,9 +187,7 @@ public class PictureServiceTests
         await sut.ToggleFavoriteAsync(pictureId);
 
         // assert
-        repositoryMock.Verify(
-            x => x.ToggleFavoriteStatusAsync(pictureId),
-            Times.Once());
+        repositoryMock.Verify(x => x.ToggleFavoriteStatusAsync(pictureId), Times.Once());
     }
 
     [Fact]
@@ -203,9 +209,7 @@ public class PictureServiceTests
         await sut.UpdateCinemaOfPicturesAsync(cinemaId, updatedCinema);
 
         // assert
-        repositoryMock.Verify(
-            x => x.UpdateCinemaInfoAsync(cinemaId, updatedCinema),
-            Times.Once());
+        repositoryMock.Verify(x => x.UpdateCinemaInfoAsync(cinemaId, updatedCinema), Times.Once());
     }
 
     [Fact]
@@ -221,9 +225,7 @@ public class PictureServiceTests
         await sut.CheckIfAnyPicturesAssociatedWithCinemaAsync(cinemaId);
 
         // assert
-        repositoryMock.Verify(
-            x => x.CheckCinemaAssociationExistenceAsync(cinemaId),
-            Times.Once());
+        repositoryMock.Verify(x => x.CheckCinemaAssociationExistenceAsync(cinemaId), Times.Once());
     }
 
     [Fact]
@@ -237,8 +239,6 @@ public class PictureServiceTests
         await sut.GetActiveYearsAsync();
 
         // assert
-        repositoryMock.Verify(
-            x => x.GetActiveYearsAsync(),
-            Times.Once());
+        repositoryMock.Verify(x => x.GetActiveYearsAsync(), Times.Once());
     }
 }

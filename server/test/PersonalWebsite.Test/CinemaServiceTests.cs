@@ -22,10 +22,9 @@ public class CinemaServiceTests
 
         // assert
         cinemaRepositoryMock.Verify(
-            x => x.AddAsync(
-                It.Is((Cinema cinema) => cinema.Name == name
-                    && cinema.City == city)),
-            Times.Once());
+            x => x.AddAsync(It.Is((Cinema cinema) => cinema.Name == name && cinema.City == city)),
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -39,9 +38,7 @@ public class CinemaServiceTests
         await sut.GetCinemasAsync();
 
         // assert
-        cinemaRepositoryMock.Verify(
-            x => x.GetAsync(),
-            Times.Once());
+        cinemaRepositoryMock.Verify(x => x.GetAsync(), Times.Once());
     }
 
     [Fact]
@@ -57,9 +54,7 @@ public class CinemaServiceTests
         await sut.GetCinemaAsync(id);
 
         // assert
-        cinemaRepositoryMock.Verify(
-            x => x.GetAsync(id),
-            Times.Once());
+        cinemaRepositoryMock.Verify(x => x.GetAsync(id), Times.Once());
     }
 
     [Fact]
@@ -75,9 +70,7 @@ public class CinemaServiceTests
         await sut.RemoveCinemaAsync(id);
 
         // assert
-        cinemaRepositoryMock.Verify(
-            x => x.RemoveAsync(id),
-            Times.Once());
+        cinemaRepositoryMock.Verify(x => x.RemoveAsync(id), Times.Once());
     }
 
     [Fact]
@@ -96,11 +89,15 @@ public class CinemaServiceTests
 
         // assert
         cinemaRepositoryMock.Verify(
-            x => x.UpdateAsync(
-                id,
-                It.Is((Cinema cinema) => cinema.Id == id
-                    && cinema.Name == name
-                    && cinema.City == city)),
-            Times.Once());
+            x =>
+                x.UpdateAsync(
+                    id,
+                    It.Is(
+                        (Cinema cinema) =>
+                            cinema.Id == id && cinema.Name == name && cinema.City == city
+                    )
+                ),
+            Times.Once()
+        );
     }
 }

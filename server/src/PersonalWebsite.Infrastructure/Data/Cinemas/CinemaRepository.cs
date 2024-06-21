@@ -46,7 +46,10 @@ public class CinemaRepository : ICinemaRepository
 
     public async Task<Cinema> UpdateAsync(string id, Cinema updatedCinema)
     {
-        await _cinemas.ReplaceOneAsync(cinema => cinema.Id == id, CinemaMapper.ToDocument(updatedCinema));
+        await _cinemas.ReplaceOneAsync(
+            cinema => cinema.Id == id,
+            CinemaMapper.ToDocument(updatedCinema)
+        );
 
         return updatedCinema;
     }

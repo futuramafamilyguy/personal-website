@@ -20,7 +20,8 @@ public class PicturesController : ControllerBase
         IPictureService pictureTrackingService,
         IPictureCinemaOrchestrator pictureCinemaOrchestrator,
         IImageStorage imageStorage,
-        ILogger<PicturesController> logger)
+        ILogger<PicturesController> logger
+    )
     {
         _pictureService = pictureTrackingService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
@@ -29,7 +30,11 @@ public class PicturesController : ControllerBase
     }
 
     [HttpGet("{year}")]
-    public async Task<ActionResult> GetPicturesAsync(int year, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = int.MaxValue)
+    public async Task<ActionResult> GetPicturesAsync(
+        int year,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = int.MaxValue
+    )
     {
         var pictures = await _pictureService.GetPicturesAsync(year, pageNumber, pageSize);
 
@@ -56,23 +61,44 @@ public class PicturesController : ControllerBase
 
     [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPost("{year}")]
-    public async Task<ActionResult> CreatePictureAsync(int year, [FromBody]CreatePictureRequest request)
+    public async Task<ActionResult> CreatePictureAsync(
+        int year,
+        [FromBody] CreatePictureRequest request
+    )
     {
-        if (request is null) return BadRequest("Picture data is null");
+        if (request is null)
+            return BadRequest("Picture data is null");
 
-        var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(request.Name, year, request.CinemaId, request.Zinger, request.Alias);
+        var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(
+            request.Name,
+            year,
+            request.CinemaId,
+            request.Zinger,
+            request.Alias
+        );
 
         return Ok(picture);
     }
 
     [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdatePictureAsync(string id, [FromBody]UpdatePictureRequest request)
+    public async Task<ActionResult> UpdatePictureAsync(
+        string id,
+        [FromBody] UpdatePictureRequest request
+    )
     {
-        if (request is null) return BadRequest("Picture data is null");
+        if (request is null)
+            return BadRequest("Picture data is null");
 
-        var picture = await _pictureCinemaOrchestrator
-            .UpdatePictureWithCinemaAsync(id, request.Name, request.Year, request.CinemaId, request.Zinger, request.Alias, request.ImageUrl);
+        var picture = await _pictureCinemaOrchestrator.UpdatePictureWithCinemaAsync(
+            id,
+            request.Name,
+            request.Year,
+            request.CinemaId,
+            request.Zinger,
+            request.Alias,
+            request.ImageUrl
+        );
 
         return Ok(picture);
     }
@@ -127,14 +153,19 @@ public class PicturesController : ControllerBase
         catch (InvalidImageFormatException ex)
         {
             _logger.LogError(ex, $"{imageFile.FileName} has an invalid file extension");
-            return BadRequest($"{Path.GetExtension(imageFile.FileName)} is an invalid image format");
+            return BadRequest(
+                $"{Path.GetExtension(imageFile.FileName)} is an invalid image format"
+            );
         }
         catch (ImageStorageException ex)
         {
-            _logger.LogError(ex, $"An error occurred while saving the image {imageFile.FileName} for picture {pictureId}");
+            _logger.LogError(
+                ex,
+                $"An error occurred while saving the image {imageFile.FileName} for picture {pictureId}"
+            );
             return StatusCode(500, "An error occurred while saving the image");
         }
-    } 
+    }
 
     [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpDelete("{pictureId}/image")]

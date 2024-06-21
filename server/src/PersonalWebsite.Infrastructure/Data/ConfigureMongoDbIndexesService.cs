@@ -10,7 +10,10 @@ public class ConfigureMongoDbIndexesService : IHostedService
     private readonly IMongoClient _client;
     private readonly MongoDbConfiguration _settings;
 
-    public ConfigureMongoDbIndexesService(IMongoClient client, IOptions<MongoDbConfiguration> settings)
+    public ConfigureMongoDbIndexesService(
+        IMongoClient client,
+        IOptions<MongoDbConfiguration> settings
+    )
     {
         _client = client;
         _settings = settings.Value;
@@ -23,9 +26,11 @@ public class ConfigureMongoDbIndexesService : IHostedService
 
         var yearIndex = Builders<PictureDocument>.IndexKeys.Ascending(picture => picture.Year);
         var indexOptions = new CreateIndexOptions { Name = "pictures_year_watched" };
-        await collection.Indexes.CreateOneAsync(new CreateIndexModel<PictureDocument>(yearIndex, indexOptions), cancellationToken: cancellationToken);
+        await collection.Indexes.CreateOneAsync(
+            new CreateIndexModel<PictureDocument>(yearIndex, indexOptions),
+            cancellationToken: cancellationToken
+        );
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
-        => Task.CompletedTask;
+    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }

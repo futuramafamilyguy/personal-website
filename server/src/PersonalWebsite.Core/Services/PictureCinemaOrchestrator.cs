@@ -13,45 +13,86 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
     public PictureCinemaOrchestrator(
         IPictureService pictureService,
         ICinemaService cinemaService,
-        ILogger<PictureCinemaOrchestrator> logger)
+        ILogger<PictureCinemaOrchestrator> logger
+    )
     {
         _pictureService = pictureService;
         _cinemaService = cinemaService;
         _logger = logger;
     }
 
-    public async Task<Picture> AddPictureWithCinemaAsync(string pictureName, int year, string cinemaId, string? zinger, string? alias)
+    public async Task<Picture> AddPictureWithCinemaAsync(
+        string pictureName,
+        int year,
+        string cinemaId,
+        string? zinger,
+        string? alias
+    )
     {
         var cinema = await _cinemaService.GetCinemaAsync(cinemaId);
-        var picture = await _pictureService.AddPictureAsync(pictureName, year, cinema, zinger, alias);
+        var picture = await _pictureService.AddPictureAsync(
+            pictureName,
+            year,
+            cinema,
+            zinger,
+            alias
+        );
 
         return picture;
     }
 
-    public async Task<Picture> UpdatePictureWithCinemaAsync(string pictureId, string pictureName, int year, string cinemaId, string? zinger, string? alias, string? imageUrl)
+    public async Task<Picture> UpdatePictureWithCinemaAsync(
+        string pictureId,
+        string pictureName,
+        int year,
+        string cinemaId,
+        string? zinger,
+        string? alias,
+        string? imageUrl
+    )
     {
         var cinema = await _cinemaService.GetCinemaAsync(cinemaId);
-        var updatedPicture = await _pictureService.UpdatePictureAsync(pictureId, pictureName, year, cinema, zinger, alias, imageUrl);
+        var updatedPicture = await _pictureService.UpdatePictureAsync(
+            pictureId,
+            pictureName,
+            year,
+            cinema,
+            zinger,
+            alias,
+            imageUrl
+        );
 
         return updatedPicture;
     }
 
-    public async Task<Cinema> UpdateCinemaAndAssociatedPicturesAsync(string cinemaId, string cinemaName, string city)
+    public async Task<Cinema> UpdateCinemaAndAssociatedPicturesAsync(
+        string cinemaId,
+        string cinemaName,
+        string city
+    )
     {
         var updatedCinema = await _cinemaService.UpdateCinemaAsync(cinemaId, cinemaName, city);
-        var updatedCount = await _pictureService.UpdateCinemaOfPicturesAsync(cinemaId, updatedCinema);
-        _logger.LogInformation($"Updated cinema info of {updatedCount} pictures that are associated with cinema {cinemaId}");
+        var updatedCount = await _pictureService.UpdateCinemaOfPicturesAsync(
+            cinemaId,
+            updatedCinema
+        );
+        _logger.LogInformation(
+            $"Updated cinema info of {updatedCount} pictures that are associated with cinema {cinemaId}"
+        );
 
         return updatedCinema;
     }
 
     public async Task ValidateAndDeleteCinema(string cinemaId)
     {
-        var cinemaExists = await _pictureService.CheckIfAnyPicturesAssociatedWithCinemaAsync(cinemaId);
+        var cinemaExists = await _pictureService.CheckIfAnyPicturesAssociatedWithCinemaAsync(
+            cinemaId
+        );
         if (cinemaExists)
         {
             throw new InvalidOperationException(
-                $"Cinema {cinemaId} cannot be deleted because one or more pictures are still associated with the cinema");
+                $"Cinema {cinemaId} cannot be deleted because one or more pictures are still associated with the cinema"
+            );
         }
 
         await _cinemaService.RemoveCinemaAsync(cinemaId);
