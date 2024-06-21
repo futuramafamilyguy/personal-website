@@ -31,9 +31,9 @@
   z-index: 1;
 }
 
-.profileImage {
-  width: 160px;
-  height: 160px;
+.face {
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   border: 3px solid white;
   object-fit: cover;

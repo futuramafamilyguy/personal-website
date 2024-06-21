@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./reset.css";
 import { MenuItem } from "./types/MenuItem";
 
-import logo from "./assets/allen-icon.jpeg";
+import logo from "./assets/face.png";
 
 const App: React.FC = () => {
   const menuItems: MenuItem[] = [

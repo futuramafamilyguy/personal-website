@@ -1,13 +1,13 @@
-import profileImage from "../../assets/allen-icon.jpeg";
+import face from "../../assets/face.png";
 import styles from "./AboutPage.module.css";
 
 function AboutPage() {
   return (
     <div className={styles.aboutPage}>
       <div className={styles.centeredContainer}>
-        <img src={profileImage} alt="me" className={styles.profileImage} />
+        <img src={face} alt="me" className={styles.face} />
         <div className={styles.introBox}>
-          <h5>Kia ora, Allen here.</h5>
+          <h5>Kia ora, Allen here!</h5>
           <p>
             Welcome to my website where I log movies I watch throughout the year
             and blog about my hot takes because I'm entitled to my opinions
