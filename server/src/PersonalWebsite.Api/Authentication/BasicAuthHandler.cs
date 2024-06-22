@@ -26,7 +26,7 @@ public class BasicAuthHandler : AuthenticationHandler<AuthenticationSchemeOption
     {
         if (!Request.Headers.ContainsKey("Authorization"))
         {
-            return Task.FromResult(AuthenticateResult.Fail("Authentication failed"));
+            return Task.FromResult(AuthenticateResult.NoResult());
         }
 
         try
