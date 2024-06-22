@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using Castle.Core.Logging;
+using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
@@ -16,7 +18,8 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object
+            cinemaServiceMock.Object,
+            Mock.Of<ILogger<PictureCinemaOrchestrator>>()
         );
 
         var pictureName = "cars";
@@ -67,7 +70,8 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object
+            cinemaServiceMock.Object,
+            Mock.Of<ILogger<PictureCinemaOrchestrator>>()
         );
 
         var pictureId = "123";
@@ -117,7 +121,8 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object
+            cinemaServiceMock.Object,
+            Mock.Of<ILogger<PictureCinemaOrchestrator>>()
         );
 
         var cinemaId = "123";
@@ -156,7 +161,8 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object
+            cinemaServiceMock.Object,
+            Mock.Of<ILogger<PictureCinemaOrchestrator>>()
         );
 
         var cinemaId = "123";
@@ -184,7 +190,8 @@ public class PictureCinemaOrchestratorTests
         var cinemaServiceMock = new Mock<ICinemaService>();
         var sut = new PictureCinemaOrchestrator(
             pictureServiceMock.Object,
-            cinemaServiceMock.Object
+            cinemaServiceMock.Object,
+            Mock.Of<ILogger<PictureCinemaOrchestrator>>()
         );
 
         var cinemaId = "123";
