@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  server:
+    image: ghcr.io/futuramafamilyguy/personal-website-server:8a266eeeb56489a0343f92836e3c306bf57565a2
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      ConnectionStrings__PersonalWebsiteDb: ${PERSONALWEBSITE_CONNECTION_STRING}
+      FileImageStorageConfiguration__RootImageDirectoryPath: ${IMAGE_DIRECTORY_PATH}
+      FileImageStorageConfiguration__BaseImageUrl: ${BASE_IMAGE_URL}
+      BasicAuthConfiguration__Username: ${BASICAUTH_USERNAME}
+      BasicAuthConfiguration__Password: ${BASICAUTH_PASSWORD}
+    depends_on:
+      - mongo
+    volumes:
+      - wwwroot-data:/app/wwwroot
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "127.0.0.1:27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+    volumes:
+      - "./data:/data/db"
+
+volumes:
+  wwwroot-data:
