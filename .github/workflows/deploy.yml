@@ -1,0 +1,41 @@
+name: deploy docker-compose to vm
+
+on:
+  push:
+    branches: ["release"]
+
+jobs:
+  wait-for-client:
+    uses: futuramafamilyguy/personal-website/workflows/release-client.yml@main
+
+  wait-for-server:
+    uses: futuramafamilyguy/personal-website/workflows/release-server.yml@main
+
+  deploy-to-droplet:
+    runs-on: ubuntu-latest
+    needs: [wait-for-client, wait-for-server]
+    steps:
+      - name: checkout docker-compose
+        uses: actions/checkout@v4
+
+      - name: copy docker-compose to droplet
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_KEY }}
+          passphrase: ${{ secrets.DROPLET_PASSPHRASE }}
+          source: docker-compose.yml
+          target: personal-website
+
+      - name: deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_KEY }}
+          passphrase: ${{ secrets.DROPLET_PASSPHRASE }}
+          script: |
+            cd personal-website
+            docker compose pull
+            docker compose up -d
