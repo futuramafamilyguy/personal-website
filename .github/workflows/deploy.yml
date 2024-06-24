@@ -6,10 +6,10 @@ on:
 
 jobs:
   wait-for-client:
-    uses: futuramafamilyguy/personal-website/workflows/release-client.yml@main
+    uses: futuramafamilyguy/personal-website/workflows/release-client.yml@release
 
   wait-for-server:
-    uses: futuramafamilyguy/personal-website/workflows/release-server.yml@main
+    uses: futuramafamilyguy/personal-website/workflows/release-server.yml@release
 
   deploy-to-droplet:
     runs-on: ubuntu-latest

@@ -1,8 +1,7 @@
 name: build .net server
 
 on:
-  push:
-    branches: ["release"]
+  workflow_call:
 
 env:
   REGISTRY: ghcr.io
