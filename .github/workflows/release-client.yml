@@ -31,3 +31,5 @@ jobs:
           push: true
           context: client
           tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          build-args: |
+            VITE_SERVER_URL=${{ secrets.VITE_SERVER_URL }}
