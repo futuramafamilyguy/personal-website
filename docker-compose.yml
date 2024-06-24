@@ -1,8 +1,17 @@
 version: "3.8"
 
 services:
+  client:
+    image: ghcr.io/futuramafamilyguy/personal-website-client:latest
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - server
+    ports:
+      - "127.0.0.1:3000:3000"
+
   server:
-    image: ghcr.io/futuramafamilyguy/personal-website-server:8a266eeeb56489a0343f92836e3c306bf57565a2
+    image: ghcr.io/futuramafamilyguy/personal-website-server:latest
     ports:
       - "127.0.0.1:8080:8080"
     environment:
