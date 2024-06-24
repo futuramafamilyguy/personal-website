@@ -32,6 +32,10 @@ const ActiveYearsContainer: React.FC = () => {
     fetchActiveYears();
   }, []);
 
+  if (activeYears.length === 0) {
+    return null;
+  }
+
   return (
     <div className={styles.buttonArea}>
       {activeYears.map((y) => (
