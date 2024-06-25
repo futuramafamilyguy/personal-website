@@ -1,15 +1,22 @@
 name: deploy docker-compose to vm
 
 on:
-  push:
-    branches: ["release"]
+  release:
+    types: [published]
+  workflow_dispatch:
 
 jobs:
   wait-for-client:
-    uses: futuramafamilyguy/personal-website/workflows/release-client.yml@release
+    uses: futuramafamilyguy/personal-website/.github/workflows/release-client.yml@main
+    permissions:
+      contents: read
+      packages: write
 
   wait-for-server:
-    uses: futuramafamilyguy/personal-website/workflows/release-server.yml@release
+    uses: futuramafamilyguy/personal-website/.github/workflows/release-server.yml@main
+    permissions:
+      contents: read
+      packages: write
 
   deploy-to-droplet:
     runs-on: ubuntu-latest
