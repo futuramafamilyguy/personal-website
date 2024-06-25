@@ -2,6 +2,9 @@ name: build react client
 
 on:
   workflow_call:
+    secrets:
+      serverUrl:
+        required: true
 
 env:
   REGISTRY: ghcr.io
@@ -33,4 +36,4 @@ jobs:
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           build-args: |
-            VITE_SERVER_URL=${{ secrets.VITE_SERVER_URL }}
+            VITE_SERVER_URL=${{ secrets.serverUrl }}
