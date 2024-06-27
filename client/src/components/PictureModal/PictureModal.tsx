@@ -29,11 +29,13 @@ const PictureModal: React.FC<PictureModalProps> = ({
     <>
       <div className={styles.overlay} onClick={onClose}></div>
       <div className={styles.modal}>
-        <img
-          src={picture?.imageUrl}
-          alt={picture?.alias}
-          className={styles.modalImage}
-        />
+        <div className={styles.imageContainer}>
+          <img
+            src={picture?.imageUrl}
+            alt={picture?.alias}
+            className={styles.modalImage}
+          />
+        </div>
         <div className={styles.modalTextBox}>
           <h4
             className={styles.title}
