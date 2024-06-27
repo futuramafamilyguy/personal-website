@@ -36,7 +36,9 @@ public class PictureRepository : IPictureRepository
             picture => picture.YearWatched,
             yearWatched
         );
-        var sort = Builders<PictureDocument>.Sort.Descending(x => x.MonthWatched);
+        var sort = Builders<PictureDocument>
+            .Sort.Descending(picture => picture.MonthWatched)
+            .Descending(picture => picture.Id);
         var totalCount = await _pictures.CountDocumentsAsync(filter);
         var pictures = await _pictures
             .Find(filter)
