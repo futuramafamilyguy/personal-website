@@ -17,6 +17,7 @@ public interface IPictureCinemaOrchestrator
         int yearWatched,
         Month monthWatched,
         string cinemaId,
+        int yearReleased,
         string? zinger,
         string? alias
     );
@@ -26,6 +27,7 @@ public interface IPictureCinemaOrchestrator
         int yearWatched,
         Month monthWatched,
         string cinemaId,
+        int yearReleased,
         string? zinger,
         string? alias,
         string? imageUrl

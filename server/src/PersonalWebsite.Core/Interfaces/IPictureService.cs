@@ -17,6 +17,7 @@ public interface IPictureService
         int yearWatched,
         Month monthWatched,
         Cinema cinema,
+        int yearReleased,
         string? zinger,
         string? alias
     );
@@ -26,6 +27,7 @@ public interface IPictureService
         int yearWatched,
         Month monthWatched,
         Cinema cinema,
+        int yearReleased,
         string? zinger,
         string? alias,
         string? imageUrl

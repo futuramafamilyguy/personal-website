@@ -8,7 +8,7 @@ export interface Picture {
   name: string;
   imageUrl: string;
   alias: string;
-  year: number;
+  yearReleased: number;
   zinger: string;
   cinema: Cinema
 }

@@ -27,6 +27,7 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         int yearWatched,
         Month monthWatched,
         string cinemaId,
+        int yearReleased,
         string? zinger,
         string? alias
     )
@@ -37,6 +38,7 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
             yearWatched,
             monthWatched,
             cinema,
+            yearReleased,
             zinger,
             alias
         );
@@ -50,6 +52,7 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         int yearWatched,
         Month monthWatched,
         string cinemaId,
+        int yearReleased,
         string? zinger,
         string? alias,
         string? imageUrl
@@ -62,6 +65,7 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
             yearWatched,
             monthWatched,
             cinema,
+            yearReleased,
             zinger,
             alias,
             imageUrl

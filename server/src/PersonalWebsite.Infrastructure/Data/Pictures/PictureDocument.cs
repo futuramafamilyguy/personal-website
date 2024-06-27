@@ -23,6 +23,9 @@ public class PictureDocument
     [BsonElement("cinema")]
     public required CinemaDocument Cinema { get; set; }
 
+    [BsonElement("year_released")]
+    public required int YearReleased { get; set; }
+
     [BsonElement("zinger")]
     public string? Zinger { get; set; }
 

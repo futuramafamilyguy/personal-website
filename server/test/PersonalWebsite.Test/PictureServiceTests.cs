@@ -72,6 +72,7 @@ public class PictureServiceTests
         var pictureName = "cars";
         var yearWatched = 2020;
         var monthWatched = Month.Jan;
+        var yearReleased = 2020;
         var zinger = "bazinga";
         var alias = "car";
 
@@ -86,7 +87,15 @@ public class PictureServiceTests
         };
 
         // act
-        await sut.AddPictureAsync(pictureName, yearWatched, monthWatched, cinema, zinger, alias);
+        await sut.AddPictureAsync(
+            pictureName,
+            yearWatched,
+            monthWatched,
+            cinema,
+            yearReleased,
+            zinger,
+            alias
+        );
 
         // assert
         repositoryMock.Verify(
@@ -117,6 +126,7 @@ public class PictureServiceTests
         var updatedPictureName = "cars";
         var updatedYearWatched = 2020;
         var updatedMonthWatched = Month.Jan;
+        var updatedYearReleased = 2020;
         var updatedZinger = "bazinga";
         var updatedAlias = "car";
         var updatedImageUrl = "domain/images/image.jpg";
@@ -138,6 +148,7 @@ public class PictureServiceTests
             updatedYearWatched,
             updatedMonthWatched,
             updatedCinema,
+            updatedYearReleased,
             updatedZinger,
             updatedAlias,
             updatedImageUrl

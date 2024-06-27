@@ -26,6 +26,7 @@ public class PictureCinemaOrchestratorTests
         var pictureName = "cars";
         var yearWatched = 2020;
         var monthWatched = Month.Jan;
+        int yearReleased = 2020;
         var zinger = "bazinga";
         var alias = "car";
 
@@ -47,6 +48,7 @@ public class PictureCinemaOrchestratorTests
             yearWatched,
             monthWatched,
             cinemaId,
+            yearReleased,
             zinger,
             alias
         );
@@ -65,6 +67,7 @@ public class PictureCinemaOrchestratorTests
                             && cinema.Name == cinemaName
                             && cinema.City == city
                     ),
+                    yearReleased,
                     zinger,
                     alias
                 ),
@@ -88,6 +91,7 @@ public class PictureCinemaOrchestratorTests
         var pictureName = "cars";
         var yearWatched = 2020;
         var monthWatched = Month.Jan;
+        int yearReleased = 2020;
         var zinger = "bazinga";
         var alias = "car";
         var imageUrl = "domain/images/image.jpg";
@@ -111,6 +115,7 @@ public class PictureCinemaOrchestratorTests
             yearWatched,
             monthWatched,
             cinemaId,
+            yearReleased,
             zinger,
             alias,
             imageUrl
@@ -126,6 +131,7 @@ public class PictureCinemaOrchestratorTests
                     yearWatched,
                     monthWatched,
                     cinema,
+                    yearReleased,
                     zinger,
                     alias,
                     imageUrl

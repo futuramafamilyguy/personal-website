@@ -29,6 +29,7 @@ public class PictureService : IPictureService
         int yearWatched,
         Month monthWatched,
         Cinema cinema,
+        int yearReleased,
         string? zinger,
         string? alias
     )
@@ -40,6 +41,7 @@ public class PictureService : IPictureService
                 YearWatched = yearWatched,
                 MonthWatched = monthWatched,
                 Cinema = cinema,
+                YearReleased = yearReleased,
                 Zinger = zinger,
                 Alias = alias
             }
@@ -54,6 +56,7 @@ public class PictureService : IPictureService
         int yearWatched,
         Month monthWatched,
         Cinema cinema,
+        int yearReleased,
         string? zinger,
         string? alias,
         string? imageUrl
@@ -68,6 +71,7 @@ public class PictureService : IPictureService
                 YearWatched = yearWatched,
                 MonthWatched = monthWatched,
                 Cinema = cinema,
+                YearReleased = yearReleased,
                 Zinger = zinger,
                 Alias = alias,
                 ImageUrl = imageUrl

@@ -37,7 +37,7 @@ const PictureModal: React.FC<PictureModalProps> = ({
         <div className={styles.modalTextBox}>
           <h4
             className={styles.title}
-          >{`${picture?.name} (${picture?.year})`}</h4>
+          >{`${picture?.name} (${picture?.yearReleased})`}</h4>
           <p
             className={styles.modalText}
           >{`${picture?.cinema.name}, ${picture?.cinema.city}`}</p>

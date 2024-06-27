@@ -74,6 +74,7 @@ public class PicturesController : ControllerBase
             year,
             request.MonthWatched ?? (Month)DateTime.Now.Month,
             request.CinemaId,
+            request.YearReleased ?? DateTime.Now.Year,
             request.Zinger,
             request.Alias
         );
@@ -97,6 +98,7 @@ public class PicturesController : ControllerBase
             request.YearWatched,
             request.MonthWatched,
             request.CinemaId,
+            request.YearReleased,
             request.Zinger,
             request.Alias,
             request.ImageUrl
