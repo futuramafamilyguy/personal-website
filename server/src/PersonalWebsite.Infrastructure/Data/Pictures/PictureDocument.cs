@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
 
 namespace PersonalWebsite.Infrastructure.Data.Pictures;
@@ -14,7 +15,10 @@ public class PictureDocument
     public required string Name { get; set; }
 
     [BsonElement("year_watched")]
-    public required int Year { get; set; }
+    public required int YearWatched { get; set; }
+
+    [BsonElement("month_watched")]
+    public required Month MonthWatched { get; set; }
 
     [BsonElement("cinema")]
     public required CinemaDocument Cinema { get; set; }

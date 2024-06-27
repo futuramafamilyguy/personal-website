@@ -10,7 +10,8 @@ public static class PictureMapper
         {
             Id = document.Id,
             Name = document.Name,
-            Year = document.Year,
+            YearWatched = document.YearWatched,
+            MonthWatched = document.MonthWatched,
             Cinema = CinemaMapper.ToDomain(document.Cinema),
             Zinger = document.Zinger,
             IsFavorite = document.IsFavorite,
@@ -23,7 +24,8 @@ public static class PictureMapper
         {
             Id = picture.Id,
             Name = picture.Name,
-            Year = picture.Year,
+            YearWatched = picture.YearWatched,
+            MonthWatched = picture.MonthWatched,
             Cinema = CinemaMapper.ToDocument(picture.Cinema),
             Zinger = picture.Zinger,
             IsFavorite = picture.IsFavorite,

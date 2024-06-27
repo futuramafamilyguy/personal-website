@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
+using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 using PersonalWebsite.Core.Services;
@@ -23,7 +24,8 @@ public class PictureCinemaOrchestratorTests
         );
 
         var pictureName = "cars";
-        var year = 2020;
+        var yearWatched = 2020;
+        var monthWatched = Month.Jan;
         var zinger = "bazinga";
         var alias = "car";
 
@@ -40,7 +42,14 @@ public class PictureCinemaOrchestratorTests
         cinemaServiceMock.Setup(x => x.GetCinemaAsync(cinemaId)).ReturnsAsync(cinema);
 
         // act
-        await sut.AddPictureWithCinemaAsync(pictureName, year, cinemaId, zinger, alias);
+        await sut.AddPictureWithCinemaAsync(
+            pictureName,
+            yearWatched,
+            monthWatched,
+            cinemaId,
+            zinger,
+            alias
+        );
 
         // assert
         cinemaServiceMock.Verify(x => x.GetCinemaAsync(cinemaId), Times.Once());
@@ -48,7 +57,8 @@ public class PictureCinemaOrchestratorTests
             x =>
                 x.AddPictureAsync(
                     pictureName,
-                    year,
+                    yearWatched,
+                    monthWatched,
                     It.Is(
                         (Cinema cinema) =>
                             cinema.Id == cinemaId
@@ -76,7 +86,8 @@ public class PictureCinemaOrchestratorTests
 
         var pictureId = "123";
         var pictureName = "cars";
-        var year = 2020;
+        var yearWatched = 2020;
+        var monthWatched = Month.Jan;
         var zinger = "bazinga";
         var alias = "car";
         var imageUrl = "domain/images/image.jpg";
@@ -97,7 +108,8 @@ public class PictureCinemaOrchestratorTests
         await sut.UpdatePictureWithCinemaAsync(
             pictureId,
             pictureName,
-            year,
+            yearWatched,
+            monthWatched,
             cinemaId,
             zinger,
             alias,
@@ -108,7 +120,16 @@ public class PictureCinemaOrchestratorTests
         cinemaServiceMock.Verify(x => x.GetCinemaAsync(cinemaId), Times.Once());
         pictureServiceMock.Verify(
             x =>
-                x.UpdatePictureAsync(pictureId, pictureName, year, cinema, zinger, alias, imageUrl),
+                x.UpdatePictureAsync(
+                    pictureId,
+                    pictureName,
+                    yearWatched,
+                    monthWatched,
+                    cinema,
+                    zinger,
+                    alias,
+                    imageUrl
+                ),
             Times.Once()
         );
     }

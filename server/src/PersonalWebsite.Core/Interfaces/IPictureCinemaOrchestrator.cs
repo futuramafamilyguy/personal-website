@@ -1,4 +1,5 @@
-﻿using PersonalWebsite.Core.Models;
+﻿using PersonalWebsite.Core.Enums;
+using PersonalWebsite.Core.Models;
 
 namespace PersonalWebsite.Core.Interfaces;
 
@@ -13,7 +14,8 @@ public interface IPictureCinemaOrchestrator
 {
     Task<Picture> AddPictureWithCinemaAsync(
         string pictureName,
-        int year,
+        int yearWatched,
+        Month monthWatched,
         string cinemaId,
         string? zinger,
         string? alias
@@ -21,7 +23,8 @@ public interface IPictureCinemaOrchestrator
     Task<Picture> UpdatePictureWithCinemaAsync(
         string pictureId,
         string pictureName,
-        int year,
+        int yearWatched,
+        Month monthWatched,
         string cinemaId,
         string? zinger,
         string? alias,

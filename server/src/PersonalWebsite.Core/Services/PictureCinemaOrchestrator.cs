@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 
@@ -23,7 +24,8 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
 
     public async Task<Picture> AddPictureWithCinemaAsync(
         string pictureName,
-        int year,
+        int yearWatched,
+        Month monthWatched,
         string cinemaId,
         string? zinger,
         string? alias
@@ -32,7 +34,8 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         var cinema = await _cinemaService.GetCinemaAsync(cinemaId);
         var picture = await _pictureService.AddPictureAsync(
             pictureName,
-            year,
+            yearWatched,
+            monthWatched,
             cinema,
             zinger,
             alias
@@ -44,7 +47,8 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
     public async Task<Picture> UpdatePictureWithCinemaAsync(
         string pictureId,
         string pictureName,
-        int year,
+        int yearWatched,
+        Month monthWatched,
         string cinemaId,
         string? zinger,
         string? alias,
@@ -55,7 +59,8 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         var updatedPicture = await _pictureService.UpdatePictureAsync(
             pictureId,
             pictureName,
-            year,
+            yearWatched,
+            monthWatched,
             cinema,
             zinger,
             alias,

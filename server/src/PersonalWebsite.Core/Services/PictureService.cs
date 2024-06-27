@@ -1,4 +1,5 @@
-﻿using PersonalWebsite.Core.Interfaces;
+﻿using PersonalWebsite.Core.Enums;
+using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 
 namespace PersonalWebsite.Core.Services;
@@ -13,19 +14,20 @@ public class PictureService : IPictureService
     }
 
     public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetPicturesAsync(
-        int year,
+        int yearWatched,
         int pageNumber,
         int pageSize
-    ) => await _pictureRepository.GetByYearAsync(year, pageNumber, pageSize);
+    ) => await _pictureRepository.GetByYearWatchedAsync(yearWatched, pageNumber, pageSize);
 
     public async Task<Picture> GetPictureAsync(string id) => await _pictureRepository.GetAsync(id);
 
-    public async Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int year) =>
-        await _pictureRepository.GetFavoriteByYearAsync(year);
+    public async Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int yearWatched) =>
+        await _pictureRepository.GetFavoritesByYearWatchedAsync(yearWatched);
 
     public async Task<Picture> AddPictureAsync(
         string name,
-        int year,
+        int yearWatched,
+        Month monthWatched,
         Cinema cinema,
         string? zinger,
         string? alias
@@ -35,7 +37,8 @@ public class PictureService : IPictureService
             new Picture
             {
                 Name = name,
-                Year = year,
+                YearWatched = yearWatched,
+                MonthWatched = monthWatched,
                 Cinema = cinema,
                 Zinger = zinger,
                 Alias = alias
@@ -48,7 +51,8 @@ public class PictureService : IPictureService
     public async Task<Picture> UpdatePictureAsync(
         string id,
         string name,
-        int year,
+        int yearWatched,
+        Month monthWatched,
         Cinema cinema,
         string? zinger,
         string? alias,
@@ -61,7 +65,8 @@ public class PictureService : IPictureService
             {
                 Id = id,
                 Name = name,
-                Year = year,
+                YearWatched = yearWatched,
+                MonthWatched = monthWatched,
                 Cinema = cinema,
                 Zinger = zinger,
                 Alias = alias,

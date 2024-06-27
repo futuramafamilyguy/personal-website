@@ -1,19 +1,21 @@
-﻿using PersonalWebsite.Core.Models;
+﻿using PersonalWebsite.Core.Enums;
+using PersonalWebsite.Core.Models;
 
 namespace PersonalWebsite.Core.Interfaces;
 
 public interface IPictureService
 {
     Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetPicturesAsync(
-        int year,
+        int yearWatched,
         int pageNumber,
         int pageSize
     );
     Task<Picture> GetPictureAsync(string id);
-    Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int year);
+    Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int yearWatched);
     Task<Picture> AddPictureAsync(
         string name,
-        int year,
+        int yearWatched,
+        Month monthWatched,
         Cinema cinema,
         string? zinger,
         string? alias
@@ -21,7 +23,8 @@ public interface IPictureService
     Task<Picture> UpdatePictureAsync(
         string id,
         string name,
-        int year,
+        int yearWatched,
+        Month monthWatched,
         Cinema cinema,
         string? zinger,
         string? alias,

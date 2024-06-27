@@ -26,16 +26,21 @@ public class PictureRepository : IPictureRepository
         return PictureMapper.ToDomain(picture);
     }
 
-    public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetByYearAsync(
-        int year,
+    public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetByYearWatchedAsync(
+        int yearWatched,
         int pageNumber,
         int pageSize
     )
     {
-        var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Year, year);
+        var filter = Builders<PictureDocument>.Filter.Eq(
+            picture => picture.YearWatched,
+            yearWatched
+        );
+        var sort = Builders<PictureDocument>.Sort.Descending(x => x.MonthWatched);
         var totalCount = await _pictures.CountDocumentsAsync(filter);
         var pictures = await _pictures
             .Find(filter)
+            .Sort(sort)
             .Skip((pageNumber - 1) * pageSize)
             .Limit(pageSize)
             .ToListAsync();
@@ -43,10 +48,10 @@ public class PictureRepository : IPictureRepository
         return (pictures.Select(PictureMapper.ToDomain), totalCount);
     }
 
-    public async Task<IEnumerable<Picture>> GetFavoriteByYearAsync(int year)
+    public async Task<IEnumerable<Picture>> GetFavoritesByYearWatchedAsync(int yearWatched)
     {
         var filter = Builders<PictureDocument>.Filter.Where(picture =>
-            picture.Year == year && picture.IsFavorite
+            picture.YearWatched == yearWatched && picture.IsFavorite
         );
         var pictures = await _pictures.Find(filter).ToListAsync();
 
@@ -112,7 +117,7 @@ public class PictureRepository : IPictureRepository
     {
         var activeYears = await _pictures
             .Aggregate()
-            .Group(picture => picture.Year, group => new { Year = group.Key })
+            .Group(picture => picture.YearWatched, group => new { Year = group.Key })
             .Project(group => group.Year)
             .ToListAsync();
 

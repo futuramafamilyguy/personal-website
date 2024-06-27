@@ -72,6 +72,7 @@ public class PicturesController : ControllerBase
         var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(
             request.Name,
             year,
+            request.MonthWatched ?? (Month)DateTime.Now.Month,
             request.CinemaId,
             request.Zinger,
             request.Alias
@@ -93,7 +94,8 @@ public class PicturesController : ControllerBase
         var picture = await _pictureCinemaOrchestrator.UpdatePictureWithCinemaAsync(
             id,
             request.Name,
-            request.Year,
+            request.YearWatched,
+            request.MonthWatched,
             request.CinemaId,
             request.Zinger,
             request.Alias,

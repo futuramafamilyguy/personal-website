@@ -24,7 +24,9 @@ public class ConfigureMongoDbIndexesService : IHostedService
         var database = _client.GetDatabase(_settings.DatabaseName);
         var collection = database.GetCollection<PictureDocument>(_settings.PicturesCollectionName);
 
-        var yearIndex = Builders<PictureDocument>.IndexKeys.Ascending(picture => picture.Year);
+        var yearIndex = Builders<PictureDocument>.IndexKeys.Ascending(picture =>
+            picture.YearWatched
+        );
         var indexOptions = new CreateIndexOptions { Name = "pictures_year_watched" };
         await collection.Indexes.CreateOneAsync(
             new CreateIndexModel<PictureDocument>(yearIndex, indexOptions),

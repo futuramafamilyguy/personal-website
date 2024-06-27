@@ -1,4 +1,5 @@
 ﻿using Moq;
+using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 using PersonalWebsite.Core.Services;
@@ -24,7 +25,7 @@ public class PictureServiceTests
 
         // assert
         repositoryMock.Verify(
-            x => x.GetByYearAsync(yearWatched, pageNumber, pageSize),
+            x => x.GetByYearWatchedAsync(yearWatched, pageNumber, pageSize),
             Times.Once()
         );
     }
@@ -58,7 +59,7 @@ public class PictureServiceTests
         await sut.GetFavoritePicturesAsync(yearWatched);
 
         // assert
-        repositoryMock.Verify(x => x.GetFavoriteByYearAsync(yearWatched), Times.Once());
+        repositoryMock.Verify(x => x.GetFavoritesByYearWatchedAsync(yearWatched), Times.Once());
     }
 
     [Fact]
@@ -70,6 +71,7 @@ public class PictureServiceTests
 
         var pictureName = "cars";
         var yearWatched = 2020;
+        var monthWatched = Month.Jan;
         var zinger = "bazinga";
         var alias = "car";
 
@@ -84,7 +86,7 @@ public class PictureServiceTests
         };
 
         // act
-        await sut.AddPictureAsync(pictureName, yearWatched, cinema, zinger, alias);
+        await sut.AddPictureAsync(pictureName, yearWatched, monthWatched, cinema, zinger, alias);
 
         // assert
         repositoryMock.Verify(
@@ -93,7 +95,7 @@ public class PictureServiceTests
                     It.Is(
                         (Picture picture) =>
                             picture.Name == pictureName
-                            && picture.Year == yearWatched
+                            && picture.YearWatched == yearWatched
                             && picture.Zinger == zinger
                             && picture.Cinema.Id == cinemaId
                             && picture.Cinema.Name == cinemaName
@@ -114,6 +116,7 @@ public class PictureServiceTests
         var pictureId = "123";
         var updatedPictureName = "cars";
         var updatedYearWatched = 2020;
+        var updatedMonthWatched = Month.Jan;
         var updatedZinger = "bazinga";
         var updatedAlias = "car";
         var updatedImageUrl = "domain/images/image.jpg";
@@ -133,6 +136,7 @@ public class PictureServiceTests
             pictureId,
             updatedPictureName,
             updatedYearWatched,
+            updatedMonthWatched,
             updatedCinema,
             updatedZinger,
             updatedAlias,
@@ -147,7 +151,8 @@ public class PictureServiceTests
                     It.Is(
                         (Picture picture) =>
                             picture.Name == updatedPictureName
-                            && picture.Year == updatedYearWatched
+                            && picture.YearWatched == updatedYearWatched
+                            && picture.MonthWatched == updatedMonthWatched
                             && picture.Zinger == updatedZinger
                             && picture.Cinema.Id == cinemaId
                             && picture.Cinema.Name == cinemaName

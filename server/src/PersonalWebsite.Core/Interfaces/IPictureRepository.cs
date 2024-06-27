@@ -5,12 +5,12 @@ namespace PersonalWebsite.Core.Interfaces;
 public interface IPictureRepository
 {
     Task<Picture> GetAsync(string id);
-    Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetByYearAsync(
-        int year,
+    Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetByYearWatchedAsync(
+        int yearWatched,
         int pageNumber,
         int pageSize
     );
-    Task<IEnumerable<Picture>> GetFavoriteByYearAsync(int year);
+    Task<IEnumerable<Picture>> GetFavoritesByYearWatchedAsync(int yearWatched);
     Task<Picture> AddAsync(Picture picture);
     Task<Picture> UpdateAsync(string id, Picture picture);
     Task<Picture> ToggleFavoriteStatusAsync(string id);
