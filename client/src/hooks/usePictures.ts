@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 
+import api from "../api";
 import notFoundBoy from "../assets/404boy.png";
 import notFoundGirl from "../assets/404girl.png";
 import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 import { useYear } from "../contexts/YearContext";
 import { Picture } from "../types/Picture";
-
-import api from "../api";
 
 const usePictures = (initialPage: number) => {
   const calculateItemsPerPage = () => {
@@ -97,6 +96,7 @@ const usePictures = (initialPage: number) => {
     pictures,
     currentPage,
     totalPages,
+    itemsPerPage,
     loading,
     emptyMediaCardArray,
     setCurrentPage,

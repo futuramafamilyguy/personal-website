@@ -6,31 +6,21 @@ import styles from "./Pagination.module.css";
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
+  handlePrev: () => void;
+  handleNext: () => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
-  onPageChange,
+  handlePrev,
+  handleNext,
 }) => {
-  const handlePrevClick = () => {
-    if (currentPage > 1) {
-      onPageChange(Math.max(currentPage - 1, 1));
-    }
-  };
-
-  const handleNextClick = () => {
-    if (currentPage < totalPages) {
-      onPageChange(Math.min(currentPage + 1, totalPages));
-    }
-  };
-
   return (
     <span className={styles.pagination}>
       <CapsuleButton
         text="Prev"
-        onClick={handlePrevClick}
+        onClick={handlePrev}
         disabled={currentPage === 1}
         selected={false}
       />
@@ -39,7 +29,7 @@ const Pagination: React.FC<PaginationProps> = ({
       </span>
       <CapsuleButton
         text="Next"
-        onClick={handleNextClick}
+        onClick={handleNext}
         disabled={currentPage === totalPages}
         selected={false}
       />

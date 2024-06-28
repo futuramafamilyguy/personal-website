@@ -8,8 +8,8 @@ interface PictureModalProps {
   isOpen: boolean;
   onClose: () => void;
   picture: Picture | null;
-  onPrev: () => void;
-  onNext: () => void;
+  handlePrev: () => void;
+  handleNext: () => void;
   prev: boolean;
   next: boolean;
 }
@@ -18,8 +18,8 @@ const PictureModal: React.FC<PictureModalProps> = ({
   isOpen,
   onClose,
   picture,
-  onPrev,
-  onNext,
+  handlePrev,
+  handleNext,
   prev,
   next,
 }) => {
@@ -48,7 +48,7 @@ const PictureModal: React.FC<PictureModalProps> = ({
       {prev ? (
         <button
           className={`${styles.arrowButton} ${styles.left}`}
-          onClick={onPrev}
+          onClick={handlePrev}
         >
           &lt;
         </button>
@@ -56,7 +56,7 @@ const PictureModal: React.FC<PictureModalProps> = ({
       {next ? (
         <button
           className={`${styles.arrowButton} ${styles.right}`}
-          onClick={onNext}
+          onClick={handleNext}
         >
           &gt;
         </button>

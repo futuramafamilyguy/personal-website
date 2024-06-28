@@ -13,6 +13,7 @@ const PictureContainer: React.FC = () => {
     pictures,
     currentPage,
     totalPages,
+    itemsPerPage,
     loading,
     emptyMediaCardArray,
     setCurrentPage,
@@ -31,15 +32,37 @@ const PictureContainer: React.FC = () => {
     setModalOpen(false);
   };
 
-  const handlePrev = () => {
+  const handlePrevPic = () => {
     if (pictureIndex !== null) {
-      setPictureIndex((pictureIndex - 1 + pictures.length) % pictures.length);
+      if (pictureIndex === 0) {
+        handlePrevPage();
+        setPictureIndex(itemsPerPage - 1);
+      } else {
+        setPictureIndex((pictureIndex - 1 + pictures.length) % pictures.length);
+      }
     }
   };
 
-  const handleNext = () => {
+  const handleNextPic = () => {
     if (pictureIndex !== null) {
-      setPictureIndex((pictureIndex + 1) % pictures.length);
+      if (pictureIndex === pictures.length - 1) {
+        handleNextPage();
+        setPictureIndex(0);
+      } else {
+        setPictureIndex((pictureIndex + 1) % pictures.length);
+      }
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(Math.max(currentPage - 1, 1));
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(Math.min(currentPage + 1, totalPages));
     }
   };
 
@@ -68,17 +91,21 @@ const PictureContainer: React.FC = () => {
                 isOpen={modalOpen}
                 onClose={closeModal}
                 picture={pictureIndex !== null ? pictures[pictureIndex] : null}
-                onPrev={handlePrev}
-                onNext={handleNext}
-                prev={pictureIndex !== 0}
-                next={pictureIndex !== pictures.length - 1}
+                handlePrev={handlePrevPic}
+                handleNext={handleNextPic}
+                prev={pictureIndex !== 0 || currentPage !== 1}
+                next={
+                  pictureIndex !== pictures.length - 1 ||
+                  currentPage !== totalPages
+                }
               ></PictureModal>
             </div>
 
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              handlePrev={handlePrevPage}
+              handleNext={handleNextPage}
             />
           </>
         );
