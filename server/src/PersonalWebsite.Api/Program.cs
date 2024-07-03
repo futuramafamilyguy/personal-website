@@ -58,6 +58,8 @@ builder.Services.AddAuthorization(options =>
     );
 });
 
+builder.Services.AddDistributedMemoryCache();
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromDays(1);

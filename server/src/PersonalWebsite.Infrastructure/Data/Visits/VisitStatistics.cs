@@ -13,10 +13,10 @@ public class VisitStatistics
     public required int TotalVisits { get; set; }
 
     [BsonElement("latest_visit")]
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    [BsonRepresentation(BsonType.DateTime)]
     public DateTimeOffset? LatestVisit { get; set; }
 
     [BsonElement("start_tracking")]
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    [BsonRepresentation(BsonType.DateTime)]
     public required DateTimeOffset StartTrackingDate { get; set; }
 }

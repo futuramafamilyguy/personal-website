@@ -5,18 +5,16 @@ namespace PersonalWebsite.Api.Middlewares;
 public class VisitTrackingMiddleware
 {
     private readonly RequestDelegate _next;
-    private VisitStatisticsRepository _visitStatisticsRepository;
 
-    public VisitTrackingMiddleware(
-        RequestDelegate next,
-        VisitStatisticsRepository visitStatisticsRepository
-    )
+    public VisitTrackingMiddleware(RequestDelegate next)
     {
         _next = next;
-        _visitStatisticsRepository = visitStatisticsRepository;
     }
 
-    public async Task InvokeAsync(HttpContext context)
+    public async Task InvokeAsync(
+        HttpContext context,
+        VisitStatisticsRepository _visitStatisticsRepository
+    )
     {
         if (!context.Session.Keys.Contains("Visited"))
         {
