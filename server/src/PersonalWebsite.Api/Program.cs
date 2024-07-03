@@ -19,7 +19,10 @@ builder.Services.Configure<BasicAuthConfiguration>(
     builder.Configuration.GetSection("BasicAuthConfiguration")
 );
 
-builder.Services.AddMongoClient(builder.Configuration.GetConnectionString("PersonalWebsiteDb"));
+builder.Services.AddMongoClient(
+    builder.Configuration.GetConnectionString("PersonalWebsiteDb"),
+    builder.Configuration.GetSection("MongoDbConfiguration").Get<MongoDbConfiguration>()
+);
 builder.Services.AddHostedService<ConfigureMongoDbIndexesService>();
 builder.Services.AddCoreServices();
 builder.Services.AddInfrastructureServices();
