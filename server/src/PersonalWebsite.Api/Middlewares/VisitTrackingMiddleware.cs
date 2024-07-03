@@ -16,7 +16,11 @@ public class VisitTrackingMiddleware
         VisitStatisticsRepository _visitStatisticsRepository
     )
     {
-        if (!context.Session.Keys.Contains("Visited"))
+        if (
+            !context.Session.Keys.Contains("Visited")
+            && context.Request.Path.HasValue
+            && !context.Request.Path.Value.Contains("/favicon.ico")
+        )
         {
             context.Session.SetString("Visited", "true");
             await _visitStatisticsRepository.IncrementVisitAsync(DateTimeOffset.UtcNow);
