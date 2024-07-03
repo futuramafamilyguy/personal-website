@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using PersonalWebsite.Api.Authentication;
+using PersonalWebsite.Api.Middlewares;
 using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
@@ -81,6 +82,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
+app.UseMiddleware<VisitTrackingMiddleware>();
 
 app.MapControllers();
 
