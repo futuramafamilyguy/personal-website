@@ -20,6 +20,7 @@ services:
       FileImageStorageConfiguration__BaseImageUrl: ${BASE_IMAGE_URL}
       BasicAuthConfiguration__Username: ${BASICAUTH_USERNAME}
       BasicAuthConfiguration__Password: ${BASICAUTH_PASSWORD}
+      VisitExclusionConfiguration__ExcludeVisitCookieValue: ${EXCLUDE_VISIT_COOKIE}
       AllowedOrigin: ${ALLOWED_ORIGIN}
     depends_on:
       - mongo
