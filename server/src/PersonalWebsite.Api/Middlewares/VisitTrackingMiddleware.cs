@@ -24,21 +24,22 @@ public class VisitTrackingMiddleware
     {
         if (
             !context.Session.Keys.Contains("Visited")
-            && context.Request.Path.HasValue
-            && !context.Request.Path.Value.Contains("/favicon.ico")
+            && !IsPathExluded(context.Request.Path)
+            && !ExcludeVisit(context)
         )
         {
-            if (!IsExcludedVisit(context))
-            {
-                context.Session.SetString("Visited", "true");
-                await _visitStatisticsRepository.IncrementVisitAsync(DateTimeOffset.UtcNow);
-            }
+            context.Session.SetString("Visited", "true");
+            await _visitStatisticsRepository.IncrementVisitAsync(DateTimeOffset.UtcNow);
         }
 
         await _next(context);
     }
 
-    private bool IsExcludedVisit(HttpContext context) =>
+    private bool ExcludeVisit(HttpContext context) =>
         context.Request.Cookies.TryGetValue("ExcludeVisit", out var cookieValue)
         && cookieValue == _configuration.ExcludeVisitCookieValue;
+
+    private bool IsPathExluded(PathString path) =>
+        path.HasValue
+        && (path.Value.Contains("/favicon.ico") || path.Value.Contains("/disable-visit"));
 }
