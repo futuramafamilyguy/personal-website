@@ -1,10 +1,14 @@
+import { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 
+import { debouncedFetchActiveYears, makeDebouncedRequest } from "../../api";
 import { useYear, useYearUpdate } from "../../contexts/YearContext";
 import CapsuleButton from "../CapsuleButton/CapsuleButton";
 import styles from "./ActiveYearsContainer.module.css";
 
-import api from "../../api";
+interface ActiveYearsResponse {
+  activeYears: number[];
+}
 
 const ActiveYearsContainer: React.FC = () => {
   const year = useYear();
@@ -12,21 +16,24 @@ const ActiveYearsContainer: React.FC = () => {
   const [activeYears, setActiveYears] = useState<number[]>([]);
 
   useEffect(() => {
-    const fetchActiveYears = async () => {
-      try {
-        const response = await api.get("/pictures/active-years");
-        const startingYear = Math.min(...response.data.activeYears);
-        const activeYears = [];
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear();
-        for (let i = currentYear; i >= startingYear; i--) {
-          activeYears.push(i);
-        }
+    const fetchActiveYears = () => {
+      makeDebouncedRequest(debouncedFetchActiveYears, {
+        url: `/pictures/active-years`,
+      })
+        .then((response: AxiosResponse<ActiveYearsResponse>) => {
+          const startingYear = Math.min(...response.data.activeYears);
+          const activeYears = [];
+          const currentDate = new Date();
+          const currentYear = currentDate.getFullYear();
+          for (let i = currentYear; i >= startingYear; i--) {
+            activeYears.push(i);
+          }
 
-        setActiveYears(activeYears);
-      } catch (error) {
-        console.error("Error fetching active years:", error);
-      }
+          setActiveYears(activeYears);
+        })
+        .catch((error: any) => {
+          console.error("Error fetching active years:", error);
+        });
     };
 
     fetchActiveYears();

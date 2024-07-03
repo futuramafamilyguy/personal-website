@@ -1,6 +1,8 @@
+import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
+
+import { debouncedFetchStats, makeDebouncedRequest } from "../../api";
 import styles from "./StatsPage.module.css";
-import api from "../../api";
 
 interface Stats {
   totalVisits: number;
@@ -12,13 +14,14 @@ function StatsPage() {
   const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await api.get("/stats");
-        setStats(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+    const fetchStats = () => {
+      makeDebouncedRequest(debouncedFetchStats, { url: `/stats` })
+        .then((response: AxiosResponse<Stats>) => {
+          setStats(response.data);
+        })
+        .catch((error: any) => {
+          console.error("Error fetching data:", error);
+        });
     };
 
     fetchStats();

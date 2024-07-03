@@ -1,11 +1,17 @@
+import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 
-import api from "../api";
+import { debouncedFetchPictures, makeDebouncedRequest } from "../api";
 import notFoundBoy from "../assets/404boy.png";
 import notFoundGirl from "../assets/404girl.png";
 import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 import { useYear } from "../contexts/YearContext";
 import { Picture } from "../types/Picture";
+
+interface PictureResponse {
+  pictures: Picture[];
+  totalCount: number;
+}
 
 const usePictures = (initialPage: number) => {
   const calculateItemsPerPage = () => {
@@ -50,38 +56,47 @@ const usePictures = (initialPage: number) => {
   }, [year, totalPages]);
 
   useEffect(() => {
-    const fetchPictures = async () => {
+    const fetchPictures = () => {
       setLoading(true);
-      try {
-        if (viewFavorite) {
-          const response = await api.get(
-            `/pictures/${year}/favorites`
-          );
-          const data = response.data;
-          const updatedPictures = (<Picture[]>data).map(picture => ({
-            ...picture,
-            imageUrl: setDefaultImageUrl(picture.imageUrl),
-          }));
-          setPictures(updatedPictures);
-          setTotalPages(1);
-        } else {
-          const response = await api.get(
-            `/pictures/${year}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`
-          );
-  
-          const data = response.data;
-          const updatedPictures = (<Picture[]>data.pictures).map(picture => ({
-            ...picture,
-            imageUrl: setDefaultImageUrl(picture.imageUrl),
-          }));
-          setPictures(updatedPictures);
-          setTotalPages(Math.ceil(data.totalCount / itemsPerPage));
-        }
-      } catch (error) {
-        setPictures([]);
-        console.error("Failed to fetch pictures", error);
-      } finally {
-        setLoading(false);
+      if (viewFavorite) {
+        makeDebouncedRequest(debouncedFetchPictures, {
+          url: `/pictures/${year}/favorites`,
+        })
+          .then((response: AxiosResponse<Picture[]>) => {
+            const data = response.data;
+            const updatedPictures = (<Picture[]>data).map((picture) => ({
+              ...picture,
+              imageUrl: setDefaultImageUrl(picture.imageUrl),
+            }));
+            setPictures(updatedPictures);
+            setTotalPages(1);
+          })
+          .catch((error: any) => {
+            setPictures([]);
+            console.error("Error fetching pictures:", error);
+          })
+          .finally(() => setLoading(false));
+      } else {
+        makeDebouncedRequest(debouncedFetchPictures, {
+          url: `/pictures/${year}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`,
+        })
+          .then((response: AxiosResponse<PictureResponse>) => {
+            const data = response.data;
+            const updatedPictures = (<Picture[]>data.pictures).map(
+              (picture) => ({
+                ...picture,
+                imageUrl: setDefaultImageUrl(picture.imageUrl),
+              })
+            );
+            setPictures(updatedPictures);
+            console.log(`items ${data.totalCount}`)
+            setTotalPages(Math.ceil(data.totalCount / itemsPerPage));
+          })
+          .catch((error: any) => {
+            setPictures([]);
+            console.error("Error fetching pictures:", error);
+          })
+          .finally(() => setLoading(false));
       }
     };
 

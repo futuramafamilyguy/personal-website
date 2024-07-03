@@ -30,13 +30,13 @@ public class StatisticsController : ControllerBase
     }
 
     [Authorize(Policy = "AuthenticatedPolicy")]
-    [HttpGet("disable-visit")]
+    [HttpGet("disable-tracking")]
     public ActionResult SetVisitExclusionCookie()
     {
         HttpContext.Response.Cookies.Append(
             "ExcludeVisit",
             _configuration.ExcludeVisitCookieValue,
-            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(1) }
+            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(30) }
         );
 
         return Ok("Visit exclusion cookie set.");
