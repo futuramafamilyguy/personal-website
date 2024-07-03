@@ -1,15 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 
+import logo from "./assets/face.png";
 import NavBar from "./components/NavBar/NavBar";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import ComingSoonPage from "./pages/ComingSoonPage/ComingSoonPage";
 import LetterboxcPage from "./pages/LetterboxcPage/LetterboxcPage";
+import StatsPage from "./pages/StatsPage/StatsPage";
+import { MenuItem } from "./types/MenuItem";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./reset.css";
-import { MenuItem } from "./types/MenuItem";
-
-import logo from "./assets/face.png";
 
 const App: React.FC = () => {
   const menuItems: MenuItem[] = [
@@ -28,6 +28,7 @@ const App: React.FC = () => {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/letterboxc" element={<LetterboxcPage />} />
           <Route path="/coming-soon" element={<ComingSoonPage />} />
+          <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </div>
     </>

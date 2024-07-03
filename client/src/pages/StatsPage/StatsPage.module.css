@@ -1,0 +1,39 @@
+.statsPage {
+  position: relative;
+  height: 100vh;
+  color: white;
+  overflow: hidden;
+}
+
+.statsPage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/ro.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.5);
+  z-index: -1;
+}
+
+.textBox {
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  margin: 20px 20px 0px 20px;
+  color: white;
+  display: inline-block;
+  z-index: 1;
+}
+
+.stat {
+  margin-top: 20px;
+}
+
+.title {
+  font-weight: 600;
+}

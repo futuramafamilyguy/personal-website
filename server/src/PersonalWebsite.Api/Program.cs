@@ -41,8 +41,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
-        "AllowAll",
-        policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+        "CorsPolicy",
+        policy =>
+            policy
+                .WithOrigins(builder.Configuration.GetValue<string>("AllowedOrigin"))
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
     );
 });
 
@@ -87,6 +92,8 @@ app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
+app.UseCors("CorsPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -94,7 +101,5 @@ app.UseSession();
 app.UseMiddleware<VisitTrackingMiddleware>();
 
 app.MapControllers();
-
-app.UseCors("AllowAll");
 
 app.Run();
