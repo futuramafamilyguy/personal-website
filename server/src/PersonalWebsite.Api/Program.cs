@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using PersonalWebsite.Api;
 using PersonalWebsite.Api.Authentication;
 using PersonalWebsite.Api.Middlewares;
 using PersonalWebsite.Core;
@@ -17,6 +18,9 @@ builder.Services.Configure<FileImageStorageConfiguration>(
 );
 builder.Services.Configure<BasicAuthConfiguration>(
     builder.Configuration.GetSection("BasicAuthConfiguration")
+);
+builder.Services.Configure<VisitExclusionConfiguration>(
+    builder.Configuration.GetSection("VisitExclusionConfiguration")
 );
 
 builder.Services.AddMongoClient(
