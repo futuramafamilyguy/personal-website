@@ -49,7 +49,7 @@ public static class ServiceExtensions
             var startDateDocument = new VisitStatistics
             {
                 TotalVisits = 0,
-                StartTrackingDate = DateTimeOffset.UtcNow
+                TrackingStartUtc = DateTime.UtcNow
             };
             collection.InsertOne(startDateDocument);
         }

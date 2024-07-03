@@ -14,9 +14,9 @@ public class VisitStatistics
 
     [BsonElement("latest_visit")]
     [BsonRepresentation(BsonType.DateTime)]
-    public DateTimeOffset? LatestVisit { get; set; }
+    public DateTime? LatestVisitUtc { get; set; }
 
-    [BsonElement("start_tracking")]
+    [BsonElement("tracking_start")]
     [BsonRepresentation(BsonType.DateTime)]
-    public required DateTimeOffset StartTrackingDate { get; set; }
+    public required DateTime TrackingStartUtc { get; set; }
 }

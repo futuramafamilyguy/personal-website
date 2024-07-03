@@ -24,11 +24,11 @@ public class VisitStatisticsRepository
         return stats;
     }
 
-    public async Task IncrementVisitAsync(DateTimeOffset visitedAt)
+    public async Task IncrementVisitAsync(DateTime visitedAtUtc)
     {
         var update = Builders<VisitStatistics>
             .Update.Inc(s => s.TotalVisits, 1)
-            .Set(s => s.LatestVisit, visitedAt);
+            .Set(s => s.LatestVisitUtc, visitedAtUtc);
 
         await _visitStatistics.UpdateOneAsync(
             _ => true,

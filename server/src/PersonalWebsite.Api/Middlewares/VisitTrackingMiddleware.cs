@@ -29,7 +29,7 @@ public class VisitTrackingMiddleware
         )
         {
             context.Session.SetString("Visited", "true");
-            await _visitStatisticsRepository.IncrementVisitAsync(DateTimeOffset.UtcNow);
+            await _visitStatisticsRepository.IncrementVisitAsync(DateTime.UtcNow);
         }
 
         await _next(context);
