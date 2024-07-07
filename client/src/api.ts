@@ -27,6 +27,7 @@ const createDebouncedRequest = (delay: number) => {
 export const debouncedFetchStats = createDebouncedRequest(300);
 export const debouncedFetchPictures = createDebouncedRequest(300);
 export const debouncedFetchActiveYears = createDebouncedRequest(300);
+export const debouncedDisableTracking = createDebouncedRequest(300);
 
 export const makeDebouncedRequest = (
   debouncedFunction: (

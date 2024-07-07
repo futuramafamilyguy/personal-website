@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 import logo from "./assets/face.png";
+import DisableTracking from "./components/DisableTracking/DisableTracking";
 import NavBar from "./components/NavBar/NavBar";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import ComingSoonPage from "./pages/ComingSoonPage/ComingSoonPage";
@@ -29,6 +30,7 @@ const App: React.FC = () => {
           <Route path="/letterboxc" element={<LetterboxcPage />} />
           <Route path="/coming-soon" element={<ComingSoonPage />} />
           <Route path="/stats" element={<StatsPage />} />
+          <Route path="/disable-tracking" element={<DisableTracking />} />
         </Routes>
       </div>
     </>
