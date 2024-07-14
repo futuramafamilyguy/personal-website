@@ -1,11 +1,11 @@
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 
-import { debouncedFetchPictures, makeDebouncedRequest } from "../personalWebsiteApi";
 import notFoundBoy from "../assets/404boy.png";
 import notFoundGirl from "../assets/404girl.png";
 import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 import { useYear } from "../contexts/YearContext";
+import { debouncedFetchPictures, makeDebouncedRequest } from "../personalWebsiteApi";
 import { Picture } from "../types/Picture";
 
 interface PictureResponse {
@@ -89,7 +89,6 @@ const usePictures = (initialPage: number) => {
               })
             );
             setPictures(updatedPictures);
-            console.log(`items ${data.totalCount}`)
             setTotalPages(Math.ceil(data.totalCount / itemsPerPage));
           })
           .catch((error: any) => {

@@ -17,7 +17,6 @@ const RegionsContainer: React.FC = () => {
         url: `/regions`,
       })
         .then((response: AxiosResponse<string[]>) => {
-          console.log(response.data);
           const defaultRegion = "Auckland";
           const regions = [];
           regions.push(defaultRegion);

@@ -21,6 +21,8 @@ function LetterboxcPage() {
       return `less than an hour`;
     } else if (days === 0) {
       return `${hours} hour${hours > 1 ? "s" : ""}`;
+    } else if (days === -1) {
+      return "7 days";
     } else {
       return `${days} day${days > 1 ? "s" : ""}`;
     }
@@ -32,9 +34,9 @@ function LetterboxcPage() {
           <h4>NZ Picture Sessions</h4>
           <br />
           <p>
-            Latest pictures that have been released in NZ cinemas this week,
-            including re-releases of older classics. Updated every Sunday at
-            12pm NZT (next run in <b>{calculateNextRun()}</b>).
+            Latest pictures showing in cinemas this week, including re-releases.
+            Updated every Sunday at 12pm NZT (next run in{" "}
+            <b>{calculateNextRun()}</b>).
           </p>
         </div>
         <RegionProvider>
