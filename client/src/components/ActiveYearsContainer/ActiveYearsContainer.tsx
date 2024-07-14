@@ -1,7 +1,10 @@
 import { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 
-import { debouncedFetchActiveYears, makeDebouncedRequest } from "../../api";
+import {
+  debouncedFetchActiveYears,
+  makeDebouncedRequest,
+} from "../../personalWebsiteApi";
 import { useYear, useYearUpdate } from "../../contexts/YearContext";
 import CapsuleButton from "../CapsuleButton/CapsuleButton";
 import styles from "./ActiveYearsContainer.module.css";

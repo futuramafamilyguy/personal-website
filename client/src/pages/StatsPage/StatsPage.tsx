@@ -1,7 +1,9 @@
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-
-import { debouncedFetchStats, makeDebouncedRequest } from "../../api";
+import {
+  debouncedFetchStats,
+  makeDebouncedRequest,
+} from "../../personalWebsiteApi";
 import styles from "./StatsPage.module.css";
 
 interface Stats {

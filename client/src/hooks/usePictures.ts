@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 
-import { debouncedFetchPictures, makeDebouncedRequest } from "../api";
+import { debouncedFetchPictures, makeDebouncedRequest } from "../personalWebsiteApi";
 import notFoundBoy from "../assets/404boy.png";
 import notFoundGirl from "../assets/404girl.png";
 import { useViewFavorite } from "../contexts/ViewFavoriteContext";

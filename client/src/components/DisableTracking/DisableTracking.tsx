@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 
-import { debouncedDisableTracking, makeDebouncedRequest } from "../../api";
+import {
+  debouncedDisableTracking,
+  makeDebouncedRequest,
+} from "../../personalWebsiteApi";
 
 const DisableTracking: React.FC = () => {
   useEffect(() => {

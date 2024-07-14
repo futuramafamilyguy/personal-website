@@ -1,3 +1,5 @@
+import RegionsContainer from "../../components/RegionsContainer/RegionsContainer";
+import { RegionProvider } from "../../contexts/RegionContext";
 import styles from "./SessionsPage.module.css";
 
 function LetterboxcPage() {
@@ -15,7 +17,7 @@ function LetterboxcPage() {
       (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
     );
 
-    if (hours === 0) {
+    if (days === 0 && hours === 0) {
       return `less than an hour`;
     } else if (days === 0) {
       return `${hours} hour${hours > 1 ? "s" : ""}`;
@@ -35,6 +37,9 @@ function LetterboxcPage() {
             12pm NZT (next run in <b>{calculateNextRun()}</b>).
           </p>
         </div>
+        <RegionProvider>
+          <RegionsContainer />
+        </RegionProvider>
       </div>
     </>
   );
