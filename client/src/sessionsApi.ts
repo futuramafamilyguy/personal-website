@@ -14,7 +14,6 @@ const createDebouncedRequest = (delay: number) => {
       reject: (reason?: any) => void
     ) => {
       try {
-        console.log(import.meta.env.VITE_SESSION_URL);
         const response = await api.request(config);
         resolve(response);
       } catch (error) {

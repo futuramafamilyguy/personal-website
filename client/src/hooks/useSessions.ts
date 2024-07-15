@@ -57,7 +57,7 @@ const useSessions = (initialPage: number) => {
   const emptyMediaCardArray = Array.from(
     {
       length:
-        currentPage === totalPages - 1 ? itemsPerPage - sessions.length : 0,
+        currentPage === totalPages ? itemsPerPage - (sessions.length % itemsPerPage) : 0,
     },
     (_, index) => index + 1
   );
@@ -71,16 +71,19 @@ const useSessions = (initialPage: number) => {
   }, []);
 
   useEffect(() => {
+    setTotalPages(Math.ceil(sessions.length / itemsPerPage));
+  }, [itemsPerPage]);
+
+  useEffect(() => {
     setCurrentPage(1);
   }, [region, totalPages]);
 
   useEffect(() => {
     const getCurrentSessions = () => {
-      const sessionsCopy = sessions.splice(0);
       setCurrentSessions(
-        sessionsCopy.slice(
-          currentPage * itemsPerPage,
-          (currentPage + 1) * itemsPerPage - 1
+        sessions.slice(
+        (currentPage - 1) * itemsPerPage,
+          currentPage * itemsPerPage
         )
       );
     };

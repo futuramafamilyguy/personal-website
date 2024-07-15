@@ -1,4 +1,5 @@
 import RegionsContainer from "../../components/RegionsContainer/RegionsContainer";
+import SessionContainer from "../../components/SessionContainer/SessionContainer";
 import { RegionProvider } from "../../contexts/RegionContext";
 import styles from "./SessionsPage.module.css";
 
@@ -41,6 +42,7 @@ function LetterboxcPage() {
         </div>
         <RegionProvider>
           <RegionsContainer />
+          <SessionContainer />
         </RegionProvider>
       </div>
     </>
