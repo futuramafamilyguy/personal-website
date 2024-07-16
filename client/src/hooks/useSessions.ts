@@ -5,28 +5,12 @@ import notFoundBoy from "../assets/404boy.png";
 import notFoundGirl from "../assets/404girl.png";
 import { useRegion } from "../contexts/RegionContext";
 import { debouncedFetchSessions, makeDebouncedRequest } from "../sessionsApi";
+import { Session } from "../types/Session";
 
 interface AllRegionalSessions {
   region: string;
   newMovieSessions: Session[];
   oldMovieNames: string[];
-}
-
-interface Session {
-  movie: SessionPicture;
-  cinemas: Cinema[];
-  showtimes: Date[];
-}
-
-interface Cinema {
-  name: string;
-  homePageUrl: string;
-}
-
-interface SessionPicture {
-  name: string;
-  yearReleased: number;
-  imageUrl: string;
 }
 
 const useSessions = (initialPage: number) => {
@@ -57,7 +41,9 @@ const useSessions = (initialPage: number) => {
   const emptyMediaCardArray = Array.from(
     {
       length:
-        currentPage === totalPages ? itemsPerPage - (sessions.length % itemsPerPage) : 0,
+        currentPage === totalPages
+          ? itemsPerPage - (sessions.length % itemsPerPage)
+          : 0,
     },
     (_, index) => index + 1
   );
@@ -82,7 +68,7 @@ const useSessions = (initialPage: number) => {
     const getCurrentSessions = () => {
       setCurrentSessions(
         sessions.slice(
-        (currentPage - 1) * itemsPerPage,
+          (currentPage - 1) * itemsPerPage,
           currentPage * itemsPerPage
         )
       );

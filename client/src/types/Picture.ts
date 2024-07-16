@@ -10,5 +10,5 @@ export interface Picture {
   alias: string;
   yearReleased: number;
   zinger: string;
-  cinema: Cinema
+  cinema: Cinema;
 }

@@ -5,6 +5,7 @@ import useSessions from "../../hooks/useSessions";
 import MediaCard from "../MediaCard/MediaCard";
 import MessageDisplay from "../MessageDisplay/MessageDisplay";
 import Pagination from "../Pagination/Pagination";
+import SessionModal from "../SessionModal/SessionModal";
 import styles from "./SessionContainer.module.css";
 
 const SessionContainer: React.FC = () => {
@@ -18,7 +19,42 @@ const SessionContainer: React.FC = () => {
     setCurrentPage,
   } = useSessions(1);
 
+  const [modalOpen, setModalOpen] = useState(false);
   const [sessionIndex, setSessionIndex] = useState<number | null>(null);
+
+  const openModal = (index: number) => {
+    setSessionIndex(index);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSessionIndex(null);
+    setModalOpen(false);
+  };
+
+  const handlePrevSession = () => {
+    if (sessionIndex !== null) {
+      if (sessionIndex === 0) {
+        handlePrevPage();
+        setSessionIndex(itemsPerPage - 1);
+      } else {
+        setSessionIndex(
+          (sessionIndex - 1 + currentSessions.length) % currentSessions.length
+        );
+      }
+    }
+  };
+
+  const handleNextSession = () => {
+    if (sessionIndex !== null) {
+      if (sessionIndex === currentSessions.length - 1) {
+        handleNextPage();
+        setSessionIndex(0);
+      } else {
+        setSessionIndex((sessionIndex + 1) % currentSessions.length);
+      }
+    }
+  };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -49,13 +85,28 @@ const SessionContainer: React.FC = () => {
                       ? session.movie.name.slice(0, 18) + "..."
                       : session.movie.name
                   }
-                  onClick={() => false}
+                  onClick={() => openModal(index)}
                 />
               ))}
               {currentPage === totalPages &&
                 emptyMediaCardArray.map((index) => (
                   <div className={styles.emptyMediaCard} key={index}></div>
                 ))}
+
+              <SessionModal
+                isOpen={modalOpen}
+                onClose={closeModal}
+                session={
+                  sessionIndex !== null ? currentSessions[sessionIndex] : null
+                }
+                handlePrev={handlePrevSession}
+                handleNext={handleNextSession}
+                prev={sessionIndex !== 0 || currentPage !== 1}
+                next={
+                  sessionIndex !== currentSessions.length - 1 ||
+                  currentPage !== totalPages
+                }
+              ></SessionModal>
             </div>
 
             <Pagination
