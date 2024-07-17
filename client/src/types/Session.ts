@@ -4,7 +4,7 @@ export interface Session {
   showtimes: Date[];
 }
 
-interface Cinema {
+export interface Cinema {
   name: string;
   homePageUrl: string;
 }

@@ -58,6 +58,12 @@
   border: none;
   cursor: pointer;
   z-index: 1003;
+  opacity: 0.1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.arrowButton:hover {
+  opacity: 1;
 }
 
 .arrowButton.left {

@@ -35,8 +35,8 @@ function LetterboxcPage() {
           <h4>NZ Picture Sessions</h4>
           <br />
           <p>
-            Latest pictures showing in cinemas this week, including re-releases.
-            Updated every Sunday at 12pm NZT (next run in{" "}
+            Latest pictures showing in NZ cinemas this week, including
+            re-releases. Updated every Sunday at 12pm NZT (next run in{" "}
             <b>{calculateNextRun()}</b>).
           </p>
         </div>
