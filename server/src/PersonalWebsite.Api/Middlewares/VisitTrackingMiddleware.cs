@@ -41,5 +41,10 @@ public class VisitTrackingMiddleware
 
     private bool IsPathExluded(PathString path) =>
         path.HasValue
-        && (path.Value.Contains("/favicon.ico") || path.Value.Contains("/disable-tracking") || path.Value.Contains("/active-years"));
+        && (
+            path.Value.Contains("/favicon.ico")
+            || path.Value.Contains("/disable-tracking")
+            || path.Value.Contains("/active-years")
+            || path.Value.Contains("/stats")
+        );
 }
