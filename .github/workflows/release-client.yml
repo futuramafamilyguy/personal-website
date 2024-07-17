@@ -5,6 +5,8 @@ on:
     secrets:
       serverUrl:
         required: true
+      sessionUrl:
+        required: true
 
 env:
   REGISTRY: ghcr.io
@@ -37,3 +39,4 @@ jobs:
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           build-args: |
             VITE_SERVER_URL=${{ secrets.serverUrl }}
+            VITE_SESSION_URL=${{ secrets.sessionUrl }}
