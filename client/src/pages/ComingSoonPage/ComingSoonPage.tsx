@@ -27,6 +27,11 @@ const ComingSoonPage: React.FC = () => (
             empty and you are most welcome to enjoy this picture of Lady Bird
             thrifting with her mum in Sacramento.
           </p>
+          <p>
+            <span style={{ fontStyle: "italic" }}>
+              Last updated on 17/7/2024
+            </span>
+          </p>
         </div>
       </div>
       <div className={styles.right}>
@@ -53,27 +58,15 @@ const ComingSoonPage: React.FC = () => (
         <div className={styles.textBox}>
           <h5>NZ Picture Sessions</h5>
           <p>
-            If you enjoy watching older classics or rereleases at the cinemas
-            (like me, as you can tell from my Letterbox account) then this one
-            is for you. It's easy keeping on top of new releases but knowing
-            when your local cinemas are showing reruns can be a bit more tricky.
-            So I built a tool that provides weekly updates of all the pictures
-            that are playing in cinemas around you including showtimes that
-            week. The updates are currently sent in the form of emails but I
-            will provide an outlet for all the{" "}
+            This feature has now been completed. Come check it out{" "}
             <a
-              href="https://session-tracker.allenmaygibson.com/sessions"
+              href="https://allenmaygibson.com/sessions"
               target="_blank"
               className={styles.externalLink}
             >
-              session data
-            </a>{" "}
-            in a separate page on this website.
-          </p>
-          <p>
-            Since I'm based in Auckland, NZ (and Christchuch at one point), this
-            tool is unfortunately limited to cinemas in the Auckland and
-            Canterbury regions.
+              here
+            </a>
+            .
           </p>
         </div>
       </div>
