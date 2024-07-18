@@ -29,6 +29,9 @@ public class StatisticsController : ControllerBase
         return Ok(stats);
     }
 
+    [HttpPost("increment")]
+    public ActionResult IncrementVisitCountAsync() => NoContent();
+
     [Authorize(Policy = "AuthenticatedPolicy")]
     [HttpGet("disable-tracking")]
     public ActionResult SetVisitExclusionCookie()

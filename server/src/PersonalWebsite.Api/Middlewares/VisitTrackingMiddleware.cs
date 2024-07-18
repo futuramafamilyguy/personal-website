@@ -41,6 +41,7 @@ public class VisitTrackingMiddleware
 
     private bool IsPathExluded(PathString path) =>
         path.HasValue
+        && !path.Value.Contains("/stats/increment")
         && (
             path.Value.Contains("/favicon.ico")
             || path.Value.Contains("/disable-tracking")
