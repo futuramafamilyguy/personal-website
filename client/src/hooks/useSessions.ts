@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import notFoundBoy from "../assets/404boy.png";
 import notFoundGirl from "../assets/404girl.png";
 import { useRegion } from "../contexts/RegionContext";
-import { debouncedFetchSessions, makeDebouncedRequest } from "../sessionsApi";
+import { debouncedIncrementVisitCount, makeDebouncedRequest as makeDebouncedApiRequest } from "../personalWebsiteApi";
+import { debouncedFetchSessions, makeDebouncedRequest as makeDebouncedSessionRequest } from "../sessionsApi";
 import { Session } from "../types/Session";
 
 interface AllRegionalSessions {
@@ -80,7 +81,7 @@ const useSessions = (initialPage: number) => {
   useEffect(() => {
     const fetchSessions = () => {
       setLoading(true);
-      makeDebouncedRequest(debouncedFetchSessions, {
+      makeDebouncedSessionRequest(debouncedFetchSessions, {
         url: `/sessions/${region}`,
       })
         .then((response: AxiosResponse<AllRegionalSessions[]>) => {
@@ -101,6 +102,15 @@ const useSessions = (initialPage: number) => {
 
     fetchSessions();
   }, [region]);
+
+  useEffect(() => {
+    makeDebouncedApiRequest(debouncedIncrementVisitCount, {
+      url: "/stats/increment",
+      method: "post"
+    }).catch((error: any) => {
+      console.error("Error incrementing visit count:", error);
+    });
+  }, []);
 
   const setDefaultImageUrl = (imageUrl: string) => {
     return imageUrl || (Math.random() < 0.5 ? notFoundBoy : notFoundGirl);
