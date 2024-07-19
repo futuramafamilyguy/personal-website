@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import usePictures from "../..//hooks/usePictures";
 import megamind from "../../assets/megamind.png";
@@ -21,6 +21,10 @@ const PictureContainer: React.FC = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [pictureIndex, setPictureIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    closeModal();
+  }, [totalPages]);
 
   const openModal = (index: number) => {
     setPictureIndex(index);

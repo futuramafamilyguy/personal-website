@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import megamind from "../../assets/megamind.png";
 import useSessions from "../../hooks/useSessions";
@@ -18,6 +18,10 @@ const SessionContainer: React.FC = () => {
     emptyMediaCardArray,
     setCurrentPage,
   } = useSessions(1);
+
+  useEffect(() => {
+    closeModal();
+  }, [totalPages]);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [sessionIndex, setSessionIndex] = useState<number | null>(null);
