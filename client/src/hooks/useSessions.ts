@@ -42,7 +42,7 @@ const useSessions = (initialPage: number) => {
   const emptyMediaCardArray = Array.from(
     {
       length:
-        currentPage === totalPages
+        currentPage === totalPages && sessions.length % itemsPerPage !== 0
           ? itemsPerPage - (sessions.length % itemsPerPage)
           : 0,
     },
@@ -106,7 +106,7 @@ const useSessions = (initialPage: number) => {
   useEffect(() => {
     makeDebouncedApiRequest(debouncedIncrementVisitCount, {
       url: "/stats/increment",
-      method: "post"
+      method: "post",
     }).catch((error: any) => {
       console.error("Error incrementing visit count:", error);
     });
