@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 
-import {
-  debouncedDisableTracking,
-  makeDebouncedRequest,
-} from "../../personalWebsiteApi";
+import { debouncedDisableTracking, makeDebouncedRequest } from "../../personalWebsiteApi";
 
 const DisableTracking: React.FC = () => {
   useEffect(() => {
     const disableTracking = () => {
       makeDebouncedRequest(debouncedDisableTracking, {
-        url: `/stats/disable-tracking`,
+        url: "/stats/disable-tracking",
+        method: "post"
       }).catch((error: any) => {
         console.error("Error disabling tracking:", error);
       });

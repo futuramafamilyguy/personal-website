@@ -33,7 +33,7 @@ public class StatisticsController : ControllerBase
     public IActionResult IncrementVisitCountAsync() => NoContent();
 
     [Authorize(Policy = "DisableVisitPolicy")]
-    [HttpGet("disable-tracking")]
+    [HttpPost("disable-tracking")]
     public IActionResult SetVisitExclusionCookie()
     {
         HttpContext.Response.Cookies.Append(
