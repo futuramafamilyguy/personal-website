@@ -18,8 +18,10 @@ services:
       ConnectionStrings__PersonalWebsiteDb: ${PERSONALWEBSITE_CONNECTION_STRING}
       FileImageStorageConfiguration__RootImageDirectoryPath: ${IMAGE_DIRECTORY_PATH}
       FileImageStorageConfiguration__BaseImageUrl: ${BASE_IMAGE_URL}
-      BasicAuthConfiguration__Username: ${BASICAUTH_USERNAME}
-      BasicAuthConfiguration__Password: ${BASICAUTH_PASSWORD}
+      BasicAuthConfiguration__AdminUsername: ${ADMIN_USERNAME}
+      BasicAuthConfiguration__AdminPassword: ${ADMIN_PASSWORD}
+      BasicAuthConfiguration__DisableTrackingUsername: ${DISABLETRACKING_USERNAME}
+      BasicAuthConfiguration__DisableTrackingPassword: ${DISABLETRACKING_PASSWORD}
       VisitExclusionConfiguration__ExcludeVisitCookieValue: ${EXCLUDE_VISIT_COOKIE}
       AllowedOrigin: ${ALLOWED_ORIGIN}
     depends_on:

@@ -47,13 +47,23 @@ public class BasicAuthHandler : AuthenticationHandler<AuthenticationSchemeOption
             var username = credentials[0];
             var password = credentials[1];
 
-            if (username != _configuration.Username || password != _configuration.Password)
+            var scheme = Scheme.Name;
+            var configUsername =
+                scheme == "AdminAuth"
+                    ? _configuration.AdminUsername
+                    : _configuration.DisableTrackingUsername;
+            var configPassword =
+                scheme == "AdminAuth"
+                    ? _configuration.AdminPassword
+                    : _configuration.DisableTrackingPassword;
+
+            if (username != configUsername || password != configPassword)
             {
                 return Task.FromResult(AuthenticateResult.Fail("Authentication failed"));
             }
 
             // success
-            var claims = new[] { new Claim(ClaimTypes.Name, _configuration.Username) };
+            var claims = new[] { new Claim(ClaimTypes.Name, configUsername) };
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, Scheme.Name);

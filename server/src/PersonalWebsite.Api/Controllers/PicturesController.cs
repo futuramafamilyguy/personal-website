@@ -59,7 +59,7 @@ public class PicturesController : ControllerBase
         return Ok(pictures);
     }
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPost("{year}")]
     public async Task<ActionResult> CreatePictureAsync(
         int year,
@@ -82,7 +82,7 @@ public class PicturesController : ControllerBase
         return Ok(picture);
     }
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdatePictureAsync(
         string id,
@@ -107,7 +107,7 @@ public class PicturesController : ControllerBase
         return Ok(picture);
     }
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPut("{year}/{id}/favorite")]
     public async Task<ActionResult> ToggleFavoriteAsync(string id)
     {
@@ -116,7 +116,7 @@ public class PicturesController : ControllerBase
         return Ok(picture);
     }
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeletePictureAsync(string id)
     {
@@ -133,7 +133,7 @@ public class PicturesController : ControllerBase
         return Ok(new { ActiveYears = activeYears });
     }
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPost("{pictureId}/image")]
     public async Task<ActionResult> UploadImageAsync(string pictureId, IFormFile imageFile)
     {
@@ -171,7 +171,7 @@ public class PicturesController : ControllerBase
         }
     }
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpDelete("{pictureId}/image")]
     public async Task<ActionResult> DeleteImageAsync(string pictureId)
     {

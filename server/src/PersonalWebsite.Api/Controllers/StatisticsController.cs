@@ -32,7 +32,7 @@ public class StatisticsController : ControllerBase
     [HttpPost("increment")]
     public ActionResult IncrementVisitCountAsync() => NoContent();
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "DisableVisitPolicy")]
     [HttpGet("disable-tracking")]
     public ActionResult SetVisitExclusionCookie()
     {

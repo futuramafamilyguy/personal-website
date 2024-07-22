@@ -47,5 +47,7 @@ public class VisitTrackingMiddleware
             || path.Value.Contains("/disable-tracking")
             || path.Value.Contains("/active-years")
             || path.Value.Contains("/stats")
+            || path.Value.Contains("/login")
+            || path.Value.Contains("/logout")
         );
 }

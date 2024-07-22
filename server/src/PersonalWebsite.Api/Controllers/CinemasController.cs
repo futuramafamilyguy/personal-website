@@ -32,7 +32,7 @@ public class CinemasController : ControllerBase
         return Ok(cinemas);
     }
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPost("")]
     public async Task<ActionResult> CreateCinemaAsync([FromBody] CreateCinemaRequest request)
     {
@@ -44,7 +44,7 @@ public class CinemasController : ControllerBase
         return Ok(cinema);
     }
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateCinemaAsync(
         string id,
@@ -63,7 +63,7 @@ public class CinemasController : ControllerBase
         return Ok(updatedCinema);
     }
 
-    [Authorize(Policy = "AuthenticatedPolicy")]
+    [Authorize(Policy = "AdminPolicy")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteCinemaAsync(string id)
     {

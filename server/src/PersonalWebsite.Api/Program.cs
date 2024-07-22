@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using PersonalWebsite.Api;
 using PersonalWebsite.Api.Authentication;
 using PersonalWebsite.Api.Middlewares;
@@ -54,18 +55,48 @@ builder.Services.AddCors(options =>
 builder
     .Services.AddAuthentication(options =>
     {
-        options.DefaultAuthenticateScheme = "BasicAuth";
-        options.DefaultChallengeScheme = "BasicAuth";
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     })
-    .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuth", null);
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("DisableVisitAuth", null)
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("AdminAuth", null)
+    .AddCookie(
+        CookieAuthenticationDefaults.AuthenticationScheme,
+        options =>
+        {
+            options.Cookie.Name = "admin";
+            options.ExpireTimeSpan = TimeSpan.FromDays(30);
+            options.Events = new CookieAuthenticationEvents
+            {
+                OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                },
+                OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                }
+            };
+        }
+    );
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(
-        "AuthenticatedPolicy",
+        "DisableVisitPolicy",
         policy =>
         {
+            policy.AddAuthenticationSchemes("DisableVisitAuth");
             policy.RequireAuthenticatedUser();
+        }
+    );
+
+    options.AddPolicy(
+        "AdminPolicy",
+        policy =>
+        {
+            policy.RequireClaim("Admin", "true");
         }
     );
 });
@@ -95,9 +126,11 @@ app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseSession();
+
+app.UseAuthorization();
+
 app.UseMiddleware<VisitTrackingMiddleware>();
 
 app.MapControllers();
