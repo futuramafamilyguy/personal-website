@@ -25,7 +25,7 @@ public class CinemasController : ControllerBase
     }
 
     [HttpGet("")]
-    public async Task<ActionResult> GetCinemasAsync()
+    public async Task<IActionResult> GetCinemasAsync()
     {
         var cinemas = await _cinemaService.GetCinemasAsync();
 
@@ -34,7 +34,7 @@ public class CinemasController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpPost("")]
-    public async Task<ActionResult> CreateCinemaAsync([FromBody] CreateCinemaRequest request)
+    public async Task<IActionResult> CreateCinemaAsync([FromBody] CreateCinemaRequest request)
     {
         if (request is null)
             return BadRequest("Cinema data is null");
@@ -46,7 +46,7 @@ public class CinemasController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateCinemaAsync(
+    public async Task<IActionResult> UpdateCinemaAsync(
         string id,
         [FromBody] CreateCinemaRequest request
     )
@@ -65,7 +65,7 @@ public class CinemasController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteCinemaAsync(string id)
+    public async Task<IActionResult> DeleteCinemaAsync(string id)
     {
         try
         {

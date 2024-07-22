@@ -22,7 +22,7 @@ public class StatisticsController : ControllerBase
     }
 
     [HttpGet("")]
-    public async Task<ActionResult> GetCinemasAsync()
+    public async Task<IActionResult> GetCinemasAsync()
     {
         var stats = await _visitStatisticsRepository.GetVisitStatisticsAsync();
 
@@ -30,11 +30,11 @@ public class StatisticsController : ControllerBase
     }
 
     [HttpPost("increment")]
-    public ActionResult IncrementVisitCountAsync() => NoContent();
+    public IActionResult IncrementVisitCountAsync() => NoContent();
 
     [Authorize(Policy = "DisableVisitPolicy")]
     [HttpGet("disable-tracking")]
-    public ActionResult SetVisitExclusionCookie()
+    public IActionResult SetVisitExclusionCookie()
     {
         HttpContext.Response.Cookies.Append(
             "ExcludeVisit",

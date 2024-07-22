@@ -30,7 +30,7 @@ public class PicturesController : ControllerBase
     }
 
     [HttpGet("{year}")]
-    public async Task<ActionResult> GetPicturesAsync(
+    public async Task<IActionResult> GetPicturesAsync(
         int year,
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = int.MaxValue
@@ -44,7 +44,7 @@ public class PicturesController : ControllerBase
     // this endpoint is just here for testing purposes and isn't used in prod
     // it's mostly here so postman scripts can populate existing picture fields to avoid typing everything out when testing update picture endpoint
     [HttpGet("{year}/{id}")]
-    public async Task<ActionResult> GetPictureAsync(string id)
+    public async Task<IActionResult> GetPictureAsync(string id)
     {
         var picture = await _pictureService.GetPictureAsync(id);
 
@@ -52,7 +52,7 @@ public class PicturesController : ControllerBase
     }
 
     [HttpGet("{year}/favorites")]
-    public async Task<ActionResult> GetFavoritePicturesAsync(int year)
+    public async Task<IActionResult> GetFavoritePicturesAsync(int year)
     {
         var pictures = await _pictureService.GetFavoritePicturesAsync(year);
 
@@ -61,7 +61,7 @@ public class PicturesController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpPost("{year}")]
-    public async Task<ActionResult> CreatePictureAsync(
+    public async Task<IActionResult> CreatePictureAsync(
         int year,
         [FromBody] CreatePictureRequest request
     )
@@ -84,7 +84,7 @@ public class PicturesController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdatePictureAsync(
+    public async Task<IActionResult> UpdatePictureAsync(
         string id,
         [FromBody] UpdatePictureRequest request
     )
@@ -109,7 +109,7 @@ public class PicturesController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpPut("{year}/{id}/favorite")]
-    public async Task<ActionResult> ToggleFavoriteAsync(string id)
+    public async Task<IActionResult> ToggleFavoriteAsync(string id)
     {
         var picture = await _pictureService.ToggleFavoriteAsync(id);
 
@@ -118,7 +118,7 @@ public class PicturesController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeletePictureAsync(string id)
+    public async Task<IActionResult> DeletePictureAsync(string id)
     {
         await _pictureService.RemovePictureAsync(id);
 
@@ -126,7 +126,7 @@ public class PicturesController : ControllerBase
     }
 
     [HttpGet("active-years")]
-    public async Task<ActionResult> GetActiveYearsAsync()
+    public async Task<IActionResult> GetActiveYearsAsync()
     {
         var activeYears = await _pictureService.GetActiveYearsAsync();
 
@@ -135,7 +135,7 @@ public class PicturesController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpPost("{pictureId}/image")]
-    public async Task<ActionResult> UploadImageAsync(string pictureId, IFormFile imageFile)
+    public async Task<IActionResult> UploadImageAsync(string pictureId, IFormFile imageFile)
     {
         if (imageFile == null || imageFile.Length == 0)
         {
@@ -173,7 +173,7 @@ public class PicturesController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpDelete("{pictureId}/image")]
-    public async Task<ActionResult> DeleteImageAsync(string pictureId)
+    public async Task<IActionResult> DeleteImageAsync(string pictureId)
     {
         var picture = await _pictureService.GetPictureAsync(pictureId);
         var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl!);

@@ -20,7 +20,7 @@ public class AuthController : Controller
 
     [Authorize(AuthenticationSchemes = "AdminAuth")]
     [HttpPost("login")]
-    public ActionResult Login()
+    public IActionResult Login()
     {
         var claims = new[] { new Claim("Admin", "true") };
         var identity = new ClaimsIdentity(
@@ -48,7 +48,7 @@ public class AuthController : Controller
     }
 
     [HttpPost("logout")]
-    public async Task<ActionResult> Logout()
+    public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
