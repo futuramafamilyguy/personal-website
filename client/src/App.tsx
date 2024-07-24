@@ -1,8 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 
 import logo from "./assets/face.png";
-import DisableTracking from "./components/DisableTracking/DisableTracking";
+import AuthComponent from "./components/AuthComponent";
+import DisableTracking from "./components/DisableTracking";
 import NavBar from "./components/NavBar/NavBar";
+import { AuthProvider } from "./contexts/AuthContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import ComingSoonPage from "./pages/ComingSoonPage/ComingSoonPage";
 import LetterboxcPage from "./pages/LetterboxcPage/LetterboxcPage";
@@ -26,15 +28,19 @@ const App: React.FC = () => {
       <NavBar logoSrc={logo} menuItems={menuItems} />
       {/* space dedicated to the navbar when it's at the top of the page */}
       <div style={{ marginTop: "60px" }}>
-        <Routes>
-          <Route path="/" element={<AboutPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/letterboxc" element={<LetterboxcPage />} />
-          <Route path="/sessions" element={<SessionsPage />} />
-          <Route path="/coming-soon" element={<ComingSoonPage />} />
-          <Route path="/stats" element={<StatsPage />} />
-          <Route path="/disable-tracking" element={<DisableTracking />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<AboutPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/letterboxc" element={<LetterboxcPage />} />
+            <Route path="/sessions" element={<SessionsPage />} />
+            <Route path="/coming-soon" element={<ComingSoonPage />} />
+            <Route path="/stats" element={<StatsPage />} />
+            <Route path="/disable-tracking" element={<DisableTracking />} />
+            <Route path="/login" element={<AuthComponent />} />
+            <Route path="/logout" element={<AuthComponent />} />
+          </Routes>
+        </AuthProvider>
       </div>
     </>
   );

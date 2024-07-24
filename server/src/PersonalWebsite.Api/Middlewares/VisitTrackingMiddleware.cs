@@ -24,8 +24,14 @@ public class VisitTrackingMiddleware
     {
         if (
             !context.Session.Keys.Contains("Visited")
-            && !IsPathExluded(context.Request.Path)
             && !ExcludeVisit(context)
+            && (
+                IsIncrementEndpoint(context.Request.Path)
+                || (
+                    context.Request.Method == HttpMethods.Get
+                    && !IsPathExluded(context.Request.Path)
+                )
+            )
         )
         {
             context.Session.SetString("Visited", "true");
@@ -44,10 +50,10 @@ public class VisitTrackingMiddleware
         && !path.Value.Contains("/stats/increment")
         && (
             path.Value.Contains("/favicon.ico")
-            || path.Value.Contains("/disable-tracking")
             || path.Value.Contains("/active-years")
             || path.Value.Contains("/stats")
-            || path.Value.Contains("/login")
-            || path.Value.Contains("/logout")
         );
+
+    private bool IsIncrementEndpoint(PathString path) =>
+        path.HasValue && path.Value.Contains("/stats/increment");
 }

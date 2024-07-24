@@ -29,6 +29,8 @@ export const debouncedFetchPictures = createDebouncedRequest(300);
 export const debouncedFetchActiveYears = createDebouncedRequest(300);
 export const debouncedDisableTracking = createDebouncedRequest(300);
 export const debouncedIncrementVisitCount = createDebouncedRequest(300);
+export const debouncedLogin = createDebouncedRequest(300);
+export const debouncedLogout = createDebouncedRequest(300);
 
 export const makeDebouncedRequest = (
   debouncedFunction: (
