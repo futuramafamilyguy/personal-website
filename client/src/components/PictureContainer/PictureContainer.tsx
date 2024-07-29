@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 
 import usePictures from "../..//hooks/usePictures";
 import megamind from "../../assets/megamind.png";
+import { useAuth } from "../../contexts/AuthContext";
 import MediaCard from "../MediaCard/MediaCard";
 import MessageDisplay from "../MessageDisplay/MessageDisplay";
+import NewMediaCard from "../NewMediaCard/NewMediaCard";
+import NewPictureModal from "../NewPictureModal/NewPictureModal";
 import Pagination from "../Pagination/Pagination";
 import PictureModal from "../PictureModal/PictureModal";
 import styles from "./PictureContainer.module.css";
@@ -19,11 +22,14 @@ const PictureContainer: React.FC = () => {
     setCurrentPage,
   } = usePictures(1);
 
+  const isLoggedIn = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [pictureIndex, setPictureIndex] = useState<number | null>(null);
+  const [newModalOpen, setNewModalOpen] = useState(false);
 
   useEffect(() => {
     closeModal();
+    setNewModalOpen(false);
   }, [totalPages]);
 
   const openModal = (index: number) => {
@@ -74,10 +80,24 @@ const PictureContainer: React.FC = () => {
     if (loading) {
       return <MessageDisplay message={"Loading..."} />;
     } else {
-      if (pictures.length > 0) {
+      if (isLoggedIn || pictures.length > 0) {
         return (
           <>
             <div className={styles.pictureContainer}>
+              {isLoggedIn ? (
+                <NewMediaCard
+                  mediaType="Picture"
+                  onClick={() => setNewModalOpen(true)}
+                />
+              ) : null}
+              {isLoggedIn ? (
+                <NewPictureModal
+                  isOpen={newModalOpen}
+                  onClose={() => setNewModalOpen(false)}
+                  picture={null}
+                />
+              ) : null}
+
               {pictures.map((picture, index) => (
                 <MediaCard
                   key={picture.id}

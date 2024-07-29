@@ -1,0 +1,92 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 750px;
+  height: 100%;
+
+  overflow: hidden;
+  z-index: 1002;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+.textContainer {
+  position: absolute;
+  width: 100%;
+  height: auto; /* Ensure it grows with content */
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #1a1a1a;
+  color: white;
+  overflow: visible; /* Ensure it grows with content */
+  border-radius: 10px;
+  z-index: 1005;
+}
+
+.formGroup {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem; /* Adjust as needed */
+}
+
+/* Align all labels with the same width */
+.formGroup label {
+  width: 125px; /* Ensures the label takes up only as much space as needed */
+  margin-right: 1rem; /* Adjust the distance between the label and input */
+  text-align: left; /* Right-aligns the text inside the label */
+}
+
+.formGroup input {
+  flex: 1; /* Ensures input takes up remaining space in the container */
+  border-radius: 5px;
+}
+
+.formGroup input:focus {
+  outline: none;
+  box-shadow: none; /* Remove any box-shadow if present */
+}
+
+.title {
+  padding-bottom: 20px;
+}
+
+.title,
+label {
+  font-weight: 600;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.button {
+  padding: 7px 15px;
+  background-color: #1a1a1a;
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.buttonContainer {
+  padding-top: 10px;
+}
+
+.result {
+  padding-left: 30px;
+}

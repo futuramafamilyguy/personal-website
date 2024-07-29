@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDom from "react-dom";
 
-import { Picture } from "../../types/Picture";
+import Picture from "../../types/Picture";
 import styles from "./PictureModal.module.css";
 
 interface PictureModalProps {

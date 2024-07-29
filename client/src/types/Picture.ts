@@ -1,9 +1,6 @@
-interface Cinema {
-  name: string;
-  city: string;
-}
+import Cinema from "./Cinema";
 
-export interface Picture {
+export default interface Picture {
   id: string;
   name: string;
   imageUrl: string;

@@ -3,10 +3,14 @@ import { useEffect, useState } from "react";
 
 import notFoundBoy from "../assets/404boy.png";
 import notFoundGirl from "../assets/404girl.png";
+import { useAuth } from "../contexts/AuthContext";
 import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 import { useYear } from "../contexts/YearContext";
-import { debouncedFetchPictures, makeDebouncedRequest } from "../personalWebsiteApi";
-import { Picture } from "../types/Picture";
+import {
+  debouncedFetchPictures,
+  makeDebouncedRequest,
+} from "../personalWebsiteApi";
+import Picture from "../types/Picture";
 
 interface PictureResponse {
   pictures: Picture[];
@@ -24,8 +28,10 @@ const usePictures = (initialPage: number) => {
     const itemHeight = 150; // media card height + vertical padding
     const rows = Math.floor(containerHeight / itemHeight);
 
-    return columns * rows;
+    return columns * rows - (isLoggedIn ? 1 : 0);
   };
+
+  const isLoggedIn = useAuth();
 
   const [pictures, setPictures] = useState<Picture[]>([]);
   const [currentPage, setCurrentPage] = useState(initialPage);
