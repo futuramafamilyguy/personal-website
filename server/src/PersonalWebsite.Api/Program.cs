@@ -78,6 +78,7 @@ builder
                     return Task.CompletedTask;
                 }
             };
+            options.Cookie.SameSite = SameSiteMode.None;
         }
     );
 
@@ -108,6 +109,7 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromDays(1);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.None; 
 });
 
 var app = builder.Build();
