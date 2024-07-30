@@ -101,7 +101,8 @@ public class PicturesController : ControllerBase
             request.YearReleased,
             request.Zinger,
             request.Alias,
-            request.ImageUrl
+            request.ImageUrl,
+            request.IsFavorite
         );
 
         return Ok(picture);

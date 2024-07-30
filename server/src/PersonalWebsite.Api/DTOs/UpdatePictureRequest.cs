@@ -12,4 +12,5 @@ public class UpdatePictureRequest
     public string? Zinger { get; set; }
     public string? Alias { get; set; }
     public string? ImageUrl { get; set; }
+    public bool IsFavorite { get; set; }
 }

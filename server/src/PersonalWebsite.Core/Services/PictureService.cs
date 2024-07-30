@@ -59,7 +59,8 @@ public class PictureService : IPictureService
         int yearReleased,
         string? zinger,
         string? alias,
-        string? imageUrl
+        string? imageUrl,
+        bool isFavorite
     )
     {
         var updatedPicture = await _pictureRepository.UpdateAsync(
@@ -74,7 +75,8 @@ public class PictureService : IPictureService
                 YearReleased = yearReleased,
                 Zinger = zinger,
                 Alias = alias,
-                ImageUrl = imageUrl
+                ImageUrl = imageUrl,
+                IsFavorite = isFavorite
             }
         );
 
