@@ -6,10 +6,7 @@ import notFoundGirl from "../assets/404girl.png";
 import { useAuth } from "../contexts/AuthContext";
 import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 import { useYear } from "../contexts/YearContext";
-import {
-  debouncedFetchPictures,
-  makeDebouncedRequest,
-} from "../personalWebsiteApi";
+import { debouncedFetchPictures, makeDebouncedRequest } from "../personalWebsiteApi";
 import Picture from "../types/Picture";
 
 interface PictureResponse {
@@ -32,6 +29,8 @@ const usePictures = (initialPage: number) => {
   };
 
   const isLoggedIn = useAuth();
+
+  const [trigger, setTrigger] = useState(false);
 
   const [pictures, setPictures] = useState<Picture[]>([]);
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -106,7 +105,7 @@ const usePictures = (initialPage: number) => {
     };
 
     fetchPictures();
-  }, [year, currentPage, itemsPerPage, viewFavorite]);
+  }, [year, currentPage, itemsPerPage, viewFavorite, trigger]);
 
   const setDefaultImageUrl = (imageUrl: string) => {
     return imageUrl || (Math.random() < 0.5 ? notFoundBoy : notFoundGirl);
@@ -120,6 +119,7 @@ const usePictures = (initialPage: number) => {
     loading,
     emptyMediaCardArray,
     setCurrentPage,
+    setTrigger,
   };
 };
 

@@ -90,6 +90,8 @@ const SessionContainer: React.FC = () => {
                       : session.movie.name
                   }
                   onClick={() => openModal(index)}
+                  editable={false}
+                  onClickEdit={() => {}}
                 />
               ))}
               {currentPage === totalPages &&

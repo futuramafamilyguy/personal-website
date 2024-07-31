@@ -61,7 +61,7 @@
 }
 
 .title {
-  padding-bottom: 20px;
+  padding-bottom: 30px;
 }
 
 .title,
@@ -83,8 +83,30 @@ label {
   transition: background-color 0.3s, color 0.3s;
 }
 
+.deleteButton {
+  padding: 7px 15px;
+  background-color: #1a1a1a;
+  color: #c11c1c;
+  border: 1px solid #c11c1c;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
 .buttonContainer {
   padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+input[type="checkbox"]:checked {
+  color: #1a1a1a;
+  background-color: white;
 }
 
 .result {

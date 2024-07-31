@@ -8,4 +8,6 @@ export default interface Picture {
   yearReleased: number;
   zinger: string;
   cinema: Cinema;
+  monthWatched: number;
+  isFavorite: boolean;
 }

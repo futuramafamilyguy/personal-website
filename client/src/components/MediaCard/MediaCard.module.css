@@ -36,3 +36,19 @@
   padding-left: 10px;
   border-radius: 10px;
 }
+
+.edit {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.editIcon {
+  padding-top: 3px;
+  padding-right: 3px;
+  fill: white;
+  text-shadow: 5px;
+  z-index: 2;
+}

@@ -20,6 +20,7 @@ const PictureContainer: React.FC = () => {
     loading,
     emptyMediaCardArray,
     setCurrentPage,
+    setTrigger,
   } = usePictures(1);
 
   const isLoggedIn = useAuth();
@@ -76,6 +77,11 @@ const PictureContainer: React.FC = () => {
     }
   };
 
+  const openNewPictureModal = (index: number | null) => {
+    setPictureIndex(index);
+    setNewModalOpen(true);
+  };
+
   const renderContent = () => {
     if (loading) {
       return <MessageDisplay message={"Loading..."} />;
@@ -87,14 +93,17 @@ const PictureContainer: React.FC = () => {
               {isLoggedIn ? (
                 <NewMediaCard
                   mediaType="Picture"
-                  onClick={() => setNewModalOpen(true)}
+                  onClick={() => openNewPictureModal(null)}
                 />
               ) : null}
               {isLoggedIn ? (
                 <NewPictureModal
                   isOpen={newModalOpen}
                   onClose={() => setNewModalOpen(false)}
-                  picture={null}
+                  picture={
+                    pictureIndex !== null ? pictures[pictureIndex] : null
+                  }
+                  setTrigger={() => setTrigger((prevTrigger) => !prevTrigger)}
                 />
               ) : null}
 
@@ -104,6 +113,8 @@ const PictureContainer: React.FC = () => {
                   imageUrl={picture.imageUrl}
                   title={picture.alias ?? picture.name}
                   onClick={() => openModal(index)}
+                  editable={isLoggedIn}
+                  onClickEdit={() => openNewPictureModal(index)}
                 />
               ))}
               {currentPage === totalPages &&
