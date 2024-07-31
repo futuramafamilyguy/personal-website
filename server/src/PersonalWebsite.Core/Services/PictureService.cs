@@ -31,7 +31,8 @@ public class PictureService : IPictureService
         Cinema cinema,
         int yearReleased,
         string? zinger,
-        string? alias
+        string? alias,
+        bool isFavorite
     )
     {
         var picture = await _pictureRepository.AddAsync(
@@ -43,7 +44,8 @@ public class PictureService : IPictureService
                 Cinema = cinema,
                 YearReleased = yearReleased,
                 Zinger = zinger,
-                Alias = alias
+                Alias = alias,
+                IsFavorite = isFavorite
             }
         );
 
@@ -79,13 +81,6 @@ public class PictureService : IPictureService
                 IsFavorite = isFavorite
             }
         );
-
-        return updatedPicture;
-    }
-
-    public async Task<Picture> ToggleFavoriteAsync(string id)
-    {
-        var updatedPicture = await _pictureRepository.ToggleFavoriteStatusAsync(id);
 
         return updatedPicture;
     }

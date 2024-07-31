@@ -13,7 +13,6 @@ public interface IPictureRepository
     Task<IEnumerable<Picture>> GetFavoritesByYearWatchedAsync(int yearWatched);
     Task<Picture> AddAsync(Picture picture);
     Task<Picture> UpdateAsync(string id, Picture picture);
-    Task<Picture> ToggleFavoriteStatusAsync(string id);
     Task<long> UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema);
     Task RemoveAsync(string id);
     Task<bool> CheckCinemaAssociationExistenceAsync(string cinemaId);

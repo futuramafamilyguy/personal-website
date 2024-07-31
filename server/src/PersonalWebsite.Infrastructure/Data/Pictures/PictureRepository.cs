@@ -82,20 +82,6 @@ public class PictureRepository : IPictureRepository
         return updatedPicture;
     }
 
-    public async Task<Picture> ToggleFavoriteStatusAsync(string id)
-    {
-        var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Id, id);
-        var updatedPicture = await _pictures.Find(filter).FirstOrDefaultAsync();
-        updatedPicture.IsFavorite = !updatedPicture.IsFavorite;
-        var updateQuery = Builders<PictureDocument>.Update.Set(
-            picture => picture.IsFavorite,
-            updatedPicture.IsFavorite
-        );
-        await _pictures.UpdateOneAsync(filter, updateQuery);
-
-        return PictureMapper.ToDomain(updatedPicture);
-    }
-
     public async Task<long> UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema)
     {
         var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Cinema.Id, cinemaId);

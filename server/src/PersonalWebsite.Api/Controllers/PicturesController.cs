@@ -76,7 +76,8 @@ public class PicturesController : ControllerBase
             request.CinemaId,
             request.YearReleased ?? DateTime.Now.Year,
             request.Zinger,
-            request.Alias
+            request.Alias,
+            request.IsFavorite ?? false
         );
 
         return Ok(picture);
@@ -104,15 +105,6 @@ public class PicturesController : ControllerBase
             request.ImageUrl,
             request.IsFavorite
         );
-
-        return Ok(picture);
-    }
-
-    [Authorize(Policy = "AdminPolicy")]
-    [HttpPut("{year}/{id}/favorite")]
-    public async Task<IActionResult> ToggleFavoriteAsync(string id)
-    {
-        var picture = await _pictureService.ToggleFavoriteAsync(id);
 
         return Ok(picture);
     }

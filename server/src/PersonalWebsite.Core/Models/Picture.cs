@@ -11,7 +11,7 @@ public class Picture
     public required Cinema Cinema { get; set; }
     public required int YearReleased { get; set; }
     public string? Zinger { get; set; }
-    public bool IsFavorite { get; set; } = false;
+    public bool IsFavorite { get; set; }
     public string? Alias { get; set; }
     public string? ImageUrl { get; set; }
 }

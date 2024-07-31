@@ -29,7 +29,8 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         string cinemaId,
         int yearReleased,
         string? zinger,
-        string? alias
+        string? alias,
+        bool isFavorite
     )
     {
         var cinema = await _cinemaService.GetCinemaAsync(cinemaId);
@@ -40,7 +41,8 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
             cinema,
             yearReleased,
             zinger,
-            alias
+            alias,
+            isFavorite
         );
 
         return picture;
