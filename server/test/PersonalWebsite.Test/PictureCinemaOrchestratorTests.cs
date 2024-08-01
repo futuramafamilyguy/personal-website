@@ -29,6 +29,7 @@ public class PictureCinemaOrchestratorTests
         int yearReleased = 2020;
         var zinger = "bazinga";
         var alias = "car";
+        var isFavorite = false;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -50,7 +51,8 @@ public class PictureCinemaOrchestratorTests
             cinemaId,
             yearReleased,
             zinger,
-            alias
+            alias,
+            isFavorite
         );
 
         // assert
@@ -69,7 +71,8 @@ public class PictureCinemaOrchestratorTests
                     ),
                     yearReleased,
                     zinger,
-                    alias
+                    alias,
+                    isFavorite
                 ),
             Times.Once()
         );
@@ -95,6 +98,7 @@ public class PictureCinemaOrchestratorTests
         var zinger = "bazinga";
         var alias = "car";
         var imageUrl = "domain/images/image.jpg";
+        var isFavorite = false;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -118,7 +122,8 @@ public class PictureCinemaOrchestratorTests
             yearReleased,
             zinger,
             alias,
-            imageUrl
+            imageUrl,
+            isFavorite
         );
 
         // assert
@@ -134,7 +139,8 @@ public class PictureCinemaOrchestratorTests
                     yearReleased,
                     zinger,
                     alias,
-                    imageUrl
+                    imageUrl,
+                    isFavorite
                 ),
             Times.Once()
         );

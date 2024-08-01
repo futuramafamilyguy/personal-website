@@ -75,6 +75,7 @@ public class PictureServiceTests
         var yearReleased = 2020;
         var zinger = "bazinga";
         var alias = "car";
+        var isFavorite = false;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -94,7 +95,8 @@ public class PictureServiceTests
             cinema,
             yearReleased,
             zinger,
-            alias
+            alias,
+            isFavorite
         );
 
         // assert
@@ -105,10 +107,14 @@ public class PictureServiceTests
                         (Picture picture) =>
                             picture.Name == pictureName
                             && picture.YearWatched == yearWatched
+                            && picture.MonthWatched == monthWatched
                             && picture.Zinger == zinger
                             && picture.Cinema.Id == cinemaId
                             && picture.Cinema.Name == cinemaName
                             && picture.Cinema.City == city
+                            && picture.YearReleased == yearReleased
+                            && picture.Alias == alias
+                            && picture.IsFavorite == isFavorite
                     )
                 ),
             Times.Once()
@@ -130,6 +136,7 @@ public class PictureServiceTests
         var updatedZinger = "bazinga";
         var updatedAlias = "car";
         var updatedImageUrl = "domain/images/image.jpg";
+        var updatedIsFavorite = true;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -151,7 +158,8 @@ public class PictureServiceTests
             updatedYearReleased,
             updatedZinger,
             updatedAlias,
-            updatedImageUrl
+            updatedImageUrl,
+            updatedIsFavorite
         );
 
         // assert
@@ -168,6 +176,9 @@ public class PictureServiceTests
                             && picture.Cinema.Id == cinemaId
                             && picture.Cinema.Name == cinemaName
                             && picture.Cinema.City == city
+                            && picture.YearReleased == updatedYearReleased
+                            && picture.Alias == updatedAlias
+                            && picture.IsFavorite == updatedIsFavorite
                     )
                 ),
             Times.Once()
@@ -188,22 +199,6 @@ public class PictureServiceTests
 
         // assert
         repositoryMock.Verify(x => x.RemoveAsync(pictureId), Times.Once());
-    }
-
-    [Fact]
-    public async Task ToggleFavoriteAsync_ShouldCallToggleFavoriteStatusAsync()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
-
-        var pictureId = "123";
-
-        // act
-        await sut.ToggleFavoriteAsync(pictureId);
-
-        // assert
-        repositoryMock.Verify(x => x.ToggleFavoriteStatusAsync(pictureId), Times.Once());
     }
 
     [Fact]
