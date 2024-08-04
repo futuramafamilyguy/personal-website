@@ -39,7 +39,12 @@ public class StatisticsController : ControllerBase
         HttpContext.Response.Cookies.Append(
             "ExcludeVisit",
             _configuration.ExcludeVisitCookieValue,
-            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(30), SameSite = SameSiteMode.None }
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(30),
+                SameSite = SameSiteMode.None,
+                Secure = true
+            }
         );
 
         return Ok("Visit exclusion cookie set.");

@@ -41,7 +41,12 @@ public class AuthController : Controller
         HttpContext.Response.Cookies.Append(
             "ExcludeVisit",
             _visitExclusionConfiguration.ExcludeVisitCookieValue,
-            new CookieOptions { HttpOnly = true, Expires = DateTimeOffset.UtcNow.AddDays(30), SameSite = SameSiteMode.None }
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTimeOffset.UtcNow.AddDays(30),
+                SameSite = SameSiteMode.None
+            }
         );
 
         return Ok("Admin login successful.");

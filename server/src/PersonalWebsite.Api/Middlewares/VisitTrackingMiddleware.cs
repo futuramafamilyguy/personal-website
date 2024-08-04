@@ -51,6 +51,7 @@ public class VisitTrackingMiddleware
         && (
             path.Value.Contains("/favicon.ico")
             || path.Value.Contains("/active-years")
+            || path.Value.Contains("/cinemas")
             || path.Value.Contains("/stats")
         );
 
