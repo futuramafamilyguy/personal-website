@@ -58,7 +58,7 @@
   border: none;
   cursor: pointer;
   z-index: 1003;
-  opacity: 0.1;
+  opacity: 0.4;
   transition: opacity 0.3s ease-in-out;
 }
 

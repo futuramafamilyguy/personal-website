@@ -29,7 +29,7 @@ const ComingSoonPage: React.FC = () => (
           </p>
           <p>
             <span style={{ fontStyle: "italic" }}>
-              Last updated on 17/7/2024
+              Last updated on 5/8/2024
             </span>
           </p>
         </div>
@@ -56,17 +56,24 @@ const ComingSoonPage: React.FC = () => (
           </p>
         </div>
         <div className={styles.textBox}>
-          <h5>NZ Picture Sessions</h5>
+          <h5>More session data</h5>
           <p>
-            This feature has now been completed. Come check it out{" "}
+            As of now, the{" "}
             <a
               href="https://allenmaygibson.com/sessions"
               target="_blank"
               className={styles.externalLink}
             >
-              here
-            </a>
-            .
+              sesssions page
+            </a>{" "}
+            only displays session data for the newest releases of the current
+            week. This means pictures that have debuted in the current week
+            won't be present in the following weeks even if there are still
+            sessions for it.
+          </p>
+          <p>
+            An option to view session data of the remaining pictures will be
+            added to the page.
           </p>
         </div>
       </div>
