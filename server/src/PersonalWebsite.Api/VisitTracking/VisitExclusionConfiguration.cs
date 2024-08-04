@@ -1,4 +1,4 @@
-﻿namespace PersonalWebsite.Api;
+﻿namespace PersonalWebsite.Api.VisitTracking;
 
 public class VisitExclusionConfiguration
 {

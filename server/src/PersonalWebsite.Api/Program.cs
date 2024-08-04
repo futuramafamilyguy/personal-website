@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using PersonalWebsite.Api;
 using PersonalWebsite.Api.Authentication;
 using PersonalWebsite.Api.Middlewares;
+using PersonalWebsite.Api.VisitTracking;
 using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
@@ -31,6 +32,7 @@ builder.Services.AddMongoClient(
 builder.Services.AddHostedService<ConfigureMongoDbIndexesService>();
 builder.Services.AddCoreServices();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddVisitTrackingServices();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();

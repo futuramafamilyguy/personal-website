@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using PersonalWebsite.Api.VisitTracking;
 using PersonalWebsite.Infrastructure.Data.Visits;
 
 namespace PersonalWebsite.Api.Middlewares;
@@ -6,14 +7,17 @@ namespace PersonalWebsite.Api.Middlewares;
 public class VisitTrackingMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly VisitorService _visitorService;
     private readonly VisitExclusionConfiguration _configuration;
 
     public VisitTrackingMiddleware(
         RequestDelegate next,
+        VisitorService visitorService,
         IOptions<VisitExclusionConfiguration> configuration
     )
     {
         _next = next;
+        _visitorService = visitorService;
         _configuration = configuration.Value;
     }
 
@@ -22,6 +26,10 @@ public class VisitTrackingMiddleware
         VisitStatisticsRepository _visitStatisticsRepository
     )
     {
+        var requestIp = context.Connection.RemoteIpAddress is not null
+            ? context.Connection.RemoteIpAddress.ToString()
+            : null;
+
         if (
             !context.Session.Keys.Contains("Visited")
             && !ExcludeVisit(context)
@@ -32,6 +40,7 @@ public class VisitTrackingMiddleware
                     && !IsPathExluded(context.Request.Path)
                 )
             )
+            && !_visitorService.IsRecentVisitor(requestIp)
         )
         {
             context.Session.SetString("Visited", "true");

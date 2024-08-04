@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using PersonalWebsite.Api.VisitTracking;
 using PersonalWebsite.Infrastructure.Data.Visits;
 
 namespace PersonalWebsite.Api.Controllers;
