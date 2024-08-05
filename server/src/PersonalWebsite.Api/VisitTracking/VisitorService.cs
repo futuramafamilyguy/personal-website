@@ -15,14 +15,13 @@ public class VisitorService
 
     public bool IsRecentVisitor(string? ipAddress)
     {
-        if (ipAddress == null)
+        if (ipAddress is null)
         {
             return false;
         }
 
         if (_recentVisitors.TryGetValue(ipAddress, out var lastVisitTime))
         {
-            Console.WriteLine(ipAddress);
             if (DateTime.UtcNow - lastVisitTime <= _visitWindow)
             {
                 return true;

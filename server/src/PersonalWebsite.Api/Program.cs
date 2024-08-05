@@ -137,6 +137,8 @@ app.UseSession();
 
 app.UseAuthorization();
 
+app.UseMiddleware<IpForwardMiddleware>();
+
 app.UseMiddleware<VisitTrackingMiddleware>();
 
 app.MapControllers();
