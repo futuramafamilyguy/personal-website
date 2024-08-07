@@ -26,9 +26,7 @@ public class VisitTrackingMiddleware
         VisitStatisticsRepository _visitStatisticsRepository
     )
     {
-        var requestIp = context.Connection.RemoteIpAddress is not null
-            ? context.Connection.RemoteIpAddress.ToString()
-            : null;
+        var requestIp = context.Items["ClientIp"]?.ToString();
 
         if (
             !context.Session.Keys.Contains("Visited")
