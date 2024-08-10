@@ -3,15 +3,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
 import { useYear } from "../../contexts/YearContext";
-import {
-  debouncedCreatePicture,
-  debouncedDeleteImage,
-  debouncedDeletePicture,
-  debouncedFetchCinemas,
-  debouncedUpdatePicture,
-  debouncedUploadImage,
-  makeDebouncedRequest,
-} from "../../personalWebsiteApi";
+import { debouncedCreatePicture, debouncedDeleteImage, debouncedDeletePicture, debouncedFetchCinemas, debouncedUpdatePicture, debouncedUploadImage, makeDebouncedRequest } from "../../personalWebsiteApi";
 import Cinema from "../../types/Cinema";
 import Picture from "../../types/Picture";
 import styles from "./NewPictureModal.module.css";
@@ -205,34 +197,60 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
 
   const orchestrateUpdatePicture = () => {
     if (image) {
-      deleteImage(picture!.id)
-        .then((response) => {
-          if (response.status === 204) {
-            return uploadImage(picture!.id);
-          } else {
-            throw new Error(`Error deleting picture image ${response.status}`);
-          }
-        })
-        .then((response: AxiosResponse<UploadImageResponse>) => {
-          if (response.status === 200) {
-            return updatePicture(picture!.id, response.data.imageUrl);
-          } else {
-            throw new Error(`Error uploading image ${response.status}`);
-          }
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            setResult("Successfully updated picture");
-            setTrigger();
-            onClose();
-          } else {
-            throw new Error(`Error updating picture ${response.status}`);
-          }
-        })
-        .catch((error: any) => {
-          console.error("Error updating picture:", error);
-          setResult("Error updating picture");
-        });
+      if (isDefaultImage(picture!.imageUrl)) {
+        uploadImage(picture!.id)
+          .then((response: AxiosResponse<UploadImageResponse>) => {
+            if (response.status === 200) {
+              return updatePicture(picture!.id, response.data.imageUrl);
+            } else {
+              throw new Error(`Error uploading image ${response.status}`);
+            }
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              setResult("Successfully updated picture");
+              setTrigger();
+              onClose();
+            } else {
+              throw new Error(`Error updating picture ${response.status}`);
+            }
+          })
+          .catch((error: any) => {
+            console.error("Error updating picture:", error);
+            setResult("Error updating picture");
+          });
+      } else {
+        deleteImage(picture!.id)
+          .then((response) => {
+            if (response.status === 204) {
+              return uploadImage(picture!.id);
+            } else {
+              throw new Error(
+                `Error deleting picture image ${response.status}`
+              );
+            }
+          })
+          .then((response: AxiosResponse<UploadImageResponse>) => {
+            if (response.status === 200) {
+              return updatePicture(picture!.id, response.data.imageUrl);
+            } else {
+              throw new Error(`Error uploading image ${response.status}`);
+            }
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              setResult("Successfully updated picture");
+              setTrigger();
+              onClose();
+            } else {
+              throw new Error(`Error updating picture ${response.status}`);
+            }
+          })
+          .catch((error: any) => {
+            console.error("Error updating picture:", error);
+            setResult("Error updating picture");
+          });
+      }
     } else {
       updatePicture(picture!.id, null)
         .then((response) => {
