@@ -15,19 +15,19 @@ public class VisitorService
 
     public bool IsRecentVisitor(string? ipAddress)
     {
-        if (ipAddress == null)
+        if (ipAddress is null)
         {
             return false;
         }
 
         if (_recentVisitors.TryGetValue(ipAddress, out var lastVisitTime))
         {
-            Console.WriteLine(ipAddress);
             if (DateTime.UtcNow - lastVisitTime <= _visitWindow)
             {
                 return true;
             }
         }
+        Console.WriteLine($"Visit at ${DateTime.UtcNow} from ${ipAddress}");
         _recentVisitors[ipAddress] = DateTime.UtcNow;
         RemoveOutdatedVisitors();
 
