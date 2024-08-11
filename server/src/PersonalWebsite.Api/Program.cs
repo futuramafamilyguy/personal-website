@@ -33,6 +33,7 @@ builder.Services.AddHostedService<ConfigureMongoDbIndexesService>();
 builder.Services.AddCoreServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddVisitTrackingServices();
+builder.Services.AddAmazonS3Services(builder.Configuration.GetAWSOptions());
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();

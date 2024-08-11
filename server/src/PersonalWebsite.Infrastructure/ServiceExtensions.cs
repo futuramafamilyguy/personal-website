@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Amazon.Extensions.NETCore.Setup;
+using Amazon.S3;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Infrastructure.Data;
@@ -17,6 +19,17 @@ public static class ServiceExtensions
         services.AddScoped<IPictureRepository, PictureRepository>();
         services.AddScoped<ICinemaRepository, CinemaRepository>();
         services.AddScoped<IImageStorage, FileImageStorage>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAmazonS3Services(
+        this IServiceCollection services,
+        AWSOptions options
+    )
+    {
+        services.AddDefaultAWSOptions(options);
+        services.AddAWSService<IAmazonS3>();
 
         return services;
     }
