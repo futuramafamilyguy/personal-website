@@ -3,7 +3,15 @@ import React, { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
 import { useYear } from "../../contexts/YearContext";
-import { debouncedCreatePicture, debouncedDeleteImage, debouncedDeletePicture, debouncedFetchCinemas, debouncedUpdatePicture, debouncedUploadImage, makeDebouncedRequest } from "../../personalWebsiteApi";
+import {
+  debouncedCreatePicture,
+  debouncedDeleteImage,
+  debouncedDeletePicture,
+  debouncedFetchCinemas,
+  debouncedUpdatePicture,
+  debouncedUploadImage,
+  makeDebouncedRequest,
+} from "../../personalWebsiteApi";
 import Cinema from "../../types/Cinema";
 import Picture from "../../types/Picture";
 import styles from "./NewPictureModal.module.css";
@@ -96,7 +104,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     formData.append("imageFile", image!);
 
     return makeDebouncedRequest(debouncedUploadImage, {
-      url: `/pictures/${id}/image`,
+      url: `/pictures/${year}/${id}/image`,
       method: "post",
       headers: {
         "Content-Type": "multipart/form-data",
