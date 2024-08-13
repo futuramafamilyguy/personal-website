@@ -7,7 +7,8 @@ using PersonalWebsite.Infrastructure.Data;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
 using PersonalWebsite.Infrastructure.Data.Pictures;
 using PersonalWebsite.Infrastructure.Data.Visits;
-using PersonalWebsite.Infrastructure.Images;
+using PersonalWebsite.Infrastructure.Images.AmazonS3;
+using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 
 namespace PersonalWebsite.Infrastructure;
 
@@ -18,7 +19,8 @@ public static class ServiceExtensions
         services.AddScoped<VisitStatisticsRepository>();
         services.AddScoped<IPictureRepository, PictureRepository>();
         services.AddScoped<ICinemaRepository, CinemaRepository>();
-        services.AddScoped<IImageStorage, FileImageStorage>();
+        // services.AddScoped<IImageStorage, LocalImageStorage>();
+        services.AddScoped<IImageStorage, AmazonS3ImageStorage>();
 
         return services;
     }

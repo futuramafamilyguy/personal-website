@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using PersonalWebsite.Api.DTOs;
 using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Interfaces;
@@ -14,18 +15,21 @@ public class PicturesController : ControllerBase
     private readonly IPictureService _pictureService;
     private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
     private readonly IImageStorage _imageStorage;
+    private readonly ImageStorageConfiguration _imageStorageConfiguration;
     private readonly ILogger<PicturesController> _logger;
 
     public PicturesController(
         IPictureService pictureTrackingService,
         IPictureCinemaOrchestrator pictureCinemaOrchestrator,
         IImageStorage imageStorage,
+        IOptions<ImageStorageConfiguration> imageStorageConfiguration,
         ILogger<PicturesController> logger
     )
     {
         _pictureService = pictureTrackingService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
         _imageStorage = imageStorage;
+        _imageStorageConfiguration = imageStorageConfiguration.Value;
         _logger = logger;
     }
 
@@ -127,10 +131,14 @@ public class PicturesController : ControllerBase
     }
 
     [Authorize(Policy = "AdminPolicy")]
-    [HttpPost("{pictureId}/image")]
-    public async Task<IActionResult> UploadImageAsync(string pictureId, IFormFile imageFile)
+    [HttpPost("{year}/{pictureId}/image")]
+    public async Task<IActionResult> UploadImageAsync(
+        int year,
+        string pictureId,
+        IFormFile imageFile
+    )
     {
-        if (imageFile == null || imageFile.Length == 0)
+        if (imageFile is null || imageFile.Length == 0)
         {
             _logger.LogError("No file uploaded or file is empty");
             return BadRequest("No file uploaded or file is empty");
@@ -141,26 +149,25 @@ public class PicturesController : ControllerBase
             using var stream = imageFile.OpenReadStream();
             var fileExtension = Path.GetExtension(imageFile.FileName);
             var uniqueFileName = $"{pictureId}{fileExtension}";
-            await _imageStorage.SaveImageAsync(stream, uniqueFileName, ImageCategory.Picture);
+            var imageDirectory = _imageStorageConfiguration.PictureImageDirectory.Replace(
+                "{year}",
+                year.ToString()
+            );
+            await _imageStorage.SaveImageAsync(stream, uniqueFileName, imageDirectory);
 
-            var imageUrl = _imageStorage.GetImageUrl(uniqueFileName, ImageCategory.Picture);
+            var imageUrl = _imageStorage.GetImageUrl(uniqueFileName, imageDirectory);
 
             return Ok(new { ImageUrl = imageUrl });
         }
-        catch (InvalidImageFormatException ex)
+        catch (InvalidImageFormatException)
         {
-            _logger.LogError(ex, $"{imageFile.FileName} has an invalid file extension");
             return BadRequest(
                 $"{Path.GetExtension(imageFile.FileName)} is an invalid image format"
             );
         }
-        catch (ImageStorageException ex)
+        catch (ImageStorageException)
         {
-            _logger.LogError(
-                ex,
-                $"An error occurred while saving the image {imageFile.FileName} for picture {pictureId}"
-            );
-            return StatusCode(500, "An error occurred while saving the image");
+            return StatusCode(500, "An error occurred while uploading the image");
         }
     }
 
@@ -169,18 +176,33 @@ public class PicturesController : ControllerBase
     public async Task<IActionResult> DeleteImageAsync(string pictureId)
     {
         var picture = await _pictureService.GetPictureAsync(pictureId);
+        if (picture.ImageUrl is null)
+        {
+            _logger.LogInformation(
+                $"Nothing deleted as no image is specified for picture '{pictureId}'"
+            );
+            return NoContent();
+        }
+
         var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl!);
 
         try
         {
-            await _imageStorage.RemoveImageAsync(imageFileName, ImageCategory.Picture);
+            await _imageStorage.RemoveImageAsync(
+                imageFileName,
+                _imageStorageConfiguration.PictureImageDirectory.Replace(
+                    "{year}",
+                    picture.YearWatched.ToString()
+                )
+            );
 
             return NoContent();
         }
-        catch (FileNotFoundException ex)
+        catch (FileNotFoundException)
         {
-            _logger.LogError(ex, $"Cannot find image at {picture.ImageUrl}");
-            return NotFound($"No image found for picture {pictureId}");
+            return NotFound(
+                $"An image is specified picture '{pictureId}' but the file could not be found"
+            );
         }
     }
 }

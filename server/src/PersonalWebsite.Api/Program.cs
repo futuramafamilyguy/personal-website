@@ -8,6 +8,8 @@ using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
 using PersonalWebsite.Infrastructure.Images;
+using PersonalWebsite.Infrastructure.Images.AmazonS3;
+using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,14 +17,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<MongoDbConfiguration>(
     builder.Configuration.GetSection("MongoDbConfiguration")
 );
-builder.Services.Configure<FileImageStorageConfiguration>(
-    builder.Configuration.GetSection("FileImageStorageConfiguration")
-);
 builder.Services.Configure<BasicAuthConfiguration>(
     builder.Configuration.GetSection("BasicAuthConfiguration")
 );
 builder.Services.Configure<VisitExclusionConfiguration>(
     builder.Configuration.GetSection("VisitExclusionConfiguration")
+);
+builder.Services.Configure<ImageStorageConfiguration>(
+    builder.Configuration.GetSection("ImageStorageConfiguration")
+);
+builder.Services.Configure<LocalImageStorageConfiguration>(
+    builder.Configuration.GetSection("LocalImageStorageConfiguration")
+);
+builder.Services.Configure<AmazonS3ImageStorageConfiguration>(
+    builder.Configuration.GetSection("AmazonS3ImageStorageConfiguration")
 );
 
 builder.Services.AddMongoClient(

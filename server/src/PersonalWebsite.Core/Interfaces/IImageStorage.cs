@@ -4,8 +4,8 @@ namespace PersonalWebsite.Core.Interfaces;
 
 public interface IImageStorage
 {
-    Task<string> SaveImageAsync(Stream fileStream, string fileName, ImageCategory category);
-    Task RemoveImageAsync(string fileName, ImageCategory category);
-    string GetImageUrl(string fileName, ImageCategory category);
+    Task<string> SaveImageAsync(Stream fileStream, string fileName, string directory);
+    Task RemoveImageAsync(string fileName, string directory);
+    string GetImageUrl(string fileName, string directory);
     string GetImageFileNameFromUrl(string imageUrl);
 }
