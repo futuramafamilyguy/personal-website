@@ -18,6 +18,7 @@ services:
       ConnectionStrings__PersonalWebsiteDb: ${PERSONALWEBSITE_CONNECTION_STRING}
       FileImageStorageConfiguration__RootImageDirectoryPath: ${IMAGE_DIRECTORY_PATH}
       FileImageStorageConfiguration__BaseImageUrl: ${BASE_IMAGE_URL}
+      AmazonS3ImageStorageConfiguration__Bucket: ${AMAZONS3_BUCKET}
       BasicAuthConfiguration__AdminUsername: ${ADMIN_USERNAME}
       BasicAuthConfiguration__AdminPassword: ${ADMIN_PASSWORD}
       BasicAuthConfiguration__DisableTrackingUsername: ${DISABLETRACKING_USERNAME}
