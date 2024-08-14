@@ -6,17 +6,16 @@ namespace PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 
 public class LocalImageStorage : IImageStorage
 {
-    private readonly LocalImageStorageConfiguration _configuration;
+    private const string Wwwroot = "wwwroot";
+
     private readonly ImageStorageConfiguration _baseConfiguration;
     private readonly ILogger<LocalImageStorage> _logger;
 
     public LocalImageStorage(
-        IOptions<LocalImageStorageConfiguration> configuration,
         IOptions<ImageStorageConfiguration> baseConfiguration,
         ILogger<LocalImageStorage> logger
     )
     {
-        _configuration = configuration.Value;
         _baseConfiguration = baseConfiguration.Value;
         _logger = logger;
     }
@@ -69,6 +68,14 @@ public class LocalImageStorage : IImageStorage
         return fileName;
     }
 
+    private static string ConvertImageUrlToLocalPath(string imageUrl)
+    {
+        var uri = new Uri(imageUrl);
+        var pathAndQuery = uri.PathAndQuery;
+
+        return Wwwroot.TrimEnd('/') + pathAndQuery;
+    }
+
     private bool IsValidImageFormat(string fileName)
     {
         var extension = Path.GetExtension(fileName).ToLowerInvariant();
@@ -78,7 +85,10 @@ public class LocalImageStorage : IImageStorage
 
     private string GetImageFilePath(string fileName, string directory)
     {
-        var imagesDirectoryPath = Path.Combine(_configuration.RootImageDirectoryPath, directory);
+        var imagesDirectoryPath = Path.Combine(
+            ConvertImageUrlToLocalPath(_baseConfiguration.BaseImageUrl),
+            directory
+        );
         var filePath = Path.Combine(imagesDirectoryPath, fileName);
 
         return filePath;
@@ -86,7 +96,10 @@ public class LocalImageStorage : IImageStorage
 
     private void CreateImageDirectoryIfNotExists(string directory)
     {
-        var imagesDirectoryPath = Path.Combine(_configuration.RootImageDirectoryPath, directory);
+        var imagesDirectoryPath = Path.Combine(
+            ConvertImageUrlToLocalPath(_baseConfiguration.BaseImageUrl),
+            directory
+        );
         if (!Directory.Exists(imagesDirectoryPath))
         {
             Directory.CreateDirectory(imagesDirectoryPath);

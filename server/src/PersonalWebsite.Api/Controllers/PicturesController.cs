@@ -198,10 +198,11 @@ public class PicturesController : ControllerBase
 
             return NoContent();
         }
-        catch (FileNotFoundException)
+        catch (ImageStorageException)
         {
-            return NotFound(
-                $"An image is specified picture '{pictureId}' but the file could not be found"
+            return StatusCode(
+                500,
+                $"An error occurred while deleting the image for picutre '{pictureId}'"
             );
         }
     }

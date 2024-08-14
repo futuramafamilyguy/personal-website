@@ -9,7 +9,6 @@ using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
 using PersonalWebsite.Infrastructure.Images;
 using PersonalWebsite.Infrastructure.Images.AmazonS3;
-using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,11 +25,8 @@ builder.Services.Configure<VisitExclusionConfiguration>(
 builder.Services.Configure<ImageStorageConfiguration>(
     builder.Configuration.GetSection("ImageStorageConfiguration")
 );
-builder.Services.Configure<LocalImageStorageConfiguration>(
-    builder.Configuration.GetSection("LocalImageStorageConfiguration")
-);
-builder.Services.Configure<AmazonS3ImageStorageConfiguration>(
-    builder.Configuration.GetSection("AmazonS3ImageStorageConfiguration")
+builder.Services.Configure<AmazonS3Configuration>(
+    builder.Configuration.GetSection("AmazonS3Configuration")
 );
 
 builder.Services.AddMongoClient(

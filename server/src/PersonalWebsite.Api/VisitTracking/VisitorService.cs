@@ -27,7 +27,7 @@ public class VisitorService
                 return true;
             }
         }
-        Console.WriteLine($"Visit at ${DateTime.UtcNow} from ${ipAddress}");
+        Console.WriteLine($"Visit at {DateTime.UtcNow} from {ipAddress}");
         _recentVisitors[ipAddress] = DateTime.UtcNow;
         RemoveOutdatedVisitors();
 

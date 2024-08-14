@@ -10,20 +10,20 @@ namespace PersonalWebsite.Infrastructure.Images.AmazonS3;
 public class AmazonS3ImageStorage : IImageStorage
 {
     private readonly IAmazonS3 _s3Client;
-    private readonly AmazonS3ImageStorageConfiguration _configuration;
-    private readonly ImageStorageConfiguration _baseConfiguration;
+    private readonly AmazonS3Configuration _s3configuration;
+    private readonly ImageStorageConfiguration _imageStorageConfiguration;
     private readonly ILogger<LocalImageStorage> _logger;
 
     public AmazonS3ImageStorage(
         IAmazonS3 s3Client,
-        IOptions<AmazonS3ImageStorageConfiguration> configuration,
-        IOptions<ImageStorageConfiguration> baseConfiguration,
+        IOptions<AmazonS3Configuration> s3configuration,
+        IOptions<ImageStorageConfiguration> imageStorageConfiguration,
         ILogger<LocalImageStorage> logger
     )
     {
         _s3Client = s3Client;
-        _configuration = configuration.Value;
-        _baseConfiguration = baseConfiguration.Value;
+        _s3configuration = s3configuration.Value;
+        _imageStorageConfiguration = imageStorageConfiguration.Value;
         _logger = logger;
     }
 
@@ -36,7 +36,7 @@ public class AmazonS3ImageStorage : IImageStorage
     }
 
     public string GetImageUrl(string fileName, string directory) =>
-        $"{_baseConfiguration.BaseImageUrl}/{_configuration.Bucket}/{directory}/{fileName}";
+        $"{_imageStorageConfiguration.BaseImageUrl}/{_s3configuration.Bucket}/{directory}/{fileName}";
 
     public async Task RemoveImageAsync(string fileName, string directory)
     {
@@ -44,19 +44,19 @@ public class AmazonS3ImageStorage : IImageStorage
 
         try
         {
-            // throws AmazonS3Exception if key does not exist but DeleteObjectAsync doesn't throw anything
-            await _s3Client.GetObjectAsync(_configuration.Bucket, key);
+            // DeleteObjectAsync doesn't throw any errors if the key does not exist so have to call GetObjectAsync
+            await _s3Client.GetObjectAsync(_s3configuration.Bucket, key);
 
-            await _s3Client.DeleteObjectAsync(_configuration.Bucket, key);
+            await _s3Client.DeleteObjectAsync(_s3configuration.Bucket, key);
             _logger.LogInformation($"Successfully deleted image '{fileName}' at '{directory}'");
         }
         catch (AmazonS3Exception ex)
         {
             _logger.LogError(
                 ex,
-                $"Failed to delete image '{fileName}' at '{directory}' (likely because it doesn't exist in the bucket)"
+                $"Encountered AWS S3 error when deleting image '{fileName}' at '{directory}'"
             );
-            throw new FileNotFoundException("Image not found", key);
+            throw new ImageStorageException($"Failed to delete image '{fileName}'");
         }
     }
 
@@ -74,7 +74,7 @@ public class AmazonS3ImageStorage : IImageStorage
         {
             var request = new PutObjectRequest()
             {
-                BucketName = _configuration.Bucket,
+                BucketName = _s3configuration.Bucket,
                 Key = $"{directory}/{fileName}",
                 InputStream = fileStream
             };
@@ -91,18 +91,18 @@ public class AmazonS3ImageStorage : IImageStorage
         return fileName;
     }
 
-    private bool IsValidImageFormat(string fileName)
-    {
-        var extension = Path.GetExtension(fileName).ToLowerInvariant();
-
-        return _baseConfiguration.AllowedImageExtensions.Contains(extension);
-    }
-
     private static string GetImageMimeType(string fileName)
     {
         var extension = Path.GetExtension(fileName).ToLowerInvariant();
         extension = extension is "jpg" ? "jpeg" : extension;
 
         return $"image/{extension}";
+    }
+
+    private bool IsValidImageFormat(string fileName)
+    {
+        var extension = Path.GetExtension(fileName).ToLowerInvariant();
+
+        return _imageStorageConfiguration.AllowedImageExtensions.Contains(extension);
     }
 }
