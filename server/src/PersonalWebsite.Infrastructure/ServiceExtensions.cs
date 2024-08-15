@@ -9,6 +9,7 @@ using PersonalWebsite.Infrastructure.Data.Pictures;
 using PersonalWebsite.Infrastructure.Data.Visits;
 using PersonalWebsite.Infrastructure.Images.AmazonS3;
 using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
+using PersonalWebsite.Infrastructure.ImageStorage;
 
 namespace PersonalWebsite.Infrastructure;
 
@@ -19,8 +20,7 @@ public static class ServiceExtensions
         services.AddScoped<VisitStatisticsRepository>();
         services.AddScoped<IPictureRepository, PictureRepository>();
         services.AddScoped<ICinemaRepository, CinemaRepository>();
-        // services.AddScoped<IImageStorage, LocalImageStorage>();
-        services.AddScoped<IImageStorage, AmazonS3ImageStorage>();
+        services.AddImageStorageServices();
 
         return services;
     }
@@ -48,6 +48,20 @@ public static class ServiceExtensions
             SeedInitialData(client, mongodbConfig);
 
             return client;
+        });
+    }
+
+    private static void AddImageStorageServices(this IServiceCollection services)
+    {
+        services.AddScoped<LocalImageStorage>();
+        services.AddScoped<AmazonS3ImageStorage>();
+        services.AddSingleton<ImageStorageFactory>();
+
+        services.AddScoped(provider =>
+        {
+            var factory = provider.GetRequiredService<ImageStorageFactory>();
+
+            return factory.CreateImageStorage();
         });
     }
 
