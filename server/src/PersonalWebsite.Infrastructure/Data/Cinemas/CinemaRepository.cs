@@ -28,7 +28,11 @@ public class CinemaRepository : ICinemaRepository
 
     public async Task<IEnumerable<Cinema>> GetAsync()
     {
-        var cinemas = await _cinemas.Find(FilterDefinition<CinemaDocument>.Empty).ToListAsync();
+        var sort = Builders<CinemaDocument>.Sort.Ascending(cinema => cinema.Name);
+        var cinemas = await _cinemas
+            .Find(FilterDefinition<CinemaDocument>.Empty)
+            .Sort(sort)
+            .ToListAsync();
 
         return cinemas.Select(CinemaMapper.ToDomain);
     }
