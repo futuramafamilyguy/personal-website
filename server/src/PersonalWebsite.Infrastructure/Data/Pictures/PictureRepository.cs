@@ -36,9 +36,7 @@ public class PictureRepository : IPictureRepository
             picture => picture.YearWatched,
             yearWatched
         );
-        var sort = Builders<PictureDocument>
-            .Sort.Descending(picture => picture.MonthWatched)
-            .Descending(picture => picture.Id);
+        var sort = SortPicturesByWatchDate();
         var totalCount = await _pictures.CountDocumentsAsync(filter);
         var pictures = await _pictures
             .Find(filter)
@@ -52,10 +50,11 @@ public class PictureRepository : IPictureRepository
 
     public async Task<IEnumerable<Picture>> GetFavoritesByYearWatchedAsync(int yearWatched)
     {
+        var sort = SortPicturesByWatchDate();
         var filter = Builders<PictureDocument>.Filter.Where(picture =>
             picture.YearWatched == yearWatched && picture.IsFavorite
         );
-        var pictures = await _pictures.Find(filter).ToListAsync();
+        var pictures = await _pictures.Find(filter).Sort(sort).ToListAsync();
 
         return pictures.Select(PictureMapper.ToDomain);
     }
@@ -111,4 +110,9 @@ public class PictureRepository : IPictureRepository
 
         return activeYears;
     }
+
+    private static SortDefinition<PictureDocument> SortPicturesByWatchDate() =>
+        Builders<PictureDocument>
+            .Sort.Descending(picture => picture.MonthWatched)
+            .Descending(picture => picture.Id);
 }
