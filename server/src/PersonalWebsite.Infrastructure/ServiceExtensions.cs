@@ -6,6 +6,7 @@ using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Infrastructure.Data;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
 using PersonalWebsite.Infrastructure.Data.Pictures;
+using PersonalWebsite.Infrastructure.Data.Posts;
 using PersonalWebsite.Infrastructure.Data.Visits;
 using PersonalWebsite.Infrastructure.Images.AmazonS3;
 using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
@@ -20,6 +21,7 @@ public static class ServiceExtensions
         services.AddScoped<VisitStatisticsRepository>();
         services.AddScoped<IPictureRepository, PictureRepository>();
         services.AddScoped<ICinemaRepository, CinemaRepository>();
+        services.AddScoped<IPostRepository, PostRepository>();
         services.AddImageStorageServices();
 
         return services;

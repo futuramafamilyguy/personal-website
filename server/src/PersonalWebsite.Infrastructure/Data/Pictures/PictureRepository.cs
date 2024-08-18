@@ -9,13 +9,13 @@ namespace PersonalWebsite.Infrastructure.Data.Pictures;
 public class PictureRepository : IPictureRepository
 {
     private readonly IMongoCollection<PictureDocument> _pictures;
-    private readonly MongoDbConfiguration _settings;
+    private readonly MongoDbConfiguration _configuration;
 
     public PictureRepository(IMongoClient client, IOptions<MongoDbConfiguration> settings)
     {
-        _settings = settings.Value;
-        var database = client.GetDatabase(_settings.DatabaseName);
-        _pictures = database.GetCollection<PictureDocument>(_settings.PicturesCollectionName);
+        _configuration = settings.Value;
+        var database = client.GetDatabase(_configuration.DatabaseName);
+        _pictures = database.GetCollection<PictureDocument>(_configuration.PicturesCollectionName);
     }
 
     public async Task<Picture> GetAsync(string id)

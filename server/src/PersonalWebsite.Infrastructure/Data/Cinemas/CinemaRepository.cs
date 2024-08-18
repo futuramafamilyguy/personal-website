@@ -8,13 +8,13 @@ namespace PersonalWebsite.Infrastructure.Data.Cinemas;
 public class CinemaRepository : ICinemaRepository
 {
     private readonly IMongoCollection<CinemaDocument> _cinemas;
-    private readonly MongoDbConfiguration _settings;
+    private readonly MongoDbConfiguration _configuration;
 
     public CinemaRepository(IMongoClient client, IOptions<MongoDbConfiguration> settings)
     {
-        _settings = settings.Value;
-        var database = client.GetDatabase(_settings.DatabaseName);
-        _cinemas = database.GetCollection<CinemaDocument>(_settings.CinemasCollectionName);
+        _configuration = settings.Value;
+        var database = client.GetDatabase(_configuration.DatabaseName);
+        _cinemas = database.GetCollection<CinemaDocument>(_configuration.CinemasCollectionName);
     }
 
     public async Task<Cinema> AddAsync(Cinema cinema)
