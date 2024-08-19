@@ -12,17 +12,23 @@ public class PostServiceTests
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var sut = new PostService(postRepositoryMock.Object);
+        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
+        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
+
+        var dateTimeNow = DateTime.UtcNow;
+        dateTimeProviderMock.Setup(x => x.UtcNow).Returns(dateTimeNow);
 
         var title = "Cars Review";
-        var createdAt = DateTime.UtcNow;
 
         // act
         await sut.AddPostAsync(title);
 
         // assert
         postRepositoryMock.Verify(
-            x => x.AddAsync(It.Is((Post post) => post.Title == title)),
+            x =>
+                x.AddAsync(
+                    It.Is((Post post) => post.Title == title && post.CreatedAtUtc == dateTimeNow)
+                ),
             Times.Once
         );
     }
@@ -32,7 +38,8 @@ public class PostServiceTests
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var sut = new PostService(postRepositoryMock.Object);
+        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
+        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
 
         var id = "123";
 
@@ -48,7 +55,8 @@ public class PostServiceTests
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var sut = new PostService(postRepositoryMock.Object);
+        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
+        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
 
         // act
         await sut.GetPostsAsync();
@@ -62,7 +70,8 @@ public class PostServiceTests
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var sut = new PostService(postRepositoryMock.Object);
+        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
+        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
 
         var id = "123";
 
@@ -78,7 +87,11 @@ public class PostServiceTests
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var sut = new PostService(postRepositoryMock.Object);
+        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
+        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
+
+        var dateTimeNow = DateTime.UtcNow;
+        dateTimeProviderMock.Setup(x => x.UtcNow).Returns(dateTimeNow);
 
         var id = "123";
         var title = "Cars 2 Review";
@@ -100,6 +113,7 @@ public class PostServiceTests
                             && post.Title == title
                             && post.ContentUrl == contentUrl
                             && post.ImageUrl == imageUrl
+                            && post.LastUpdatedUtc == dateTimeNow
                             && post.CreatedAtUtc == createdAt
                     )
                 ),

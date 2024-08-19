@@ -22,6 +22,7 @@ public static class ServiceExtensions
         services.AddScoped<IPictureRepository, PictureRepository>();
         services.AddScoped<ICinemaRepository, CinemaRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddImageStorageServices();
 
         return services;

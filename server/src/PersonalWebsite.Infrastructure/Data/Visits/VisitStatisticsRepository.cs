@@ -8,7 +8,10 @@ public class VisitStatisticsRepository
     private readonly IMongoCollection<VisitStatistics> _visitStatistics;
     private readonly MongoDbConfiguration _configuration;
 
-    public VisitStatisticsRepository(IMongoClient client, IOptions<MongoDbConfiguration> configuration)
+    public VisitStatisticsRepository(
+        IMongoClient client,
+        IOptions<MongoDbConfiguration> configuration
+    )
     {
         _configuration = configuration.Value;
         var database = client.GetDatabase(_configuration.DatabaseName);

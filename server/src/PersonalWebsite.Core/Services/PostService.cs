@@ -6,10 +6,12 @@ namespace PersonalWebsite.Core.Services;
 public class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
-    public PostService(IPostRepository postRepository)
+    public PostService(IPostRepository postRepository, IDateTimeProvider dateTimeProvider)
     {
         _postRepository = postRepository;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     public async Task<Post> AddPostAsync(string title)
@@ -18,8 +20,8 @@ public class PostService : IPostService
             new Post
             {
                 Title = title,
-                LastUpdatedUtc = DateTime.UtcNow,
-                CreatedAtUtc = DateTime.UtcNow,
+                LastUpdatedUtc = _dateTimeProvider.UtcNow,
+                CreatedAtUtc = _dateTimeProvider.UtcNow,
             }
         );
 
@@ -48,7 +50,7 @@ public class PostService : IPostService
                 Title = title,
                 ContentUrl = contentUrl,
                 ImageUrl = imageUrl,
-                LastUpdatedUtc = DateTime.UtcNow,
+                LastUpdatedUtc = _dateTimeProvider.UtcNow,
                 CreatedAtUtc = createdAtUtc,
             }
         );
