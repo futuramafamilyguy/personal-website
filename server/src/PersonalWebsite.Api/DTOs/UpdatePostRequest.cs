@@ -1,11 +1,9 @@
-﻿namespace PersonalWebsite.Core.Models;
+﻿namespace PersonalWebsite.Api.DTOs;
 
-public class Post
+public class UpdatePostRequest
 {
-    public string? Id { get; set; }
     public required string Title { get; set; }
     public string? ContentUrl { get; set; }
     public string? ImageUrl { get; set; }
-    public required DateTime LastUpdatedUtc { get; set; }
     public required DateTime CreatedAtUtc { get; set; }
 }

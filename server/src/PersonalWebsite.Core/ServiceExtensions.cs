@@ -11,6 +11,7 @@ public static class ServiceExtensions
         services.AddScoped<IPictureService, PictureService>();
         services.AddScoped<ICinemaService, CinemaService>();
         services.AddScoped<IPictureCinemaOrchestrator, PictureCinemaOrchestrator>();
+        services.AddScoped<IPostService, PostService>();
 
         return services;
     }

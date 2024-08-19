@@ -6,14 +6,14 @@ namespace PersonalWebsite.Infrastructure.Data.Visits;
 public class VisitStatisticsRepository
 {
     private readonly IMongoCollection<VisitStatistics> _visitStatistics;
-    private readonly MongoDbConfiguration _settings;
+    private readonly MongoDbConfiguration _configuration;
 
-    public VisitStatisticsRepository(IMongoClient client, IOptions<MongoDbConfiguration> settings)
+    public VisitStatisticsRepository(IMongoClient client, IOptions<MongoDbConfiguration> configuration)
     {
-        _settings = settings.Value;
-        var database = client.GetDatabase(_settings.DatabaseName);
+        _configuration = configuration.Value;
+        var database = client.GetDatabase(_configuration.DatabaseName);
         _visitStatistics = database.GetCollection<VisitStatistics>(
-            _settings.VisitStatisticsCollectionName
+            _configuration.VisitStatisticsCollectionName
         );
     }
 

@@ -13,7 +13,7 @@ public class PostDocument
     public required string Title { get; set; }
 
     [BsonElement("content_url")]
-    public required string ContentUrl { get; set; }
+    public string? ContentUrl { get; set; }
 
     [BsonElement("image_url")]
     public string? ImageUrl { get; set; }

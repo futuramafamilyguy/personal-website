@@ -10,9 +10,9 @@ public class PostRepository : IPostRepository
     private readonly IMongoCollection<PostDocument> _posts;
     private readonly MongoDbConfiguration _configuration;
 
-    public PostRepository(IMongoClient client, IOptions<MongoDbConfiguration> settings)
+    public PostRepository(IMongoClient client, IOptions<MongoDbConfiguration> configuration)
     {
-        _configuration = settings.Value;
+        _configuration = configuration.Value;
         var database = client.GetDatabase(_configuration.DatabaseName);
         _posts = database.GetCollection<PostDocument>(_configuration.PostsCollectionName);
     }
