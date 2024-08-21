@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using PersonalWebsite.Api.DTOs;
 using PersonalWebsite.Core.Interfaces;
+using PersonalWebsite.Core.Models;
+using PersonalWebsite.Infrastructure.Images;
 
 namespace PersonalWebsite.Api.Controllers;
 
@@ -10,10 +13,14 @@ namespace PersonalWebsite.Api.Controllers;
 public class PostsController : Controller
 {
     private readonly IPostService _postService;
+    private readonly IImageStorage _imageStorage;
+    private readonly ImageStorageConfiguration _imageStorageConfiguration;
 
-    public PostsController(IPostService postService)
+    public PostsController(IPostService postService, IImageStorage imageStorage, IOptions<ImageStorageConfiguration> imageStorageConfiguration)
     {
         _postService = postService;
+        _imageStorage = imageStorage;
+        _imageStorageConfiguration = imageStorageConfiguration.Value;
     }
 
     [HttpGet("")]
@@ -72,5 +79,31 @@ public class PostsController : Controller
         await _postService.RemovePostAsync(id);
 
         return NoContent();
+    }
+
+    [Authorize(Policy = "AdminPolicy")]
+    [HttpPost("{postId}/image")]
+    public async Task<IActionResult> UploadImageAsync(
+        string postId,
+        IFormFile imageFile
+    )
+    {
+        if (imageFile is null || imageFile.Length == 0)
+        {
+            return BadRequest("No file uploaded or file is empty");
+        }
+
+        using var stream = imageFile.OpenReadStream();
+        var fileExtension = Path.GetExtension(imageFile.FileName);
+        var uniqueFileName = $"{postId}{fileExtension}";
+        var imageDirectory = _imageStorageConfiguration.PictureImageDirectory.Replace(
+            "{year}",
+            year.ToString()
+        );
+        await _imageStorage.SaveImageAsync(stream, uniqueFileName, imageDirectory);
+
+        var imageUrl = _imageStorage.GetImageUrl(uniqueFileName, imageDirectory);
+
+        return Ok(new { ImageUrl = imageUrl });
     }
 }
