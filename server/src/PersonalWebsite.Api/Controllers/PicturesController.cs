@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PersonalWebsite.Api.DTOs;
 using PersonalWebsite.Core.Enums;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Infrastructure.Images;
 
@@ -14,21 +15,18 @@ public class PicturesController : ControllerBase
 {
     private readonly IPictureService _pictureService;
     private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
-    private readonly IImageStorage _imageStorage;
     private readonly ImageStorageConfiguration _imageStorageConfiguration;
     private readonly ILogger<PicturesController> _logger;
 
     public PicturesController(
         IPictureService pictureTrackingService,
         IPictureCinemaOrchestrator pictureCinemaOrchestrator,
-        IImageStorage imageStorage,
         IOptions<ImageStorageConfiguration> imageStorageConfiguration,
         ILogger<PicturesController> logger
     )
     {
         _pictureService = pictureTrackingService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
-        _imageStorage = imageStorage;
         _imageStorageConfiguration = imageStorageConfiguration.Value;
         _logger = logger;
     }
@@ -131,12 +129,8 @@ public class PicturesController : ControllerBase
     }
 
     [Authorize(Policy = "AdminPolicy")]
-    [HttpPost("{year}/{pictureId}/image")]
-    public async Task<IActionResult> UploadImageAsync(
-        int year,
-        string pictureId,
-        IFormFile imageFile
-    )
+    [HttpPost("{id}/image")]
+    public async Task<IActionResult> UploadImageAsync(string id, IFormFile imageFile)
     {
         if (imageFile is null || imageFile.Length == 0)
         {
@@ -147,23 +141,19 @@ public class PicturesController : ControllerBase
         try
         {
             using var stream = imageFile.OpenReadStream();
-            var fileExtension = Path.GetExtension(imageFile.FileName);
-            var uniqueFileName = $"{pictureId}{fileExtension}";
-            var imageDirectory = _imageStorageConfiguration.PictureImageDirectory.Replace(
-                "{year}",
-                year.ToString()
+            var extension = Path.GetExtension(imageFile.FileName);
+            var imageUrl = await _pictureService.UploadPictureImageAsync(
+                stream,
+                id,
+                extension,
+                _imageStorageConfiguration.PictureImageDirectory
             );
-            await _imageStorage.SaveImageAsync(stream, uniqueFileName, imageDirectory);
-
-            var imageUrl = _imageStorage.GetImageUrl(uniqueFileName, imageDirectory);
 
             return Ok(new { ImageUrl = imageUrl });
         }
-        catch (InvalidImageFormatException)
+        catch (ImageValidationException)
         {
-            return BadRequest(
-                $"{Path.GetExtension(imageFile.FileName)} is an invalid image format"
-            );
+            return BadRequest("Image failed validation checks");
         }
         catch (ImageStorageException)
         {
@@ -172,38 +162,25 @@ public class PicturesController : ControllerBase
     }
 
     [Authorize(Policy = "AdminPolicy")]
-    [HttpDelete("{pictureId}/image")]
-    public async Task<IActionResult> DeleteImageAsync(string pictureId)
+    [HttpDelete("{id}/image")]
+    public async Task<IActionResult> DeleteImageAsync(string id)
     {
-        var picture = await _pictureService.GetPictureAsync(pictureId);
-        if (picture.ImageUrl is null)
-        {
-            _logger.LogInformation(
-                $"Nothing deleted as no image is specified for picture '{pictureId}'"
-            );
-            return NoContent();
-        }
-
-        var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl!);
-
         try
         {
-            await _imageStorage.RemoveImageAsync(
-                imageFileName,
-                _imageStorageConfiguration.PictureImageDirectory.Replace(
-                    "{year}",
-                    picture.YearWatched.ToString()
-                )
+            await _pictureService.DeletePictureImageAsync(
+                id,
+                _imageStorageConfiguration.PictureImageDirectory
             );
 
             return NoContent();
+        }
+        catch (ImageValidationException)
+        {
+            return BadRequest("Picture image failed validation checks");
         }
         catch (ImageStorageException)
         {
-            return StatusCode(
-                500,
-                $"An error occurred while deleting the image for picutre '{pictureId}'"
-            );
+            return StatusCode(500, "An error occurred while deleting the image");
         }
     }
 }

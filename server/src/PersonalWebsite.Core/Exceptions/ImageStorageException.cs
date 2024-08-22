@@ -1,4 +1,4 @@
-﻿namespace PersonalWebsite.Infrastructure.Images;
+﻿namespace PersonalWebsite.Core.Exceptions;
 
 public class ImageStorageException : Exception
 {

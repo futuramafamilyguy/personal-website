@@ -2,8 +2,8 @@
 using Amazon.S3.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
-using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 
 namespace PersonalWebsite.Infrastructure.Images.AmazonS3;
 
@@ -12,13 +12,13 @@ public class AmazonS3ImageStorage : IImageStorage
     private readonly IAmazonS3 _s3Client;
     private readonly AmazonS3Configuration _s3configuration;
     private readonly ImageStorageConfiguration _imageStorageConfiguration;
-    private readonly ILogger<LocalImageStorage> _logger;
+    private readonly ILogger<AmazonS3ImageStorage> _logger;
 
     public AmazonS3ImageStorage(
         IAmazonS3 s3Client,
         IOptions<AmazonS3Configuration> s3configuration,
         IOptions<ImageStorageConfiguration> imageStorageConfiguration,
-        ILogger<LocalImageStorage> logger
+        ILogger<AmazonS3ImageStorage> logger
     )
     {
         _s3Client = s3Client;
@@ -48,28 +48,28 @@ public class AmazonS3ImageStorage : IImageStorage
             await _s3Client.GetObjectAsync(_s3configuration.Bucket, key);
 
             await _s3Client.DeleteObjectAsync(_s3configuration.Bucket, key);
-            _logger.LogInformation($"Successfully deleted image '{fileName}' at '{directory}'");
+            _logger.LogInformation($"Successfully deleted image '{fileName}' from '{directory}'");
         }
         catch (AmazonS3Exception ex)
         {
             _logger.LogError(
                 ex,
-                $"Encountered AWS S3 error when deleting image '{fileName}' at '{directory}'"
+                $"AWS S3 error encountered when deleting image '{fileName}' from '{directory}'"
             );
-            throw new ImageStorageException($"Failed to delete image '{fileName}'");
+            throw new ImageStorageException("Failed to delete image due to AWS S3 error", ex);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                $"Unexpected error encountered when deleting image '{fileName}' from '{directory}'"
+            );
+            throw new ImageStorageException("Failed to delete image due to unexpected error", ex);
         }
     }
 
     public async Task<string> SaveImageAsync(Stream fileStream, string fileName, string directory)
     {
-        if (!IsValidImageFormat(fileName))
-        {
-            _logger.LogError($"The image format of {fileName} is not supported");
-            throw new InvalidImageFormatException(
-                $"The image format of {fileName} is not supported"
-            );
-        }
-
         try
         {
             var request = new PutObjectRequest()
@@ -84,11 +84,26 @@ public class AmazonS3ImageStorage : IImageStorage
         }
         catch (AmazonS3Exception ex)
         {
-            _logger.LogError(ex, $"Error encountered when uploading image '{fileName}' to bucket");
-            throw new ImageStorageException($"Failed to upload image '{fileName}'");
+            _logger.LogError(
+                ex,
+                $"AWS S3 error encountered when uploading image '{fileName}' to bucket"
+            );
+            throw new ImageStorageException("Failed to upload image due to AWS S3 error", ex);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Unexpected error encountered when uploading image '{fileName}'");
+            throw new ImageStorageException("Failed to upload image due to unexpected error", ex);
         }
 
         return fileName;
+    }
+
+    public bool IsValidImageFormat(string fileName)
+    {
+        var extension = Path.GetExtension(fileName).ToLowerInvariant();
+
+        return _imageStorageConfiguration.AllowedImageExtensions.Contains(extension);
     }
 
     private static string GetImageMimeType(string fileName)
@@ -97,12 +112,5 @@ public class AmazonS3ImageStorage : IImageStorage
         extension = extension is "jpg" ? "jpeg" : extension;
 
         return $"image/{extension}";
-    }
-
-    private bool IsValidImageFormat(string fileName)
-    {
-        var extension = Path.GetExtension(fileName).ToLowerInvariant();
-
-        return _imageStorageConfiguration.AllowedImageExtensions.Contains(extension);
     }
 }

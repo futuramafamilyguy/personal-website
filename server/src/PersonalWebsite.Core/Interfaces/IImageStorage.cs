@@ -8,4 +8,5 @@ public interface IImageStorage
     Task RemoveImageAsync(string fileName, string directory);
     string GetImageUrl(string fileName, string directory);
     string GetImageFileNameFromUrl(string imageUrl);
+    bool IsValidImageFormat(string fileName);
 }

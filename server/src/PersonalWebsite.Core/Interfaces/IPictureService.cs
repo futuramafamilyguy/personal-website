@@ -38,4 +38,11 @@ public interface IPictureService
     Task RemovePictureAsync(string id);
     Task<bool> CheckIfAnyPicturesAssociatedWithCinemaAsync(string id);
     Task<IEnumerable<int>> GetActiveYearsAsync();
+    Task<string> UploadPictureImageAsync(
+        Stream imageStream,
+        string id,
+        string imageExtension,
+        string imageDirectory
+    );
+    Task DeletePictureImageAsync(string id, string imageDirectory);
 }

@@ -1,4 +1,6 @@
-﻿using PersonalWebsite.Core.Enums;
+﻿using Microsoft.Extensions.Logging;
+using PersonalWebsite.Core.Enums;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 
@@ -7,10 +9,18 @@ namespace PersonalWebsite.Core.Services;
 public class PictureService : IPictureService
 {
     private readonly IPictureRepository _pictureRepository;
+    private readonly IImageStorage _imageStorage;
+    private readonly ILogger<PictureService> _logger;
 
-    public PictureService(IPictureRepository pictureRepository)
+    public PictureService(
+        IPictureRepository pictureRepository,
+        IImageStorage imageStorage,
+        ILogger<PictureService> logger
+    )
     {
         _pictureRepository = pictureRepository;
+        _imageStorage = imageStorage;
+        _logger = logger;
     }
 
     public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetPicturesAsync(
@@ -95,4 +105,69 @@ public class PictureService : IPictureService
 
     public async Task<IEnumerable<int>> GetActiveYearsAsync() =>
         await _pictureRepository.GetActiveYearsAsync();
+
+    public async Task<string> UploadPictureImageAsync(
+        Stream imageStream,
+        string id,
+        string imageExtension,
+        string imageDirectory
+    )
+    {
+        var picture = await GetPictureAsync(id);
+
+        try
+        {
+            var imageName = $"{id}{imageExtension}";
+            if (!_imageStorage.IsValidImageFormat(imageName))
+            {
+                _logger.LogError($"Image extension '{imageExtension}' not supported");
+                throw new ImageValidationException("Invalid image extension");
+            }
+
+            var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
+            await _imageStorage.SaveImageAsync(imageStream, imageName, imageYearDirectory);
+
+            var imageUrl = _imageStorage.GetImageUrl(imageName, imageYearDirectory);
+
+            return imageUrl;
+        }
+        catch (ImageValidationException ex)
+        {
+            _logger.LogError(ex, "Image validation failure encountered");
+            throw;
+        }
+        catch (ImageStorageException ex)
+        {
+            _logger.LogError(ex, "An error occurred while saving the image");
+            throw;
+        }
+    }
+
+    public async Task DeletePictureImageAsync(string id, string imageDirectory)
+    {
+        var picture = await GetPictureAsync(id);
+
+        try
+        {
+            if (picture.ImageUrl is null)
+            {
+                _logger.LogError($"Picture '{id}' does not have an image that can be deleted");
+                throw new ImageValidationException("No image associated with picture");
+            }
+
+            var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl!);
+            var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
+            await _imageStorage.RemoveImageAsync(imageFileName, imageYearDirectory);
+        }
+        catch (ImageValidationException ex)
+        {
+            _logger.LogError(ex, "Image validation failure encountered");
+            throw;
+        }
+        catch (ImageStorageException ex)
+        {
+            _logger.LogError(ex, "An error occurred while deleting the image");
+            throw;
+        }
+    }
 }

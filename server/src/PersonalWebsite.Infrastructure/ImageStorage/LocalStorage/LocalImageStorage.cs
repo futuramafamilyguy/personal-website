@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 
 namespace PersonalWebsite.Infrastructure.Images.LocalFileSystem;
@@ -22,13 +23,6 @@ public class LocalImageStorage : IImageStorage
 
     public async Task<string> SaveImageAsync(Stream fileStream, string fileName, string directory)
     {
-        if (!IsValidImageFormat(fileName))
-        {
-            throw new InvalidImageFormatException(
-                $"The image format of {fileName} is not supported."
-            );
-        }
-
         try
         {
             CreateImageDirectoryIfNotExists(directory);
@@ -68,19 +62,19 @@ public class LocalImageStorage : IImageStorage
         return fileName;
     }
 
+    public bool IsValidImageFormat(string fileName)
+    {
+        var extension = Path.GetExtension(fileName).ToLowerInvariant();
+
+        return _baseConfiguration.AllowedImageExtensions.Contains(extension);
+    }
+
     private static string ConvertImageUrlToLocalPath(string imageUrl)
     {
         var uri = new Uri(imageUrl);
         var pathAndQuery = uri.PathAndQuery;
 
         return Wwwroot.TrimEnd('/') + pathAndQuery;
-    }
-
-    private bool IsValidImageFormat(string fileName)
-    {
-        var extension = Path.GetExtension(fileName).ToLowerInvariant();
-
-        return _baseConfiguration.AllowedImageExtensions.Contains(extension);
     }
 
     private string GetImageFilePath(string fileName, string directory)

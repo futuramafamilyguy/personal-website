@@ -104,7 +104,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     formData.append("imageFile", image!);
 
     return makeDebouncedRequest(debouncedUploadImage, {
-      url: `/pictures/${year}/${id}/image`,
+      url: `/pictures/${id}/image`,
       method: "post",
       headers: {
         "Content-Type": "multipart/form-data",
