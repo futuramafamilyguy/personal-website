@@ -1,5 +1,9 @@
-﻿using Moq;
+﻿using System.Text;
+using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Moq;
 using PersonalWebsite.Core.Enums;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 using PersonalWebsite.Core.Services;
@@ -13,7 +17,7 @@ public class PictureServiceTests
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
+        var sut = CreatePictureService(repositoryMock.Object);
 
         var yearWatched = 2020;
 
@@ -35,7 +39,7 @@ public class PictureServiceTests
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
+        var sut = CreatePictureService(repositoryMock.Object);
 
         var id = "123";
 
@@ -51,7 +55,7 @@ public class PictureServiceTests
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
+        var sut = CreatePictureService(repositoryMock.Object);
 
         var yearWatched = 2020;
 
@@ -67,7 +71,7 @@ public class PictureServiceTests
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
+        var sut = CreatePictureService(repositoryMock.Object);
 
         var pictureName = "cars";
         var yearWatched = 2020;
@@ -126,7 +130,7 @@ public class PictureServiceTests
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
+        var sut = CreatePictureService(repositoryMock.Object);
 
         var pictureId = "123";
         var updatedPictureName = "cars";
@@ -190,7 +194,7 @@ public class PictureServiceTests
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
+        var sut = CreatePictureService(repositoryMock.Object);
 
         var pictureId = "123";
 
@@ -206,7 +210,7 @@ public class PictureServiceTests
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
+        var sut = CreatePictureService(repositoryMock.Object);
 
         var cinemaId = "123";
         var updatedCinema = new Cinema
@@ -228,7 +232,7 @@ public class PictureServiceTests
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
+        var sut = CreatePictureService(repositoryMock.Object);
 
         var cinemaId = "123";
 
@@ -244,7 +248,7 @@ public class PictureServiceTests
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = new PictureService(repositoryMock.Object);
+        var sut = CreatePictureService(repositoryMock.Object);
 
         // act
         await sut.GetActiveYearsAsync();
@@ -252,4 +256,120 @@ public class PictureServiceTests
         // assert
         repositoryMock.Verify(x => x.GetActiveYearsAsync(), Times.Once());
     }
+
+    [Fact]
+    public async Task UploadPictureImageAsync_ShouldCallSaveImageAsyncAndGetImageUrl()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPictureRepository>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
+
+        var id = "123";
+        var yearWatched = 2024;
+        var picture = new PictureBuilder(id).WithYearWatched(yearWatched).Build();
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
+
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
+        var imageExtension = ".jpg";
+        var imageDirectory = "picture";
+        imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(true);
+
+        // act
+        await sut.UploadPictureImageAsync(stream, id, imageExtension, imageDirectory);
+
+        // assert
+        imageStorageMock.Verify(
+            x => x.SaveImageAsync(stream, "123.jpg", "picture/2024"),
+            Times.Once()
+        );
+        imageStorageMock.Verify(x => x.GetImageUrl("123.jpg", "picture/2024"), Times.Once());
+    }
+
+    [Fact]
+    public async Task UploadPictureImageAsync_IfImageExtensionIsUnsupported_ShouldThrowImageValidationException()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPictureRepository>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
+
+        var id = "123";
+        var yearWatched = 2024;
+        var picture = new PictureBuilder(id).WithYearWatched(yearWatched).Build();
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
+
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
+        var imageExtension = ".txt";
+        var imageDirectory = "picture";
+        imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(false);
+
+        // act
+        var act = async () => await sut.UploadPictureImageAsync(stream, id, imageExtension, imageDirectory);
+
+        // assert
+        await act.Should().ThrowAsync<ImageValidationException>();
+    }
+
+    [Fact]
+    public async Task DeletePictureImageAsync_ShouldCallRemoveImageAsync()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPictureRepository>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
+
+        var id = "123";
+        var yearWatched = 2024;
+        var imageUrl = "https://imagehost/images/picture/2024/123.jpg";
+        var picture = new PictureBuilder(id)
+            .WithYearWatched(yearWatched)
+            .WithImageUrl(imageUrl)
+            .Build();
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
+
+        var imageName = "123.jpg";
+        var imageDirectory = "picture";
+        imageStorageMock.Setup(x => x.GetImageFileNameFromUrl(imageUrl)).Returns(imageName);
+
+        // act
+        await sut.DeletePictureImageAsync(id, imageDirectory);
+
+        // assert
+        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "picture/2024"), Times.Once());
+    }
+
+    [Fact]
+    public async Task DeletePictureImageAsync_IfPictureDoesNotHaveAnImage_ShouldThrowImageValidationException()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPictureRepository>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
+
+        var id = "123";
+        var yearWatched = 2024;
+        var picture = new PictureBuilder(id)
+            .WithYearWatched(yearWatched)
+            .Build();
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
+
+        var imageDirectory = "picture";
+
+        // act
+        var act = async () => await sut.DeletePictureImageAsync(id, imageDirectory);
+
+        // assert
+        await act.Should().ThrowAsync<ImageValidationException>();
+    }
+
+    private static PictureService CreatePictureService(
+        IPictureRepository? pictureRepository = null,
+        IImageStorage? imageStorage = null
+    ) =>
+        new PictureService(
+            pictureRepository ?? Mock.Of<IPictureRepository>(),
+            imageStorage ?? Mock.Of<IImageStorage>(),
+            Mock.Of<ILogger<PictureService>>()
+        );
 }
