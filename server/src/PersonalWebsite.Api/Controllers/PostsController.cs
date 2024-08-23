@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using PersonalWebsite.Api.DTOs;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
+using PersonalWebsite.Infrastructure.Images;
 
 namespace PersonalWebsite.Api.Controllers;
 
@@ -10,10 +13,15 @@ namespace PersonalWebsite.Api.Controllers;
 public class PostsController : Controller
 {
     private readonly IPostService _postService;
+    private readonly ImageStorageConfiguration _imageStorageConfiguration;
 
-    public PostsController(IPostService postService)
+    public PostsController(
+        IPostService postService,
+        IOptions<ImageStorageConfiguration> imageStorageConfiguration
+    )
     {
         _postService = postService;
+        _imageStorageConfiguration = imageStorageConfiguration.Value;
     }
 
     [HttpGet("")]
@@ -72,5 +80,60 @@ public class PostsController : Controller
         await _postService.RemovePostAsync(id);
 
         return NoContent();
+    }
+
+    [Authorize(Policy = "AdminPolicy")]
+    [HttpPost("{id}/image")]
+    public async Task<IActionResult> UploadImageAsync(string id, IFormFile imageFile)
+    {
+        if (imageFile is null || imageFile.Length == 0)
+        {
+            return BadRequest("No file uploaded or file is empty");
+        }
+
+        try
+        {
+            using var stream = imageFile.OpenReadStream();
+            var extension = Path.GetExtension(imageFile.FileName);
+            var imageUrl = await _postService.UploadPostImageAsync(
+                stream,
+                id,
+                extension,
+                _imageStorageConfiguration.PostImageDirectory
+            );
+
+            return Ok(new { ImageUrl = imageUrl });
+        }
+        catch (ImageValidationException)
+        {
+            return BadRequest("Image failed validation checks");
+        }
+        catch (ImageStorageException)
+        {
+            return StatusCode(500, "An error occurred while uploading the image");
+        }
+    }
+
+    [Authorize(Policy = "AdminPolicy")]
+    [HttpDelete("{id}/image")]
+    public async Task<IActionResult> DeleteImageAsync(string id)
+    {
+        try
+        {
+            await _postService.DeletePostImageAsync(
+                id,
+                _imageStorageConfiguration.PostImageDirectory
+            );
+
+            return NoContent();
+        }
+        catch (ImageValidationException)
+        {
+            return BadRequest("Picture image failed validation checks");
+        }
+        catch (ImageStorageException)
+        {
+            return StatusCode(500, "An error occurred while deleting the image");
+        }
     }
 }

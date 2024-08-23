@@ -272,7 +272,7 @@ public class PictureServiceTests
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
         var imageExtension = ".jpg";
-        var imageDirectory = "picture";
+        var imageDirectory = "pictures";
         imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(true);
 
         // act
@@ -280,10 +280,10 @@ public class PictureServiceTests
 
         // assert
         imageStorageMock.Verify(
-            x => x.SaveImageAsync(stream, "123.jpg", "picture/2024"),
+            x => x.SaveImageAsync(stream, "123.jpg", "pictures/2024"),
             Times.Once()
         );
-        imageStorageMock.Verify(x => x.GetImageUrl("123.jpg", "picture/2024"), Times.Once());
+        imageStorageMock.Verify(x => x.GetImageUrl("123.jpg", "pictures/2024"), Times.Once());
     }
 
     [Fact]
@@ -301,11 +301,12 @@ public class PictureServiceTests
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
         var imageExtension = ".txt";
-        var imageDirectory = "picture";
+        var imageDirectory = "pictures";
         imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(false);
 
         // act
-        var act = async () => await sut.UploadPictureImageAsync(stream, id, imageExtension, imageDirectory);
+        var act = async () =>
+            await sut.UploadPictureImageAsync(stream, id, imageExtension, imageDirectory);
 
         // assert
         await act.Should().ThrowAsync<ImageValidationException>();
@@ -321,7 +322,7 @@ public class PictureServiceTests
 
         var id = "123";
         var yearWatched = 2024;
-        var imageUrl = "https://imagehost/images/picture/2024/123.jpg";
+        var imageUrl = "https://imagehost/images/pictures/2024/123.jpg";
         var picture = new PictureBuilder(id)
             .WithYearWatched(yearWatched)
             .WithImageUrl(imageUrl)
@@ -329,14 +330,14 @@ public class PictureServiceTests
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
 
         var imageName = "123.jpg";
-        var imageDirectory = "picture";
+        var imageDirectory = "pictures";
         imageStorageMock.Setup(x => x.GetImageFileNameFromUrl(imageUrl)).Returns(imageName);
 
         // act
         await sut.DeletePictureImageAsync(id, imageDirectory);
 
         // assert
-        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "picture/2024"), Times.Once());
+        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "pictures/2024"), Times.Once());
     }
 
     [Fact]
@@ -349,12 +350,10 @@ public class PictureServiceTests
 
         var id = "123";
         var yearWatched = 2024;
-        var picture = new PictureBuilder(id)
-            .WithYearWatched(yearWatched)
-            .Build();
+        var picture = new PictureBuilder(id).WithYearWatched(yearWatched).Build();
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
 
-        var imageDirectory = "picture";
+        var imageDirectory = "pictures";
 
         // act
         var act = async () => await sut.DeletePictureImageAsync(id, imageDirectory);

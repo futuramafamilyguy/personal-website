@@ -15,4 +15,11 @@ public interface IPostService
         DateTime createdAtUtc
     );
     Task RemovePostAsync(string id);
+    Task<string> UploadPostImageAsync(
+        Stream imageStream,
+        string id,
+        string imageExtension,
+        string imageDirectory
+    );
+    Task DeletePostImageAsync(string id, string imageDirectory);
 }

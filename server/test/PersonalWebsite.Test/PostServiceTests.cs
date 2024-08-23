@@ -1,4 +1,8 @@
-﻿using Moq;
+﻿using System.Text;
+using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Moq;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 using PersonalWebsite.Core.Services;
@@ -13,7 +17,10 @@ public class PostServiceTests
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
         var dateTimeProviderMock = new Mock<IDateTimeProvider>();
-        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
+        var sut = CreatePostService(
+            postRepository: postRepositoryMock.Object,
+            dateTimeProvider: dateTimeProviderMock.Object
+        );
 
         var dateTimeNow = DateTime.UtcNow;
         dateTimeProviderMock.Setup(x => x.UtcNow).Returns(dateTimeNow);
@@ -38,8 +45,7 @@ public class PostServiceTests
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
-        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
+        var sut = CreatePostService(postRepositoryMock.Object);
 
         var id = "123";
 
@@ -55,8 +61,7 @@ public class PostServiceTests
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
-        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
+        var sut = CreatePostService(postRepositoryMock.Object);
 
         // act
         await sut.GetPostsAsync();
@@ -70,8 +75,7 @@ public class PostServiceTests
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
-        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
+        var sut = CreatePostService(postRepositoryMock.Object);
 
         var id = "123";
 
@@ -88,15 +92,18 @@ public class PostServiceTests
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
         var dateTimeProviderMock = new Mock<IDateTimeProvider>();
-        var sut = new PostService(postRepositoryMock.Object, dateTimeProviderMock.Object);
+        var sut = CreatePostService(
+            postRepository: postRepositoryMock.Object,
+            dateTimeProvider: dateTimeProviderMock.Object
+        );
 
         var dateTimeNow = DateTime.UtcNow;
         dateTimeProviderMock.Setup(x => x.UtcNow).Returns(dateTimeNow);
 
         var id = "123";
         var title = "Cars 2 Review";
-        var contentUrl = "xyz.com/content/123";
-        var imageUrl = "xyz.com/image/123";
+        var contentUrl = "https://storagehost/content/posts/123.jpg";
+        var imageUrl = "https://storagehost/images/posts/123.jpg";
         var createdAt = new DateTime(2024, 1, 1);
 
         // act
@@ -120,4 +127,144 @@ public class PostServiceTests
             Times.Once
         );
     }
+
+    [Fact]
+    public async Task UploadPostImageAsync_ShouldCallSaveImageAsyncAndGetImageUrl()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPostRepository>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePostService(repositoryMock.Object, imageStorageMock.Object);
+
+        var id = "123";
+        var title = "Cars Review";
+        var createdAt = new DateTime(2024, 1, 1);
+        var post = new Post
+        {
+            Id = id,
+            Title = title,
+            CreatedAtUtc = createdAt,
+            LastUpdatedUtc = createdAt
+        };
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
+
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
+        var imageExtension = ".jpg";
+        var imageDirectory = "posts";
+        imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(true);
+
+        // act
+        await sut.UploadPostImageAsync(stream, id, imageExtension, imageDirectory);
+
+        // assert
+        imageStorageMock.Verify(x => x.SaveImageAsync(stream, "123.jpg", "posts"), Times.Once());
+        imageStorageMock.Verify(x => x.GetImageUrl("123.jpg", "posts"), Times.Once());
+    }
+
+    [Fact]
+    public async Task UploadPostImageAsync_IfImageExtensionIsUnsupported_ShouldThrowImageValidationExceptionl()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPostRepository>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePostService(repositoryMock.Object, imageStorageMock.Object);
+
+        var id = "123";
+        var title = "Cars Review";
+        var createdAt = new DateTime(2024, 1, 1);
+        var post = new Post
+        {
+            Id = id,
+            Title = title,
+            CreatedAtUtc = createdAt,
+            LastUpdatedUtc = createdAt
+        };
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
+
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
+        var imageExtension = ".jpg";
+        var imageDirectory = "posts";
+        imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(false);
+
+        // act
+        var act = async () =>
+            await sut.UploadPostImageAsync(stream, id, imageExtension, imageDirectory);
+
+        // assert
+        await act.Should().ThrowAsync<ImageValidationException>();
+    }
+
+    [Fact]
+    public async Task DeletePostImageAsync_ShouldCallRemoveImageAsync()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPostRepository>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePostService(repositoryMock.Object, imageStorageMock.Object);
+
+        var id = "123";
+        var title = "Cars Review";
+        var imageUrl = "https://storagehost/images/posts/123.jpg";
+        var createdAt = new DateTime(2024, 1, 1);
+        var post = new Post
+        {
+            Id = id,
+            Title = title,
+            ImageUrl = imageUrl,
+            CreatedAtUtc = createdAt,
+            LastUpdatedUtc = createdAt
+        };
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
+
+        var imageName = "123.jpg";
+        var imageDirectory = "posts";
+        imageStorageMock.Setup(x => x.GetImageFileNameFromUrl(imageUrl)).Returns(imageName);
+
+        // act
+        await sut.DeletePostImageAsync(id, imageDirectory);
+
+        // assert
+        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "posts"), Times.Once());
+    }
+
+    [Fact]
+    public async Task DeletePostImageAsync_IfPictureDoesNotHaveAnImage_ShouldThrowImageValidationException()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPostRepository>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePostService(repositoryMock.Object, imageStorageMock.Object);
+
+        var id = "123";
+        var title = "Cars Review";
+        var createdAt = new DateTime(2024, 1, 1);
+        var post = new Post
+        {
+            Id = id,
+            Title = title,
+            CreatedAtUtc = createdAt,
+            LastUpdatedUtc = createdAt
+        };
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
+
+        var imageDirectory = "posts";
+
+        // act
+        var act = async () => await sut.DeletePostImageAsync(id, imageDirectory);
+
+        // assert
+        await act.Should().ThrowAsync<ImageValidationException>();
+    }
+
+    private static PostService CreatePostService(
+        IPostRepository? postRepository = null,
+        IImageStorage? imageStorage = null,
+        IDateTimeProvider? dateTimeProvider = null
+    ) =>
+        new PostService(
+            postRepository ?? Mock.Of<IPostRepository>(),
+            imageStorage ?? Mock.Of<IImageStorage>(),
+            dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
+            Mock.Of<ILogger<PostService>>()
+        );
 }

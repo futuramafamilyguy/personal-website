@@ -134,7 +134,6 @@ public class PicturesController : ControllerBase
     {
         if (imageFile is null || imageFile.Length == 0)
         {
-            _logger.LogError("No file uploaded or file is empty");
             return BadRequest("No file uploaded or file is empty");
         }
 
