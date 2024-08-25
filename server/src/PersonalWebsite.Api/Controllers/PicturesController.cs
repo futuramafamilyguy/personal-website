@@ -5,7 +5,7 @@ using PersonalWebsite.Api.DTOs;
 using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
-using PersonalWebsite.Infrastructure.Images;
+using PersonalWebsite.Infrastructure.ImageStorage;
 
 namespace PersonalWebsite.Api.Controllers;
 

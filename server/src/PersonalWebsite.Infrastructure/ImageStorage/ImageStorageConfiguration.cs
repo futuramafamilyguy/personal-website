@@ -1,4 +1,4 @@
-﻿namespace PersonalWebsite.Infrastructure.Images;
+﻿namespace PersonalWebsite.Infrastructure.ImageStorage;
 
 public class ImageStorageConfiguration
 {

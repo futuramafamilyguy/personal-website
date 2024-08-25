@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using PersonalWebsite.Core.Interfaces;
-using PersonalWebsite.Infrastructure.Images;
 using PersonalWebsite.Infrastructure.Images.AmazonS3;
 using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 

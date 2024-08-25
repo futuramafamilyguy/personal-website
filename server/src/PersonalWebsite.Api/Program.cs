@@ -7,8 +7,7 @@ using PersonalWebsite.Api.VisitTracking;
 using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
-using PersonalWebsite.Infrastructure.Images;
-using PersonalWebsite.Infrastructure.Images.AmazonS3;
+using PersonalWebsite.Infrastructure.ImageStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 

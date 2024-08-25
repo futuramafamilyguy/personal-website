@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
+using PersonalWebsite.Infrastructure.ImageStorage;
 
 namespace PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 

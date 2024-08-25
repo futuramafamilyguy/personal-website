@@ -1,4 +1,4 @@
-﻿namespace PersonalWebsite.Infrastructure.Images.AmazonS3;
+﻿namespace PersonalWebsite.Infrastructure;
 
 public class AmazonS3Configuration
 {

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
+using PersonalWebsite.Infrastructure.ImageStorage;
 
 namespace PersonalWebsite.Infrastructure.Images.AmazonS3;
 
@@ -79,6 +80,7 @@ public class AmazonS3ImageStorage : IImageStorage
                 InputStream = fileStream
             };
             request.Metadata.Add("Content-Type", GetImageMimeType(fileName));
+
             await _s3Client.PutObjectAsync(request);
             _logger.LogInformation($"Successfully uploaded image '{fileName}' at '{directory}'");
         }
