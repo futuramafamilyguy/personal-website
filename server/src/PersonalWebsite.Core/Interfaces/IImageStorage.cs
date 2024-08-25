@@ -6,7 +6,6 @@ public interface IImageStorage
 {
     Task<string> SaveImageAsync(Stream fileStream, string fileName, string directory);
     Task RemoveImageAsync(string fileName, string directory);
-    string GetImageUrl(string fileName, string directory);
     string GetImageFileNameFromUrl(string imageUrl);
     bool IsValidImageFormat(string fileName);
 }

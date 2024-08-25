@@ -52,9 +52,6 @@ public class LocalImageStorage : IImageStorage
         _logger.LogInformation($"Image deleted at {filePath}");
     }
 
-    public string GetImageUrl(string fileName, string directory) =>
-        $"{_baseConfiguration.BaseImageUrl}/{directory}/{fileName}";
-
     public string GetImageFileNameFromUrl(string imageUrl)
     {
         var uri = new Uri(imageUrl);

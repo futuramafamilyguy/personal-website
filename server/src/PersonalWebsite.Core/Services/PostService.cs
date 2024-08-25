@@ -85,9 +85,7 @@ public class PostService : IPostService
                 throw new ImageValidationException("Invalid image extension");
             }
 
-            await _imageStorage.SaveImageAsync(imageStream, imageName, imageDirectory);
-
-            var imageUrl = _imageStorage.GetImageUrl(imageName, imageDirectory);
+            var imageUrl = await _imageStorage.SaveImageAsync(imageStream, imageName, imageDirectory);
 
             return imageUrl;
         }

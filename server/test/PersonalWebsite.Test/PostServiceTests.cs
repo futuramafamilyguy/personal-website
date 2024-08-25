@@ -129,7 +129,7 @@ public class PostServiceTests
     }
 
     [Fact]
-    public async Task UploadPostImageAsync_ShouldCallSaveImageAsyncAndGetImageUrl()
+    public async Task UploadPostImageAsync_ShouldCallSaveImageAsync()
     {
         // arrange
         var repositoryMock = new Mock<IPostRepository>();
@@ -158,7 +158,6 @@ public class PostServiceTests
 
         // assert
         imageStorageMock.Verify(x => x.SaveImageAsync(stream, "123.jpg", "posts"), Times.Once());
-        imageStorageMock.Verify(x => x.GetImageUrl("123.jpg", "posts"), Times.Once());
     }
 
     [Fact]

@@ -36,9 +36,6 @@ public class AmazonS3ImageStorage : IImageStorage
         return fileName;
     }
 
-    public string GetImageUrl(string fileName, string directory) =>
-        $"{_imageStorageConfiguration.BaseImageUrl}/{_s3configuration.Bucket}/{directory}/{fileName}";
-
     public async Task RemoveImageAsync(string fileName, string directory)
     {
         var key = $"{directory}/{fileName}";
@@ -83,6 +80,9 @@ public class AmazonS3ImageStorage : IImageStorage
 
             await _s3Client.PutObjectAsync(request);
             _logger.LogInformation($"Successfully uploaded image '{fileName}' at '{directory}'");
+
+            var imageUrl = $"{_imageStorageConfiguration.BaseImageUrl}/{_s3configuration.Bucket}/{directory}/{fileName}";
+            return imageUrl;
         }
         catch (AmazonS3Exception ex)
         {
@@ -97,8 +97,6 @@ public class AmazonS3ImageStorage : IImageStorage
             _logger.LogError(ex, $"Unexpected error encountered when uploading image '{fileName}'");
             throw new ImageStorageException("Failed to upload image due to unexpected error", ex);
         }
-
-        return fileName;
     }
 
     public bool IsValidImageFormat(string fileName)
