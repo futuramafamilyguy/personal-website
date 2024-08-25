@@ -11,6 +11,7 @@ using PersonalWebsite.Infrastructure.Data.Visits;
 using PersonalWebsite.Infrastructure.Images.AmazonS3;
 using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 using PersonalWebsite.Infrastructure.ImageStorage;
+using PersonalWebsite.Infrastructure.MarkdownStorage;
 
 namespace PersonalWebsite.Infrastructure;
 
@@ -24,6 +25,7 @@ public static class ServiceExtensions
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddImageStorageServices();
+        services.AddMarkdownStorageServices();
 
         return services;
     }
@@ -65,6 +67,19 @@ public static class ServiceExtensions
             var factory = provider.GetRequiredService<ImageStorageFactory>();
 
             return factory.CreateImageStorage();
+        });
+    }
+
+    private static void AddMarkdownStorageServices(this IServiceCollection services)
+    {
+        services.AddScoped<AmazonS3MarkdownStorage>();
+        services.AddSingleton<MarkdownStorageFactory>();
+
+        services.AddScoped(provider =>
+        {
+            var factory = provider.GetRequiredService<MarkdownStorageFactory>();
+
+            return factory.CreateMarkdownStorage();
         });
     }
 
