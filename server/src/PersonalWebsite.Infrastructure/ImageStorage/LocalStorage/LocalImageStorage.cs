@@ -37,7 +37,7 @@ public class LocalImageStorage : IImageStorage
         }
         catch (IOException ex)
         {
-            throw new ImageStorageException("An error occurred while saving the image.", ex);
+            throw new StorageException("An error occurred while saving the image.", ex);
         }
     }
 

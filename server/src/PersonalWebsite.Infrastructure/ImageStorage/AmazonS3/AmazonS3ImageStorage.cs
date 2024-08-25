@@ -54,7 +54,7 @@ public class AmazonS3ImageStorage : IImageStorage
                 ex,
                 $"AWS S3 error encountered when deleting image '{fileName}' from '{directory}'"
             );
-            throw new ImageStorageException("Failed to delete image due to AWS S3 error", ex);
+            throw new StorageException("Failed to delete image due to AWS S3 error", ex);
         }
         catch (Exception ex)
         {
@@ -62,7 +62,7 @@ public class AmazonS3ImageStorage : IImageStorage
                 ex,
                 $"Unexpected error encountered when deleting image '{fileName}' from '{directory}'"
             );
-            throw new ImageStorageException("Failed to delete image due to unexpected error", ex);
+            throw new StorageException("Failed to delete image due to unexpected error", ex);
         }
     }
 
@@ -90,12 +90,12 @@ public class AmazonS3ImageStorage : IImageStorage
                 ex,
                 $"AWS S3 error encountered when uploading image '{fileName}' to bucket"
             );
-            throw new ImageStorageException("Failed to upload image due to AWS S3 error", ex);
+            throw new StorageException("Failed to upload image due to AWS S3 error", ex);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Unexpected error encountered when uploading image '{fileName}'");
-            throw new ImageStorageException("Failed to upload image due to unexpected error", ex);
+            throw new StorageException("Failed to upload image due to unexpected error", ex);
         }
     }
 

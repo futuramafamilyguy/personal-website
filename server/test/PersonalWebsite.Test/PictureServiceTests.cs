@@ -286,7 +286,7 @@ public class PictureServiceTests
     }
 
     [Fact]
-    public async Task UploadPictureImageAsync_IfImageExtensionIsUnsupported_ShouldThrowImageValidationException()
+    public async Task UploadPictureImageAsync_IfImageExtensionIsUnsupported_ShouldThrowValidationException()
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
@@ -308,7 +308,7 @@ public class PictureServiceTests
             await sut.UploadPictureImageAsync(stream, id, imageExtension, imageDirectory);
 
         // assert
-        await act.Should().ThrowAsync<ImageValidationException>();
+        await act.Should().ThrowAsync<ValidationException>();
     }
 
     [Fact]
@@ -340,7 +340,7 @@ public class PictureServiceTests
     }
 
     [Fact]
-    public async Task DeletePictureImageAsync_IfPictureDoesNotHaveAnImage_ShouldThrowImageValidationException()
+    public async Task DeletePictureImageAsync_IfPictureDoesNotHaveAnImage_ShouldThrowValidationException()
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
@@ -358,7 +358,7 @@ public class PictureServiceTests
         var act = async () => await sut.DeletePictureImageAsync(id, imageDirectory);
 
         // assert
-        await act.Should().ThrowAsync<ImageValidationException>();
+        await act.Should().ThrowAsync<ValidationException>();
     }
 
     private static PictureService CreatePictureService(

@@ -150,11 +150,11 @@ public class PicturesController : ControllerBase
 
             return Ok(new { ImageUrl = imageUrl });
         }
-        catch (ImageValidationException)
+        catch (ValidationException)
         {
             return BadRequest("Image failed validation checks");
         }
-        catch (ImageStorageException)
+        catch (StorageException)
         {
             return StatusCode(500, "An error occurred while uploading the image");
         }
@@ -173,11 +173,11 @@ public class PicturesController : ControllerBase
 
             return NoContent();
         }
-        catch (ImageValidationException)
+        catch (ValidationException)
         {
             return BadRequest("Picture image failed validation checks");
         }
-        catch (ImageStorageException)
+        catch (StorageException)
         {
             return StatusCode(500, "An error occurred while deleting the image");
         }

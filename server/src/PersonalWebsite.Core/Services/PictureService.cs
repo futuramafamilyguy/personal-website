@@ -121,7 +121,7 @@ public class PictureService : IPictureService
             if (!_imageStorage.IsValidImageFormat(imageName))
             {
                 _logger.LogError($"Image extension '{imageExtension}' not supported");
-                throw new ImageValidationException("Invalid image extension");
+                throw new ValidationException("Invalid image extension");
             }
 
             var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
@@ -129,12 +129,12 @@ public class PictureService : IPictureService
 
             return imageUrl;
         }
-        catch (ImageValidationException ex)
+        catch (ValidationException ex)
         {
             _logger.LogError(ex, "Image validation failure encountered");
             throw;
         }
-        catch (ImageStorageException ex)
+        catch (StorageException ex)
         {
             _logger.LogError(ex, "An error occurred while saving the image");
             throw;
@@ -150,19 +150,19 @@ public class PictureService : IPictureService
             if (picture.ImageUrl is null)
             {
                 _logger.LogError($"Picture '{id}' does not have an image that can be deleted");
-                throw new ImageValidationException("No image associated with picture");
+                throw new ValidationException("No image associated with picture");
             }
 
             var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl!);
             var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
             await _imageStorage.RemoveImageAsync(imageFileName, imageYearDirectory);
         }
-        catch (ImageValidationException ex)
+        catch (ValidationException ex)
         {
             _logger.LogError(ex, "Image validation failure encountered");
             throw;
         }
-        catch (ImageStorageException ex)
+        catch (StorageException ex)
         {
             _logger.LogError(ex, "An error occurred while deleting the image");
             throw;
