@@ -9,18 +9,21 @@ public class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
     private readonly IImageStorage _imageStorage;
+    private readonly IMarkdownStorage _markdownStorage;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly ILogger<PostService> _logger;
 
     public PostService(
         IPostRepository postRepository,
         IImageStorage imageStorage,
+        IMarkdownStorage markdownStorage,
         IDateTimeProvider dateTimeProvider,
         ILogger<PostService> logger
     )
     {
         _postRepository = postRepository;
         _imageStorage = imageStorage;
+        _markdownStorage = markdownStorage;
         _dateTimeProvider = dateTimeProvider;
         _logger = logger;
     }
@@ -82,19 +85,19 @@ public class PostService : IPostService
             if (!_imageStorage.IsValidImageFormat(imageName))
             {
                 _logger.LogError($"Image extension '{imageExtension}' not supported");
-                throw new ImageValidationException("Invalid image extension");
+                throw new ValidationException("Invalid image extension");
             }
 
             var imageUrl = await _imageStorage.SaveImageAsync(imageStream, imageName, imageDirectory);
 
             return imageUrl;
         }
-        catch (ImageValidationException ex)
+        catch (ValidationException ex)
         {
             _logger.LogError(ex, "Image validation failure encountered");
             throw;
         }
-        catch (ImageStorageException ex)
+        catch (StorageException ex)
         {
             _logger.LogError(ex, "An error occurred while saving the image");
             throw;
@@ -110,20 +113,63 @@ public class PostService : IPostService
             if (post.ImageUrl is null)
             {
                 _logger.LogError($"Post '{id}' does not have an image that can be deleted");
-                throw new ImageValidationException("No image associated with post");
+                throw new ValidationException("No image associated with post");
             }
 
             var imageFileName = _imageStorage.GetImageFileNameFromUrl(post.ImageUrl!);
             await _imageStorage.RemoveImageAsync(imageFileName, imageDirectory);
         }
-        catch (ImageValidationException ex)
+        catch (ValidationException ex)
         {
             _logger.LogError(ex, "Image validation failure encountered");
             throw;
         }
-        catch (ImageStorageException ex)
+        catch (StorageException ex)
         {
             _logger.LogError(ex, "An error occurred while deleting the image");
+            throw;
+        }
+    }
+
+    public async Task<string> UploadPostContentAsync(string content, string id, string contentDirectory)
+    {
+        try
+        {
+            var fileName = $"{id}.md";
+            var markdownUrl = await _markdownStorage.SaveMarkdownAsync(content, fileName, contentDirectory);
+
+            return markdownUrl;
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "An error occurred while saving post content");
+            throw;
+        }
+    }
+
+    public async Task DeletePostContentAsync(string id, string contentDirectory)
+    {
+        var post = await GetPostAsync(id);
+
+        try
+        {
+            if (post.ContentUrl is null)
+            {
+                _logger.LogError($"Post '{id}' does not have content that can be deleted");
+                throw new ValidationException("No content associated with post");
+            }
+
+            var contentFileName = _markdownStorage.GetMarkdownFileNameFromUrl(post.ContentUrl!);
+            await _markdownStorage.RemoveMarkdownAsync(contentFileName, contentDirectory);
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogError(ex, "Post content validation failure encountered");
+            throw;
+        }
+        catch (StorageException ex)
+        {
+            _logger.LogError(ex, "An error occurred while deleting post content");
             throw;
         }
     }

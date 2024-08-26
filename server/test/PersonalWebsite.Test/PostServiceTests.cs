@@ -150,14 +150,14 @@ public class PostServiceTests
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
         var imageExtension = ".jpg";
-        var imageDirectory = "posts";
+        var imageDirectory = "images/posts";
         imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(true);
 
         // act
         await sut.UploadPostImageAsync(stream, id, imageExtension, imageDirectory);
 
         // assert
-        imageStorageMock.Verify(x => x.SaveImageAsync(stream, "123.jpg", "posts"), Times.Once());
+        imageStorageMock.Verify(x => x.SaveImageAsync(stream, "123.jpg", "images/posts"), Times.Once());
     }
 
     [Fact]
@@ -182,7 +182,7 @@ public class PostServiceTests
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
         var imageExtension = ".jpg";
-        var imageDirectory = "posts";
+        var imageDirectory = "images/posts";
         imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(false);
 
         // act
@@ -190,7 +190,7 @@ public class PostServiceTests
             await sut.UploadPostImageAsync(stream, id, imageExtension, imageDirectory);
 
         // assert
-        await act.Should().ThrowAsync<ImageValidationException>();
+        await act.Should().ThrowAsync<ValidationException>();
     }
 
     [Fact]
@@ -216,18 +216,18 @@ public class PostServiceTests
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
 
         var imageName = "123.jpg";
-        var imageDirectory = "posts";
+        var imageDirectory = "images/posts";
         imageStorageMock.Setup(x => x.GetImageFileNameFromUrl(imageUrl)).Returns(imageName);
 
         // act
         await sut.DeletePostImageAsync(id, imageDirectory);
 
         // assert
-        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "posts"), Times.Once());
+        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "images/posts"), Times.Once());
     }
 
     [Fact]
-    public async Task DeletePostImageAsync_IfPictureDoesNotHaveAnImage_ShouldThrowImageValidationException()
+    public async Task DeletePostImageAsync_IfPictureDoesNotHaveAnImage_ShouldThrowValidationException()
     {
         // arrange
         var repositoryMock = new Mock<IPostRepository>();
@@ -246,23 +246,105 @@ public class PostServiceTests
         };
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
 
-        var imageDirectory = "posts";
+        var imageDirectory = "images/posts";
 
         // act
         var act = async () => await sut.DeletePostImageAsync(id, imageDirectory);
 
         // assert
-        await act.Should().ThrowAsync<ImageValidationException>();
+        await act.Should().ThrowAsync<ValidationException>();
+    }
+
+    [Fact]
+    public async Task UploadPostContentAsync_ShouldCallSaveMarkdownAsync()
+    {
+        // arrange
+        var markdownStorageMock = new Mock<IMarkdownStorage>();
+        var sut = CreatePostService(markdownStorage: markdownStorageMock.Object);
+
+        var id = "123";
+        var content = "Cars is a good movie.";
+        var directory = "markdown/posts";
+
+        // act
+        await sut.UploadPostContentAsync(content, id, directory);
+
+        // assert
+        markdownStorageMock.Verify(x => x.SaveMarkdownAsync(content, "123.md", directory), Times.Once());
+    }
+
+    [Fact]
+    public async Task DeletePostContentAsync_ShouldCallRemoveMarkdownAsync()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPostRepository>();
+        var markdownStorageMock = new Mock<IMarkdownStorage>();
+        var sut = CreatePostService(repositoryMock.Object, markdownStorage: markdownStorageMock.Object);
+
+        var id = "123";
+        var title = "Cars Review";
+        var contentUrl = "https://storagehost/markdown/posts/123.md";
+        var createdAt = new DateTime(2024, 1, 1);
+        var post = new Post
+        {
+            Id = id,
+            Title = title,
+            ContentUrl = contentUrl,
+            CreatedAtUtc = createdAt,
+            LastUpdatedUtc = createdAt
+        };
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
+
+        var markdownName = "123.md";
+        var directory = "markdown/posts";
+        markdownStorageMock.Setup(x => x.GetMarkdownFileNameFromUrl(contentUrl)).Returns(markdownName);
+
+        // act
+        await sut.DeletePostContentAsync(id, directory);
+
+        // assert
+        markdownStorageMock.Verify(x => x.RemoveMarkdownAsync("123.md", "markdown/posts"), Times.Once());
+    }
+
+    [Fact]
+    public async Task DeletePostContentAsync_IfPostDoesNotHaveContent_ShouldThrowValidationException()
+    {
+        // arrange
+        var repositoryMock = new Mock<IPostRepository>();
+        var markdownStorageMock = new Mock<IMarkdownStorage>();
+        var sut = CreatePostService(repositoryMock.Object, markdownStorage: markdownStorageMock.Object);
+
+        var id = "123";
+        var title = "Cars Review";
+        var createdAt = new DateTime(2024, 1, 1);
+        var post = new Post
+        {
+            Id = id,
+            Title = title,
+            CreatedAtUtc = createdAt,
+            LastUpdatedUtc = createdAt
+        };
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
+
+        var directory = "markdown/posts";
+
+        // act
+        var act = async () => await sut.DeletePostContentAsync(id, directory);
+
+        // assert
+        await act.Should().ThrowAsync<ValidationException>();
     }
 
     private static PostService CreatePostService(
         IPostRepository? postRepository = null,
         IImageStorage? imageStorage = null,
+        IMarkdownStorage? markdownStorage = null,
         IDateTimeProvider? dateTimeProvider = null
     ) =>
         new PostService(
             postRepository ?? Mock.Of<IPostRepository>(),
             imageStorage ?? Mock.Of<IImageStorage>(),
+            markdownStorage ?? Mock.Of<IMarkdownStorage>(),
             dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
             Mock.Of<ILogger<PostService>>()
         );

@@ -272,7 +272,7 @@ public class PictureServiceTests
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
         var imageExtension = ".jpg";
-        var imageDirectory = "pictures";
+        var imageDirectory = "images/pictures";
         imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(true);
 
         // act
@@ -280,7 +280,7 @@ public class PictureServiceTests
 
         // assert
         imageStorageMock.Verify(
-            x => x.SaveImageAsync(stream, "123.jpg", "pictures/2024"),
+            x => x.SaveImageAsync(stream, "123.jpg", "images/pictures/2024"),
             Times.Once()
         );
     }
@@ -300,7 +300,7 @@ public class PictureServiceTests
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
         var imageExtension = ".txt";
-        var imageDirectory = "pictures";
+        var imageDirectory = "images/pictures";
         imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(false);
 
         // act
@@ -329,14 +329,14 @@ public class PictureServiceTests
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
 
         var imageName = "123.jpg";
-        var imageDirectory = "pictures";
+        var imageDirectory = "images/pictures";
         imageStorageMock.Setup(x => x.GetImageFileNameFromUrl(imageUrl)).Returns(imageName);
 
         // act
         await sut.DeletePictureImageAsync(id, imageDirectory);
 
         // assert
-        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "pictures/2024"), Times.Once());
+        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "images/pictures/2024"), Times.Once());
     }
 
     [Fact]
@@ -352,7 +352,7 @@ public class PictureServiceTests
         var picture = new PictureBuilder(id).WithYearWatched(yearWatched).Build();
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
 
-        var imageDirectory = "pictures";
+        var imageDirectory = "images/pictures";
 
         // act
         var act = async () => await sut.DeletePictureImageAsync(id, imageDirectory);

@@ -28,6 +28,14 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
         _logger = logger;
     }
 
+    public string GetMarkdownFileNameFromUrl(string postUrl)
+    {
+        var uri = new Uri(postUrl);
+        var fileName = Path.GetFileName(uri.LocalPath);
+
+        return fileName;
+    }
+
     public async Task RemoveMarkdownAsync(string fileName, string directory)
     {
         var key = $"{directory}/{fileName}";
@@ -48,7 +56,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
                 ex,
                 $"AWS S3 error encountered when deleting markdown '{fileName}' from '{directory}'"
             );
-            throw new MarkdownStorageException("Failed to delete markdown due to AWS S3 error", ex);
+            throw new StorageException("Failed to delete markdown due to AWS S3 error", ex);
         }
         catch (Exception ex)
         {
@@ -56,7 +64,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
                 ex,
                 $"Unexpected error encountered when deleting markdown '{fileName}' from '{directory}'"
             );
-            throw new MarkdownStorageException(
+            throw new StorageException(
                 "Failed to delete markdown due to unexpected error",
                 ex
             );
@@ -90,7 +98,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
                 ex,
                 $"AWS S3 error encountered when uploading markdown '{fileName}' to bucket"
             );
-            throw new MarkdownStorageException("Failed to upload markdown due to AWS S3 error", ex);
+            throw new StorageException("Failed to upload markdown due to AWS S3 error", ex);
         }
         catch (Exception ex)
         {
@@ -98,7 +106,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
                 ex,
                 $"Unexpected error encountered when uploading markdown '{fileName}'"
             );
-            throw new MarkdownStorageException(
+            throw new StorageException(
                 "Failed to upload markdown due to unexpected error",
                 ex
             );

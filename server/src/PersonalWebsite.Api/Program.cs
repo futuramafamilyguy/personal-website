@@ -8,6 +8,7 @@ using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
 using PersonalWebsite.Infrastructure.ImageStorage;
+using PersonalWebsite.Infrastructure.MarkdownStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,9 @@ builder.Services.Configure<VisitExclusionConfiguration>(
 );
 builder.Services.Configure<ImageStorageConfiguration>(
     builder.Configuration.GetSection("ImageStorageConfiguration")
+);
+builder.Services.Configure<MarkdownStorageConfiguration>(
+    builder.Configuration.GetSection("MarkdownStorageConfiguration")
 );
 builder.Services.Configure<AmazonS3Configuration>(
     builder.Configuration.GetSection("AmazonS3Configuration")
