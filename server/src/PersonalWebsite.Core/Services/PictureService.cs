@@ -125,7 +125,11 @@ public class PictureService : IPictureService
             }
 
             var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
-            var imageUrl = await _imageStorage.SaveImageAsync(imageStream, imageName, imageYearDirectory);
+            var imageUrl = await _imageStorage.SaveImageAsync(
+                imageStream,
+                imageName,
+                imageYearDirectory
+            );
 
             return imageUrl;
         }

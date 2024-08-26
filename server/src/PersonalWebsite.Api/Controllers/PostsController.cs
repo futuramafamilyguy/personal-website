@@ -143,7 +143,10 @@ public class PostsController : Controller
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpPost("{id}/content")]
-    public async Task<IActionResult> UploadContentAsync(string id, [FromBody] UploadContentRequest request)
+    public async Task<IActionResult> UploadContentAsync(
+        string id,
+        [FromBody] UploadContentRequest request
+    )
     {
         if (string.IsNullOrWhiteSpace(request.Content))
         {

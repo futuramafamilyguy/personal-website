@@ -22,10 +22,6 @@ public interface IPostService
         string imageDirectory
     );
     Task DeletePostImageAsync(string id, string imageDirectory);
-    Task<string> UploadPostContentAsync(
-        string content,
-        string id,
-        string contentDirectory
-    );
+    Task<string> UploadPostContentAsync(string content, string id, string contentDirectory);
     Task DeletePostContentAsync(string id, string contentDirectory);
 }

@@ -157,7 +157,10 @@ public class PostServiceTests
         await sut.UploadPostImageAsync(stream, id, imageExtension, imageDirectory);
 
         // assert
-        imageStorageMock.Verify(x => x.SaveImageAsync(stream, "123.jpg", "images/posts"), Times.Once());
+        imageStorageMock.Verify(
+            x => x.SaveImageAsync(stream, "123.jpg", "images/posts"),
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -270,7 +273,10 @@ public class PostServiceTests
         await sut.UploadPostContentAsync(content, id, directory);
 
         // assert
-        markdownStorageMock.Verify(x => x.SaveMarkdownAsync(content, "123.md", directory), Times.Once());
+        markdownStorageMock.Verify(
+            x => x.SaveMarkdownAsync(content, "123.md", directory),
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -279,7 +285,10 @@ public class PostServiceTests
         // arrange
         var repositoryMock = new Mock<IPostRepository>();
         var markdownStorageMock = new Mock<IMarkdownStorage>();
-        var sut = CreatePostService(repositoryMock.Object, markdownStorage: markdownStorageMock.Object);
+        var sut = CreatePostService(
+            repositoryMock.Object,
+            markdownStorage: markdownStorageMock.Object
+        );
 
         var id = "123";
         var title = "Cars Review";
@@ -297,13 +306,18 @@ public class PostServiceTests
 
         var markdownName = "123.md";
         var directory = "markdown/posts";
-        markdownStorageMock.Setup(x => x.GetMarkdownFileNameFromUrl(contentUrl)).Returns(markdownName);
+        markdownStorageMock
+            .Setup(x => x.GetMarkdownFileNameFromUrl(contentUrl))
+            .Returns(markdownName);
 
         // act
         await sut.DeletePostContentAsync(id, directory);
 
         // assert
-        markdownStorageMock.Verify(x => x.RemoveMarkdownAsync("123.md", "markdown/posts"), Times.Once());
+        markdownStorageMock.Verify(
+            x => x.RemoveMarkdownAsync("123.md", "markdown/posts"),
+            Times.Once()
+        );
     }
 
     [Fact]
@@ -312,7 +326,10 @@ public class PostServiceTests
         // arrange
         var repositoryMock = new Mock<IPostRepository>();
         var markdownStorageMock = new Mock<IMarkdownStorage>();
-        var sut = CreatePostService(repositoryMock.Object, markdownStorage: markdownStorageMock.Object);
+        var sut = CreatePostService(
+            repositoryMock.Object,
+            markdownStorage: markdownStorageMock.Object
+        );
 
         var id = "123";
         var title = "Cars Review";

@@ -81,7 +81,8 @@ public class AmazonS3ImageStorage : IImageStorage
             await _s3Client.PutObjectAsync(request);
             _logger.LogInformation($"Successfully uploaded image '{fileName}' at '{directory}'");
 
-            var imageUrl = $"{_imageStorageConfiguration.BaseImageUrl}/{_s3configuration.Bucket}/{directory}/{fileName}";
+            var imageUrl =
+                $"{_imageStorageConfiguration.BaseImageUrl}/{_s3configuration.Bucket}/{directory}/{fileName}";
             return imageUrl;
         }
         catch (AmazonS3Exception ex)

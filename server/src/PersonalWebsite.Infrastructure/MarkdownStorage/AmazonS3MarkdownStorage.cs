@@ -64,10 +64,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
                 ex,
                 $"Unexpected error encountered when deleting markdown '{fileName}' from '{directory}'"
             );
-            throw new StorageException(
-                "Failed to delete markdown due to unexpected error",
-                ex
-            );
+            throw new StorageException("Failed to delete markdown due to unexpected error", ex);
         }
     }
 
@@ -106,10 +103,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
                 ex,
                 $"Unexpected error encountered when uploading markdown '{fileName}'"
             );
-            throw new StorageException(
-                "Failed to upload markdown due to unexpected error",
-                ex
-            );
+            throw new StorageException("Failed to upload markdown due to unexpected error", ex);
         }
     }
 }

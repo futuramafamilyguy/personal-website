@@ -9,7 +9,10 @@ public class MarkdownStorageFactory
     private readonly IServiceProvider _serviceProvider;
     private readonly MarkdownStorageConfiguration _configuration;
 
-    public MarkdownStorageFactory(IServiceProvider serviceProvider, IOptions<MarkdownStorageConfiguration> configuration)
+    public MarkdownStorageFactory(
+        IServiceProvider serviceProvider,
+        IOptions<MarkdownStorageConfiguration> configuration
+    )
     {
         _serviceProvider = serviceProvider;
         _configuration = configuration.Value;

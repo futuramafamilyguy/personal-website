@@ -89,7 +89,11 @@ public class PostService : IPostService
                 throw new ValidationException("Invalid image extension");
             }
 
-            var imageUrl = await _imageStorage.SaveImageAsync(imageStream, imageName, imageDirectory);
+            var imageUrl = await _imageStorage.SaveImageAsync(
+                imageStream,
+                imageName,
+                imageDirectory
+            );
 
             return imageUrl;
         }
@@ -132,12 +136,20 @@ public class PostService : IPostService
         }
     }
 
-    public async Task<string> UploadPostContentAsync(string content, string id, string contentDirectory)
+    public async Task<string> UploadPostContentAsync(
+        string content,
+        string id,
+        string contentDirectory
+    )
     {
         try
         {
             var fileName = $"{id}.md";
-            var markdownUrl = await _markdownStorage.SaveMarkdownAsync(content, fileName, contentDirectory);
+            var markdownUrl = await _markdownStorage.SaveMarkdownAsync(
+                content,
+                fileName,
+                contentDirectory
+            );
 
             return markdownUrl;
         }

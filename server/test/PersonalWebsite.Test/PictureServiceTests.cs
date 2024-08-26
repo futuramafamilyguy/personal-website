@@ -336,7 +336,10 @@ public class PictureServiceTests
         await sut.DeletePictureImageAsync(id, imageDirectory);
 
         // assert
-        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "images/pictures/2024"), Times.Once());
+        imageStorageMock.Verify(
+            x => x.RemoveImageAsync("123.jpg", "images/pictures/2024"),
+            Times.Once()
+        );
     }
 
     [Fact]
