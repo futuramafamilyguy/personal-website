@@ -30,12 +30,13 @@ public class PostService : IPostService
 
     public async Task<Post> AddPostAsync(string title)
     {
+        var utcNow = _dateTimeProvider.UtcNow;
         var post = await _postRepository.AddAsync(
             new Post
             {
                 Title = title,
-                LastUpdatedUtc = _dateTimeProvider.UtcNow,
-                CreatedAtUtc = _dateTimeProvider.UtcNow,
+                LastUpdatedUtc = utcNow,
+                CreatedAtUtc = utcNow
             }
         );
 
