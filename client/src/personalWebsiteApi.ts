@@ -25,16 +25,25 @@ const createDebouncedRequest = (delay: number) => {
 };
 
 export const debouncedFetchStats = createDebouncedRequest(300);
+
 export const debouncedFetchPictures = createDebouncedRequest(300);
 export const debouncedFetchActiveYears = createDebouncedRequest(300);
 export const debouncedFetchCinemas = createDebouncedRequest(300);
 export const debouncedCreatePicture = createDebouncedRequest(300);
 export const debouncedUpdatePicture = createDebouncedRequest(300);
 export const debouncedDeletePicture = createDebouncedRequest(300);
+
+export const debouncedFetchPosts = createDebouncedRequest(300);
+export const debouncedCreatePost = createDebouncedRequest(300);
+export const debouncedUpdatePost = createDebouncedRequest(300);
+export const debouncedDeletePost = createDebouncedRequest(300);
+
 export const debouncedUploadImage = createDebouncedRequest(300);
 export const debouncedDeleteImage = createDebouncedRequest(300);
+
 export const debouncedDisableTracking = createDebouncedRequest(300);
 export const debouncedIncrementVisitCount = createDebouncedRequest(300);
+
 export const debouncedLogin = createDebouncedRequest(300);
 export const debouncedLogout = createDebouncedRequest(300);
 
