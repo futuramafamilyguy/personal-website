@@ -1,0 +1,49 @@
+.postsContainer {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 100%;
+  width: 450px;
+  gap: 20px;
+
+  display: grid;
+  grid-auto-rows: min-content;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+/* scrollbar styling. these should probably be in their own css file but im not gonna do it ahahaha */
+
+.postsContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.postsContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.postsContainer::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 20px;
+  border: 2px solid transparent;
+}
+
+.postsContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* firefox */
+@-moz-document url-prefix() {
+  .postsContainer {
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+  }
+}
+
+/* IE and edge */
+.postsContainer {
+  -ms-overflow-style: none; /* hides default scrollbar */
+}
+
+.postsContainer::-ms-scrollbar {
+  display: none; /* hides default scrollbar */
+}

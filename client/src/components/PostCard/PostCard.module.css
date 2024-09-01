@@ -1,0 +1,54 @@
+.postCard {
+  position: relative;
+  width: 400px;
+  height: 125px;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: black;
+}
+
+.postCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  transition: background-color 0.1s;
+}
+
+.postCard:hover::before {
+  background-color: transparent;
+}
+
+.titleOverlay {
+  position: absolute;
+  width: 60%;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  z-index: 3;
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: left;
+  transition: color 0.1s;
+}
+
+.postCard:hover .titleOverlay {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.image {
+  flex: 1.6;
+  width: 100%;
+  object-fit: cover;
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

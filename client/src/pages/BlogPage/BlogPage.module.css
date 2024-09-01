@@ -1,10 +1,10 @@
 .blogPage {
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   color: white;
   overflow: hidden;
 }
@@ -25,14 +25,26 @@
 }
 
 .descriptionBox {
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 10px;
-  margin: 20px 20px 0px 20px;
-  color: white;
-  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.descriptionBox h4 {
+.descriptionBox h3 {
   font-weight: 600;
+}
+
+.contentBox {
+  padding: 20px;
+  width: 500px;
+  height: calc(100vh - 110px);
+  margin: 20px;
+  color: white;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
 }
