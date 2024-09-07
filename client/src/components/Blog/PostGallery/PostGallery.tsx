@@ -1,10 +1,15 @@
-import megamind from "../../assets/megamind.png";
-import usePosts from "../../hooks/usePosts";
-import MessageDisplay from "../MessageDisplay/MessageDisplay";
+import megamind from "../../../assets/megamind.png";
+import usePosts from "../../../hooks/usePosts";
+import Post from "../../../types/Post";
+import MessageDisplay from "../../MessageDisplay/MessageDisplay";
 import PostCard from "../PostCard/PostCard";
-import styles from "./PostsContainer.module.css";
+import styles from "./PostGallery.module.css";
 
-const PostsContainer: React.FC = () => {
+interface PostGalleryProps {
+  onPostClick: (post: Post) => void;
+}
+
+const PostGallery: React.FC<PostGalleryProps> = ({ onPostClick }) => {
   const { posts, loading } = usePosts();
 
   const renderContent = () => {
@@ -14,13 +19,13 @@ const PostsContainer: React.FC = () => {
       if (posts.length > 0) {
         return (
           <>
-            <div className={styles.postsContainer}>
+            <div className={styles.postGallery}>
               {posts.map((post) => (
                 <PostCard
                   key={post.id}
                   imageUrl={post.imageUrl}
                   title={post.title}
-                  onClick={() => {}}
+                  onClick={() => onPostClick(post)}
                 />
               ))}
             </div>
@@ -40,4 +45,4 @@ const PostsContainer: React.FC = () => {
   return renderContent();
 };
 
-export default PostsContainer;
+export default PostGallery;

@@ -10,13 +10,8 @@ interface PostCardProps {
 
 const PostCard: React.FC<PostCardProps> = ({ imageUrl, title, onClick }) => {
   return (
-    <div className={styles.postCard}>
-      <img
-        src={imageUrl}
-        alt={title}
-        className={styles.image}
-        onClick={onClick}
-      />
+    <div className={styles.postCard} onClick={onClick}>
+      <img src={imageUrl} alt={title} className={styles.image} />
       <div className={styles.titleOverlay}>{title}</div>
     </div>
   );

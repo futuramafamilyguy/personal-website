@@ -1,21 +1,14 @@
-import PostsContainer from "../../components/PostsContainer/PostsContainer";
+import BlogContainer from "../../components/Blog/BlogContainer/BlogContainer";
 import styles from "./BlogPage.module.css";
 
-function LetterboxcPage() {
+function BlogPage() {
   return (
     <>
       <div className={styles.blogPage}>
-        <div className={styles.contentBox}>
-          <div className={styles.descriptionBox}>
-            <h3>Blog</h3>
-            <br />
-            <h5>Hottest media takes on the web</h5>
-          </div>
-          <PostsContainer />
-        </div>
+        <BlogContainer />
       </div>
     </>
   );
 }
 
-export default LetterboxcPage;
+export default BlogPage;

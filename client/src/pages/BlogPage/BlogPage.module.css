@@ -23,28 +23,3 @@
   filter: brightness(0.5);
   z-index: -1;
 }
-
-.descriptionBox {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.descriptionBox h3 {
-  font-weight: 600;
-}
-
-.contentBox {
-  padding: 20px;
-  width: 500px;
-  height: calc(100vh - 110px);
-  margin: 20px;
-  color: white;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 10px;
-}

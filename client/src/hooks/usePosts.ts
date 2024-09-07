@@ -25,7 +25,7 @@ const usePosts = () => {
             ...post,
             imageUrl: setDefaultImageUrl(post.imageUrl),
           }));
-          console.log(posts);
+
           setPosts(updatedPosts);
         })
         .catch((error: any) => {
