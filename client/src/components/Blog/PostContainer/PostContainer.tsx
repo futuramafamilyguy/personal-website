@@ -1,4 +1,7 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+
 import Post from "../../../types/Post";
 import styles from "./PostContainer.module.css";
 
@@ -8,29 +11,47 @@ interface PostContainerProps {
 }
 
 const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
+  const [markdownContent, setMarkdownContent] = useState<string>("");
   const [showLess, setShowLess] = useState(false);
   const [isScrollable, setIsScrollable] = useState(false);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const textContainer = textContainerRef.current;
+    const fetchMarkdown = async () => {
+      try {
+        const response = await axios.get(post.contentUrl);
+        setMarkdownContent(response.data);
+      } catch (error) {
+        console.error("Error fetching markdown content:", error);
+      }
+    };
 
-    if (textContainer) {
-      // Check if the content is scrollable (has a scrollbar)
-      setIsScrollable(textContainer.scrollHeight > textContainer.clientHeight);
-    }
+    fetchMarkdown();
+  }, []);
 
-    const handleResize = () => {
+  useEffect(() => {
+    // need to wait for markdown content to be loaded first before determining scrollability
+    if (markdownContent) {
+      const textContainer = textContainerRef.current;
+
       if (textContainer) {
         setIsScrollable(
           textContainer.scrollHeight > textContainer.clientHeight
         );
       }
-    };
-    window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+      const handleResize = () => {
+        if (textContainer) {
+          setIsScrollable(
+            textContainer.scrollHeight > textContainer.clientHeight
+          );
+        }
+      };
+      window.addEventListener("resize", handleResize);
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, [markdownContent]);
 
   const formatDate = (dateInput: Date) => {
     const date =
@@ -54,7 +75,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
           Back
         </button>
         <button className={styles.hideButton} onClick={toggleShowLess}>
-          {showLess ? "Show More" : "Show Less"}
+          {showLess ? "Expand" : "Collapse"}
         </button>
 
         <div
@@ -83,7 +104,9 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
               <h3>{post.title}</h3>
               <p>{formatDate(post.createdAtUtc)}</p>
             </div>
-            <div className={styles.contentContainer}></div>
+            <div className={styles.markdownContainer}>
+              <ReactMarkdown>{markdownContent}</ReactMarkdown>
+            </div>
           </div>
         </div>
       </div>
