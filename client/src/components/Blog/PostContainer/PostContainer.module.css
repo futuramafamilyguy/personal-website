@@ -90,6 +90,14 @@
   font-weight: 600;
 }
 
+.metadataContainer p {
+  font-size: 15px;
+}
+
+.markdownContainer {
+  padding-top: 18px;
+}
+
 .markdownContainer p {
   padding-bottom: 10px;
 }
@@ -119,6 +127,37 @@
 .backButton:hover,
 .hideButton:hover {
   text-decoration: underline;
+}
+
+.embeddedQuote {
+  font-style: italic;
+  padding-left: 30px;
+  border-left: 1px solid white;
+  margin: 20px auto;
+  max-width: 400px;
+  color: #8b8b8b;
+}
+
+.embeddedImage {
+  display: block;
+  width: 500px;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.embeddedBookImage {
+  display: block;
+  width: 100px;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.embeddedQuote p {
+  padding: 0px;
 }
 
 /* scrollbar styling. these should probably be in their own css file but im not gonna do it ahahaha */

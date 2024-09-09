@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 
 import Post from "../../../types/Post";
 import styles from "./PostContainer.module.css";
+import rehypeRaw from "rehype-raw";
 
 interface PostContainerProps {
   post: Post;
@@ -105,7 +106,28 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
               <p>{formatDate(post.createdAtUtc)}</p>
             </div>
             <div className={styles.markdownContainer}>
-              <ReactMarkdown>{markdownContent}</ReactMarkdown>
+              <ReactMarkdown
+                children={markdownContent}
+                rehypePlugins={[rehypeRaw]}
+                components={{
+                  img: ({ alt, ...props }) => {
+                    const className =
+                      alt === "book"
+                        ? styles.embeddedBookImage
+                        : styles.embeddedImage;
+                    return (
+                      <img
+                        className={className}
+                        {...props}
+                        alt="why isn't the image loading"
+                      />
+                    );
+                  },
+                  blockquote: ({ node, ...props }) => (
+                    <blockquote className={styles.embeddedQuote} {...props} />
+                  ),
+                }}
+              />
             </div>
           </div>
         </div>

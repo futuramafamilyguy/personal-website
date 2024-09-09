@@ -26,7 +26,7 @@
 
 .titleOverlay {
   position: absolute;
-  width: 60%;
+  width: 65%;
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
@@ -36,6 +36,13 @@
   font-weight: 600;
   text-align: left;
   transition: color 0.1s;
+  white-space: normal;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .postCard:hover .titleOverlay {
