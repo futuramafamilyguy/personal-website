@@ -1,0 +1,43 @@
+.pictureGallery {
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow-y: auto;
+  width: 905px;
+}
+
+/* scrollbar styling. these should probably be in their own css file but im not gonna do it ahahaha */
+
+.pictureGallery::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pictureGallery::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pictureGallery::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 20px;
+  border: 2px solid transparent;
+}
+
+.pictureGallery::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* firefox */
+@-moz-document url-prefix() {
+  .pictureGallery {
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+  }
+}
+
+/* IE and edge */
+.pictureGallery {
+  -ms-overflow-style: none; /* hides default scrollbar */
+}
+
+.pictureGallery::-ms-scrollbar {
+  display: none; /* hides default scrollbar */
+}

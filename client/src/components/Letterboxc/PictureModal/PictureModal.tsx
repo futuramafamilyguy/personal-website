@@ -1,8 +1,10 @@
 import React from "react";
 import ReactDom from "react-dom";
 
-import Picture from "../../types/Picture";
+import Picture from "../../../types/Picture";
 import styles from "./PictureModal.module.css";
+
+import heartIcon from "../../../assets/svg/heart_filled.png";
 
 interface PictureModalProps {
   isOpen: boolean;
@@ -37,9 +39,16 @@ const PictureModal: React.FC<PictureModalProps> = ({
           />
         </div>
         <div className={styles.modalTextBox}>
-          <h4
-            className={styles.title}
-          >{`${picture?.name} (${picture?.yearReleased})`}</h4>
+          <span>
+            <h4
+              className={styles.title}
+            >{`${picture?.name} (${picture?.yearReleased})`}</h4>
+            {picture?.isFavorite ? (
+              <div className={styles.iconContainer}>
+                <img className={styles.heartIcon} src={heartIcon} />
+              </div>
+            ) : null}
+          </span>
           <p
             className={styles.modalText}
           >{`${picture?.cinema.name}, ${picture?.cinema.city}`}</p>

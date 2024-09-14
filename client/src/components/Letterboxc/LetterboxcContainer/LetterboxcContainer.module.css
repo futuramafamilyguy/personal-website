@@ -1,0 +1,56 @@
+.letterboxcContainer {
+  position: relative;
+  padding: 20px;
+  width: 950px;
+  height: calc(100vh - 110px);
+  margin: 20px;
+  color: white;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  padding-bottom: 25px;
+}
+
+.descriptionBox {
+  height: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.collapsedDescriptionBox {
+  padding-top: 23px;
+  height: 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.descriptionBox h3,
+.collapsedDescriptionBox h3 {
+  font-weight: 600;
+}
+
+.collapseButton {
+  position: absolute;
+  z-index: 4;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  right: 20px;
+  top: 8px;
+}
+
+.collapseButton:hover {
+  text-decoration: underline;
+}
