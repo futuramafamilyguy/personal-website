@@ -20,19 +20,17 @@ const MediaCard: React.FC<MediaCardProps> = ({
 }) => {
   return (
     <div className={styles.mediaCard} onClick={onClick}>
-      <img
-        src={imageUrl}
-        alt={title}
-        className={styles.mediaImage}
-        onClick={onClick}
-      />
+      <img src={imageUrl} alt={title} className={styles.mediaImage} />
       {editable ? (
         <div className={styles.edit}>
           <img
             className={styles.editIcon}
             src={editIcon}
             alt="mySvgImage"
-            onClick={onClickEdit}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClickEdit();
+            }}
           />
         </div>
       ) : null}

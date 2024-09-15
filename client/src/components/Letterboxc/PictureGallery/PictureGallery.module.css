@@ -25,6 +25,11 @@
   background-color: #555;
 }
 
+.newPictureRow {
+  width: 100%;
+  padding-bottom: 30px;
+}
+
 /* firefox */
 @-moz-document url-prefix() {
   .pictureGallery {

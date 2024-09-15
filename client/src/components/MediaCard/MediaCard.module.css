@@ -34,22 +34,6 @@
   transform: translate(-50%, -50%);
 }
 
-/* .mediaTitle {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  flex: 0.2;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding-right: 10px;
-  color: black;
-  background-color: rgba(255, 255, 255, 0.9);
-  text-align: right;
-  z-index: 2;
-  padding-left: 10px;
-  border-radius: 10px;
-} */
 .mediaTitle {
   position: absolute;
   width: 50%;
@@ -70,7 +54,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   opacity: 1;
-  transition: opacity 0.2s ease-out;
+  transition: opacity 0.1s ease-out;
 }
 
 .mediaCard:hover .mediaTitle {
@@ -90,5 +74,5 @@
   padding-right: 3px;
   fill: white;
   text-shadow: 5px;
-  z-index: 2;
+  z-index: 4;
 }

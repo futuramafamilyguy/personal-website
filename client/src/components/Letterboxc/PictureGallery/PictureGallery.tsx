@@ -1,16 +1,16 @@
 import { useState } from "react";
 
 import { useAuth } from "../../../contexts/AuthContext";
+import { useYear } from "../../../contexts/YearContext";
 import usePicturesV2 from "../../../hooks/usePicturesV2";
 import Picture from "../../../types/Picture";
 import MessageDisplay from "../../MessageDisplay/MessageDisplay";
+import NewMediaCard from "../../NewMediaCard/NewMediaCard";
+import NewPictureModal from "../../NewPictureModal/NewPictureModal";
+import FavoritePicturesRow from "../FavoritePicturesRow.module.css/FavoritePicturesRow";
 import PictureModal from "../PictureModal/PictureModal";
 import PictureMonthRow from "../PictureMonthRow/PictureMonthRow";
 import styles from "./PictureGallery.module.css";
-import FavoritePicturesRow from "../FavoritePicturesRow.module.css/FavoritePicturesRow";
-import { useYear } from "../../../contexts/YearContext";
-
-/// <reference types="vite-plugin-svgr/client" />
 
 const PictureGallery: React.FC = () => {
   const { pictures, loading, setTrigger } = usePicturesV2();
@@ -49,8 +49,8 @@ const PictureGallery: React.FC = () => {
     }
   };
 
-  const openNewPictureModal = (index: number | null) => {
-    setPictureIndex(index);
+  const openNewPictureModal = (picture: Picture | null) => {
+    setSelectedPicture(picture);
     setNewModalOpen(true);
   };
 
@@ -75,50 +75,23 @@ const PictureGallery: React.FC = () => {
     } else {
       return (
         <div className={styles.pictureGallery}>
-          {/* <div className={styles.pictureContainer}>
-              {isLoggedIn ? (
+          {isLoggedIn ? (
+            <>
+              <hr />
+              <div className={styles.newPictureRow}>
                 <NewMediaCard
                   mediaType="Picture"
                   onClick={() => openNewPictureModal(null)}
                 />
-              ) : null}
-              {isLoggedIn ? (
-                <NewPictureModal
-                  isOpen={newModalOpen}
-                  onClose={() => setNewModalOpen(false)}
-                  picture={
-                    pictureIndex !== null ? pictures[pictureIndex] : null
-                  }
-                  setTrigger={() => setTrigger((prevTrigger) => !prevTrigger)}
-                />
-              ) : null}
-
-              {pictures.map((picture, index) => (
-                <MediaCard
-                  key={picture.id}
-                  imageUrl={picture.imageUrl}
-                  title={picture.alias ?? picture.name}
-                  onClick={() => openModal(index)}
-                  editable={isLoggedIn}
-                  onClickEdit={() => openNewPictureModal(index)}
-                />
-              ))}
-              <PictureModal
-                isOpen={modalOpen}
-                onClose={closeModal}
-                picture={pictureIndex !== null ? pictures[pictureIndex] : null}
-                handlePrev={handlePrevPic}
-                handleNext={handleNextPic}
-                prev={pictureIndex !== 0}
-                next={pictureIndex !== pictures.length - 1}
-              ></PictureModal>
-            </div> */}
+              </div>
+            </>
+          ) : null}
           <FavoritePicturesRow
             pictures={pictures.filter((p) => p.isFavorite === true)}
             year={year}
             pictureOnClick={(p: Picture) => openModal(p)}
             pictureEditable={isLoggedIn}
-            pictureOnClickEdit={() => {}}
+            pictureOnClickEdit={(p: Picture) => openNewPictureModal(p)}
           />
           {months.map((month, index) => {
             var currentDate = new Date();
@@ -136,7 +109,7 @@ const PictureGallery: React.FC = () => {
                 month={month}
                 pictureOnClick={(p: Picture) => openModal(p)}
                 pictureEditable={isLoggedIn}
-                pictureOnClickEdit={() => openNewPictureModal(index)}
+                pictureOnClickEdit={(p: Picture) => openNewPictureModal(p)}
               />
             );
           })}
@@ -149,6 +122,17 @@ const PictureGallery: React.FC = () => {
             prev={pictureIndex !== 0}
             next={pictureIndex !== pictures.length - 1}
           />
+          {isLoggedIn ? (
+            <NewPictureModal
+              isOpen={newModalOpen}
+              onClose={() => {
+                setNewModalOpen(false);
+                setSelectedPicture(null);
+              }}
+              picture={selectedPicture}
+              setTrigger={() => setTrigger((prevTrigger) => !prevTrigger)}
+            />
+          ) : null}
         </div>
       );
     }

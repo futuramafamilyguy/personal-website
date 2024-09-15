@@ -5,7 +5,7 @@
 
 .pictureRow {
   display: flex;
-  flex-wrap: wrap; /* Allows movies to wrap to a new line if needed */
+  flex-wrap: wrap;
   gap: 25px;
 }
 

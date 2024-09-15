@@ -1,13 +1,45 @@
 .newMediaCard {
   position: relative;
-  width: 220px;
-  height: 120px;
-  border: 1px solid #ddd;
+  width: 195px;
+  height: 105px;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.newMediaCard::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  transition: background-color 0.1s;
+}
+
+.newMediaCard:hover::before {
+  background-color: transparent;
+}
+
+.image {
+  flex: 1.6;
+  width: 100%;
+  object-fit: cover;
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.newMediaCard p {
+  font-weight: 600;
+  z-index: 3;
+}
+
+.newMediaCard:hover p {
+  display: none;
 }
