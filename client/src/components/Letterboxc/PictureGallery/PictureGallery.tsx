@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAuth } from "../../../contexts/AuthContext";
 import { useYear } from "../../../contexts/YearContext";
@@ -22,14 +22,28 @@ const PictureGallery: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [pictureIndex, setPictureIndex] = useState<number | null>(null);
   const [newModalOpen, setNewModalOpen] = useState(false);
+  const [favoritePictures, setFavoritePictures] = useState<Picture[]>();
+  const [viewFavorite, setViewFavorite] = useState(false);
 
-  const openModal = (picture: Picture) => {
+  useEffect(() => {
+    setFavoritePictures(pictures.filter((p) => p.isFavorite));
+  }, [pictures]);
+
+  const openModal = (picture: Picture, favorite = false) => {
     setSelectedPicture(picture);
-    setPictureIndex(pictures.indexOf(picture));
+
+    if (favorite) {
+      setViewFavorite(true);
+      setPictureIndex(favoritePictures!.indexOf(picture));
+    } else {
+      setPictureIndex(pictures.indexOf(picture));
+    }
+
     setModalOpen(true);
   };
 
   const closeModal = () => {
+    setViewFavorite(false);
     setSelectedPicture(null);
     setPictureIndex(null);
     setModalOpen(false);
@@ -37,14 +51,22 @@ const PictureGallery: React.FC = () => {
 
   const handlePrevPic = () => {
     if (pictureIndex !== null) {
-      setSelectedPicture(pictures[pictureIndex - 1]);
+      var pictureList = pictures;
+      if (viewFavorite) {
+        pictureList = favoritePictures!;
+      }
+      setSelectedPicture(pictureList[pictureIndex - 1]);
       setPictureIndex(pictureIndex - 1);
     }
   };
 
   const handleNextPic = () => {
     if (pictureIndex !== null) {
-      setSelectedPicture(pictures[pictureIndex + 1]);
+      var pictureList = pictures;
+      if (viewFavorite) {
+        pictureList = favoritePictures!;
+      }
+      setSelectedPicture(pictureList[pictureIndex + 1]);
       setPictureIndex(pictureIndex + 1);
     }
   };
@@ -77,8 +99,9 @@ const PictureGallery: React.FC = () => {
         <div className={styles.pictureGallery}>
           {isLoggedIn ? (
             <>
-              <hr />
               <div className={styles.newPictureRow}>
+                <h5>After this picture, we're watching four more</h5>
+                <hr />
                 <NewMediaCard
                   mediaType="Picture"
                   onClick={() => openNewPictureModal(null)}
@@ -89,7 +112,7 @@ const PictureGallery: React.FC = () => {
           <FavoritePicturesRow
             pictures={pictures.filter((p) => p.isFavorite === true)}
             year={year}
-            pictureOnClick={(p: Picture) => openModal(p)}
+            pictureOnClick={(p: Picture) => openModal(p, true)}
             pictureEditable={isLoggedIn}
             pictureOnClickEdit={(p: Picture) => openNewPictureModal(p)}
           />
@@ -120,7 +143,10 @@ const PictureGallery: React.FC = () => {
             handlePrev={handlePrevPic}
             handleNext={handleNextPic}
             prev={pictureIndex !== 0}
-            next={pictureIndex !== pictures.length - 1}
+            next={
+              pictureIndex !==
+              (viewFavorite ? favoritePictures!.length : pictures.length) - 1
+            }
           />
           {isLoggedIn ? (
             <NewPictureModal
