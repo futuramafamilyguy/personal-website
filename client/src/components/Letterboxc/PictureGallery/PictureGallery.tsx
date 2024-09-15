@@ -128,6 +128,7 @@ const PictureGallery: React.FC = () => {
 
             return (
               <PictureMonthRow
+                key={index}
                 pictures={pictures.filter((p) => p.monthWatched === 12 - index)}
                 month={month}
                 pictureOnClick={(p: Picture) => openModal(p)}
