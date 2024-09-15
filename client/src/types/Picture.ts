@@ -10,4 +10,5 @@ export default interface Picture {
   cinema: Cinema;
   monthWatched: number;
   isFavorite: boolean;
+  yearWatched: number;
 }

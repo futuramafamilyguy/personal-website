@@ -1,0 +1,29 @@
+.favoritePicturesRow {
+  width: 100%;
+  padding-bottom: 30px;
+}
+
+.pictureRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.title {
+  display: flex;
+}
+
+.favoritePicturesRow h5 {
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.heartIcon {
+  margin-left: 10px;
+  height: 24px;
+  width: 24px;
+}
+
+.oof {
+  font-weight: 600;
+}

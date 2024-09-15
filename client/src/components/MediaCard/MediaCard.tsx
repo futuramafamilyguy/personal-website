@@ -1,8 +1,7 @@
 import React from "react";
 
-import styles from "./MediaCard.module.css";
-
 import editIcon from "../../assets/svg/edit_icon.svg";
+import styles from "./MediaCard.module.css";
 
 interface MediaCardProps {
   imageUrl: string;
@@ -20,20 +19,18 @@ const MediaCard: React.FC<MediaCardProps> = ({
   onClickEdit,
 }) => {
   return (
-    <div className={styles.mediaCard}>
-      <img
-        src={imageUrl}
-        alt={title}
-        className={styles.mediaImage}
-        onClick={onClick}
-      />
+    <div className={styles.mediaCard} onClick={onClick}>
+      <img src={imageUrl} alt={title} className={styles.mediaImage} />
       {editable ? (
         <div className={styles.edit}>
           <img
             className={styles.editIcon}
             src={editIcon}
             alt="mySvgImage"
-            onClick={onClickEdit}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClickEdit();
+            }}
           />
         </div>
       ) : null}

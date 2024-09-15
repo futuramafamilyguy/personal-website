@@ -8,7 +8,7 @@ import MessageDisplay from "../MessageDisplay/MessageDisplay";
 import NewMediaCard from "../NewMediaCard/NewMediaCard";
 import NewPictureModal from "../NewPictureModal/NewPictureModal";
 import Pagination from "../Pagination/Pagination";
-import PictureModal from "../PictureModal/PictureModal";
+import PictureModal from "../Letterboxc/PictureModal/PictureModal";
 import styles from "./PictureContainer.module.css";
 
 const PictureContainer: React.FC = () => {
