@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import React, { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
-import { useYear } from "../../contexts/YearContext";
+import { useYear } from "../../../contexts/YearContext";
 import {
   debouncedCreatePicture,
   debouncedDeleteImage,
@@ -11,9 +11,9 @@ import {
   debouncedUpdatePicture,
   debouncedUploadImage,
   makeDebouncedRequest,
-} from "../../personalWebsiteApi";
-import Cinema from "../../types/Cinema";
-import Picture from "../../types/Picture";
+} from "../../../personalWebsiteApi";
+import Cinema from "../../../types/Cinema";
+import Picture from "../../../types/Picture";
 import styles from "./NewPictureModal.module.css";
 
 interface NewPictureModalProps {

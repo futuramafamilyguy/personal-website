@@ -2,7 +2,7 @@ import React from "react";
 
 import styles from "./NewMediaCard.module.css";
 
-import goingtocinema from "../../assets/gotocinema.webp";
+import goingtocinema from "../../../assets/gotocinema.webp";
 
 interface MediaCardProps {
   mediaType: string;
