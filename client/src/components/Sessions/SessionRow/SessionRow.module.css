@@ -1,0 +1,20 @@
+.sessionRow {
+  width: 100%;
+  padding-bottom: 30px;
+}
+
+.lastSessionRow {
+  width: 100%;
+  padding-bottom: 0px;
+}
+
+.sessionContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.sessionRow h5,
+.lastSessionRow h5 {
+  font-weight: 600;
+}

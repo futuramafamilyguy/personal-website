@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import ReactDom from "react-dom";
 
-import { Cinema, Session } from "../../types/Session";
+import { Cinema, Session } from "../../../types/Session";
 import styles from "./SessionModal.module.css";
 
 interface SessionModalProps {

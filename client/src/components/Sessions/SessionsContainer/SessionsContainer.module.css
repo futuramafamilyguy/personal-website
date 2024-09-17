@@ -1,4 +1,4 @@
-.letterboxcContainer {
+.sessionsContainer {
   position: relative;
   padding: 20px;
   width: 950px;
@@ -16,7 +16,7 @@
 
 .descriptionBox {
   height: 300px;
-  width: 100%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;

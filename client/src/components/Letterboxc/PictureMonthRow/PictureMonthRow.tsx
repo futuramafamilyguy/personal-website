@@ -5,7 +5,6 @@ import styles from "./PictureMonthRow.module.css";
 interface PictureMonthRowProps {
   pictures: Picture[];
   month: string;
-  Icon?: React.ReactNode;
   pictureOnClick: (p: Picture) => void;
   pictureEditable: boolean;
   pictureOnClickEdit: (p: Picture) => void;
@@ -14,7 +13,6 @@ interface PictureMonthRowProps {
 const PictureMonthRow: React.FC<PictureMonthRowProps> = ({
   pictures,
   month,
-  Icon,
   pictureOnClick,
   pictureEditable,
   pictureOnClickEdit,
@@ -31,7 +29,6 @@ const PictureMonthRow: React.FC<PictureMonthRowProps> = ({
         <span>
           <h5>{month}</h5>
         </span>
-        {Icon && <span style={{ marginLeft: "8px" }}>{Icon}</span>}
         <hr />
         <div className={styles.pictureRow}>
           {pictures.map((picture) => (

@@ -23,16 +23,3 @@
   filter: brightness(0.5);
   z-index: -1;
 }
-
-.descriptionBox {
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 10px;
-  margin: 20px 20px 0px 20px;
-  color: white;
-  z-index: 1;
-}
-
-.descriptionBox h4 {
-  font-weight: 600;
-}

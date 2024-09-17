@@ -1,10 +1,10 @@
 .sessionsPage {
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   color: white;
   overflow: hidden;
 }
@@ -22,20 +22,4 @@
   background-repeat: no-repeat;
   filter: brightness(0.5);
   z-index: -1;
-}
-
-.textBox {
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 10px;
-  margin: 20px 20px 0px 20px;
-  color: white;
-  display: inline-block;
-  z-index: 1;
-  max-width: 43%;
-}
-
-.textBox h4,
-.title {
-  font-weight: 600;
 }
