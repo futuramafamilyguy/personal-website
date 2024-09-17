@@ -19,8 +19,8 @@ const App: React.FC = () => {
   const menuItems: MenuItem[] = [
     { label: "About", link: "/about" },
     { label: "Letterboxc", link: "/letterboxc" },
-    { label: "Sessions", link: "/sessions" },
     { label: "Blog", link: "/blog" },
+    { label: "Sessions", link: "/sessions" },
   ];
 
   return (
@@ -33,8 +33,8 @@ const App: React.FC = () => {
             <Route path="/" element={<AboutPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/letterboxc" element={<LetterboxcPage />} />
-            <Route path="/sessions" element={<SessionsPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/sessions" element={<SessionsPage />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/disable-tracking" element={<DisableTracking />} />
             <Route path="/login" element={<AuthComponent />} />

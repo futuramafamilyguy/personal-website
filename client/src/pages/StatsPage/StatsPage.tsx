@@ -56,7 +56,7 @@ function StatsPage() {
   return (
     <div className={styles.statsPage}>
       <div className={styles.textBox}>
-        <h4 className={styles.title}>Site Stats</h4>
+        <h3 className={styles.title}>Site Stats</h3>
         <br />
         <div>
           <h5 className={styles.title}>Visits:</h5>{" "}
