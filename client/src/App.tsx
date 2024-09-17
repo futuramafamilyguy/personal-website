@@ -7,7 +7,6 @@ import NavBar from "./components/NavBar/NavBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import BlogPage from "./pages/BlogPage/BlogPage";
-import ComingSoonPage from "./pages/ComingSoonPage/ComingSoonPage";
 import LetterboxcPage from "./pages/LetterboxcPage/LetterboxcPage";
 import SessionsPage from "./pages/SessionsPage/SessionsPage";
 import StatsPage from "./pages/StatsPage/StatsPage";
@@ -22,7 +21,6 @@ const App: React.FC = () => {
     { label: "Letterboxc", link: "/letterboxc" },
     { label: "Sessions", link: "/sessions" },
     { label: "Blog", link: "/blog" },
-    { label: "Coming Soon", link: "/coming-soon" },
   ];
 
   return (
@@ -37,7 +35,6 @@ const App: React.FC = () => {
             <Route path="/letterboxc" element={<LetterboxcPage />} />
             <Route path="/sessions" element={<SessionsPage />} />
             <Route path="/blog" element={<BlogPage />} />
-            <Route path="/coming-soon" element={<ComingSoonPage />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/disable-tracking" element={<DisableTracking />} />
             <Route path="/login" element={<AuthComponent />} />
