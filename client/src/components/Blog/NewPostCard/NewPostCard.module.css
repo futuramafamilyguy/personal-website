@@ -1,4 +1,4 @@
-.postCard {
+.newPostCard {
   position: relative;
   width: 400px;
   height: 125px;
@@ -7,7 +7,7 @@
   cursor: pointer;
 }
 
-.postCard::before {
+.newPostCard::before {
   content: "";
   position: absolute;
   top: 0;
@@ -19,7 +19,7 @@
   transition: background-color 0.1s;
 }
 
-.postCard:hover::before {
+.newPostCard:hover::before {
   background-color: transparent;
 }
 
@@ -44,7 +44,7 @@
   text-overflow: ellipsis;
 }
 
-.postCard:hover .titleOverlay {
+.newPostCard:hover .titleOverlay {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
@@ -57,22 +57,4 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.edit {
-  position: absolute;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-}
-
-.editIcon {
-  padding-top: 6px;
-  padding-right: 6px;
-  width: 35px;
-  height: 35px;
-  fill: white;
-  text-shadow: 5px;
-  z-index: 4;
 }

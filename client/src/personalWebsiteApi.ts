@@ -41,6 +41,9 @@ export const debouncedDeletePost = createDebouncedRequest(300);
 export const debouncedUploadImage = createDebouncedRequest(300);
 export const debouncedDeleteImage = createDebouncedRequest(300);
 
+export const debouncedUploadContent = createDebouncedRequest(300);
+export const debouncedDeleteContent = createDebouncedRequest(300);
+
 export const debouncedDisableTracking = createDebouncedRequest(300);
 export const debouncedIncrementVisitCount = createDebouncedRequest(300);
 

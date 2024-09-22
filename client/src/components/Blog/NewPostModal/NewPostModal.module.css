@@ -39,13 +39,11 @@
 .formGroup {
   width: 100%;
   display: flex;
-  align-items: center;
   margin-bottom: 1rem;
 }
 
 .formGroup label {
   width: 125px;
-  margin-right: 1rem;
   text-align: left;
 }
 
@@ -57,6 +55,16 @@
 .formGroup input:focus {
   outline: none;
   box-shadow: none;
+}
+
+textarea {
+  width: 585px;
+  height: 280px;
+  border-radius: 10px;
+}
+
+textarea:focus {
+  outline: none;
 }
 
 .title {
@@ -96,16 +104,6 @@ label {
   padding-top: 10px;
   display: flex;
   justify-content: space-between;
-}
-
-input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-}
-
-input[type="checkbox"]:checked {
-  color: #1a1a1a;
-  background-color: white;
 }
 
 .result {

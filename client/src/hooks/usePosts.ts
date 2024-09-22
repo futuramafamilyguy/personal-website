@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 
 import notFoundBoy from "../assets/404boy.png";
 import notFoundGirl from "../assets/404girl.png";
-import {
-  debouncedFetchPosts,
-  makeDebouncedRequest,
-} from "../personalWebsiteApi";
+import { debouncedFetchPosts, makeDebouncedRequest } from "../personalWebsiteApi";
 import Post from "../types/Post";
 
 const usePosts = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
     const fetchPosts = () => {
@@ -36,7 +35,7 @@ const usePosts = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [trigger]);
 
   const setDefaultImageUrl = (imageUrl: string) => {
     return imageUrl || (Math.random() < 0.5 ? notFoundBoy : notFoundGirl);
@@ -45,6 +44,7 @@ const usePosts = () => {
   return {
     posts,
     loading,
+    setTrigger,
   };
 };
 

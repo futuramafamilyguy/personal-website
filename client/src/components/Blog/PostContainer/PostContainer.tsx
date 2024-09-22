@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 import Post from "../../../types/Post";
 import styles from "./PostContainer.module.css";
-import rehypeRaw from "rehype-raw";
 
 interface PostContainerProps {
   post: Post;

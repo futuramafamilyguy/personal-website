@@ -140,11 +140,12 @@
 
 .embeddedImage {
   display: block;
-  width: 500px;
+  width: 450px;
   height: auto;
   border-radius: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
+  margin-left: 35px;
 }
 
 .embeddedBookImage {
