@@ -8,7 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import BlogPage from "./pages/BlogPage/BlogPage";
 import LetterboxcPage from "./pages/LetterboxcPage/LetterboxcPage";
-import SessionsPage from "./pages/SessionsPage/SessionsPage";
+import SessionHubPage from "./pages/SessionHubPage/SessionHubPage";
 import StatsPage from "./pages/StatsPage/StatsPage";
 import { MenuItem } from "./types/MenuItem";
 
@@ -20,7 +20,7 @@ const App: React.FC = () => {
     { label: "About", link: "/about" },
     { label: "Letterboxc", link: "/letterboxc" },
     { label: "Blog", link: "/blog" },
-    { label: "Sessions", link: "/sessions" },
+    { label: "Session Hub", link: "/session-hub" },
   ];
 
   return (
@@ -34,7 +34,7 @@ const App: React.FC = () => {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/letterboxc" element={<LetterboxcPage />} />
             <Route path="/blog" element={<BlogPage />} />
-            <Route path="/sessions" element={<SessionsPage />} />
+            <Route path="/session-hub" element={<SessionHubPage />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/disable-tracking" element={<DisableTracking />} />
             <Route path="/login" element={<AuthComponent />} />

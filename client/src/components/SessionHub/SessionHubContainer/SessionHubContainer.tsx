@@ -3,7 +3,7 @@ import { useState } from "react";
 import { RegionProvider } from "../../../contexts/RegionContext";
 import RegionsContainer from "../RegionsContainer/RegionsContainer";
 import SessionContainer from "../SessionGallery/SessionGallery";
-import styles from "./SessionsContainer.module.css";
+import styles from "./SessionHubContainer.module.css";
 
 const SessionsContainer: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -39,7 +39,7 @@ const SessionsContainer: React.FC = () => {
 
   const renderContent = () => {
     return (
-      <div className={styles.sessionsContainer}>
+      <div className={styles.sessionHubContainer}>
         <button className={styles.collapseButton} onClick={toggleCollapse}>
           {isCollapsed ? "Expand" : "Collapse"}
         </button>
@@ -51,7 +51,7 @@ const SessionsContainer: React.FC = () => {
                 : styles.descriptionBox
             }
           >
-            <h3>Picture Sessions</h3>
+            <h3>Session Hub</h3>
             <br />
             <h5>
               Latest pictures showing in NZ cinemas this week, including
