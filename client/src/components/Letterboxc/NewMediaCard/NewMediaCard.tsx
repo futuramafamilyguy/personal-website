@@ -1,8 +1,7 @@
 import React from "react";
 
-import styles from "./NewMediaCard.module.css";
-
 import goingtocinema from "../../../assets/gotocinema.webp";
+import styles from "./NewMediaCard.module.css";
 
 interface NewMediaCardProps {
   mediaType: string;
@@ -17,7 +16,7 @@ const NewMediaCard: React.FC<NewMediaCardProps> = ({ mediaType, onClick }) => {
         alt={"going to the cinemas"}
         className={styles.image}
       />
-      <p>New {mediaType}</p>
+      <p>I saw something</p>
     </div>
   );
 };

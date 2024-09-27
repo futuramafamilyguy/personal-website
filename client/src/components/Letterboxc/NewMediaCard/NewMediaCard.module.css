@@ -41,5 +41,6 @@
 }
 
 .newMediaCard:hover p {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  color: black;
+  transform: 0.1s;
 }
