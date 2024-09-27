@@ -14,27 +14,39 @@ const SessionsContainer: React.FC = () => {
 
   const calculateNextRun = () => {
     const now = new Date();
-    const nextSunday = new Date(now);
+    const currentDay = now.getDay();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
 
-    nextSunday.setDate(now.getDate() + ((7 - now.getDay()) % 7));
-    nextSunday.setHours(12, 0, 0, 0);
+    let daysUntilSunday = (7 - currentDay) % 7;
 
-    const difference = nextSunday.getTime() - now.getTime();
-
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-
-    if (days === 0 && hours === 0) {
-      return `less than an hour`;
-    } else if (days === 0) {
-      return `${hours} hour${hours > 1 ? "s" : ""}`;
-    } else if (days === -1) {
-      return "7 days";
-    } else {
-      return `${days} day${days > 1 ? "s" : ""}`;
+    if (currentDay === 0 && currentHour >= 12) {
+      daysUntilSunday = 7;
     }
+
+    if (daysUntilSunday > 1) {
+      return `${daysUntilSunday} days`;
+    } else if (daysUntilSunday === 1) {
+      if (currentHour < 12) {
+        return "1 day";
+      } else {
+        const hoursRemaining = 24 - (currentHour - 12);
+        return `${hoursRemaining} hours`;
+      }
+    } else {
+      if (currentHour < 11) {
+        const hoursRemaining = 12 - currentHour;
+        return `${hoursRemaining} hours`;
+      } else if (currentHour === 11) {
+        if (currentMinute < 59) {
+          return "less than an hour";
+        } else {
+          return "7 days";
+        }
+      }
+    }
+
+    return "7 days";
   };
 
   const renderContent = () => {
