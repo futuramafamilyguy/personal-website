@@ -28,6 +28,47 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
         _logger = logger;
     }
 
+    public async Task<string> CopyMarkdownAsync(string fileName, string newFileName, string directory)
+    {
+        try
+        {
+            var key = $"{directory}/{fileName}";
+            var newKey = $"{directory}/{newFileName}";
+
+            var request = new CopyObjectRequest
+            {
+                SourceBucket = _s3configuration.Bucket,
+                SourceKey = key,
+                DestinationBucket = _s3configuration.Bucket,
+                DestinationKey = newKey
+            };
+
+            await _s3Client.CopyObjectAsync(request);
+            _logger.LogInformation($"Successfully renamed markdown '{fileName}' to '{newFileName}' at '{directory}'");
+
+            var markdownUrl =
+                $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{directory}/{newFileName}";
+
+            return markdownUrl;
+        }
+        catch (AmazonS3Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                $"AWS S3 error encountered when renaming markdown '{fileName}' to '{newFileName}' from '{directory}'"
+            );
+            throw new StorageException("Failed to rename markdown due to AWS S3 error", ex);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                $"Unexpected error encountered when renaming markdown '{fileName}' to '{newFileName}' from '{directory}'"
+            );
+            throw new StorageException("Failed to rename markdown due to unexpected error", ex);
+        }
+    }
+
     public string GetMarkdownFileNameFromUrl(string postUrl)
     {
         var uri = new Uri(postUrl);
@@ -87,6 +128,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
 
             var markdownUrl =
                 $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{directory}/{fileName}";
+            
             return markdownUrl;
         }
         catch (AmazonS3Exception ex)
