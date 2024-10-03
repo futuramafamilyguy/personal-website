@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import usePictures from "../..//hooks/usePictures";
 import megamind from "../../assets/megamind.png";
 import { useAuth } from "../../contexts/AuthContext";
-import MediaCard from "../MediaCard/MediaCard";
-import MessageDisplay from "../MessageDisplay/MessageDisplay";
 import NewMediaCard from "../Letterboxc/NewMediaCard/NewMediaCard";
 import NewPictureModal from "../Letterboxc/NewPictureModal/NewPictureModal";
-import Pagination from "../Pagination/Pagination";
 import PictureModal from "../Letterboxc/PictureModal/PictureModal";
+import MediaCard from "../MediaCard/MediaCard";
+import MessageDisplay from "../MessageDisplay/MessageDisplay";
+import Pagination from "../Pagination/Pagination";
 import styles from "./PictureContainer.module.css";
 
 const PictureContainer: React.FC = () => {
@@ -91,10 +91,7 @@ const PictureContainer: React.FC = () => {
           <>
             <div className={styles.pictureContainer}>
               {isLoggedIn ? (
-                <NewMediaCard
-                  mediaType="Picture"
-                  onClick={() => openNewPictureModal(null)}
-                />
+                <NewMediaCard onClick={() => openNewPictureModal(null)} />
               ) : null}
               {isLoggedIn ? (
                 <NewPictureModal

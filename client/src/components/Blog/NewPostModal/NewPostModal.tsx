@@ -1,8 +1,17 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
-import { debouncedCreatePost, debouncedDeleteContent, debouncedDeleteImage, debouncedDeletePost, debouncedUpdatePost, debouncedUploadContent, debouncedUploadImage, makeDebouncedRequest } from "../../../personalWebsiteApi";
+import {
+  debouncedCreatePost,
+  debouncedDeleteContent,
+  debouncedDeleteImage,
+  debouncedDeletePost,
+  debouncedUpdatePost,
+  debouncedUploadContent,
+  debouncedUploadImage,
+  makeDebouncedRequest,
+} from "../../../personalWebsiteApi";
 import Post from "../../../types/Post";
 import styles from "./NewPostModal.module.css";
 
@@ -11,14 +20,6 @@ interface NewPostModalProps {
   onClose: () => void;
   post: Post | null;
   setTrigger: () => void;
-}
-
-interface CreatePostResponse {
-  id: string;
-}
-
-interface UploadImageResponse {
-  imageUrl: string;
 }
 
 const NewPostModal: React.FC<NewPostModalProps> = ({

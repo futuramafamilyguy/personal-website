@@ -5,9 +5,9 @@ import { useYear } from "../../../contexts/YearContext";
 import usePicturesV2 from "../../../hooks/usePicturesV2";
 import Picture from "../../../types/Picture";
 import MessageDisplay from "../../MessageDisplay/MessageDisplay";
+import FavoritePicturesRow from "../FavoritePicturesRow.module.css/FavoritePicturesRow";
 import NewMediaCard from "../NewMediaCard/NewMediaCard";
 import NewPictureModal from "../NewPictureModal/NewPictureModal";
-import FavoritePicturesRow from "../FavoritePicturesRow.module.css/FavoritePicturesRow";
 import PictureModal from "../PictureModal/PictureModal";
 import PictureMonthRow from "../PictureMonthRow/PictureMonthRow";
 import styles from "./PictureGallery.module.css";
@@ -103,7 +103,6 @@ const PictureGallery: React.FC = () => {
                 <h5>After this picture, we're watching four more</h5>
                 <hr />
                 <NewMediaCard
-                  mediaType="Picture"
                   onClick={() => openNewPictureModal(null)}
                 />
               </div>

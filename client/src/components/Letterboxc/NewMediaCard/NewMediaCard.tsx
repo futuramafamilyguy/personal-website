@@ -4,11 +4,10 @@ import goingtocinema from "../../../assets/gotocinema.webp";
 import styles from "./NewMediaCard.module.css";
 
 interface NewMediaCardProps {
-  mediaType: string;
   onClick: () => void;
 }
 
-const NewMediaCard: React.FC<NewMediaCardProps> = ({ mediaType, onClick }) => {
+const NewMediaCard: React.FC<NewMediaCardProps> = ({ onClick }) => {
   return (
     <div className={styles.newMediaCard} onClick={onClick}>
       <img
