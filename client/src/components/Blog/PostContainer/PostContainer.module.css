@@ -31,7 +31,7 @@
 }
 
 .lessImageContainer {
-  height: 22%;
+  height: 18%;
   position: relative;
   overflow: hidden;
   border-top-left-radius: 10px;
@@ -101,6 +101,9 @@
 .markdownContainer p {
   padding-bottom: 10px;
 }
+.markdownContainer p:last-child {
+  padding-bottom: 0px;
+}
 
 .backButton,
 .hideButton {
@@ -131,21 +134,30 @@
 
 .embeddedQuote {
   font-style: italic;
-  padding-left: 30px;
+  padding-left: 20px;
   border-left: 1px solid white;
   margin: 20px auto;
-  max-width: 400px;
+  width: 100%;
   color: #8b8b8b;
 }
 
-.embeddedImage {
+.embeddedLandscapeImage {
   display: block;
   width: 450px;
   height: auto;
   border-radius: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 35px;
+  margin: auto;
+  margin-top: 17px;
+  margin-bottom: 17px;
+}
+
+.embeddedPortraitImage {
+  display: block;
+  width: auto;
+  height: 250px;
+  border-radius: 10px;
+  margin-top: 17px;
+  margin-bottom: 17px;
 }
 
 .embeddedBookImage {
@@ -159,6 +171,11 @@
 
 .embeddedQuote p {
   padding: 0px;
+}
+
+::selection {
+  background-color: #b0b0b0;
+  color: black;
 }
 
 /* scrollbar styling. these should probably be in their own css file but im not gonna do it ahahaha */

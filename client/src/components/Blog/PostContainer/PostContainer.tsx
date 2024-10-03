@@ -111,10 +111,21 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
                 rehypePlugins={[rehypeRaw]}
                 components={{
                   img: ({ alt, ...props }) => {
-                    const className =
-                      alt === "book"
-                        ? styles.embeddedBookImage
-                        : styles.embeddedImage;
+                    let className;
+
+                    switch (alt) {
+                      case "book":
+                        className = styles.embeddedBookImage;
+                        break;
+                      case "landscape":
+                        className = styles.embeddedLandscapeImage;
+                        break;
+                      case "portrait":
+                        className = styles.embeddedPortraitImage;
+                        break;
+                      default:
+                        className = styles.embeddedLandscapeImage;
+                    }
                     return (
                       <img
                         className={className}
