@@ -235,9 +235,8 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         deletePromises.push(deleteContent(postId));
       }
 
-      deletePromises.push(deletePost(postId));
-
       await Promise.all(deletePromises);
+      await deletePost(postId);
     } catch (error) {
       console.error("Error deleting post:", error);
       setResult("Error deleting post");
