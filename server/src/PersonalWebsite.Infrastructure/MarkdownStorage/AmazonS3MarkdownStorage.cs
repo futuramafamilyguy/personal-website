@@ -28,7 +28,11 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
         _logger = logger;
     }
 
-    public async Task<string> CopyMarkdownAsync(string fileName, string newFileName, string directory)
+    public async Task<string> CopyMarkdownAsync(
+        string fileName,
+        string newFileName,
+        string directory
+    )
     {
         try
         {
@@ -44,7 +48,9 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
             };
 
             await _s3Client.CopyObjectAsync(request);
-            _logger.LogInformation($"Successfully renamed markdown '{fileName}' to '{newFileName}' at '{directory}'");
+            _logger.LogInformation(
+                $"Successfully renamed markdown '{fileName}' to '{newFileName}' at '{directory}'"
+            );
 
             var markdownUrl =
                 $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{directory}/{newFileName}";
@@ -128,7 +134,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
 
             var markdownUrl =
                 $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{directory}/{fileName}";
-            
+
             return markdownUrl;
         }
         catch (AmazonS3Exception ex)

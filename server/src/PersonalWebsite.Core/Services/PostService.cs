@@ -174,7 +174,11 @@ public class PostService : IPostService
 
             var contentFileName = _markdownStorage.GetMarkdownFileNameFromUrl(post.ContentUrl!);
 
-            await _markdownStorage.CopyMarkdownAsync(contentFileName, GenerateArchivedFileName(contentFileName), contentDirectory);
+            await _markdownStorage.CopyMarkdownAsync(
+                contentFileName,
+                GenerateArchivedFileName(contentFileName),
+                contentDirectory
+            );
             await _markdownStorage.RemoveMarkdownAsync(contentFileName, contentDirectory);
         }
         catch (ValidationException ex)
@@ -189,6 +193,6 @@ public class PostService : IPostService
         }
     }
 
-    private static string GenerateArchivedFileName(string fileName)
-        => $"{Path.GetFileNameWithoutExtension(fileName)}-archived{Path.GetExtension(fileName)}";
+    private static string GenerateArchivedFileName(string fileName) =>
+        $"{Path.GetFileNameWithoutExtension(fileName)}-archived{Path.GetExtension(fileName)}";
 }
