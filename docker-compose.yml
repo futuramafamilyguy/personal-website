@@ -30,6 +30,7 @@ services:
       BasicAuthConfiguration__DisableTrackingPassword: ${DISABLETRACKING_PASSWORD}
       VisitExclusionConfiguration__ExcludeVisitCookieValue: ${EXCLUDE_VISIT_COOKIE}
       AllowedOrigin: ${ALLOWED_ORIGIN}
+      AllowedWwwOrigin: ${ALLOWED_WWW_ORIGIN}
     depends_on:
       - mongo
     volumes:
