@@ -101,9 +101,6 @@
 .markdownContainer p {
   padding-bottom: 10px;
 }
-.markdownContainer p:last-child {
-  padding-bottom: 0px;
-}
 
 .backButton,
 .hideButton {
@@ -171,6 +168,12 @@
 
 .embeddedQuote p {
   padding: 0px;
+}
+
+.markdownContainer > *:last-child,
+.markdownContainer > *:last-child > *:last-child {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 ::selection {
