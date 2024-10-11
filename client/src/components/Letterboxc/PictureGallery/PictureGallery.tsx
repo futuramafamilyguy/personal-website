@@ -11,6 +11,7 @@ import NewPictureModal from "../NewPictureModal/NewPictureModal";
 import PictureModal from "../PictureModal/PictureModal";
 import PictureMonthRow from "../PictureMonthRow/PictureMonthRow";
 import styles from "./PictureGallery.module.css";
+import PictureStatsRow from "../PictureStatsRow/PictureStatsRow";
 
 const PictureGallery: React.FC = () => {
   const { pictures, loading, setTrigger } = usePicturesV2();
@@ -102,9 +103,7 @@ const PictureGallery: React.FC = () => {
               <div className={styles.newPictureRow}>
                 <h5>After this picture, we're watching four more</h5>
                 <hr />
-                <NewMediaCard
-                  onClick={() => openNewPictureModal(null)}
-                />
+                <NewMediaCard onClick={() => openNewPictureModal(null)} />
               </div>
             </>
           ) : null}
@@ -136,6 +135,8 @@ const PictureGallery: React.FC = () => {
               />
             );
           })}
+          <hr />
+          <PictureStatsRow pictures={pictures} year={year!} />
           <PictureModal
             isOpen={modalOpen}
             onClose={closeModal}

@@ -19,13 +19,7 @@ const PictureMonthRow: React.FC<PictureMonthRowProps> = ({
 }) => {
   const renderContent = () => {
     return (
-      <div
-        className={
-          month !== "January"
-            ? styles.pictureMonthRow
-            : styles.lastPictureMonthRow
-        }
-      >
+      <div className={styles.pictureMonthRow}>
         <span>
           <h5>{month}</h5>
         </span>
