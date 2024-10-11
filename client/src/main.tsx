@@ -4,7 +4,18 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App.tsx";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const isMacOs = () => {
+  const platform = window.navigator.platform;
+  return ["Macintosh", "MacIntel", "MacPPC", "Mac68K"].includes(platform);
+}
+
+const root = document.getElementById("root")!;
+
+if (isMacOs()) {
+  root.style.fontFamily = "'Segoe UI', sans-serif";
+}
+
+ReactDOM.createRoot(root!).render(
   <React.StrictMode>
     <BrowserRouter>
       <App />
