@@ -3,15 +3,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
 import { useYear } from "../../../contexts/YearContext";
-import {
-  debouncedCreatePicture,
-  debouncedDeleteImage,
-  debouncedDeletePicture,
-  debouncedFetchCinemas,
-  debouncedUpdatePicture,
-  debouncedUploadImage,
-  makeDebouncedRequest,
-} from "../../../personalWebsiteApi";
+import { debouncedCreatePicture, debouncedDeleteImage, debouncedDeletePicture, debouncedFetchCinemas, debouncedUpdatePicture, debouncedUploadImage, makeDebouncedRequest } from "../../../personalWebsiteApi";
 import Cinema from "../../../types/Cinema";
 import Picture from "../../../types/Picture";
 import styles from "./NewPictureModal.module.css";
@@ -29,6 +21,7 @@ interface CreatePictureResponse {
 
 interface UploadImageResponse {
   imageUrl: string;
+  altImageUrl: string | null;
 }
 
 const NewPictureModal: React.FC<NewPictureModalProps> = ({
@@ -46,6 +39,8 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
   const [zinger, setZinger] = useState("");
   const [alias, setAlias] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
+  const [altImage, setAltImage] = useState<File | null>(null);
+  const [altImageUrl, setAltImageUrl] = useState("");
 
   const [result, setResult] = useState("");
 
@@ -63,6 +58,8 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     setZinger(picture && picture.zinger ? picture.zinger : "");
     setAlias(picture && picture.alias ? picture.alias : "");
     setIsFavorite(picture ? picture.isFavorite : false);
+    setAltImage(null);
+    setAltImageUrl(picture && picture.altImageUrl ? picture.altImageUrl : "");
   }, [isOpen]);
 
   useEffect(() => {
@@ -101,7 +98,12 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
 
   const uploadImage = (id: string) => {
     const formData = new FormData();
-    formData.append("imageFile", image!);
+    if (image) {
+      formData.append("imageFile", image);
+    }
+    if (altImage) {
+      formData.append("altImageFile", altImage);
+    }
 
     return makeDebouncedRequest(debouncedUploadImage, {
       url: `/pictures/${id}/image`,
@@ -113,9 +115,13 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     });
   };
 
-  const deleteImage = (id: string) => {
+  const deleteImage = (
+    id: string,
+    deleteImage: boolean,
+    deleteAltImage: boolean
+  ) => {
     return makeDebouncedRequest(debouncedDeleteImage, {
-      url: `/pictures/${id}/image`,
+      url: `/pictures/${id}/image?deleteImage=${deleteImage}&deleteAltImage=${deleteAltImage}`,
       method: "delete",
     });
   };
@@ -127,7 +133,11 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     });
   };
 
-  const updatePicture = (id: string, url: string | null) => {
+  const updatePicture = (
+    id: string,
+    url: string | null,
+    altUrl: string | null
+  ) => {
     return makeDebouncedRequest(debouncedUpdatePicture, {
       url: `/pictures/${id}`,
       method: "put",
@@ -146,6 +156,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
         imageUrl: url ? url : !isDefaultImage(imageUrl) ? imageUrl : null,
         yearWatched: year,
         isFavorite: isFavorite,
+        altImageUrl: altUrl ? altUrl : altImageUrl ? altImageUrl : null,
       }),
     });
   };
@@ -179,7 +190,11 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
             }>);
           }
           if ("imageUrl" in response.data && response.status === 200) {
-            return updatePicture(id, response.data.imageUrl);
+            return updatePicture(
+              id,
+              response.data.imageUrl,
+              response.data.altImageUrl
+            );
           } else {
             throw new Error(`Error uploading image ${response.status}`);
           }
@@ -204,12 +219,20 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
   };
 
   const orchestrateUpdatePicture = () => {
-    if (image) {
-      if (isDefaultImage(picture!.imageUrl)) {
+    if (image || altImage) {
+      if (
+        !(image && !isDefaultImage(picture!.imageUrl)) &&
+        altImage &&
+        !picture!.altImageUrl
+      ) {
         uploadImage(picture!.id)
           .then((response: AxiosResponse<UploadImageResponse>) => {
             if (response.status === 200) {
-              return updatePicture(picture!.id, response.data.imageUrl);
+              return updatePicture(
+                picture!.id,
+                image ? response.data.imageUrl : picture!.imageUrl,
+                altImage ? response.data.altImageUrl : picture!.altImageUrl
+              );
             } else {
               throw new Error(`Error uploading image ${response.status}`);
             }
@@ -228,7 +251,11 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
             setResult("Error updating picture");
           });
       } else {
-        deleteImage(picture!.id)
+        deleteImage(
+          picture!.id,
+          image !== null && !isDefaultImage(picture!.imageUrl),
+          altImage !== null && picture!.altImageUrl !== null
+        )
           .then((response) => {
             if (response.status === 204) {
               return uploadImage(picture!.id);
@@ -240,7 +267,11 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
           })
           .then((response: AxiosResponse<UploadImageResponse>) => {
             if (response.status === 200) {
-              return updatePicture(picture!.id, response.data.imageUrl);
+              return updatePicture(
+                picture!.id,
+                image ? response.data.imageUrl : picture!.imageUrl,
+                altImage ? response.data.altImageUrl : picture!.altImageUrl
+              );
             } else {
               throw new Error(`Error uploading image ${response.status}`);
             }
@@ -260,7 +291,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
           });
       }
     } else {
-      updatePicture(picture!.id, null)
+      updatePicture(picture!.id, null, null)
         .then((response) => {
           if (response.status === 200) {
             setResult("Successfully updated picture");
@@ -279,7 +310,11 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
 
   const orchestrateDeletePicture = () => {
     if (!isDefaultImage(picture!.imageUrl)) {
-      deleteImage(picture!.id)
+      deleteImage(
+        picture!.id,
+        !isDefaultImage(picture!.imageUrl),
+        picture!.altImageUrl !== null
+      )
         .then((response) => {
           if (response.status === 204) {
             return deletePicture(picture!.id);
@@ -374,6 +409,15 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 type="file"
                 onChange={(e) =>
                   setImage(e.target.files ? e.target.files[0] : null)
+                }
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label>Alt Image</label>
+              <input
+                type="file"
+                onChange={(e) =>
+                  setAltImage(e.target.files ? e.target.files[0] : null)
                 }
               />
             </div>

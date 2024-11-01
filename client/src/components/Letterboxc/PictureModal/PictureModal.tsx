@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDom from "react-dom";
 
+import heartIcon from "../../../assets/svg/heart_filled.png";
 import Picture from "../../../types/Picture";
 import styles from "./PictureModal.module.css";
-
-import heartIcon from "../../../assets/svg/heart_filled.png";
 
 interface PictureModalProps {
   isOpen: boolean;
@@ -14,6 +13,7 @@ interface PictureModalProps {
   handleNext: () => void;
   prev: boolean;
   next: boolean;
+  isAltImage: boolean;
 }
 
 const PictureModal: React.FC<PictureModalProps> = ({
@@ -24,6 +24,7 @@ const PictureModal: React.FC<PictureModalProps> = ({
   handleNext,
   prev,
   next,
+  isAltImage,
 }) => {
   if (!isOpen) return null;
 
@@ -33,7 +34,11 @@ const PictureModal: React.FC<PictureModalProps> = ({
       <div className={styles.modal}>
         <div className={styles.imageContainer}>
           <img
-            src={picture?.imageUrl}
+            src={
+              isAltImage && picture?.altImageUrl
+                ? picture?.altImageUrl
+                : picture?.imageUrl
+            }
             alt={picture?.alias}
             className={styles.modalImage}
           />

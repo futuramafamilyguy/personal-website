@@ -140,6 +140,7 @@ public class PictureServiceTests
         var updatedZinger = "bazinga";
         var updatedAlias = "car";
         var updatedImageUrl = "domain/images/image.jpg";
+        var updatedAltImageUrl = "domain/images/alt-image.jpg";
         var updatedIsFavorite = true;
 
         var cinemaId = "123";
@@ -163,6 +164,7 @@ public class PictureServiceTests
             updatedZinger,
             updatedAlias,
             updatedImageUrl,
+            updatedAltImageUrl,
             updatedIsFavorite
         );
 
@@ -276,7 +278,14 @@ public class PictureServiceTests
         imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(true);
 
         // act
-        await sut.UploadPictureImageAsync(stream, id, imageExtension, imageDirectory);
+        await sut.UploadPictureImagesAsync(
+            stream,
+            altImageStream: null,
+            id,
+            imageExtension,
+            imageDirectory,
+            altImageExtension: null
+        );
 
         // assert
         imageStorageMock.Verify(
@@ -305,7 +314,14 @@ public class PictureServiceTests
 
         // act
         var act = async () =>
-            await sut.UploadPictureImageAsync(stream, id, imageExtension, imageDirectory);
+            await sut.UploadPictureImagesAsync(
+                stream,
+                altImageStream: null,
+                id,
+                imageExtension,
+                imageDirectory,
+                altImageExtension: null
+            );
 
         // assert
         await act.Should().ThrowAsync<ValidationException>();
@@ -333,7 +349,12 @@ public class PictureServiceTests
         imageStorageMock.Setup(x => x.GetImageFileNameFromUrl(imageUrl)).Returns(imageName);
 
         // act
-        await sut.DeletePictureImageAsync(id, imageDirectory);
+        await sut.DeletePictureImagesAsync(
+            id,
+            imageDirectory,
+            deleteImage: true,
+            deleteAltImage: false
+        );
 
         // assert
         imageStorageMock.Verify(
@@ -358,7 +379,13 @@ public class PictureServiceTests
         var imageDirectory = "images/pictures";
 
         // act
-        var act = async () => await sut.DeletePictureImageAsync(id, imageDirectory);
+        var act = async () =>
+            await sut.DeletePictureImagesAsync(
+                id,
+                imageDirectory,
+                deleteImage: true,
+                deleteAltImage: false
+            );
 
         // assert
         await act.Should().ThrowAsync<ValidationException>();

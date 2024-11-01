@@ -72,6 +72,7 @@ public class PictureService : IPictureService
         string? zinger,
         string? alias,
         string? imageUrl,
+        string? altImageUrl,
         bool isFavorite
     )
     {
@@ -88,6 +89,7 @@ public class PictureService : IPictureService
                 Zinger = zinger,
                 Alias = alias,
                 ImageUrl = imageUrl,
+                AltImageUrl = altImageUrl,
                 IsFavorite = isFavorite
             }
         );
@@ -106,32 +108,47 @@ public class PictureService : IPictureService
     public async Task<IEnumerable<int>> GetActiveYearsAsync() =>
         await _pictureRepository.GetActiveYearsAsync();
 
-    public async Task<string> UploadPictureImageAsync(
-        Stream imageStream,
+    public async Task<(string? ImageUrl, string? AltImageUrl)> UploadPictureImagesAsync(
+        Stream? imageStream,
+        Stream? altImageStream,
         string id,
-        string imageExtension,
-        string imageDirectory
+        string? imageExtension,
+        string imageDirectory,
+        string? altImageExtension
     )
     {
         var picture = await GetPictureAsync(id);
 
         try
         {
-            var imageName = $"{id}{imageExtension}";
-            if (!_imageStorage.IsValidImageFormat(imageName))
+            string? imageUrl = null;
+            string? altImageUrl = null;
+
+            if (imageStream is not null)
             {
-                _logger.LogError($"Image extension '{imageExtension}' not supported");
-                throw new ValidationException("Invalid image extension");
+                var imageName = $"{id}{imageExtension}";
+                imageUrl = await PrepareAndSaveImageAsync(
+                    picture,
+                    imageStream,
+                    imageName,
+                    imageExtension!,
+                    imageDirectory
+                );
             }
 
-            var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
-            var imageUrl = await _imageStorage.SaveImageAsync(
-                imageStream,
-                imageName,
-                imageYearDirectory
-            );
+            if (altImageStream is not null)
+            {
+                var altImageName = $"alt-{id}{altImageExtension}";
+                altImageUrl = await PrepareAndSaveImageAsync(
+                    picture,
+                    altImageStream,
+                    altImageName,
+                    altImageExtension!,
+                    imageDirectory
+                );
+            }
 
-            return imageUrl;
+            return (imageUrl, altImageUrl);
         }
         catch (ValidationException ex)
         {
@@ -145,21 +162,39 @@ public class PictureService : IPictureService
         }
     }
 
-    public async Task DeletePictureImageAsync(string id, string imageDirectory)
+    public async Task DeletePictureImagesAsync(
+        string id,
+        string imageDirectory,
+        bool deleteImage,
+        bool deleteAltImage
+    )
     {
         var picture = await GetPictureAsync(id);
 
         try
         {
-            if (picture.ImageUrl is null)
+            if (
+                (deleteImage && picture.ImageUrl is null)
+                || (deleteAltImage && picture.AltImageUrl is null)
+            )
             {
                 _logger.LogError($"Picture '{id}' does not have an image that can be deleted");
                 throw new ValidationException("No image associated with picture");
             }
 
-            var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl!);
             var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
-            await _imageStorage.RemoveImageAsync(imageFileName, imageYearDirectory);
+
+            if (deleteImage)
+            {
+                var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl!);
+                await _imageStorage.RemoveImageAsync(imageFileName, imageYearDirectory);
+            }
+
+            if (deleteAltImage)
+            {
+                var altImageFileName = _imageStorage.GetImageFileNameFromUrl(picture.AltImageUrl!);
+                await _imageStorage.RemoveImageAsync(altImageFileName, imageYearDirectory);
+            }
         }
         catch (ValidationException ex)
         {
@@ -168,8 +203,27 @@ public class PictureService : IPictureService
         }
         catch (StorageException ex)
         {
-            _logger.LogError(ex, "An error occurred while deleting the image");
+            _logger.LogError(ex, "An error occurred while deleting image");
             throw;
         }
+    }
+
+    private async Task<string> PrepareAndSaveImageAsync(
+        Picture picture,
+        Stream imageStream,
+        string imageName,
+        string imageExtension,
+        string imageDirectory
+    )
+    {
+        if (!_imageStorage.IsValidImageFormat(imageName))
+        {
+            _logger.LogError($"Image extension '{imageExtension}' not supported");
+            throw new ValidationException("Invalid image extension");
+        }
+
+        var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
+
+        return await _imageStorage.SaveImageAsync(imageStream, imageName, imageYearDirectory);
     }
 }

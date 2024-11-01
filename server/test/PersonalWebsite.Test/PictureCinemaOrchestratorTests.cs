@@ -97,6 +97,7 @@ public class PictureCinemaOrchestratorTests
         var zinger = "bazinga";
         var alias = "car";
         var imageUrl = "domain/images/image.jpg";
+        var altImageUrl = "domain/images/alt-image.jpg";
         var isFavorite = false;
 
         var cinemaId = "123";
@@ -122,6 +123,7 @@ public class PictureCinemaOrchestratorTests
             zinger,
             alias,
             imageUrl,
+            altImageUrl,
             isFavorite
         );
 
@@ -139,6 +141,7 @@ public class PictureCinemaOrchestratorTests
                     zinger,
                     alias,
                     imageUrl,
+                    altImageUrl,
                     isFavorite
                 ),
             Times.Once()

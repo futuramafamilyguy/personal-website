@@ -10,8 +10,8 @@ import NewMediaCard from "../NewMediaCard/NewMediaCard";
 import NewPictureModal from "../NewPictureModal/NewPictureModal";
 import PictureModal from "../PictureModal/PictureModal";
 import PictureMonthRow from "../PictureMonthRow/PictureMonthRow";
-import styles from "./PictureGallery.module.css";
 import PictureStatsRow from "../PictureStatsRow/PictureStatsRow";
+import styles from "./PictureGallery.module.css";
 
 const PictureGallery: React.FC = () => {
   const { pictures, loading, setTrigger } = usePicturesV2();
@@ -148,6 +148,7 @@ const PictureGallery: React.FC = () => {
               pictureIndex !==
               (viewFavorite ? favoritePictures!.length : pictures.length) - 1
             }
+            isAltImage={viewFavorite}
           />
           {isLoggedIn ? (
             <NewPictureModal

@@ -58,6 +58,7 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         string? zinger,
         string? alias,
         string? imageUrl,
+        string? altImageUrl,
         bool isFavorite
     )
     {
@@ -72,6 +73,7 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
             zinger,
             alias,
             imageUrl,
+            altImageUrl,
             isFavorite
         );
 

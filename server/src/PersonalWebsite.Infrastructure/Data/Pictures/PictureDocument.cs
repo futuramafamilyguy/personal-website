@@ -37,4 +37,7 @@ public class PictureDocument
 
     [BsonElement("image_url")]
     public string? ImageUrl { get; set; }
+
+    [BsonElement("alt_image_url")]
+    public string? AltImageUrl { get; set; }
 }

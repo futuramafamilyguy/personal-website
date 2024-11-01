@@ -32,6 +32,7 @@ public interface IPictureCinemaOrchestrator
         string? zinger,
         string? alias,
         string? imageUrl,
+        string? altImageUrl,
         bool isFavorite
     );
     Task<Cinema> UpdateCinemaAndAssociatedPicturesAsync(

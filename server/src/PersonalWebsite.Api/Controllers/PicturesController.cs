@@ -105,6 +105,7 @@ public class PicturesController : ControllerBase
             request.Zinger,
             request.Alias,
             request.ImageUrl,
+            request.AltImageUrl,
             request.IsFavorite
         );
 
@@ -130,25 +131,42 @@ public class PicturesController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpPost("{id}/image")]
-    public async Task<IActionResult> UploadImageAsync(string id, IFormFile imageFile)
+    public async Task<IActionResult> UploadImagesAsync(
+        string id,
+        IFormFile? imageFile = null,
+        IFormFile? altImageFile = null
+    )
     {
-        if (imageFile is null || imageFile.Length == 0)
-        {
-            return BadRequest("No file uploaded or file is empty");
-        }
-
         try
         {
-            using var stream = imageFile.OpenReadStream();
-            var extension = Path.GetExtension(imageFile.FileName);
-            var imageUrl = await _pictureService.UploadPictureImageAsync(
+            using var stream = imageFile?.OpenReadStream();
+            var extension = imageFile != null ? Path.GetExtension(imageFile.FileName) : null;
+
+            using var altStream = altImageFile?.OpenReadStream();
+            var altExtension =
+                altImageFile != null ? Path.GetExtension(altImageFile.FileName) : null;
+
+            if (stream == null && altStream == null)
+            {
+                return BadRequest("At least one image file is required");
+            }
+
+            var imageUrlPair = await _pictureService.UploadPictureImagesAsync(
                 stream,
+                altStream,
                 id,
                 extension,
-                _imageStorageConfiguration.PictureImageDirectory
+                _imageStorageConfiguration.PictureImageDirectory,
+                altExtension
             );
 
-            return Ok(new { ImageUrl = imageUrl });
+            return Ok(
+                new UploadImagesResponse
+                {
+                    ImageUrl = imageUrlPair.ImageUrl,
+                    AltImageUrl = imageUrlPair.AltImageUrl
+                }
+            );
         }
         catch (ValidationException)
         {
@@ -162,13 +180,19 @@ public class PicturesController : ControllerBase
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpDelete("{id}/image")]
-    public async Task<IActionResult> DeleteImageAsync(string id)
+    public async Task<IActionResult> DeleteImagesAsync(
+        string id,
+        bool deleteImage = false,
+        bool deleteAltImage = false
+    )
     {
         try
         {
-            await _pictureService.DeletePictureImageAsync(
+            await _pictureService.DeletePictureImagesAsync(
                 id,
-                _imageStorageConfiguration.PictureImageDirectory
+                _imageStorageConfiguration.PictureImageDirectory,
+                deleteImage,
+                deleteAltImage
             );
 
             return NoContent();

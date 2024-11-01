@@ -31,7 +31,7 @@ const FavoritePicturesRow: React.FC<FavoritePicturesRowProps> = ({
           {pictures.map((picture) => (
             <MediaCard
               key={picture.id}
-              imageUrl={picture.imageUrl}
+              imageUrl={picture.altImageUrl ?? picture.imageUrl}
               title={picture.alias ?? picture.name}
               onClick={() => pictureOnClick(picture)}
               editable={pictureEditable}

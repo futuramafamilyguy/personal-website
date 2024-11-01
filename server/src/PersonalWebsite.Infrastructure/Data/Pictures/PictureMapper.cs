@@ -18,6 +18,7 @@ public static class PictureMapper
             IsFavorite = document.IsFavorite,
             Alias = document.Alias,
             ImageUrl = document.ImageUrl,
+            AltImageUrl = document.AltImageUrl,
         };
 
     public static PictureDocument ToDocument(Picture picture) =>
@@ -33,5 +34,6 @@ public static class PictureMapper
             IsFavorite = picture.IsFavorite,
             Alias = picture.Alias,
             ImageUrl = picture.ImageUrl,
+            AltImageUrl = picture.AltImageUrl,
         };
 }

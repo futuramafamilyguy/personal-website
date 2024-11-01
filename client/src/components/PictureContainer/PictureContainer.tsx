@@ -130,6 +130,7 @@ const PictureContainer: React.FC = () => {
                   pictureIndex !== pictures.length - 1 ||
                   currentPage !== totalPages
                 }
+                isAltImage={false}
               ></PictureModal>
             </div>
 

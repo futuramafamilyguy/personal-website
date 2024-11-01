@@ -11,4 +11,5 @@ export default interface Picture {
   monthWatched: number;
   isFavorite: boolean;
   yearWatched: number;
+  altImageUrl: string;
 }
