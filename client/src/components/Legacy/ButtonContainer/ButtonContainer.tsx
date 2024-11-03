@@ -1,9 +1,9 @@
 import {
   useViewFavorite,
   useViewFavoriteUpdate,
-} from "../../contexts/ViewFavoriteContext";
-import CapsuleButton from "../Common/CapsuleButton/CapsuleButton";
-import ActiveYearsContainer from "../Letterboxc/ActiveYearsContainer/ActiveYearsContainer";
+} from "../../../contexts/ViewFavoriteContext";
+import CapsuleButton from "../../Common/CapsuleButton/CapsuleButton";
+import ActiveYearsContainer from "../../Letterboxc/ActiveYearsContainer/ActiveYearsContainer";
 import styles from "./ButtonContainer.module.css";
 
 const ButtonContainer: React.FC = () => {

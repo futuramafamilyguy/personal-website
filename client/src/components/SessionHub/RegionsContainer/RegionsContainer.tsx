@@ -6,7 +6,7 @@ import {
   debouncedFetchRegions,
   makeDebouncedRequest,
 } from "../../../sessionsApi";
-import CapsuleButton from "../../CapsuleButton/CapsuleButton";
+import CapsuleButton from "../../Common/CapsuleButton/CapsuleButton";
 import styles from "./RegionsContainer.module.css";
 
 const RegionsContainer: React.FC = () => {

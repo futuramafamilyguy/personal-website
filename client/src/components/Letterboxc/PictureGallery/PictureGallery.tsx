@@ -4,7 +4,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { useYear } from "../../../contexts/YearContext";
 import usePicturesV2 from "../../../hooks/usePicturesV2";
 import Picture from "../../../types/Picture";
-import MessageDisplay from "../../MessageDisplay/MessageDisplay";
+import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import FavoritePicturesRow from "../FavoritePicturesRow.module.css/FavoritePicturesRow";
 import NewMediaCard from "../NewMediaCard/NewMediaCard";
 import NewPictureModal from "../NewPictureModal/NewPictureModal";

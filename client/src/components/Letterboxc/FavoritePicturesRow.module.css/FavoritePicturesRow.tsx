@@ -1,6 +1,6 @@
 import heartIcon from "../../../assets/svg/heart_filled.png";
 import Picture from "../../../types/Picture";
-import MediaCard from "../../MediaCard/MediaCard";
+import MediaCard from "../../Common/MediaCard/MediaCard";
 import styles from "./FavoritePicturesRow.module.css";
 
 interface FavoritePicturesRowProps {

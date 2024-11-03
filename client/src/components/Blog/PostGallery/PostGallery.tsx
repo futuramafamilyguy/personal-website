@@ -4,7 +4,7 @@ import megamind from "../../../assets/megamind.png";
 import { useAuth } from "../../../contexts/AuthContext";
 import usePosts from "../../../hooks/usePosts";
 import Post from "../../../types/Post";
-import MessageDisplay from "../../MessageDisplay/MessageDisplay";
+import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import NewPostCard from "../NewPostCard/NewPostCard";
 import NewPostModal from "../NewPostModal/NewPostModal";
 import PostCard from "../PostCard/PostCard";

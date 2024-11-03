@@ -1,6 +1,6 @@
 import styles from "./SessionRow.module.css";
 import { Session } from "../../../types/Session";
-import MediaCard from "../../MediaCard/MediaCard";
+import MediaCard from "../../Common/MediaCard/MediaCard";
 
 interface SessionRowProps {
   sessions: Session[];

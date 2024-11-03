@@ -2,7 +2,7 @@ import styles from "./SessionGallery.module.css";
 import { useEffect, useState } from "react";
 
 import useSessions from "../../../hooks/useSessions";
-import MessageDisplay from "../../MessageDisplay/MessageDisplay";
+import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import SessionModal from "../SessionModal/SessionModal";
 import SessionRow from "../SessionRow/SessionRow";
 import { Session } from "../../../types/Session";

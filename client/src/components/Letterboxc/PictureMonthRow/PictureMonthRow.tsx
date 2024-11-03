@@ -1,5 +1,5 @@
 import Picture from "../../../types/Picture";
-import MediaCard from "../../MediaCard/MediaCard";
+import MediaCard from "../../Common/MediaCard/MediaCard";
 import styles from "./PictureMonthRow.module.css";
 
 interface PictureMonthRowProps {
