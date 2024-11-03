@@ -14,7 +14,6 @@ interface PostContainerProps {
 const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
   const [markdownContent, setMarkdownContent] = useState<string>("");
   const [showLess, setShowLess] = useState(false);
-  const [isScrollable, setIsScrollable] = useState(false);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -29,30 +28,6 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
 
     fetchMarkdown();
   }, []);
-
-  useEffect(() => {
-    // need to wait for markdown content to be loaded first before determining scrollability
-    if (markdownContent) {
-      const textContainer = textContainerRef.current;
-
-      if (textContainer) {
-        setIsScrollable(
-          textContainer.scrollHeight > textContainer.clientHeight
-        );
-      }
-
-      const handleResize = () => {
-        if (textContainer) {
-          setIsScrollable(
-            textContainer.scrollHeight > textContainer.clientHeight
-          );
-        }
-      };
-      window.addEventListener("resize", handleResize);
-
-      return () => window.removeEventListener("resize", handleResize);
-    }
-  }, [markdownContent]);
 
   const formatDate = (dateInput: Date) => {
     const date =
