@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import Picture from "../../../types/Picture";
 import styles from "./PictureStatsRow.module.css";
 
@@ -73,6 +74,9 @@ const PictureStatsRow: React.FC<PictureStatsRowProps> = ({
           <div className={styles.stat}>
             <span className={styles.statKey}>Re-releases</span>:{" "}
             {rereleaseCount}
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statKey}>Total Spending</span>: No
           </div>
           <div className={styles.lastStat}>
             <div className={styles.statKey}>Most Frequent Cinemas</div>

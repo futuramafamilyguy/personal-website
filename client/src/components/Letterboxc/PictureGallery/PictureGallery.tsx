@@ -101,7 +101,7 @@ const PictureGallery: React.FC = () => {
           {isLoggedIn ? (
             <>
               <div className={styles.newPictureRow}>
-                <h5>After this picture, we're watching four more</h5>
+                <h5>After this one, we're watching four more</h5>
                 <hr />
                 <NewMediaCard onClick={() => openNewPictureModal(null)} />
               </div>
