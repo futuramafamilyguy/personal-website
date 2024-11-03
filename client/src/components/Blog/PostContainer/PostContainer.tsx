@@ -93,14 +93,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
               : styles.textContainerWrapper
           }
         >
-          <div
-            ref={textContainerRef}
-            className={
-              isScrollable
-                ? styles.scrollableTextContainer
-                : styles.textContainer
-            }
-          >
+          <div ref={textContainerRef} className={styles.textContainer}>
             <div className={styles.metadataContainer}>
               <h3>{post.title}</h3>
               <p>{formatDate(post.createdAtUtc)}</p>

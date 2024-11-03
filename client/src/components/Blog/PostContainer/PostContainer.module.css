@@ -7,7 +7,7 @@
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
-  padding-bottom: 30px;
+
   display: flex;
   flex-direction: column;
 }
@@ -50,13 +50,6 @@
 
 .textContainer {
   width: 550px;
-  overflow-y: auto;
-}
-
-.scrollableTextContainer {
-  width: 550px;
-  overflow-y: auto;
-  padding-right: 15px;
 }
 
 .textContainerWrapper {
@@ -68,6 +61,8 @@
   padding-top: 30px;
   transition: height 0.3s ease;
   flex-grow: 1;
+  padding-bottom: 30px;
+  overflow-y: auto;
 }
 
 .moreTextContainerWrapper {
@@ -80,6 +75,8 @@
   transition: height 0.3s ease;
   flex-grow: 1;
   transition: height 0.3s ease;
+  padding-bottom: 30px;
+  overflow-y: auto;
 }
 
 .metadataContainer {
@@ -183,37 +180,44 @@
 
 /* scrollbar styling. these should probably be in their own css file but im not gonna do it ahahaha */
 
-.scrollableTextContainer::-webkit-scrollbar {
+.textContainerWrapper::-webkit-scrollbar,
+.moreTextContainerWrapper::-webkit-scrollbar {
   width: 8px;
 }
 
-.scrollableTextContainer::-webkit-scrollbar-track {
+.textContainerWrapper::-webkit-scrollbar-track,
+.moreTextContainerWrapper::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.scrollableTextContainer::-webkit-scrollbar-thumb {
+.textContainerWrapper::-webkit-scrollbar-thumb,
+.moreTextContainerWrapper::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 20px;
   border: 2px solid transparent;
 }
 
-.scrollableTextContainer::-webkit-scrollbar-thumb:hover {
+.textContainerWrapper::-webkit-scrollbar-thumb:hover,
+.moreTextContainerWrapper::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
 
 /* firefox */
 @-moz-document url-prefix() {
-  .scrollableTextContainer {
+  .textContainerWrapper,
+  .moreTextContainerWrapper {
     scrollbar-width: thin;
     scrollbar-color: #888 transparent;
   }
 }
 
 /* IE and edge */
-.scrollableTextContainer {
+.textContainerWrapper,
+.moreTextContainerWrapper {
   -ms-overflow-style: none; /* hides default scrollbar */
 }
 
-.scrollableTextContainer::-ms-scrollbar {
+.textContainerWrapper::-ms-scrollbar,
+.moreTextContainerWrapper::-ms-scrollbar {
   display: none; /* hides default scrollbar */
 }
