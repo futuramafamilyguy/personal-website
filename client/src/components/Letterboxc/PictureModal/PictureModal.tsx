@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDom from "react-dom";
 
 import heartIcon from "../../../assets/svg/heart_filled.png";
@@ -26,12 +26,18 @@ const PictureModal: React.FC<PictureModalProps> = ({
   next,
   isAltImage,
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   if (!isOpen) return null;
 
   return ReactDom.createPortal(
     <>
       <div className={styles.overlay} onClick={onClose}></div>
-      <div className={styles.modal}>
+      <div
+        className={styles.modal}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <div className={styles.imageContainer}>
           <img
             src={
@@ -43,7 +49,11 @@ const PictureModal: React.FC<PictureModalProps> = ({
             className={styles.modalImage}
           />
         </div>
-        <div className={styles.modalTextBox}>
+        <div
+          className={
+            isHovered ? styles.modalTextBox : styles.modalTextBoxHidden
+          }
+        >
           <span>
             <h4
               className={styles.title}
@@ -63,6 +73,8 @@ const PictureModal: React.FC<PictureModalProps> = ({
         <button
           className={`${styles.arrowButton} ${styles.left}`}
           onClick={handlePrev}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           &lt;
         </button>
@@ -71,6 +83,8 @@ const PictureModal: React.FC<PictureModalProps> = ({
         <button
           className={`${styles.arrowButton} ${styles.right}`}
           onClick={handleNext}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           &gt;
         </button>

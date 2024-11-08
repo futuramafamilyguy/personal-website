@@ -33,7 +33,8 @@
   display: auto;
 }
 
-.modalTextBox {
+.modalTextBox,
+.modalTextBoxHidden {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -42,6 +43,15 @@
   box-sizing: border-box;
   white-space: no-wrap;
   background-color: rgba(255, 255, 255, 0.8);
+  transition: opacity 0.8s ease;
+}
+
+.modalTextBox {
+  opacity: 1;
+}
+
+.modalTextBoxHidden {
+  opacity: 0;
 }
 
 .modalText {
@@ -102,6 +112,7 @@
   width: 24px;
 }
 
-.modalTextBox span {
+.modalTextBox span,
+.modalTextBoxHidden span {
   display: flex;
 }
