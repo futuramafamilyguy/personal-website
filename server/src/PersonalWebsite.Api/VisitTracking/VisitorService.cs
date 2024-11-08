@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
 
 namespace PersonalWebsite.Api.VisitTracking;
 
@@ -32,6 +33,24 @@ public class VisitorService
         RemoveOutdatedVisitors();
 
         return false;
+    }
+
+    public bool IsWebCrawler(string? ipAddress)
+    {
+        if (ipAddress is null)
+        {
+            return false;
+        }
+
+        var pattern = @"^66\.249\.79\.\d{1,3}$";
+        var isCrawler = Regex.IsMatch(ipAddress, pattern);
+
+        if (isCrawler)
+        {
+            Console.WriteLine($"Crawler visit at {DateTime.UtcNow} from {ipAddress}");
+        }
+
+        return isCrawler;
     }
 
     private void RemoveOutdatedVisitors()

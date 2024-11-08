@@ -38,6 +38,7 @@ public class VisitTrackingMiddleware
                     && !IsPathExluded(context.Request.Path)
                 )
             )
+            && !_visitorService.IsWebCrawler(requestIp)
             && !_visitorService.IsRecentVisitor(requestIp)
         )
         {
