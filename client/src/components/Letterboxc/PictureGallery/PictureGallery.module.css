@@ -34,6 +34,10 @@
   font-weight: 600;
 }
 
+hr {
+  width: 856px;
+}
+
 /* firefox */
 @-moz-document url-prefix() {
   .pictureGallery {
