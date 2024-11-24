@@ -9,16 +9,16 @@ function AboutPage() {
           <h5>
             This is a space for me to log movies I watch throughout the year and
             blog about my hot takes because I'm entitled to my opinions which of
-            course means I must share them with the world.
+            course means I must share them with the world
           </h5>
           <h5>
-            Thanks for visiting and enjoy my hotter than Taylor Swift takes.
+            Thanks for visiting and enjoy my hotter than Taylor Swift takes
           </h5>
           <div className={styles.footnote}>
             <p>
               As a side note, I will not refer to movies as films so as to not
               sound pretentious and instead use much more down to earth terms
-              like pictures.
+              like pictures
             </p>
           </div>
         </div>
