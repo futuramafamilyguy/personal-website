@@ -26,6 +26,7 @@ public class PostServiceTests
         dateTimeProviderMock.Setup(x => x.UtcNow).Returns(dateTimeNow);
 
         var title = "Cars Review";
+        var slug = "cars-review";
 
         // act
         await sut.AddPostAsync(title);
@@ -34,7 +35,12 @@ public class PostServiceTests
         postRepositoryMock.Verify(
             x =>
                 x.AddAsync(
-                    It.Is((Post post) => post.Title == title && post.CreatedAtUtc == dateTimeNow)
+                    It.Is(
+                        (Post post) =>
+                            post.Title == title
+                            && post.CreatedAtUtc == dateTimeNow
+                            && post.Slug == slug
+                    )
                 ),
             Times.Once
         );
@@ -105,6 +111,7 @@ public class PostServiceTests
         var contentUrl = "https://storagehost/content/posts/123.jpg";
         var imageUrl = "https://storagehost/images/posts/123.jpg";
         var createdAt = new DateTime(2024, 1, 1);
+        var slug = "cars-2-review";
 
         // act
         await sut.UpdatePostAsync(id, title, contentUrl, imageUrl, createdAt);
@@ -122,6 +129,7 @@ public class PostServiceTests
                             && post.ImageUrl == imageUrl
                             && post.LastUpdatedUtc == dateTimeNow
                             && post.CreatedAtUtc == createdAt
+                            && post.Slug == slug
                     )
                 ),
             Times.Once
@@ -139,12 +147,14 @@ public class PostServiceTests
         var id = "123";
         var title = "Cars Review";
         var createdAt = new DateTime(2024, 1, 1);
+        var slug = "cars-review";
         var post = new Post
         {
             Id = id,
             Title = title,
             CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt
+            LastUpdatedUtc = createdAt,
+            Slug = slug
         };
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
 
@@ -174,12 +184,14 @@ public class PostServiceTests
         var id = "123";
         var title = "Cars Review";
         var createdAt = new DateTime(2024, 1, 1);
+        var slug = "cars-review";
         var post = new Post
         {
             Id = id,
             Title = title,
             CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt
+            LastUpdatedUtc = createdAt,
+            Slug = slug
         };
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
 
@@ -208,13 +220,15 @@ public class PostServiceTests
         var title = "Cars Review";
         var imageUrl = "https://storagehost/images/posts/123.jpg";
         var createdAt = new DateTime(2024, 1, 1);
+        var slug = "cars-review";
         var post = new Post
         {
             Id = id,
             Title = title,
             ImageUrl = imageUrl,
             CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt
+            LastUpdatedUtc = createdAt,
+            Slug = slug
         };
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
 
@@ -240,12 +254,14 @@ public class PostServiceTests
         var id = "123";
         var title = "Cars Review";
         var createdAt = new DateTime(2024, 1, 1);
+        var slug = "cars-review";
         var post = new Post
         {
             Id = id,
             Title = title,
             CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt
+            LastUpdatedUtc = createdAt,
+            Slug = slug
         };
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
 
@@ -294,13 +310,15 @@ public class PostServiceTests
         var title = "Cars Review";
         var contentUrl = "https://storagehost/markdown/posts/123.md";
         var createdAt = new DateTime(2024, 1, 1);
+        var slug = "cars-review";
         var post = new Post
         {
             Id = id,
             Title = title,
             ContentUrl = contentUrl,
             CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt
+            LastUpdatedUtc = createdAt,
+            Slug = slug
         };
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
 
@@ -334,12 +352,14 @@ public class PostServiceTests
         var id = "123";
         var title = "Cars Review";
         var createdAt = new DateTime(2024, 1, 1);
+        var slug = "cars-review";
         var post = new Post
         {
             Id = id,
             Title = title,
             CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt
+            LastUpdatedUtc = createdAt,
+            Slug = slug
         };
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
 

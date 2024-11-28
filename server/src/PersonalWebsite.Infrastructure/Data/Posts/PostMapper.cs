@@ -13,6 +13,7 @@ public static class PostMapper
             ImageUrl = document.ImageUrl,
             LastUpdatedUtc = document.LastUpdatedUtc,
             CreatedAtUtc = document.CreatedAtUtc,
+            Slug = document.Slug,
         };
 
     public static PostDocument ToDocument(Post post) =>
@@ -24,5 +25,6 @@ public static class PostMapper
             ImageUrl = post.ImageUrl,
             LastUpdatedUtc = post.LastUpdatedUtc,
             CreatedAtUtc = post.CreatedAtUtc,
+            Slug = post.Slug,
         };
 }

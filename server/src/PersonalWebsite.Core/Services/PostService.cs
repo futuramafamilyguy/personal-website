@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
@@ -36,7 +37,8 @@ public class PostService : IPostService
             {
                 Title = title,
                 LastUpdatedUtc = utcNow,
-                CreatedAtUtc = utcNow
+                CreatedAtUtc = utcNow,
+                Slug = GenerateSlug(title)
             }
         );
 
@@ -67,6 +69,7 @@ public class PostService : IPostService
                 ImageUrl = imageUrl,
                 LastUpdatedUtc = _dateTimeProvider.UtcNow,
                 CreatedAtUtc = createdAtUtc,
+                Slug = GenerateSlug(title)
             }
         );
 
@@ -195,4 +198,14 @@ public class PostService : IPostService
 
     private static string GenerateArchivedFileName(string fileName) =>
         $"{Path.GetFileNameWithoutExtension(fileName)}-archived{Path.GetExtension(fileName)}";
+
+    private static string GenerateSlug(string title) =>
+        Regex
+            .Replace(
+                title.Split(':').Length > 1 ? title.Split(':')[1].Trim() : title.Trim(),
+                @"[^a-zA-Z0-9\s-]",
+                ""
+            )
+            .ToLower()
+            .Replace(" ", "-");
 }

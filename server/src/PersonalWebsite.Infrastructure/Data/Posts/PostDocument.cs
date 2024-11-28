@@ -23,4 +23,7 @@ public class PostDocument
 
     [BsonElement("created_at")]
     public required DateTime CreatedAtUtc { get; set; }
+
+    [BsonElement("slug")]
+    public required string Slug { get; set; }
 }

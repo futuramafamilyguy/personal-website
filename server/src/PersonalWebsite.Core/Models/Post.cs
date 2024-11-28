@@ -8,4 +8,5 @@ public class Post
     public string? ImageUrl { get; set; }
     public required DateTime LastUpdatedUtc { get; set; }
     public required DateTime CreatedAtUtc { get; set; }
+    public required string Slug { get; set; }
 }
