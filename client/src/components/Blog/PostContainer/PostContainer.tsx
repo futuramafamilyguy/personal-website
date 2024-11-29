@@ -4,7 +4,10 @@ import ReactMarkdown from "react-markdown";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import rehypeRaw from "rehype-raw";
 
-import { debouncedFetchPostBySlug, makeDebouncedRequest } from "../../../personalWebsiteApi";
+import {
+  debouncedFetchPostBySlug,
+  makeDebouncedRequest,
+} from "../../../personalWebsiteApi";
 import Post from "../../../types/Post";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import styles from "./PostContainer.module.css";
@@ -105,23 +108,25 @@ const PostContainer: React.FC = () => {
                 components={{
                   img: ({ alt, ...props }) => {
                     let className;
+                    let style = {};
 
-                    switch (alt) {
-                      case "book":
-                        className = styles.embeddedBookImage;
-                        break;
-                      case "landscape":
-                        className = styles.embeddedLandscapeImage;
-                        break;
-                      case "portrait":
-                        className = styles.embeddedPortraitImage;
-                        break;
-                      default:
-                        className = styles.embeddedLandscapeImage;
+                    if (alt === "book") {
+                      className = styles.embeddedBookImage;
+                    } else if (alt === "landscape") {
+                      className = styles.embeddedLandscapeImage;
+                    } else if (alt!.startsWith("portrait")) {
+                      // portrait-500 means portrait styling with 500px height
+                      className = styles.embeddedPortraitImage;
+
+                      const portraitHeight = alt!.split("-")[1];
+                      if (portraitHeight) {
+                        style = { height: `${portraitHeight}px` };
+                      }
                     }
                     return (
                       <img
                         className={className}
+                        style={style}
                         {...props}
                         alt="why isn't the image loading"
                       />
