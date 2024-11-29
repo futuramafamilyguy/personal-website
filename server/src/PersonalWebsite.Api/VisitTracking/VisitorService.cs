@@ -42,7 +42,7 @@ public class VisitorService
             return false;
         }
 
-        var pattern = @"^66\.249\.79\.\d{1,3}$";
+        var pattern = @"^66\.249\.\d{1,3}\.\d{1,3}$";
         var isCrawler = Regex.IsMatch(ipAddress, pattern);
 
         if (isCrawler)
