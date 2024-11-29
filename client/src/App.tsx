@@ -2,11 +2,13 @@ import { Route, Routes } from "react-router-dom";
 
 import logo from "./assets/face.png";
 import AuthComponent from "./components/AuthComponent";
+import BlogContainer from "./components/Blog/BlogContainer/BlogContainer";
+import PostContainer from "./components/Blog/PostContainer/PostContainer";
 import DisableTracking from "./components/DisableTracking";
 import NavBar from "./components/NavBar/NavBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
-import BlogPage from "./pages/BlogPage/BlogPage";
+import BlogLayout from "./pages/BlogLayout/BlogLayout";
 import LetterboxcPage from "./pages/LetterboxcPage/LetterboxcPage";
 import SessionHubPage from "./pages/SessionHubPage/SessionHubPage";
 import StatsPage from "./pages/StatsPage/StatsPage";
@@ -33,7 +35,10 @@ const App: React.FC = () => {
             <Route path="/" element={<AboutPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/letterboxc" element={<LetterboxcPage />} />
-            <Route path="/blog" element={<BlogPage />} />
+            <Route element={<BlogLayout />}>
+              <Route path="/blog" element={<BlogContainer />} />
+              <Route path="/blog/:slug" element={<PostContainer />} />
+            </Route>
             <Route path="/session-hub" element={<SessionHubPage />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/disable-tracking" element={<DisableTracking />} />

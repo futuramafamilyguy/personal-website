@@ -1,20 +1,37 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import rehypeRaw from "rehype-raw";
 
+import { debouncedFetchPostBySlug, makeDebouncedRequest } from "../../../personalWebsiteApi";
 import Post from "../../../types/Post";
+import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import styles from "./PostContainer.module.css";
 
-interface PostContainerProps {
-  post: Post;
-  onBackClick: () => void;
-}
-
-const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
+const PostContainer: React.FC = () => {
+  const { state } = useLocation();
+  const { slug } = useParams();
+  const [post, setPost] = useState(state?.post || null);
   const [markdownContent, setMarkdownContent] = useState<string>("");
   const [showLess, setShowLess] = useState(false);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!post) {
+      makeDebouncedRequest(debouncedFetchPostBySlug, {
+        url: `/posts/${slug}`,
+      })
+        .then((response: AxiosResponse<Post>) => {
+          setPost(response.data);
+        })
+        .catch((error: any) => {
+          setPost(null);
+          navigate("/blog");
+        });
+    }
+  }, [post, slug]);
 
   useEffect(() => {
     const fetchMarkdown = async () => {
@@ -27,7 +44,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
     };
 
     fetchMarkdown();
-  }, []);
+  }, [post]);
 
   const formatDate = (dateInput: Date) => {
     const date =
@@ -44,10 +61,18 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, onBackClick }) => {
     setShowLess(!showLess);
   };
 
+  const handleBackClick = () => {
+    navigate("/blog");
+  };
+
   const renderContent = () => {
+    if (!post) {
+      return <MessageDisplay message={"Loading..."} />;
+    }
+
     return (
       <div className={styles.postContainer}>
-        <button className={styles.backButton} onClick={onBackClick}>
+        <button className={styles.backButton} onClick={handleBackClick}>
           Back
         </button>
         <button className={styles.hideButton} onClick={toggleShowLess}>

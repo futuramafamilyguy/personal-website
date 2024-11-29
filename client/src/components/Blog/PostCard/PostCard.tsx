@@ -1,4 +1,5 @@
 import React from "react";
+
 import editIcon from "../../../assets/svg/edit_icon.svg";
 import styles from "./PostCard.module.css";
 

@@ -34,6 +34,7 @@ export const debouncedUpdatePicture = createDebouncedRequest(300);
 export const debouncedDeletePicture = createDebouncedRequest(300);
 
 export const debouncedFetchPosts = createDebouncedRequest(300);
+export const debouncedFetchPostBySlug = createDebouncedRequest(300);
 export const debouncedCreatePost = createDebouncedRequest(300);
 export const debouncedUpdatePost = createDebouncedRequest(300);
 export const debouncedDeletePost = createDebouncedRequest(300);

@@ -5,4 +5,5 @@ export default interface Post {
   lastUpdatedUtc: Date;
   imageUrl: string;
   contentUrl: string;
+  slug: string;
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import megamind from "../../../assets/megamind.png";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -10,19 +11,20 @@ import NewPostModal from "../NewPostModal/NewPostModal";
 import PostCard from "../PostCard/PostCard";
 import styles from "./PostGallery.module.css";
 
-interface PostGalleryProps {
-  onPostClick: (post: Post) => void;
-}
-
-const PostGallery: React.FC<PostGalleryProps> = ({ onPostClick }) => {
+const PostGallery: React.FC = () => {
   const { posts, loading, setTrigger } = usePosts();
   const isLoggedIn = useAuth();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [newModalOpen, setNewModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openNewPostModal = (post: Post | null) => {
     setSelectedPost(post);
     setNewModalOpen(true);
+  };
+
+  const handlePostClick = (post: Post) => {
+    navigate(`/blog/${post.slug}`, { state: { post } });
   };
 
   const renderContent = () => {
@@ -48,7 +50,7 @@ const PostGallery: React.FC<PostGalleryProps> = ({ onPostClick }) => {
                 key={post.id}
                 imageUrl={post.imageUrl}
                 title={post.title}
-                onClick={() => onPostClick(post)}
+                onClick={() => handlePostClick(post)}
                 editable={isLoggedIn}
                 onClickEdit={() => openNewPostModal(post)}
               />
