@@ -39,9 +39,16 @@ public class PostsController : Controller
     [HttpGet("{slug}")]
     public async Task<IActionResult> GetPostBySlugAsync(string slug)
     {
-        var post = await _postService.GetPostBySlugAsync(slug);
+        try
+        {
+            var post = await _postService.GetPostBySlugAsync(slug);
 
-        return Ok(post);
+            return Ok(post);
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound("Post with specified slug was not found");
+        }
     }
 
     [Authorize(Policy = "AdminPolicy")]
@@ -133,7 +140,7 @@ public class PostsController : Controller
         }
         catch (ValidationException)
         {
-            return BadRequest("Picture image failed validation checks");
+            return BadRequest("Post image failed validation checks");
         }
         catch (StorageException)
         {

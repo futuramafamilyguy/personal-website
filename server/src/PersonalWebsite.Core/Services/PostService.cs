@@ -49,8 +49,17 @@ public class PostService : IPostService
 
     public async Task<IEnumerable<Post>> GetPostsAsync() => await _postRepository.GetAsync();
 
-    public async Task<Post> GetPostBySlugAsync(string slug) =>
-        await _postRepository.GetBySlugAsync(slug);
+    public async Task<Post> GetPostBySlugAsync(string slug)
+    {
+        var post = await _postRepository.GetBySlugAsync(slug);
+
+        if (post is null)
+        {
+            throw new EntityNotFoundException($"Post entity with slug '{slug}' not found");
+        }
+
+        return post;
+    }
 
     public async Task RemovePostAsync(string id) => await _postRepository.RemoveAsync(id);
 

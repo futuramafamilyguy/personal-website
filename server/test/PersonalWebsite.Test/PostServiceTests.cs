@@ -84,12 +84,41 @@ public class PostServiceTests
         var sut = CreatePostService(postRepositoryMock.Object);
 
         var slug = "cars-review";
+        postRepositoryMock
+            .Setup(x => x.GetBySlugAsync(slug))
+            .ReturnsAsync(
+                new Post
+                {
+                    Id = "123",
+                    Title = "Cars Review",
+                    CreatedAtUtc = new DateTime(2024, 1, 1),
+                    LastUpdatedUtc = new DateTime(2024, 1, 1),
+                    Slug = slug
+                }
+            );
 
         // act
         await sut.GetPostBySlugAsync(slug);
 
         // assert
         postRepositoryMock.Verify(x => x.GetBySlugAsync(slug), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetPostBySlugAsync_IfSlugDoesNotExist_ShouldThrowEntityNotFoundException()
+    {
+        // arrange
+        var postRepositoryMock = new Mock<IPostRepository>();
+        var sut = CreatePostService(postRepositoryMock.Object);
+
+        var slug = "cars-revie";
+        postRepositoryMock.Setup(x => x.GetBySlugAsync(slug)).ReturnsAsync((Post?)null);
+
+        // act
+        var act = async () => await sut.GetPostBySlugAsync(slug);
+
+        // assert
+        await act.Should().ThrowAsync<EntityNotFoundException>();
     }
 
     [Fact]
