@@ -36,10 +36,10 @@ public class PostsController : Controller
         return Ok(posts);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetPostAsync(string id)
+    [HttpGet("{slug}")]
+    public async Task<IActionResult> GetPostBySlugAsync(string slug)
     {
-        var post = await _postService.GetPostAsync(id);
+        var post = await _postService.GetPostBySlugAsync(slug);
 
         return Ok(post);
     }

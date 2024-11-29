@@ -6,6 +6,7 @@ public interface IPostService
 {
     Task<IEnumerable<Post>> GetPostsAsync();
     Task<Post> GetPostAsync(string id);
+    Task<Post> GetPostBySlugAsync(string slug);
     Task<Post> AddPostAsync(string title);
     Task<Post> UpdatePostAsync(
         string id,

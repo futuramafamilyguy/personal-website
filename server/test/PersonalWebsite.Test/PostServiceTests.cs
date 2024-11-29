@@ -77,6 +77,22 @@ public class PostServiceTests
     }
 
     [Fact]
+    public async Task GetPostBySlugAsync_ShouldCallGetBySlugAsync()
+    {
+        // arrange
+        var postRepositoryMock = new Mock<IPostRepository>();
+        var sut = CreatePostService(postRepositoryMock.Object);
+
+        var slug = "cars-review";
+
+        // act
+        await sut.GetPostBySlugAsync(slug);
+
+        // assert
+        postRepositoryMock.Verify(x => x.GetBySlugAsync(slug), Times.Once);
+    }
+
+    [Fact]
     public async Task RemovePostAsync_ShouldCallRemoveAsync()
     {
         // arrange

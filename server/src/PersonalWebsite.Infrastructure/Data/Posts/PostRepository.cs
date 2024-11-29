@@ -45,6 +45,14 @@ public class PostRepository : IPostRepository
         return PostMapper.ToDomain(post);
     }
 
+    public async Task<Post> GetBySlugAsync(string slug)
+    {
+        var filter = Builders<PostDocument>.Filter.Eq(post => post.Slug, slug);
+        var post = await _posts.Find(filter).FirstOrDefaultAsync();
+
+        return PostMapper.ToDomain(post);
+    }
+
     public async Task RemoveAsync(string id) => await _posts.DeleteOneAsync(post => post.Id == id);
 
     public async Task<Post> UpdateAsync(string id, Post updatedPost)

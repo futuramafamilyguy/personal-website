@@ -49,6 +49,9 @@ public class PostService : IPostService
 
     public async Task<IEnumerable<Post>> GetPostsAsync() => await _postRepository.GetAsync();
 
+    public async Task<Post> GetPostBySlugAsync(string slug) =>
+        await _postRepository.GetBySlugAsync(slug);
+
     public async Task RemovePostAsync(string id) => await _postRepository.RemoveAsync(id);
 
     public async Task<Post> UpdatePostAsync(
