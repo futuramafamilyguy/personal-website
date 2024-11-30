@@ -30,6 +30,7 @@ const PostContainer: React.FC = () => {
           setPost(response.data);
         })
         .catch((error: any) => {
+          console.error("Error fetching post:", error);
           setPost(null);
           navigate("/blog");
         });
