@@ -10,7 +10,8 @@ public class PictureBuilder
         YearWatched = 2020,
         MonthWatched = Core.Enums.Month.Jan,
         Cinema = new Cinema { City = "Christchuch", Name = "Alice" },
-        YearReleased = 2006
+        YearReleased = 2006,
+        IsNewRelease = false
     };
 
     public PictureBuilder(string id)
