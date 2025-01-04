@@ -3,7 +3,15 @@ import React, { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
 import { useYear } from "../../../contexts/YearContext";
-import { debouncedCreatePicture, debouncedDeleteImage, debouncedDeletePicture, debouncedFetchCinemas, debouncedUpdatePicture, debouncedUploadImage, makeDebouncedRequest } from "../../../personalWebsiteApi";
+import {
+  debouncedCreatePicture,
+  debouncedDeleteImage,
+  debouncedDeletePicture,
+  debouncedFetchCinemas,
+  debouncedUpdatePicture,
+  debouncedUploadImage,
+  makeDebouncedRequest,
+} from "../../../personalWebsiteApi";
 import Cinema from "../../../types/Cinema";
 import Picture from "../../../types/Picture";
 import styles from "./NewPictureModal.module.css";
@@ -39,6 +47,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
   const [zinger, setZinger] = useState("");
   const [alias, setAlias] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isNewRelease, setIsNewRelease] = useState(true);
   const [altImage, setAltImage] = useState<File | null>(null);
   const [altImageUrl, setAltImageUrl] = useState("");
 
@@ -58,6 +67,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     setZinger(picture && picture.zinger ? picture.zinger : "");
     setAlias(picture && picture.alias ? picture.alias : "");
     setIsFavorite(picture ? picture.isFavorite : false);
+    setIsNewRelease(picture ? picture.isNewRelease : true);
     setAltImage(null);
     setAltImageUrl(picture && picture.altImageUrl ? picture.altImageUrl : "");
   }, [isOpen]);
@@ -92,6 +102,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
         cinemaId: cinemaId,
         zinger: zinger ? zinger : null,
         alias: alias ? alias : null,
+        isNewRelease: isNewRelease,
       }),
     });
   };
@@ -156,6 +167,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
         imageUrl: url ? url : !isDefaultImage(imageUrl) ? imageUrl : null,
         yearWatched: year,
         isFavorite: isFavorite,
+        isNewRelease: isNewRelease,
         altImageUrl: altUrl ? altUrl : altImageUrl ? altImageUrl : null,
       }),
     });
@@ -382,113 +394,128 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
             <h5 className={styles.title}>Add New Picture for {year}</h5>
           )}
           <form onSubmit={handleSubmit}>
-            <div className={styles.formGroup}>
-              <label>Name</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className={styles.inputField}
-              ></input>
-            </div>
-            <div className={styles.formGroup}>
-              <label>Year Released</label>
-              <input
-                type="text"
-                id="year_released"
-                value={yearReleased}
-                onChange={(e) => setYearReleased(e.target.value)}
-                required
-              ></input>
-            </div>
-            <div className={styles.formGroup}>
-              <label>Image</label>
-              <input
-                type="file"
-                onChange={(e) =>
-                  setImage(e.target.files ? e.target.files[0] : null)
-                }
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Alt Image</label>
-              <input
-                type="file"
-                onChange={(e) =>
-                  setAltImage(e.target.files ? e.target.files[0] : null)
-                }
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>Month Watched</label>
-              <input
-                type="text"
-                id="month_watched"
-                value={monthWatched}
-                onChange={(e) => setMonthWatched(e.target.value)}
-              ></input>
-            </div>
-            <div className={styles.formGroup}>
-              <label>Cinema</label>
-              <input
-                type="text"
-                id="cinema_id"
-                value={
-                  cinemaId !== ""
-                    ? cinemas.filter((cinema) => cinema.id === cinemaId)[0].name
-                    : ""
-                }
-                onChange={(e) => setCinemaId(e.target.value)}
-                className={styles.hiddenInput}
-              ></input>
-              <select
-                id="cinema_id"
-                value={cinemaId}
-                onChange={(e) => setCinemaId(e.target.value)}
-                required
-              >
-                <option value="">
-                  {cinemaId !== ""
-                    ? cinemas.filter((cinema) => cinema.id === cinemaId)[0].name
-                    : "Select a cinema"}
-                </option>
-                {cinemas.map((cinema) => (
-                  <option key={cinema.id} value={cinema.id}>
-                    {cinema.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.formGroup}>
-              <label>Favorite</label>
-              <div>
+            <div className={styles.formFields}>
+              <div className={styles.formGroup}>
+                <label>Name</label>
                 <input
-                  type="checkbox"
-                  id="favorite"
-                  checked={isFavorite}
-                  onChange={() => setIsFavorite(!isFavorite)}
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className={styles.inputField}
+                ></input>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Year Released</label>
+                <input
+                  type="text"
+                  id="year_released"
+                  value={yearReleased}
+                  onChange={(e) => setYearReleased(e.target.value)}
+                  required
+                ></input>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Image</label>
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setImage(e.target.files ? e.target.files[0] : null)
+                  }
                 />
               </div>
-            </div>
-            <div className={styles.formGroup}>
-              <label>Zinger</label>
-              <input
-                type="text"
-                id="zinger"
-                value={zinger}
-                onChange={(e) => setZinger(e.target.value)}
-              ></input>
-            </div>
-            <div className={styles.formGroup}>
-              <label>Alias</label>
-              <input
-                type="text"
-                id="alias"
-                value={alias}
-                onChange={(e) => setAlias(e.target.value)}
-              ></input>
+              <div className={styles.formGroup}>
+                <label>Alt Image</label>
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setAltImage(e.target.files ? e.target.files[0] : null)
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Month Watched</label>
+                <input
+                  type="text"
+                  id="month_watched"
+                  value={monthWatched}
+                  onChange={(e) => setMonthWatched(e.target.value)}
+                ></input>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Cinema</label>
+                <input
+                  type="text"
+                  id="cinema_id"
+                  value={
+                    cinemaId !== ""
+                      ? cinemas.filter((cinema) => cinema.id === cinemaId)[0]
+                          .name
+                      : ""
+                  }
+                  onChange={(e) => setCinemaId(e.target.value)}
+                  className={styles.hiddenInput}
+                ></input>
+                <select
+                  id="cinema_id"
+                  value={cinemaId}
+                  onChange={(e) => setCinemaId(e.target.value)}
+                  required
+                >
+                  <option value="">
+                    {cinemaId !== ""
+                      ? cinemas.filter((cinema) => cinema.id === cinemaId)[0]
+                          .name
+                      : "Select a cinema"}
+                  </option>
+                  {cinemas.map((cinema) => (
+                    <option key={cinema.id} value={cinema.id}>
+                      {cinema.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Favorite</label>
+                <div>
+                  <input
+                    type="checkbox"
+                    id="favorite"
+                    checked={isFavorite}
+                    onChange={() => setIsFavorite(!isFavorite)}
+                  />
+                </div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>New Release</label>
+                <div>
+                  <input
+                    type="checkbox"
+                    id="new_release"
+                    checked={isNewRelease}
+                    onChange={() => setIsNewRelease(!isNewRelease)}
+                  />
+                </div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Zinger</label>
+                <input
+                  type="text"
+                  id="zinger"
+                  value={zinger}
+                  onChange={(e) => setZinger(e.target.value)}
+                ></input>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Alias</label>
+                <input
+                  type="text"
+                  id="alias"
+                  value={alias}
+                  onChange={(e) => setAlias(e.target.value)}
+                ></input>
+              </div>
             </div>
             <div className={styles.buttonContainer}>
               <div>

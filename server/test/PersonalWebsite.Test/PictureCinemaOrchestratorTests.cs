@@ -29,6 +29,7 @@ public class PictureCinemaOrchestratorTests
         var zinger = "bazinga";
         var alias = "car";
         var isFavorite = false;
+        var isNewRelease = false;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -51,7 +52,8 @@ public class PictureCinemaOrchestratorTests
             yearReleased,
             zinger,
             alias,
-            isFavorite
+            isFavorite,
+            isNewRelease
         );
 
         // assert
@@ -71,7 +73,8 @@ public class PictureCinemaOrchestratorTests
                     yearReleased,
                     zinger,
                     alias,
-                    isFavorite
+                    isFavorite,
+                    isNewRelease
                 ),
             Times.Once()
         );
@@ -99,6 +102,7 @@ public class PictureCinemaOrchestratorTests
         var imageUrl = "domain/images/image.jpg";
         var altImageUrl = "domain/images/alt-image.jpg";
         var isFavorite = false;
+        var isNewRelease = false;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -124,7 +128,8 @@ public class PictureCinemaOrchestratorTests
             alias,
             imageUrl,
             altImageUrl,
-            isFavorite
+            isFavorite,
+            isNewRelease
         );
 
         // assert
@@ -142,7 +147,8 @@ public class PictureCinemaOrchestratorTests
                     alias,
                     imageUrl,
                     altImageUrl,
-                    isFavorite
+                    isFavorite,
+                    isNewRelease
                 ),
             Times.Once()
         );

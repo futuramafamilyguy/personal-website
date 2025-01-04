@@ -12,6 +12,7 @@ public class Picture
     public required int YearReleased { get; set; }
     public string? Zinger { get; set; }
     public bool IsFavorite { get; set; }
+    public required bool IsNewRelease { get; set; }
     public string? Alias { get; set; }
     public string? ImageUrl { get; set; }
     public string? AltImageUrl { get; set; }

@@ -11,4 +11,5 @@ public class CreatePictureRequest
     public string? Zinger { get; set; }
     public string? Alias { get; set; }
     public bool? IsFavorite { get; set; }
+    public bool? IsNewRelease { get; set; }
 }

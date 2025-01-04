@@ -42,7 +42,8 @@ public class PictureService : IPictureService
         int yearReleased,
         string? zinger,
         string? alias,
-        bool isFavorite
+        bool isFavorite,
+        bool isNewRelease
     )
     {
         var picture = await _pictureRepository.AddAsync(
@@ -55,7 +56,8 @@ public class PictureService : IPictureService
                 YearReleased = yearReleased,
                 Zinger = zinger,
                 Alias = alias,
-                IsFavorite = isFavorite
+                IsFavorite = isFavorite,
+                IsNewRelease = isNewRelease
             }
         );
 
@@ -73,7 +75,8 @@ public class PictureService : IPictureService
         string? alias,
         string? imageUrl,
         string? altImageUrl,
-        bool isFavorite
+        bool isFavorite,
+        bool isNewRelease
     )
     {
         var updatedPicture = await _pictureRepository.UpdateAsync(
@@ -90,7 +93,8 @@ public class PictureService : IPictureService
                 Alias = alias,
                 ImageUrl = imageUrl,
                 AltImageUrl = altImageUrl,
-                IsFavorite = isFavorite
+                IsFavorite = isFavorite,
+                IsNewRelease = isNewRelease
             }
         );
 

@@ -20,7 +20,8 @@ public interface IPictureService
         int yearReleased,
         string? zinger,
         string? alias,
-        bool isFavorite
+        bool isFavorite,
+        bool isNewRelease
     );
     Task<Picture> UpdatePictureAsync(
         string id,
@@ -33,7 +34,8 @@ public interface IPictureService
         string? alias,
         string? imageUrl,
         string? altImageUrl,
-        bool isFavorite
+        bool isFavorite,
+        bool isNewRelease
     );
     Task<long> UpdateCinemaOfPicturesAsync(string cinemaId, Cinema cinema);
     Task RemovePictureAsync(string id);

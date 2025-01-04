@@ -79,7 +79,8 @@ public class PicturesController : ControllerBase
             request.YearReleased ?? DateTime.Now.Year,
             request.Zinger,
             request.Alias,
-            request.IsFavorite ?? false
+            request.IsFavorite ?? false,
+            request.IsNewRelease ?? true
         );
 
         return Ok(picture);
@@ -106,7 +107,8 @@ public class PicturesController : ControllerBase
             request.Alias,
             request.ImageUrl,
             request.AltImageUrl,
-            request.IsFavorite
+            request.IsFavorite,
+            request.IsNewRelease
         );
 
         return Ok(picture);

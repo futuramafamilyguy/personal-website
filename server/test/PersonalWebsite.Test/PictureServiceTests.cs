@@ -80,6 +80,7 @@ public class PictureServiceTests
         var zinger = "bazinga";
         var alias = "car";
         var isFavorite = false;
+        var isNewRelease = false;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -100,7 +101,8 @@ public class PictureServiceTests
             yearReleased,
             zinger,
             alias,
-            isFavorite
+            isFavorite,
+            isNewRelease
         );
 
         // assert
@@ -142,6 +144,7 @@ public class PictureServiceTests
         var updatedImageUrl = "domain/images/image.jpg";
         var updatedAltImageUrl = "domain/images/alt-image.jpg";
         var updatedIsFavorite = true;
+        var updatedIsNewRelease = true;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -165,7 +168,8 @@ public class PictureServiceTests
             updatedAlias,
             updatedImageUrl,
             updatedAltImageUrl,
-            updatedIsFavorite
+            updatedIsFavorite,
+            updatedIsNewRelease
         );
 
         // assert
