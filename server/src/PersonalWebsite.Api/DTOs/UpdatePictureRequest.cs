@@ -6,13 +6,13 @@ public class UpdatePictureRequest
 {
     public required string Name { get; set; }
     public required int YearWatched { get; set; }
-    public required Month MonthWatched { get; set; }
+    public Month? MonthWatched { get; set; }
     public required string CinemaId { get; set; }
-    public required int YearReleased { get; set; }
+    public int? YearReleased { get; set; }
     public string? Zinger { get; set; }
     public string? Alias { get; set; }
     public string? ImageUrl { get; set; }
     public string? AltImageUrl { get; set; }
-    public bool IsFavorite { get; set; }
-    public required bool IsNewRelease { get; set; }
+    public bool? IsFavorite { get; set; }
+    public bool? IsNewRelease { get; set; }
 }

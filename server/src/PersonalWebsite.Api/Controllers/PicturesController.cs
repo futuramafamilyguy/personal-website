@@ -100,15 +100,15 @@ public class PicturesController : ControllerBase
             id,
             request.Name,
             request.YearWatched,
-            request.MonthWatched,
+            request.MonthWatched ?? (Month)DateTime.Now.Month,
             request.CinemaId,
-            request.YearReleased,
+            request.YearReleased ?? DateTime.Now.Year,
             request.Zinger,
             request.Alias,
             request.ImageUrl,
             request.AltImageUrl,
-            request.IsFavorite,
-            request.IsNewRelease
+            request.IsFavorite ?? false,
+            request.IsNewRelease ?? true
         );
 
         return Ok(picture);
