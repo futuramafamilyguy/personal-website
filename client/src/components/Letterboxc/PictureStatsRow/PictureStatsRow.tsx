@@ -24,16 +24,8 @@ const PictureStatsRow: React.FC<PictureStatsRowProps> = ({
 
   useEffect(() => {
     setTotalPictureCount(pictures.length);
-    setNewReleaseCount(
-      pictures.filter(
-        (p) => p.yearReleased === year || p.yearReleased === year - 1
-      ).length
-    );
-    setRereleaseCount(
-      pictures.filter(
-        (p) => p.yearReleased !== year && p.yearReleased !== year - 1
-      ).length
-    );
+    setNewReleaseCount(pictures.filter((p) => p.isNewRelease).length);
+    setRereleaseCount(pictures.filter((p) => !p.isNewRelease).length);
     setTopCinemas(calculateTopCinemas());
   }, [pictures]);
 
