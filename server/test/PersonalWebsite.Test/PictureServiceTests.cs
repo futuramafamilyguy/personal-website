@@ -94,7 +94,9 @@ public class PictureServiceTests
             City = city
         };
 
-        repositoryMock.Setup(x => x.CheckKinoPictureExistenceAsync(yearWatched, null)).ReturnsAsync(false);
+        repositoryMock
+            .Setup(x => x.CheckKinoPictureExistenceAsync(yearWatched, null))
+            .ReturnsAsync(false);
 
         // act
         await sut.AddPictureAsync(
@@ -157,21 +159,24 @@ public class PictureServiceTests
             City = city
         };
 
-        repositoryMock.Setup(x => x.CheckKinoPictureExistenceAsync(yearWatched, null)).ReturnsAsync(false);
+        repositoryMock
+            .Setup(x => x.CheckKinoPictureExistenceAsync(yearWatched, null))
+            .ReturnsAsync(false);
 
         // act
-        var act = async () => await sut.AddPictureAsync(
-            pictureName,
-            yearWatched,
-            monthWatched,
-            cinema,
-            yearReleased,
-            null,
-            null,
-            isFavorite,
-            isKino,
-            isNewRelease
-        );
+        var act = async () =>
+            await sut.AddPictureAsync(
+                pictureName,
+                yearWatched,
+                monthWatched,
+                cinema,
+                yearReleased,
+                null,
+                null,
+                isFavorite,
+                isKino,
+                isNewRelease
+            );
 
         // assert
         await act.Should().ThrowAsync<ArgumentException>();
@@ -202,21 +207,24 @@ public class PictureServiceTests
             City = city
         };
 
-        repositoryMock.Setup(x => x.CheckKinoPictureExistenceAsync(yearWatched, null)).ReturnsAsync(true);
+        repositoryMock
+            .Setup(x => x.CheckKinoPictureExistenceAsync(yearWatched, null))
+            .ReturnsAsync(true);
 
         // act
-        var act = async () => await sut.AddPictureAsync(
-            pictureName,
-            yearWatched,
-            monthWatched,
-            cinema,
-            yearReleased,
-            null,
-            null,
-            isFavorite,
-            isKino,
-            isNewRelease
-        );
+        var act = async () =>
+            await sut.AddPictureAsync(
+                pictureName,
+                yearWatched,
+                monthWatched,
+                cinema,
+                yearReleased,
+                null,
+                null,
+                isFavorite,
+                isKino,
+                isNewRelease
+            );
 
         // assert
         await act.Should().ThrowAsync<ValidationException>();
@@ -226,7 +234,10 @@ public class PictureServiceTests
     [InlineData(false, false)]
     [InlineData(true, false)]
     [InlineData(true, true)]
-    public async Task UpdatePictureAsync_ShouldCallUpdateAsync(bool updatedIsFavorite, bool updatedIsKino)
+    public async Task UpdatePictureAsync_ShouldCallUpdateAsync(
+        bool updatedIsFavorite,
+        bool updatedIsKino
+    )
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
@@ -253,7 +264,9 @@ public class PictureServiceTests
             City = city
         };
 
-        repositoryMock.Setup(x => x.CheckKinoPictureExistenceAsync(updatedYearWatched, pictureId)).ReturnsAsync(false);
+        repositoryMock
+            .Setup(x => x.CheckKinoPictureExistenceAsync(updatedYearWatched, pictureId))
+            .ReturnsAsync(false);
 
         // act
         await sut.UpdatePictureAsync(
@@ -323,24 +336,27 @@ public class PictureServiceTests
             City = city
         };
 
-        repositoryMock.Setup(x => x.CheckKinoPictureExistenceAsync(updatedYearWatched, pictureId)).ReturnsAsync(false);
+        repositoryMock
+            .Setup(x => x.CheckKinoPictureExistenceAsync(updatedYearWatched, pictureId))
+            .ReturnsAsync(false);
 
         // act
-        var act = async () => await sut.UpdatePictureAsync(
-            pictureId,
-            updatedPictureName,
-            updatedYearWatched,
-            updatedMonthWatched,
-            updatedCinema,
-            updatedYearReleased,
-            null,
-            null,
-            updatedImageUrl,
-            updatedAltImageUrl,
-            updatedIsFavorite,
-            updatedIsKino,
-            updatedIsNewRelease
-        );
+        var act = async () =>
+            await sut.UpdatePictureAsync(
+                pictureId,
+                updatedPictureName,
+                updatedYearWatched,
+                updatedMonthWatched,
+                updatedCinema,
+                updatedYearReleased,
+                null,
+                null,
+                updatedImageUrl,
+                updatedAltImageUrl,
+                updatedIsFavorite,
+                updatedIsKino,
+                updatedIsNewRelease
+            );
 
         // assert
         await act.Should().ThrowAsync<ArgumentException>();
@@ -374,24 +390,27 @@ public class PictureServiceTests
             City = city
         };
 
-        repositoryMock.Setup(x => x.CheckKinoPictureExistenceAsync(updatedYearWatched, pictureId)).ReturnsAsync(true);
+        repositoryMock
+            .Setup(x => x.CheckKinoPictureExistenceAsync(updatedYearWatched, pictureId))
+            .ReturnsAsync(true);
 
         // act
-        var act = async () => await sut.UpdatePictureAsync(
-            pictureId,
-            updatedPictureName,
-            updatedYearWatched,
-            updatedMonthWatched,
-            updatedCinema,
-            updatedYearReleased,
-            null,
-            null,
-            updatedImageUrl,
-            updatedAltImageUrl,
-            updatedIsFavorite,
-            updatedIsKino,
-            updatedIsNewRelease
-        );
+        var act = async () =>
+            await sut.UpdatePictureAsync(
+                pictureId,
+                updatedPictureName,
+                updatedYearWatched,
+                updatedMonthWatched,
+                updatedCinema,
+                updatedYearReleased,
+                null,
+                null,
+                updatedImageUrl,
+                updatedAltImageUrl,
+                updatedIsFavorite,
+                updatedIsKino,
+                updatedIsNewRelease
+            );
 
         // assert
         await act.Should().ThrowAsync<ValidationException>();

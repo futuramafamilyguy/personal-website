@@ -120,7 +120,10 @@ public class PictureRepository : IPictureRepository
 
         if (id is not null)
         {
-            filter = Builders<PictureDocument>.Filter.And(filter, Builders<PictureDocument>.Filter.Ne(picture => picture.Id, id));
+            filter = Builders<PictureDocument>.Filter.And(
+                filter,
+                Builders<PictureDocument>.Filter.Ne(picture => picture.Id, id)
+            );
         }
 
         return await _pictures.Find(filter).AnyAsync();

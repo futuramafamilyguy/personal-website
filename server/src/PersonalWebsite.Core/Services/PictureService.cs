@@ -56,7 +56,9 @@ public class PictureService : IPictureService
         if (isKino && await _pictureRepository.CheckKinoPictureExistenceAsync(yearWatched))
         {
             _logger.LogError($"{yearWatched} already has a KINO");
-            throw new ValidationException("Failed to create picture due to picture validation error");
+            throw new ValidationException(
+                "Failed to create picture due to picture validation error"
+            );
         }
 
         var picture = await _pictureRepository.AddAsync(
@@ -94,7 +96,8 @@ public class PictureService : IPictureService
         bool isNewRelease
     )
     {
-        if (isKino && !isFavorite) {
+        if (isKino && !isFavorite)
+        {
             _logger.LogError($"Picture `{id}` cannot be KINO if not also a favourite");
             throw new ArgumentException("Failed to update picture due to invalid arguments");
         }
@@ -102,7 +105,9 @@ public class PictureService : IPictureService
         if (isKino && await _pictureRepository.CheckKinoPictureExistenceAsync(yearWatched, id))
         {
             _logger.LogError($"{yearWatched} already has a KINO");
-            throw new ValidationException("Failed to update picture due to picture validation error");
+            throw new ValidationException(
+                "Failed to update picture due to picture validation error"
+            );
         }
 
         var updatedPicture = await _pictureRepository.UpdateAsync(

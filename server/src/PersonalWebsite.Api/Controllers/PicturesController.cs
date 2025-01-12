@@ -72,18 +72,18 @@ public class PicturesController : ControllerBase
             return BadRequest("Picture data is null");
         try
         {
-           var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(
-               request.Name,
-               year,
-               request.MonthWatched ?? (Month)DateTime.Now.Month,
-               request.CinemaId,
-               request.YearReleased ?? DateTime.Now.Year,
-               request.Zinger,
-               request.Alias,
-               request.IsFavorite ?? false,
-               request.IsKino ?? false,
-               request.IsNewRelease ?? true
-           );
+            var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(
+                request.Name,
+                year,
+                request.MonthWatched ?? (Month)DateTime.Now.Month,
+                request.CinemaId,
+                request.YearReleased ?? DateTime.Now.Year,
+                request.Zinger,
+                request.Alias,
+                request.IsFavorite ?? false,
+                request.IsKino ?? false,
+                request.IsNewRelease ?? true
+            );
 
             return Ok(picture);
         }
@@ -123,7 +123,7 @@ public class PicturesController : ControllerBase
                 request.IsFavorite ?? false,
                 request.IsKino ?? false,
                 request.IsNewRelease ?? true
-                );
+            );
 
             return Ok(picture);
         }
