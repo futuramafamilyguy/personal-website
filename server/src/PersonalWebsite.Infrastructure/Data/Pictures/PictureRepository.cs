@@ -111,6 +111,21 @@ public class PictureRepository : IPictureRepository
         return activeYears;
     }
 
+    public async Task<bool> CheckKinoPictureExistenceAsync(int year, string? id = null)
+    {
+        var filter = Builders<PictureDocument>.Filter.And(
+            Builders<PictureDocument>.Filter.Eq(picture => picture.YearWatched, year),
+            Builders<PictureDocument>.Filter.Eq(picture => picture.IsKino, true)
+        );
+
+        if (id is not null)
+        {
+            filter = Builders<PictureDocument>.Filter.And(filter, Builders<PictureDocument>.Filter.Ne(picture => picture.Id, id));
+        }
+
+        return await _pictures.Find(filter).AnyAsync();
+    }
+
     private static SortDefinition<PictureDocument> SortPicturesByWatchDate() =>
         Builders<PictureDocument>
             .Sort.Descending(picture => picture.MonthWatched)

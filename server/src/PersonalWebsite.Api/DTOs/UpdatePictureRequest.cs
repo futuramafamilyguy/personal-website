@@ -14,5 +14,6 @@ public class UpdatePictureRequest
     public string? ImageUrl { get; set; }
     public string? AltImageUrl { get; set; }
     public bool? IsFavorite { get; set; }
+    public bool? IsKino { get; set; }
     public bool? IsNewRelease { get; set; }
 }

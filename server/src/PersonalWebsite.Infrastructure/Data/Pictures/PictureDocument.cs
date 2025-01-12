@@ -32,6 +32,9 @@ public class PictureDocument
     [BsonElement("favorite")]
     public bool IsFavorite { get; set; }
 
+    [BsonElement("kino")]
+    public bool IsKino { get; set; }
+
     [BsonElement("new_release")]
     public bool IsNewRelease { get; set; }
 

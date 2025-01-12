@@ -11,6 +11,8 @@ public class PictureBuilder
         MonthWatched = Core.Enums.Month.Jan,
         Cinema = new Cinema { City = "Christchuch", Name = "Alice" },
         YearReleased = 2006,
+        IsFavorite = false,
+        IsKino = false,
         IsNewRelease = false
     };
 

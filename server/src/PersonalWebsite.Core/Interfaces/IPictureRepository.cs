@@ -17,4 +17,5 @@ public interface IPictureRepository
     Task RemoveAsync(string id);
     Task<bool> CheckCinemaAssociationExistenceAsync(string cinemaId);
     Task<IEnumerable<int>> GetActiveYearsAsync();
+    Task<bool> CheckKinoPictureExistenceAsync(int year, string? id = null);
 }

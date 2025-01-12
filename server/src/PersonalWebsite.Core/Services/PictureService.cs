@@ -43,9 +43,22 @@ public class PictureService : IPictureService
         string? zinger,
         string? alias,
         bool isFavorite,
+        bool isKino,
         bool isNewRelease
     )
     {
+        if (isKino && !isFavorite)
+        {
+            _logger.LogError($"Picture cannot be KINO if not also a favourite");
+            throw new ArgumentException("Failed to create picture due to invalid arguments");
+        }
+
+        if (isKino && await _pictureRepository.CheckKinoPictureExistenceAsync(yearWatched))
+        {
+            _logger.LogError($"{yearWatched} already has a KINO");
+            throw new ValidationException("Failed to create picture due to picture validation error");
+        }
+
         var picture = await _pictureRepository.AddAsync(
             new Picture
             {
@@ -57,6 +70,7 @@ public class PictureService : IPictureService
                 Zinger = zinger,
                 Alias = alias,
                 IsFavorite = isFavorite,
+                IsKino = isKino,
                 IsNewRelease = isNewRelease
             }
         );
@@ -76,9 +90,21 @@ public class PictureService : IPictureService
         string? imageUrl,
         string? altImageUrl,
         bool isFavorite,
+        bool isKino,
         bool isNewRelease
     )
     {
+        if (isKino && !isFavorite) {
+            _logger.LogError($"Picture `{id}` cannot be KINO if not also a favourite");
+            throw new ArgumentException("Failed to update picture due to invalid arguments");
+        }
+
+        if (isKino && await _pictureRepository.CheckKinoPictureExistenceAsync(yearWatched, id))
+        {
+            _logger.LogError($"{yearWatched} already has a KINO");
+            throw new ValidationException("Failed to update picture due to picture validation error");
+        }
+
         var updatedPicture = await _pictureRepository.UpdateAsync(
             id,
             new Picture
@@ -94,6 +120,7 @@ public class PictureService : IPictureService
                 ImageUrl = imageUrl,
                 AltImageUrl = altImageUrl,
                 IsFavorite = isFavorite,
+                IsKino = isKino,
                 IsNewRelease = isNewRelease
             }
         );
