@@ -10,6 +10,7 @@ export default interface Picture {
   cinema: Cinema;
   monthWatched: number;
   isFavorite: boolean;
+  isKino: boolean;
   isNewRelease: boolean;
   yearWatched: number;
   altImageUrl: string;

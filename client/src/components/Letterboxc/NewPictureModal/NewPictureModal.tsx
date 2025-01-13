@@ -47,6 +47,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
   const [zinger, setZinger] = useState("");
   const [alias, setAlias] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isKino, setIsKino] = useState(false);
   const [isNewRelease, setIsNewRelease] = useState(true);
   const [altImage, setAltImage] = useState<File | null>(null);
   const [altImageUrl, setAltImageUrl] = useState("");
@@ -67,6 +68,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     setZinger(picture && picture.zinger ? picture.zinger : "");
     setAlias(picture && picture.alias ? picture.alias : "");
     setIsFavorite(picture ? picture.isFavorite : false);
+    setIsKino(picture ? picture.isKino : false);
     setIsNewRelease(picture ? picture.isNewRelease : true);
     setAltImage(null);
     setAltImageUrl(picture && picture.altImageUrl ? picture.altImageUrl : "");
@@ -102,7 +104,6 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
         cinemaId: cinemaId,
         zinger: zinger ? zinger : null,
         alias: alias ? alias : null,
-        isNewRelease: isNewRelease,
       }),
     });
   };
@@ -167,6 +168,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
         imageUrl: url ? url : !isDefaultImage(imageUrl) ? imageUrl : null,
         yearWatched: year,
         isFavorite: isFavorite,
+        isKino: isKino,
         isNewRelease: isNewRelease,
         altImageUrl: altUrl ? altUrl : altImageUrl ? altImageUrl : null,
       }),
@@ -484,6 +486,17 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                     id="favorite"
                     checked={isFavorite}
                     onChange={() => setIsFavorite(!isFavorite)}
+                  />
+                </div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Kino</label>
+                <div>
+                  <input
+                    type="checkbox"
+                    id="kino"
+                    checked={isKino}
+                    onChange={() => setIsKino(!isKino)}
                   />
                 </div>
               </div>
