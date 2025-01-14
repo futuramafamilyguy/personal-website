@@ -53,6 +53,11 @@ const PictureModal: React.FC<PictureModalProps> = ({
           className={
             isHovered ? styles.modalTextBox : styles.modalTextBoxHidden
           }
+          style={{
+            backgroundColor: picture?.isKino
+              ? "rgba(227, 191, 70, 0.8)"
+              : "rgba(255, 255, 255, 0.8)",
+          }}
         >
           <span>
             <h4
