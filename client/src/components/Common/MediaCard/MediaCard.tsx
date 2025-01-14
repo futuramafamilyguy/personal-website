@@ -6,6 +6,7 @@ import styles from "./MediaCard.module.css";
 interface MediaCardProps {
   imageUrl: string;
   title: string;
+  highlighted: boolean;
   onClick: () => void;
   editable: boolean;
   onClickEdit: () => void;
@@ -14,12 +15,21 @@ interface MediaCardProps {
 const MediaCard: React.FC<MediaCardProps> = ({
   imageUrl,
   title,
+  highlighted,
   onClick,
   editable,
   onClickEdit,
 }) => {
   return (
-    <div className={styles.mediaCard} onClick={onClick}>
+    <div
+      className={styles.mediaCard}
+      onClick={onClick}
+      style={
+        highlighted
+          ? { borderStyle: "solid", borderColor: "#e3bf46" }
+          : undefined
+      }
+    >
       <img src={imageUrl} alt={title} className={styles.mediaImage} />
       {editable ? (
         <div className={styles.edit}>

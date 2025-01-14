@@ -33,6 +33,7 @@ const FavoritePicturesRow: React.FC<FavoritePicturesRowProps> = ({
               key={picture.id}
               imageUrl={picture.altImageUrl ?? picture.imageUrl}
               title={picture.alias ?? picture.name}
+              highlighted={picture.isKino}
               onClick={() => pictureOnClick(picture)}
               editable={pictureEditable}
               onClickEdit={() => pictureOnClickEdit(picture)}

@@ -109,6 +109,7 @@ const PictureContainer: React.FC = () => {
                   key={picture.id}
                   imageUrl={picture.imageUrl}
                   title={picture.alias ?? picture.name}
+                  highlighted={picture.isKino}
                   onClick={() => openModal(index)}
                   editable={isLoggedIn}
                   onClickEdit={() => openNewPictureModal(index)}

@@ -30,6 +30,7 @@ const PictureMonthRow: React.FC<PictureMonthRowProps> = ({
               key={picture.id}
               imageUrl={picture.imageUrl}
               title={picture.alias ?? picture.name}
+              highlighted={picture.isKino}
               onClick={() => pictureOnClick(picture)}
               editable={pictureEditable}
               onClickEdit={() => pictureOnClickEdit(picture)}
