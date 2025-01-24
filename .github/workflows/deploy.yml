@@ -21,6 +21,12 @@ jobs:
       contents: read
       packages: write
 
+  wait-for-nginx:
+    uses: futuramafamilyguy/personal-website/.github/workflows/release-nginx.yml@main
+    permissions:
+      contents: read
+      packages: write
+
   deploy-to-droplet:
     runs-on: ubuntu-latest
     needs: [wait-for-client, wait-for-server]

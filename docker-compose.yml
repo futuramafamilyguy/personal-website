@@ -38,18 +38,15 @@ services:
       - "./data:/data/db"
 
   nginx:
-    image: nginx:latest
+    image: ghcr.io/futuramafamilyguy/personal-website-server:latest
     environment:
       - SERVER_URL=${SERVER_URL}
       - CLIENT_URL=${CLIENT_URL}
       - DOMAIN=${DOMAIN}
       - SESSION_HUB_URL=${SESSION_HUB_URL} # [sus]
     volumes:
-      - ./nginx/:/etc/nginx/conf.d/
-      - ./scripts/start-nginx.sh:/start-nginx.sh
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
-    entrypoint: /bin/sh -c "chmod +x /start-nginx.sh && /start-nginx.sh"
     ports:
       - 80:80
       - 443:443
