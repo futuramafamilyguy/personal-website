@@ -2,12 +2,6 @@ name: build and push nginx
 
 on:
   workflow_call:
-    inputs:
-      always_run:
-        required: false
-        type: boolean
-
-  push:
     paths:
       - "nginx/**"
 
