@@ -25,17 +25,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: [wait-for-client, wait-for-server]
     steps:
-      - name: checkout docker-compose
+      - name: checkout docker-ops files
         uses: actions/checkout@v4
 
-      - name: copy docker-compose to droplet
+      - name: copy docker-ops files to droplet
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DROPLET_HOST }}
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.DROPLET_KEY }}
           passphrase: ${{ secrets.DROPLET_PASSPHRASE }}
-          source: docker-compose.yml
+          source: |
+            docker-compose.yml,
+            scripts/run-certbot.sh
           target: personal-website
 
       - name: deploy
