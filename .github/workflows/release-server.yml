@@ -2,6 +2,8 @@ name: build .net server
 
 on:
   workflow_call:
+    paths:
+      - "server/**"
 
 env:
   REGISTRY: ghcr.io
