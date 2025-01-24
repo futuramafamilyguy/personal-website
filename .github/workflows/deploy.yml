@@ -22,7 +22,7 @@ jobs:
       packages: write
 
   wait-for-nginx:
-    uses: futuramafamilyguy/personal-website/.github/workflows/release-nginx.yml@nginx-setup
+    uses: futuramafamilyguy/personal-website/.github/workflows/build-push-nginx.yml@nginx-setup
     permissions:
       contents: read
       packages: write
