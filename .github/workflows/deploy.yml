@@ -7,7 +7,7 @@ on:
 
 jobs:
   wait-for-client:
-    uses: futuramafamilyguy/personal-website/.github/workflows/release-client.yml@nginx-setup
+    uses: futuramafamilyguy/personal-website/.github/workflows/release-client.yml@main
     permissions:
       contents: read
       packages: write
@@ -16,13 +16,7 @@ jobs:
       sessionUrl: ${{ secrets.VITE_SESSION_URL }}
 
   wait-for-server:
-    uses: futuramafamilyguy/personal-website/.github/workflows/release-server.yml@nginx-setup
-    permissions:
-      contents: read
-      packages: write
-
-  wait-for-nginx:
-    uses: futuramafamilyguy/personal-website/.github/workflows/build-push-nginx.yml@nginx-setup
+    uses: futuramafamilyguy/personal-website/.github/workflows/release-server.yml@main
     permissions:
       contents: read
       packages: write
