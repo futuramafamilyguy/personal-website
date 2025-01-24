@@ -43,6 +43,7 @@ services:
       - SERVER_URL=${SERVER_URL}
       - CLIENT_URL=${CLIENT_URL}
       - DOMAIN=${DOMAIN}
+      - SESSION_HUB_URL=${SESSION_HUB_URL} # [sus]
     volumes:
       - ./nginx/:/etc/nginx/conf.d/
       - ./scripts/start-nginx.sh:/start-nginx.sh
@@ -52,6 +53,9 @@ services:
     ports:
       - 80:80
       - 443:443
+    networks:
+      - default
+      - allen-cinematic-universe
 
   certbot:
     image: certbot/certbot:latest
@@ -61,3 +65,7 @@ services:
 
 volumes:
   wwwroot-data:
+
+networks:
+  allen-cinematic-universe:
+    external: true

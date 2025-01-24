@@ -5,7 +5,7 @@ KEY=/etc/nginx/ssl/live/$DOMAIN/privkey.pem
 
 if [[ -f /$CERT && -f $KEY ]]; then
 	echo 'loading live config'
-	envsubst '${SERVER_URL} ${CLIENT_URL} ${DOMAIN}' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf
+	envsubst '${SERVER_URL} ${CLIENT_URL} ${DOMAIN} ${SESSION_HUB_URL}' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf
 	if [ -f /etc/nginx/conf.d/certbot.conf ]; then
 		rm /etc/nginx/conf.d/certbot.conf
 	fi

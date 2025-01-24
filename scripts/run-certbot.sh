@@ -15,7 +15,13 @@ if [ -z "$DOMAIN" ]; then
 fi
 
 load() {
-    docker compose run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ -d $DOMAIN -d www.$DOMAIN -d api.$DOMAIN --agree-tos --non-interactive --email $EMAIL
+    docker compose run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ \
+        -d $DOMAIN \
+        -d www.$DOMAIN \
+        -d api.$DOMAIN \
+        -d session-hub.$DOMAIN \
+        --agree-tos --non-interactive --email $EMAIL \
+        /
     docker compose restart nginx
 }
 
