@@ -38,7 +38,7 @@ services:
       - "./data:/data/db"
 
   nginx:
-    image: ghcr.io/futuramafamilyguy/personal-website-server:latest
+    image: ghcr.io/futuramafamilyguy/personal-website-nginx:latest
     environment:
       - SERVER_URL=${SERVER_URL}
       - CLIENT_URL=${CLIENT_URL}

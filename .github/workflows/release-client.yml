@@ -2,8 +2,6 @@ name: build react client
 
 on:
   workflow_call:
-    paths:
-      - "client/**"
     secrets:
       serverUrl:
         required: true
