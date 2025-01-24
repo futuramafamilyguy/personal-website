@@ -49,7 +49,7 @@ services:
       - ./scripts/start-nginx.sh:/start-nginx.sh
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
-    entrypoint: /bin/sh -c "/start-nginx.sh"
+    entrypoint: /bin/sh -c "chmod +x /start-nginx.sh && /start-nginx.sh"
     ports:
       - 80:80
       - 443:443
