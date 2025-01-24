@@ -2,7 +2,7 @@
 
 CERT=/etc/nginx/ssl/live/$DOMAIN/fullchain.pem
 KEY=/etc/nginx/ssl/live/$DOMAIN/privkey.pem
-#hehe
+
 if [[ -f /$CERT && -f $KEY ]]; then
 	echo 'loading live config'
 	envsubst '${SERVER_URL} ${CLIENT_URL} ${DOMAIN} ${SESSION_HUB_URL}' < /templates/default.conf.template > /etc/nginx/conf.d/default.conf
