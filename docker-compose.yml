@@ -29,7 +29,7 @@ services:
       - wwwroot-data:/app/wwwroot
     restart: unless-stopped
 
-  mongo:
+  mongodb:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
@@ -43,7 +43,7 @@ services:
       - SERVER_URL=${SERVER_URL}
       - CLIENT_URL=${CLIENT_URL}
       - DOMAIN=${DOMAIN}
-      - SESSION_HUB_URL=${SESSION_HUB_URL} # [sus]
+      - SESSION_HUB_URL=${SESSION_HUB_URL} # sus
     volumes:
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
