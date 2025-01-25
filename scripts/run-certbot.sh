@@ -27,6 +27,7 @@ load() {
 
 renew() {
     docker compose run --rm certbot renew
+    docker exec nginx nginx -s reload
 }
 
 delete() {
