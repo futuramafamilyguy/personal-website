@@ -1,8 +1,8 @@
 server {
-	listen 80;
-	server_name ${DOMAIN} www.${DOMAIN} api.${DOMAIN} session-hub.${DOMAIN};
-	
-	location /.well-known/acme-challenge/ {
-		root /var/www/certbot;
-	}	
+    listen 80;
+    server_name ${DOMAIN} www.${DOMAIN} api.${DOMAIN} session-hub.${DOMAIN};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
 }
