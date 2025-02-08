@@ -1,6 +1,5 @@
-import React from "react";
-
 import editIcon from "../../../assets/svg/edit_icon.svg";
+import useIntersectionObserver from "../../../hooks/useIntersectionObserver";
 import styles from "./PostCard.module.css";
 
 interface PostCardProps {
@@ -18,9 +17,16 @@ const PostCard: React.FC<PostCardProps> = ({
   editable,
   onClickEdit,
 }) => {
+  const { isInView, ref } = useIntersectionObserver();
+
   return (
-    <div className={styles.postCard} onClick={onClick}>
-      <img src={imageUrl} alt={title} className={styles.image} />
+    <div className={styles.postCard} onClick={onClick} ref={ref}>
+      <img
+        data-src={imageUrl}
+        src={isInView ? imageUrl : ""}
+        alt={title}
+        className={styles.image}
+      />
       {editable ? (
         <div className={styles.edit}>
           <img

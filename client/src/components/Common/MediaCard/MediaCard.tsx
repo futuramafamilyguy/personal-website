@@ -1,6 +1,7 @@
 import React from "react";
 
 import editIcon from "../../../assets/svg/edit_icon.svg";
+import useIntersectionObserver from "../../../hooks/useIntersectionObserver";
 import styles from "./MediaCard.module.css";
 
 interface MediaCardProps {
@@ -20,6 +21,8 @@ const MediaCard: React.FC<MediaCardProps> = ({
   editable,
   onClickEdit,
 }) => {
+  const { isInView, ref } = useIntersectionObserver();
+
   return (
     <div
       className={styles.mediaCard}
@@ -29,8 +32,14 @@ const MediaCard: React.FC<MediaCardProps> = ({
           ? { borderStyle: "solid", borderColor: "#e3bf46" }
           : undefined
       }
+      ref={ref}
     >
-      <img src={imageUrl} alt={title} className={styles.mediaImage} />
+      <img
+        data-src={imageUrl}
+        src={isInView ? imageUrl : ""}
+        alt={title}
+        className={styles.mediaImage}
+      />
       {editable ? (
         <div className={styles.edit}>
           <img
