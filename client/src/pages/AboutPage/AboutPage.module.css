@@ -30,16 +30,16 @@
   align-items: center;
   position: relative;
   z-index: 1;
+  width: 60%;
 }
 
 .descriptionBox {
   position: relative;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: none;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   text-align: center;
-  max-width: 40%;
+  width: 60%;
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -53,10 +53,4 @@
 
 .descriptionBox h5 {
   padding-top: 10px;
-}
-
-.footnote {
-  padding-top: 35px;
-  width: 70%;
-  text-align: center;
 }

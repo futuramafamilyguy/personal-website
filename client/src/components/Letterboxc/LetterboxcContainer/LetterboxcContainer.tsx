@@ -27,7 +27,7 @@ const LetterboxcContainer: React.FC = () => {
           >
             <h3>Letterboxc (c for avoiding Copyright)</h3>
             <br />
-            <h5>Pictures I've seen at the cinemas over the past few years</h5>
+            <h5>I single-handedly keep the cinema industry alive</h5>
             <ActiveYearsContainer />
           </div>
           <PictureGallery />
