@@ -2,6 +2,7 @@ name: build .net server
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io

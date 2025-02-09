@@ -7,6 +7,7 @@ on:
         required: true
       sessionUrl:
         required: true
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
