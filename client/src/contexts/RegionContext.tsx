@@ -17,7 +17,7 @@ interface RegionProviderProps {
 }
 
 export const RegionProvider = ({ children }: RegionProviderProps) => {
-  const [Region, setRegion] = useState<string>(() => "Auckland");
+  const [Region, setRegion] = useState<string>(() => "Canterbury");
 
   const updateRegion: UpdateRegionContextType = (newRegion: string) => {
     setRegion(newRegion);

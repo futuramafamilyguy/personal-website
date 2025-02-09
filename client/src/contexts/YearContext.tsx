@@ -21,7 +21,7 @@ export const YearProvider = ({ children }: YearProviderProps) => {
     let currentDate = new Date();
     let currentYear = currentDate.getFullYear();
 
-    return currentYear;
+    return currentYear - 1;
   });
 
   const updateYear: UpdateYearContextType = (newYear: number) => {
