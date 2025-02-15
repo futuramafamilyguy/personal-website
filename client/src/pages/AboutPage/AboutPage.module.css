@@ -54,3 +54,7 @@
 .descriptionBox h5 {
   padding-top: 10px;
 }
+
+.smallText {
+  font-size: 0.6em;
+}
