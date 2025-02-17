@@ -6,7 +6,28 @@ on:
   workflow_dispatch:
 
 jobs:
+  check-code-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      server_changed: ${{ steps.filter.outputs.server }}
+      client_changed: ${{ steps.filter.outputs.client }}
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: check paths for changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            server:
+              - 'server/**'
+            client:
+              - 'client/**'
+
   wait-for-client:
+    needs: check-code-changes
+    if: needs.check_changes.outputs.client_changed == 'true'
     uses: futuramafamilyguy/personal-website/.github/workflows/release-client.yml@main
     permissions:
       contents: read
@@ -16,6 +37,8 @@ jobs:
       sessionUrl: ${{ secrets.VITE_SESSION_URL }}
 
   wait-for-server:
+    needs: check-code-changes
+    if: needs.check_changes.outputs.server_changed == 'true'
     uses: futuramafamilyguy/personal-website/.github/workflows/release-server.yml@main
     permissions:
       contents: read
