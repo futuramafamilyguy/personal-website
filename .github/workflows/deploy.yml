@@ -16,10 +16,18 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
 
+      - name: get previous tag
+        id: previous_tag
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          PREV_TAG=$(git describe --tags --abbrev=0 --exclude=$LATEST_TAG)
+          echo "previous_tag=$PREV_TAG" >> "$GITHUB_ENV"
+
       - name: check paths for changes
         id: filter
         uses: dorny/paths-filter@v3
         with:
+          base: ${{ env.previous_tag }}
           filters: |
             server:
               - 'server/**'
