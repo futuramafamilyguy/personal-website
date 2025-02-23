@@ -40,7 +40,7 @@ jobs:
 
   wait-for-client:
     needs: check-code-changes
-    if: needs.check_changes.outputs.client_changed == 'true'
+    if: needs.check-code-changes.outputs.client_changed == 'true'
     uses: futuramafamilyguy/personal-website/.github/workflows/release-client.yml@main
     permissions:
       contents: read
@@ -51,7 +51,7 @@ jobs:
 
   wait-for-server:
     needs: check-code-changes
-    if: needs.check_changes.outputs.server_changed == 'true'
+    if: needs.check-code-changes.outputs.server_changed == 'true'
     uses: futuramafamilyguy/personal-website/.github/workflows/release-server.yml@main
     permissions:
       contents: read
@@ -59,7 +59,7 @@ jobs:
 
   wait-for-nginx:
     needs: check-code-changes
-    if: needs.check_changes.outputs.nginx_changed == 'true'
+    if: needs.check-code-changes.outputs.nginx_changed == 'true'
     uses: futuramafamilyguy/personal-website/.github/workflows/build-push-nginx.yml@main
     permissions:
       contents: read
