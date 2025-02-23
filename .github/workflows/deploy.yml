@@ -38,7 +38,7 @@ jobs:
             nginx:
               - 'nginx/**'
 
-  wait-for-client:
+  build-client:
     needs: check-code-changes
     if: needs.check-code-changes.outputs.client_changed == 'true'
     uses: futuramafamilyguy/personal-website/.github/workflows/release-client.yml@main
@@ -49,7 +49,7 @@ jobs:
       serverUrl: ${{ secrets.VITE_SERVER_URL }}
       sessionUrl: ${{ secrets.VITE_SESSION_URL }}
 
-  wait-for-server:
+  build-server:
     needs: check-code-changes
     if: needs.check-code-changes.outputs.server_changed == 'true'
     uses: futuramafamilyguy/personal-website/.github/workflows/release-server.yml@main
@@ -57,7 +57,7 @@ jobs:
       contents: read
       packages: write
 
-  wait-for-nginx:
+  build-nginx:
     needs: check-code-changes
     if: needs.check-code-changes.outputs.nginx_changed == 'true'
     uses: futuramafamilyguy/personal-website/.github/workflows/build-push-nginx.yml@main
@@ -65,9 +65,17 @@ jobs:
       contents: read
       packages: write
 
+  check-new-packages:
+    runs-on: ubuntu-latest
+    needs: [build-client, build-server, build-nginx]
+    if: always()
+    steps:
+      - name: check for any new packages
+        run: echo "at least one new package version found"
+
   deploy-to-droplet:
     runs-on: ubuntu-latest
-    needs: [wait-for-client, wait-for-server, wait-for-nginx]
+    needs: check-new-packages
     steps:
       - name: checkout docker-ops files
         uses: actions/checkout@v4
