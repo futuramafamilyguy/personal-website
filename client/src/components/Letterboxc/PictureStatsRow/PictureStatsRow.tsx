@@ -15,6 +15,8 @@ const PictureStatsRow: React.FC<PictureStatsRowProps> = ({
   const [totalPictureCount, setTotalPictureCount] = useState<number>();
   const [newReleaseCount, setNewReleaseCount] = useState<number>();
   const [rereleaseCount, setRereleaseCount] = useState<number>();
+  const [cinemaCount, setCinemaCount] = useState<number>();
+  const [cityCount, setCityCount] = useState<number>();
   const [topCinemas, setTopCinemas] = useState<
     {
       name: string;
@@ -26,6 +28,8 @@ const PictureStatsRow: React.FC<PictureStatsRowProps> = ({
     setTotalPictureCount(pictures.length);
     setNewReleaseCount(pictures.filter((p) => p.isNewRelease).length);
     setRereleaseCount(pictures.filter((p) => !p.isNewRelease).length);
+    setCinemaCount(new Set(pictures.map((p) => p.cinema.id)).size);
+    setCityCount(new Set(pictures.map((p) => p.cinema.city)).size);
     setTopCinemas(calculateTopCinemas());
   }, [pictures]);
 
@@ -69,6 +73,13 @@ const PictureStatsRow: React.FC<PictureStatsRowProps> = ({
           </div>
           <div className={styles.stat}>
             <span className={styles.statKey}>Total Spending</span>: No
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statKey}>Unique Cinemas</span>:{" "}
+            {cinemaCount}
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statKey}>Unique Cities</span>: {cityCount}
           </div>
           <div className={styles.lastStat}>
             <div className={styles.statKey}>Most Frequent Cinemas</div>
