@@ -13,7 +13,7 @@ server {
 
 server {
     listen 80;
-    session-hub.${DOMAIN};
+    server_name session-hub.${DOMAIN};
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
