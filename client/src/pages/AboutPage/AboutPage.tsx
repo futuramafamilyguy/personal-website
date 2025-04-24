@@ -8,7 +8,7 @@ function AboutPage() {
           <h3>kia ora *~*</h3>
           <h5>
             I'm a frequent moviegoer based in South Auckland, New Zealand—home
-            of Big Ben Pies and Lucy Lawless, aka Xena: Warrior Princess{" "}
+            of Big Ben Pies and Lucy Lawless Xena: Warrior Princess{" "}
             <span className={styles.smallText}>i love u lucy</span> Thanks for
             visiting *~*
           </h5>
