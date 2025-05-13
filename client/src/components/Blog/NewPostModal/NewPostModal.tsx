@@ -182,8 +182,8 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         contentResponse
       );
     } catch (error) {
-      console.error("Error creating post:", error);
-      setResult("Error creating post");
+      console.error("error creating post:", error);
+      setResult("error creating post");
     }
   };
 
@@ -219,8 +219,8 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         contentResponse
       );
     } catch (error) {
-      console.error("Error updating post:", error);
-      setResult("Error updating post");
+      console.error("error updating post:", error);
+      setResult("error updating post");
     }
   };
 
@@ -239,8 +239,8 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
       await Promise.all(deletePromises);
       await deletePost(postId);
     } catch (error) {
-      console.error("Error deleting post:", error);
-      setResult("Error deleting post");
+      console.error("error deleting post:", error);
+      setResult("error deleting post");
     }
   };
 
@@ -280,7 +280,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
           )}
           <form onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
-              <label>Title</label>
+              <label>title</label>
               <input
                 type="text"
                 id="title"
@@ -291,7 +291,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
               ></input>
             </div>
             <div className={styles.formGroup}>
-              <label>Image</label>
+              <label>image</label>
               <input
                 type="file"
                 onChange={(e) =>
@@ -300,17 +300,17 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
               />
             </div>
             <div className={styles.formGroup}>
-              <label>Content</label>
+              <label>take</label>
               <textarea
                 value={markdownContent}
                 onChange={(e) => setMarkdownContent(e.target.value)}
-                placeholder="Type your markdown here"
+                placeholder="drop your take here"
               />
             </div>
             <div className={styles.buttonContainer}>
               <div>
                 <button className={styles.button} type="submit">
-                  Submit
+                  submit
                 </button>
                 <span className={styles.result} id="result">
                   {result}
@@ -322,7 +322,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
                     className={styles.deleteButton}
                     onClick={handleDelete}
                   >
-                    Delete
+                    delete
                   </button>
                 </div>
               ) : null}

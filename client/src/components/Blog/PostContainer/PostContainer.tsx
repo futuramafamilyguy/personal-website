@@ -71,7 +71,7 @@ const PostContainer: React.FC = () => {
 
   const renderContent = () => {
     if (!post) {
-      return <MessageDisplay message={"Loading..."} />;
+      return <MessageDisplay message={"loading..."} />;
     }
 
     return (
@@ -80,7 +80,7 @@ const PostContainer: React.FC = () => {
           Back
         </button>
         <button className={styles.hideButton} onClick={toggleShowLess}>
-          {showLess ? "Expand" : "Collapse"}
+          {showLess ? "expand" : "collapse"}
         </button>
 
         <div

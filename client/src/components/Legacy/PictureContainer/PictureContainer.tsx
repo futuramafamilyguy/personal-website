@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 
 import { useAuth } from "../../../contexts/AuthContext";
 import usePictures from "../../../hooks/usePictures";
+import MediaCard from "../../Common/MediaCard/MediaCard";
+import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import NewMediaCard from "../../Letterboxc/NewMediaCard/NewMediaCard";
 import NewPictureModal from "../../Letterboxc/NewPictureModal/NewPictureModal";
 import PictureModal from "../../Letterboxc/PictureModal/PictureModal";
-import MediaCard from "../../Common/MediaCard/MediaCard";
-import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import Pagination from "../Pagination/Pagination";
 import styles from "./PictureContainer.module.css";
 
@@ -84,7 +84,7 @@ const PictureContainer: React.FC = () => {
 
   const renderContent = () => {
     if (loading) {
-      return <MessageDisplay message={"Loading..."} />;
+      return <MessageDisplay message={"loading..."} />;
     } else {
       if (isLoggedIn || pictures.length > 0) {
         return (

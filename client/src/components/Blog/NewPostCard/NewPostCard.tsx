@@ -11,7 +11,7 @@ const NewPostCard: React.FC<NewPostCardProps> = ({ onClick }) => {
   return (
     <div className={styles.newPostCard} onClick={onClick}>
       <img src={writing} alt={"writing"} className={styles.image} />
-      <div className={styles.titleOverlay}>Write something</div>
+      <div className={styles.titleOverlay} />
     </div>
   );
 };

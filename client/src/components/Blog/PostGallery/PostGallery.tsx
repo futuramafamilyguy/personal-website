@@ -29,12 +29,12 @@ const PostGallery: React.FC = () => {
 
   const renderContent = () => {
     if (loading) {
-      return <MessageDisplay message={"Loading..."} />;
+      return <MessageDisplay message={"loading..."} />;
     } else {
       if (posts.length === 0 && !isLoggedIn) {
         return (
           <MessageDisplay
-            message={"no posts?"}
+            message={"no takes?"}
             imageUrl={megamind}
           ></MessageDisplay>
         );

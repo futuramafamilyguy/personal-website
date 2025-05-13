@@ -391,14 +391,14 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
       <div className={styles.modal}>
         <div className={styles.textContainer}>
           {picture ? (
-            <h5 className={styles.title}>Update Picture</h5>
+            <h5 className={styles.title}>update picture</h5>
           ) : (
-            <h5 className={styles.title}>Add New Picture for {year}</h5>
+            <h5 className={styles.title}>add new picture</h5>
           )}
           <form onSubmit={handleSubmit}>
             <div className={styles.formFields}>
               <div className={styles.formGroup}>
-                <label>Name</label>
+                <label>name</label>
                 <input
                   type="text"
                   id="name"
@@ -409,7 +409,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 ></input>
               </div>
               <div className={styles.formGroup}>
-                <label>Year Released</label>
+                <label>year released</label>
                 <input
                   type="text"
                   id="year_released"
@@ -419,7 +419,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 ></input>
               </div>
               <div className={styles.formGroup}>
-                <label>Image</label>
+                <label>image</label>
                 <input
                   type="file"
                   onChange={(e) =>
@@ -428,7 +428,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 />
               </div>
               <div className={styles.formGroup}>
-                <label>Alt Image</label>
+                <label>alt image</label>
                 <input
                   type="file"
                   onChange={(e) =>
@@ -437,7 +437,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 />
               </div>
               <div className={styles.formGroup}>
-                <label>Month Watched</label>
+                <label>month watched</label>
                 <input
                   type="text"
                   id="month_watched"
@@ -446,7 +446,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 ></input>
               </div>
               <div className={styles.formGroup}>
-                <label>Cinema</label>
+                <label>cinema</label>
                 <input
                   type="text"
                   id="cinema_id"
@@ -479,7 +479,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 </select>
               </div>
               <div className={styles.formGroup}>
-                <label>Favorite</label>
+                <label>favorite</label>
                 <div>
                   <input
                     type="checkbox"
@@ -490,7 +490,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 </div>
               </div>
               <div className={styles.formGroup}>
-                <label>Kino</label>
+                <label>KINO</label>
                 <div>
                   <input
                     type="checkbox"
@@ -501,7 +501,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 </div>
               </div>
               <div className={styles.formGroup}>
-                <label>New Release</label>
+                <label>new release</label>
                 <div>
                   <input
                     type="checkbox"
@@ -512,7 +512,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 </div>
               </div>
               <div className={styles.formGroup}>
-                <label>Zinger</label>
+                <label>zinger</label>
                 <input
                   type="text"
                   id="zinger"
@@ -521,7 +521,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 ></input>
               </div>
               <div className={styles.formGroup}>
-                <label>Alias</label>
+                <label>alias</label>
                 <input
                   type="text"
                   id="alias"
@@ -533,7 +533,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
             <div className={styles.buttonContainer}>
               <div>
                 <button className={styles.button} type="submit">
-                  Submit
+                  submit
                 </button>
                 <span className={styles.result} id="result">
                   {result}
@@ -545,7 +545,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                     className={styles.deleteButton}
                     onClick={handleDelete}
                   >
-                    Delete
+                    delete
                   </button>
                 </div>
               ) : null}

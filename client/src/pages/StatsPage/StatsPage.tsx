@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
+
 import {
   debouncedFetchStats,
   makeDebouncedRequest,
@@ -22,7 +23,7 @@ function StatsPage() {
           setStats(response.data);
         })
         .catch((error: any) => {
-          console.error("Error fetching data:", error);
+          console.error("error fetching data:", error);
         });
     };
 
@@ -56,19 +57,19 @@ function StatsPage() {
   return (
     <div className={styles.statsPage}>
       <div className={styles.textBox}>
-        <h3 className={styles.title}>Site Stats</h3>
+        <h3 className={styles.title}>site stats</h3>
         <br />
         <div>
-          <h5 className={styles.title}>Visits:</h5>{" "}
+          <h5 className={styles.title}>visits:</h5>{" "}
           <h5>{stats?.totalVisits}</h5>
         </div>
         <div className={styles.stat}>
-          <h5 className={styles.title}>Last Visit:</h5>{" "}
-          <h5>{convertToNZTime(stats?.latestVisitUtc)} (NZT)</h5>
+          <h5 className={styles.title}>last visit:</h5>{" "}
+          <h5>{convertToNZTime(stats?.latestVisitUtc)} (nzt)</h5>
         </div>
         <div className={styles.stat}>
-          <h5 className={styles.title}>Since:</h5>{" "}
-          <h5>{convertToNZTime(stats?.trackingStartUtc)} (NZT)</h5>
+          <h5 className={styles.title}>since:</h5>{" "}
+          <h5>{convertToNZTime(stats?.trackingStartUtc)} (nzt)</h5>
         </div>
       </div>
     </div>

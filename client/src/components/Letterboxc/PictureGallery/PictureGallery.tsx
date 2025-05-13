@@ -78,30 +78,30 @@ const PictureGallery: React.FC = () => {
   };
 
   const months: string[] = [
-    "December",
-    "November",
-    "October",
-    "September",
-    "August",
-    "July",
-    "June",
-    "May",
-    "April",
-    "March",
-    "February",
-    "January",
+    "december",
+    "november",
+    "october",
+    "september",
+    "august",
+    "july",
+    "june",
+    "may",
+    "april",
+    "march",
+    "february",
+    "january",
   ];
 
   const renderContent = () => {
     if (loading) {
-      return <MessageDisplay message={"Loading..."} />;
+      return <MessageDisplay message={"loading..."} />;
     } else {
       return (
         <div className={styles.pictureGallery}>
           {isLoggedIn ? (
             <>
               <div className={styles.newPictureRow}>
-                <h5>After this one, we're watching four more</h5>
+                <h5>after this one, we're watching four more</h5>
                 <hr />
                 <NewMediaCard onClick={() => openNewPictureModal(null)} />
               </div>

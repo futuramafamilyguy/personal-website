@@ -1,10 +1,9 @@
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import React, { useEffect, useState } from "react";
-import styles from "./NavBar.module.css";
-import { MenuItem } from "../../types/MenuItem";
-
 import ExternalLinkSvg from "../../assets/svg/icons8-external-link-30.png";
+import { MenuItem } from "../../types/MenuItem";
+import styles from "./NavBar.module.css";
 
 interface NavbarProps {
   logoSrc: string;

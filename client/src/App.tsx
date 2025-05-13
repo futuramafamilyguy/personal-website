@@ -19,10 +19,10 @@ import "./reset.css";
 
 const App: React.FC = () => {
   const menuItems: MenuItem[] = [
-    { label: "About", link: "/about" },
-    { label: "Letterboxc", link: "/letterboxc" },
-    { label: "Blog", link: "/blog" },
-    { label: "Session Hub", link: "/session-hub" },
+    { label: "about", link: "/about" },
+    { label: "letterboxc", link: "/letterboxc" },
+    { label: "blog", link: "/blog" },
+    { label: "session hub", link: "/session-hub" },
   ];
 
   return (

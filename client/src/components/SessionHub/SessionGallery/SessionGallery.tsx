@@ -1,11 +1,11 @@
-import styles from "./SessionGallery.module.css";
 import { useEffect, useState } from "react";
 
 import useSessions from "../../../hooks/useSessions";
+import { Session } from "../../../types/Session";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import SessionModal from "../SessionModal/SessionModal";
 import SessionRow from "../SessionRow/SessionRow";
-import { Session } from "../../../types/Session";
+import styles from "./SessionGallery.module.css";
 
 const SessionGallery: React.FC = () => {
   const { sessions, loading } = useSessions();
@@ -85,19 +85,19 @@ const SessionGallery: React.FC = () => {
 
   const renderContent = () => {
     if (loading) {
-      return <MessageDisplay message={"Loading..."} />;
+      return <MessageDisplay message={"loading..."} />;
     } else {
       return (
         <>
           <div className={styles.sessionGallery}>
             <SessionRow
               sessions={newReleaseSessions}
-              category="New Releases"
+              category="new releases"
               sessionOnClick={(s: Session) => openModal(s, true)}
             />
             <SessionRow
               sessions={rereleaseSessions}
-              category="Re-releases"
+              category="re-releases"
               sessionOnClick={(s: Session) => openModal(s, false)}
             />
             <SessionModal

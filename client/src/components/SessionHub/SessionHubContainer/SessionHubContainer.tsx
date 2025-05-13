@@ -53,7 +53,7 @@ const SessionsContainer: React.FC = () => {
     return (
       <div className={styles.sessionHubContainer}>
         <button className={styles.collapseButton} onClick={toggleCollapse}>
-          {isCollapsed ? "Expand" : "Collapse"}
+          {isCollapsed ? "expand" : "collapse"}
         </button>
         <RegionProvider>
           <div
@@ -63,11 +63,11 @@ const SessionsContainer: React.FC = () => {
                 : styles.descriptionBox
             }
           >
-            <h3>Session Hub</h3>
+            <h3>session hub</h3>
             <br />
             <h5>
-              Latest pictures showing in NZ cinemas this week, including
-              re-releases Updated every Sunday at 12pm NZT (next run in{" "}
+              latest pictures showing in nz cinemas this week, including
+              re-releases updated every sunday at 12pm nzt (next run in{" "}
               <b>{calculateNextRun()}</b>)
             </h5>
             <RegionsContainer />

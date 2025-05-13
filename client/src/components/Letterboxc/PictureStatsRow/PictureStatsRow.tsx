@@ -55,34 +55,34 @@ const PictureStatsRow: React.FC<PictureStatsRowProps> = ({
     return (
       <div className={styles.pictureStatsRow}>
         <div className={styles.title}>
-          <h5>{year} Stats</h5>
+          <h5>{year} stats</h5>
         </div>
         <hr />
         <div className={styles.statsContainer}>
           <div className={styles.stat}>
-            <span className={styles.statKey}>Total Pictures</span>:{" "}
+            <span className={styles.statKey}>total pictures</span>:{" "}
             {totalPictureCount}
           </div>
           <div className={styles.stat}>
-            <span className={styles.statKey}>New Releases</span>:{" "}
+            <span className={styles.statKey}>new releases</span>:{" "}
             {newReleaseCount}
           </div>
           <div className={styles.stat}>
-            <span className={styles.statKey}>Re-releases</span>:{" "}
+            <span className={styles.statKey}>re-releases</span>:{" "}
             {rereleaseCount}
           </div>
           <div className={styles.stat}>
-            <span className={styles.statKey}>Total Spending</span>: No
+            <span className={styles.statKey}>total spending</span>: no
           </div>
           <div className={styles.stat}>
-            <span className={styles.statKey}>Unique Cinemas</span>:{" "}
+            <span className={styles.statKey}>unique cinemas</span>:{" "}
             {cinemaCount}
           </div>
           <div className={styles.stat}>
-            <span className={styles.statKey}>Unique Cities</span>: {cityCount}
+            <span className={styles.statKey}>unique cities</span>: {cityCount}
           </div>
           <div className={styles.lastStat}>
-            <div className={styles.statKey}>Most Frequent Cinemas</div>
+            <div className={styles.statKey}>most frequent cinemas</div>
             {topCinemas.map((cinema, index) => (
               <div key={index} className={styles.cinema}>
                 {cinema.name}: {cinema.visits}

@@ -15,7 +15,6 @@ const NewMediaCard: React.FC<NewMediaCardProps> = ({ onClick }) => {
         alt={"going to the cinemas"}
         className={styles.image}
       />
-      <p>I saw something</p>
     </div>
   );
 };

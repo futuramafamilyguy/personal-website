@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { YearProvider } from "../../../contexts/YearContext";
 import ActiveYearsContainer from "../ActiveYearsContainer/ActiveYearsContainer";
 import PictureGallery from "../PictureGallery/PictureGallery";
@@ -15,7 +16,7 @@ const LetterboxcContainer: React.FC = () => {
     return (
       <div className={styles.letterboxcContainer}>
         <button className={styles.collapseButton} onClick={toggleCollapse}>
-          {isCollapsed ? "Expand" : "Collapse"}
+          {isCollapsed ? "expand" : "collapse"}
         </button>
         <YearProvider>
           <div
@@ -25,9 +26,9 @@ const LetterboxcContainer: React.FC = () => {
                 : styles.descriptionBox
             }
           >
-            <h3>Letterboxc (c for avoiding Copyright)</h3>
+            <h3>letterboxc (c for dodging copyright)</h3>
             <br />
-            <h5>I single-handedly keep the cinema industry alive</h5>
+            <h5>i single-handedly keep the cinema industry alive</h5>
             <ActiveYearsContainer />
           </div>
           <PictureGallery />

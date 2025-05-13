@@ -7,9 +7,9 @@ const BlogContainer: React.FC = () => {
       <div className={styles.blogContainer}>
         <div className={styles.postGalleryView}>
           <div className={styles.descriptionBox}>
-            <h3>Blog</h3>
+            <h3>blog</h3>
             <br />
-            <h5>The hottest media takes on the web</h5>
+            <h5>the hottest media takes on the web</h5>
           </div>
 
           <PostGallery />

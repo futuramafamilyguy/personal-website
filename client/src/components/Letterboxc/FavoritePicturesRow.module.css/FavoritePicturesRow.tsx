@@ -22,12 +22,11 @@ const FavoritePicturesRow: React.FC<FavoritePicturesRowProps> = ({
     return (
       <div className={styles.favoritePicturesRow}>
         <span className={styles.title}>
-          <h5>{`Favorites of ${year}`}</h5>
+          <h5>{`${year}`}</h5>
           <img className={styles.heartIcon} src={heartIcon} />
         </span>
         <hr />
         <div className={styles.pictureRow}>
-          {pictures.length === 0 ? <div className={styles.oof}>oof</div> : null}
           {pictures.map((picture) => (
             <MediaCard
               key={picture.id}

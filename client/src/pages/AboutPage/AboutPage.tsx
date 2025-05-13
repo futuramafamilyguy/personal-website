@@ -7,9 +7,9 @@ function AboutPage() {
         <div className={styles.descriptionBox}>
           <h3>kia ora *~*</h3>
           <h5>
-            I'm a frequent moviegoer based in South Auckland, New Zealand—home
-            of Big Ben Pies and Lucy Lawless Xena: Warrior Princess{" "}
-            <span className={styles.smallText}>i love u lucy</span> Thanks for
+            i'm a frequent moviegoer based in south auckland, new zealand—home
+            of big ben pies and lucy lawless xena: warrior princess{" "}
+            <span className={styles.smallText}>i love u lucy</span> thanks for
             visiting *~*
           </h5>
           <h5>
