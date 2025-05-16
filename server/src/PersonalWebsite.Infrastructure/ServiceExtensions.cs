@@ -20,10 +20,12 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
-        services.AddScoped<VisitStatisticsRepository>();
-        services.AddScoped<IPictureRepository, PictureRepository>();
-        services.AddScoped<ICinemaRepository, CinemaRepository>();
-        services.AddScoped<IPostRepository, PostRepository>();
+        // repositories are registered as singletons since database interactions are not user-specific
+        services.AddSingleton<VisitStatisticsRepository>();
+        services.AddSingleton<IPictureRepository, PictureRepository>();
+        services.AddSingleton<ICinemaRepository, CinemaRepository>();
+        services.AddSingleton<IPostRepository, PostRepository>();
+
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddImageStorageServices();
         services.AddMarkdownStorageServices();
@@ -59,16 +61,16 @@ public static class ServiceExtensions
 
     public static void AddCdnServices(this IServiceCollection services)
     {
-        services.AddScoped<ICdnUrlService, CdnUrlService>();
+        services.AddSingleton<ICdnUrlService, CdnUrlService>();
     }
 
     private static void AddImageStorageServices(this IServiceCollection services)
     {
-        services.AddScoped<LocalImageStorage>();
-        services.AddScoped<AmazonS3ImageStorage>();
+        services.AddSingleton<LocalImageStorage>();
+        services.AddSingleton<AmazonS3ImageStorage>();
         services.AddSingleton<ImageStorageFactory>();
 
-        services.AddScoped(provider =>
+        services.AddSingleton(provider =>
         {
             var factory = provider.GetRequiredService<ImageStorageFactory>();
 
@@ -78,10 +80,10 @@ public static class ServiceExtensions
 
     private static void AddMarkdownStorageServices(this IServiceCollection services)
     {
-        services.AddScoped<AmazonS3MarkdownStorage>();
+        services.AddSingleton<AmazonS3MarkdownStorage>();
         services.AddSingleton<MarkdownStorageFactory>();
 
-        services.AddScoped(provider =>
+        services.AddSingleton(provider =>
         {
             var factory = provider.GetRequiredService<MarkdownStorageFactory>();
 

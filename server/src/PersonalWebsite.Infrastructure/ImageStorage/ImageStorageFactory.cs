@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Infrastructure.Cdn;
 using PersonalWebsite.Infrastructure.Images.AmazonS3;
@@ -9,34 +8,40 @@ namespace PersonalWebsite.Infrastructure.ImageStorage;
 
 public class ImageStorageFactory
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly ICdnUrlService _cdnUrlService;
     private readonly ImageStorageConfiguration _configuration;
 
+    private readonly LocalImageStorage _localImageStorage;
+    private readonly AmazonS3ImageStorage _amazonS3ImageStorage;
+
     public ImageStorageFactory(
-        IServiceProvider serviceProvider,
-        IOptions<ImageStorageConfiguration> configuration
+        ICdnUrlService cdnUrlService,
+        IOptions<ImageStorageConfiguration> configuration,
+        LocalImageStorage localImageStorage,
+        AmazonS3ImageStorage amazonS3ImageStorage
     )
     {
-        _serviceProvider = serviceProvider;
+        _cdnUrlService = cdnUrlService;
         _configuration = configuration.Value;
+        _localImageStorage = localImageStorage;
+        _amazonS3ImageStorage = amazonS3ImageStorage;
     }
 
     public IImageStorage CreateImageStorage()
     {
         var storageType = _configuration.ImageStorageType;
 
-        using var scope = _serviceProvider.CreateScope();
         var imageStorage = storageType switch
         {
-            "Local" => (IImageStorage)scope.ServiceProvider.GetRequiredService<LocalImageStorage>(),
-            "S3" => scope.ServiceProvider.GetRequiredService<AmazonS3ImageStorage>(),
+            "Local" => (IImageStorage)_localImageStorage,
+            "S3" => _amazonS3ImageStorage,
             _ => throw new InvalidOperationException("Image storage type not supported")
         };
 
         if (_configuration.CdnEnabled)
             return new CdnImageStorageDecorator(
                 imageStorage,
-                scope.ServiceProvider.GetRequiredService<ICdnUrlService>(),
+                _cdnUrlService,
                 storageType
             );
 

@@ -8,10 +8,10 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddCoreServices(this IServiceCollection services)
     {
-        services.AddScoped<IPictureService, PictureService>();
-        services.AddScoped<ICinemaService, CinemaService>();
-        services.AddScoped<IPictureCinemaOrchestrator, PictureCinemaOrchestrator>();
-        services.AddScoped<IPostService, PostService>();
+        services.AddSingleton<IPictureService, PictureService>();
+        services.AddSingleton<ICinemaService, CinemaService>();
+        services.AddSingleton<IPictureCinemaOrchestrator, PictureCinemaOrchestrator>();
+        services.AddSingleton<IPostService, PostService>();
 
         return services;
     }
