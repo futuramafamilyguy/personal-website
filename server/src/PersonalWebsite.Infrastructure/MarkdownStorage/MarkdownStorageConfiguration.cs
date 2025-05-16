@@ -5,4 +5,5 @@ public class MarkdownStorageConfiguration
     public required string MarkdownStorageType { get; set; }
     public required string BaseUrl { get; set; }
     public required string PostMarkdownDirectory { get; set; }
+    public required bool CdnEnabled { get; set; }
 }

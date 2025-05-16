@@ -3,6 +3,7 @@ using Amazon.S3;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
+using PersonalWebsite.Infrastructure.Cdn;
 using PersonalWebsite.Infrastructure.Data;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
 using PersonalWebsite.Infrastructure.Data.Pictures;
@@ -54,6 +55,11 @@ public static class ServiceExtensions
 
             return client;
         });
+    }
+
+    public static void AddCdnServices(this IServiceCollection services)
+    {
+        services.AddScoped<ICdnUrlService, CdnUrlService>();
     }
 
     private static void AddImageStorageServices(this IServiceCollection services)
