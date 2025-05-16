@@ -2,10 +2,10 @@
 
 public class ImageStorageConfiguration
 {
-    public required string ImageStorageType { get; set; }
-    public required string BaseImageUrl { get; set; }
-    public required string PictureImageDirectory { get; set; }
-    public required string PostImageDirectory { get; set; }
+    public required string Provider { get; set; }
+    public required string Host { get; set; }
+    public required string BasePathPicture { get; set; }
+    public required string BasePathPost { get; set; }
     public required IEnumerable<string> AllowedImageExtensions { get; set; }
     public required bool CdnEnabled { get; set; }
 }

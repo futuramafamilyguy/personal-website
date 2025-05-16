@@ -29,20 +29,20 @@ public class ImageStorageFactory
 
     public IImageStorage CreateImageStorage()
     {
-        var storageType = _configuration.ImageStorageType;
+        var storageProvider = _configuration.Provider;
 
-        var imageStorage = storageType switch
+        var imageStorage = storageProvider switch
         {
             "Local" => (IImageStorage)_localImageStorage,
             "S3" => _amazonS3ImageStorage,
-            _ => throw new InvalidOperationException("Image storage type not supported")
+            _ => throw new InvalidOperationException("Image storage provider not supported")
         };
 
         if (_configuration.CdnEnabled)
             return new CdnImageStorageDecorator(
                 imageStorage,
                 _cdnUrlService,
-                storageType
+                storageProvider
             );
 
         return imageStorage;

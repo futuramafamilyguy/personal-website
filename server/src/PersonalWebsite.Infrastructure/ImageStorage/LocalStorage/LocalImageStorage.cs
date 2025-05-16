@@ -22,12 +22,12 @@ public class LocalImageStorage : IImageStorage
         _logger = logger;
     }
 
-    public async Task<string> SaveImageAsync(Stream fileStream, string fileName, string directory)
+    public async Task<string> SaveImageAsync(Stream fileStream, string fileName, string basePath)
     {
         try
         {
-            CreateImageDirectoryIfNotExists(directory);
-            var filePath = GetImageFilePath(fileName, directory);
+            CreateImageDirectoryIfNotExists(basePath);
+            var filePath = GetImageFilePath(fileName, basePath);
 
             using var stream = new FileStream(filePath, FileMode.Create);
             await fileStream.CopyToAsync(stream);
@@ -41,9 +41,9 @@ public class LocalImageStorage : IImageStorage
         }
     }
 
-    public async Task RemoveImageAsync(string fileName, string directory)
+    public async Task RemoveImageAsync(string fileName, string basePath)
     {
-        var filePath = GetImageFilePath(fileName, directory);
+        var filePath = GetImageFilePath(fileName, basePath);
         if (!File.Exists(filePath))
         {
             throw new FileNotFoundException($"Image {filePath} not found");
@@ -75,11 +75,11 @@ public class LocalImageStorage : IImageStorage
         return Wwwroot.TrimEnd('/') + pathAndQuery;
     }
 
-    private string GetImageFilePath(string fileName, string directory)
+    private string GetImageFilePath(string fileName, string basePath)
     {
         var imagesDirectoryPath = Path.Combine(
-            ConvertImageUrlToLocalPath(_baseConfiguration.BaseImageUrl),
-            directory
+            ConvertImageUrlToLocalPath(_baseConfiguration.Host),
+            basePath
         );
         var filePath = Path.Combine(imagesDirectoryPath, fileName);
 
@@ -89,7 +89,7 @@ public class LocalImageStorage : IImageStorage
     private void CreateImageDirectoryIfNotExists(string directory)
     {
         var imagesDirectoryPath = Path.Combine(
-            ConvertImageUrlToLocalPath(_baseConfiguration.BaseImageUrl),
+            ConvertImageUrlToLocalPath(_baseConfiguration.Host),
             directory
         );
         if (!Directory.Exists(imagesDirectoryPath))

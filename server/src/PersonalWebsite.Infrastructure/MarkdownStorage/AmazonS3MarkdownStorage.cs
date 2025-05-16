@@ -31,13 +31,13 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
     public async Task<string> CopyMarkdownAsync(
         string fileName,
         string newFileName,
-        string directory
+        string basePath
     )
     {
         try
         {
-            var key = $"{directory}/{fileName}";
-            var newKey = $"{directory}/{newFileName}";
+            var key = $"{basePath}/{fileName}";
+            var newKey = $"{basePath}/{newFileName}";
 
             var request = new CopyObjectRequest
             {
@@ -49,11 +49,11 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
 
             await _s3Client.CopyObjectAsync(request);
             _logger.LogInformation(
-                $"Successfully renamed markdown '{fileName}' to '{newFileName}' at '{directory}'"
+                $"Successfully renamed markdown '{fileName}' to '{newFileName}' at '{basePath}'"
             );
 
             var markdownUrl =
-                $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{directory}/{newFileName}";
+                $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{basePath}/{newFileName}";
 
             return markdownUrl;
         }
@@ -61,7 +61,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
         {
             _logger.LogError(
                 ex,
-                $"AWS S3 error encountered when renaming markdown '{fileName}' to '{newFileName}' from '{directory}'"
+                $"AWS S3 error encountered when renaming markdown '{fileName}' to '{newFileName}' from '{basePath}'"
             );
             throw new StorageException("Failed to rename markdown due to AWS S3 error", ex);
         }
@@ -69,7 +69,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
         {
             _logger.LogError(
                 ex,
-                $"Unexpected error encountered when renaming markdown '{fileName}' to '{newFileName}' from '{directory}'"
+                $"Unexpected error encountered when renaming markdown '{fileName}' to '{newFileName}' from '{basePath}'"
             );
             throw new StorageException("Failed to rename markdown due to unexpected error", ex);
         }
@@ -83,9 +83,9 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
         return fileName;
     }
 
-    public async Task RemoveMarkdownAsync(string fileName, string directory)
+    public async Task RemoveMarkdownAsync(string fileName, string basePath)
     {
-        var key = $"{directory}/{fileName}";
+        var key = $"{basePath}/{fileName}";
 
         try
         {
@@ -94,14 +94,14 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
 
             await _s3Client.DeleteObjectAsync(_s3configuration.Bucket, key);
             _logger.LogInformation(
-                $"Successfully deleted markdown '{fileName}' from '{directory}'"
+                $"Successfully deleted markdown '{fileName}' from '{basePath}'"
             );
         }
         catch (AmazonS3Exception ex)
         {
             _logger.LogError(
                 ex,
-                $"AWS S3 error encountered when deleting markdown '{fileName}' from '{directory}'"
+                $"AWS S3 error encountered when deleting markdown '{fileName}' from '{basePath}'"
             );
             throw new StorageException("Failed to delete markdown due to AWS S3 error", ex);
         }
@@ -109,13 +109,13 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
         {
             _logger.LogError(
                 ex,
-                $"Unexpected error encountered when deleting markdown '{fileName}' from '{directory}'"
+                $"Unexpected error encountered when deleting markdown '{fileName}' from '{basePath}'"
             );
             throw new StorageException("Failed to delete markdown due to unexpected error", ex);
         }
     }
 
-    public async Task<string> SaveMarkdownAsync(string content, string fileName, string directory)
+    public async Task<string> SaveMarkdownAsync(string content, string fileName, string basePath)
     {
         try
         {
@@ -124,16 +124,16 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
             var request = new PutObjectRequest
             {
                 BucketName = _s3configuration.Bucket,
-                Key = $"{directory}/{fileName}",
+                Key = $"{basePath}/{fileName}",
                 InputStream = stream,
                 ContentType = "text/markdown"
             };
 
             await _s3Client.PutObjectAsync(request);
-            _logger.LogInformation($"Successfully uploaded markdown '{fileName}' at '{directory}'");
+            _logger.LogInformation($"Successfully uploaded markdown '{fileName}' at '{basePath}'");
 
             var markdownUrl =
-                $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{directory}/{fileName}";
+                $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{basePath}/{fileName}";
 
             return markdownUrl;
         }

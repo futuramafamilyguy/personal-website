@@ -27,9 +27,9 @@ public class CdnImageStorageDecorator : IImageStorage
     public Task RemoveImageAsync(string fileName, string directory) =>
         _inner.RemoveImageAsync(fileName, directory);
 
-    public async Task<string> SaveImageAsync(Stream fileStream, string fileName, string directory)
+    public async Task<string> SaveImageAsync(Stream fileStream, string fileName, string basePath)
     {
-        var rawUrl = await _inner.SaveImageAsync(fileStream, fileName, directory);
+        var rawUrl = await _inner.SaveImageAsync(fileStream, fileName, basePath);
         return _cdnUrlService.ConvertToCdnUrl(rawUrl, _innerStorageProvider);
     }
 }

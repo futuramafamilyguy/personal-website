@@ -2,5 +2,5 @@
 
 public class CdnConfiguration
 {
-    public required string BaseUrl { get; set; }
+    public required string Host { get; set; }
 }

@@ -24,21 +24,21 @@ public class MarkdownStorageFactory
 
     public IMarkdownStorage CreateMarkdownStorage()
     {
-        var storageType = _configuration.MarkdownStorageType;
+        var storageProvider = _configuration.Provider;
 
-        var storage = storageType switch
+        var markdownStorage = storageProvider switch
         {
             "S3" => _amazonS3MarkdownStorage,
-            _ => throw new InvalidOperationException("Markdown storage type not supported")
+            _ => throw new InvalidOperationException("Markdown storage provider not supported")
         };
 
         if (_configuration.CdnEnabled)
             return new CdnMarkdownStorageDecorator(
-                storage,
+                markdownStorage,
                 _cdnUrlService,
-                storageType
+                storageProvider
             );
 
-        return storage;
+        return markdownStorage;
     }
 }

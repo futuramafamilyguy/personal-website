@@ -10,11 +10,11 @@ services:
     image: ghcr.io/futuramafamilyguy/personal-website-server:latest
     environment:
       ConnectionStrings__PersonalWebsiteDb: ${PERSONALWEBSITE_CONNECTION_STRING}
-      ImageStorageConfiguration__ImageStorageType: ${IMAGE_STORAGE_TYPE}
-      ImageStorageConfiguration__BaseImageUrl: ${BASE_IMAGE_URL}
+      ImageStorageConfiguration__Provider: ${IMAGE_STORAGE_PROVIDER}
+      ImageStorageConfiguration__Host: ${IMAGE_STORAGE_HOST}
       ImageStorageConfiguration__CdnEnabled: ${CDN_ENABLED_IMAGE_STORAGE}
-      MarkdownStorageConfiguration__MarkdownStorageType: ${MARKDOWN_STORAGE_TYPE}
-      MarkdownStorageConfiguration__BaseUrl: ${BASE_MARKDOWN_URL}
+      MarkdownStorageConfiguration__Provider: ${MARKDOWN_STORAGE_PROVIDER}
+      MarkdownStorageConfiguration__Host: ${MARKDOWN_STORAGE_HOST}
       MarkdownStorageConfiguration__CdnEnabled: ${CDN_ENABLED_MARKDOWN_STORAGE}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
       AWS_SECRET_ACCESS_KEY: ${AWS_ACCESS_SECRET}
@@ -27,7 +27,7 @@ services:
       VisitExclusionConfiguration__ExcludeVisitCookieValue: ${EXCLUDE_VISIT_COOKIE}
       AllowedOrigin: ${ALLOWED_ORIGIN}
       AllowedWwwOrigin: ${ALLOWED_WWW_ORIGIN}
-      CdnConfiguration__BaseUrl: ${BASE_CDN_URL}
+      CdnConfiguration__HOST: ${CDN_HOST}
     volumes:
       - wwwroot-data:/app/wwwroot
     restart: unless-stopped

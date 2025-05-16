@@ -181,7 +181,7 @@ public class PicturesController : ControllerBase
                 altStream,
                 id,
                 extension,
-                _imageStorageConfiguration.PictureImageDirectory,
+                _imageStorageConfiguration.BasePathPicture,
                 altExtension
             );
 
@@ -215,7 +215,7 @@ public class PicturesController : ControllerBase
         {
             await _pictureService.DeletePictureImagesAsync(
                 id,
-                _imageStorageConfiguration.PictureImageDirectory,
+                _imageStorageConfiguration.BasePathPicture,
                 deleteImage,
                 deleteAltImage
             );

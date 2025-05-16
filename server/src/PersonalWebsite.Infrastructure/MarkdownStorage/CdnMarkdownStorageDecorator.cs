@@ -23,18 +23,18 @@ public class CdnMarkdownStorageDecorator : IMarkdownStorage
     public async Task<string> CopyMarkdownAsync(
         string fileName,
         string newFileName,
-        string directory
-    ) => await _inner.CopyMarkdownAsync(fileName, newFileName, directory);
+        string basePath
+    ) => await _inner.CopyMarkdownAsync(fileName, newFileName, basePath);
 
     public string GetMarkdownFileNameFromUrl(string postUrl) =>
         _inner.GetMarkdownFileNameFromUrl(postUrl);
 
-    public async Task RemoveMarkdownAsync(string fileName, string directory) =>
-        await _inner.RemoveMarkdownAsync(fileName, directory);
+    public async Task RemoveMarkdownAsync(string fileName, string basePath) =>
+        await _inner.RemoveMarkdownAsync(fileName, basePath);
 
-    public async Task<string> SaveMarkdownAsync(string content, string fileName, string directory)
+    public async Task<string> SaveMarkdownAsync(string content, string fileName, string basePath)
     {
-        var rawUrl = await _inner.SaveMarkdownAsync(content, fileName, directory);
+        var rawUrl = await _inner.SaveMarkdownAsync(content, fileName, basePath);
         return _cdnUrlService.ConvertToCdnUrl(rawUrl, _innerStorageProvider);
     }
 }

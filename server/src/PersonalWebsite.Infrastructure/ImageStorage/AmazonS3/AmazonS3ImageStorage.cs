@@ -66,23 +66,23 @@ public class AmazonS3ImageStorage : IImageStorage
         }
     }
 
-    public async Task<string> SaveImageAsync(Stream fileStream, string fileName, string directory)
+    public async Task<string> SaveImageAsync(Stream fileStream, string fileName, string basePath)
     {
         try
         {
             var request = new PutObjectRequest()
             {
                 BucketName = _s3configuration.Bucket,
-                Key = $"{directory}/{fileName}",
+                Key = $"{basePath}/{fileName}",
                 InputStream = fileStream
             };
             request.Metadata.Add("Content-Type", GetImageMimeType(fileName));
 
             await _s3Client.PutObjectAsync(request);
-            _logger.LogInformation($"Successfully uploaded image '{fileName}' at '{directory}'");
+            _logger.LogInformation($"Successfully uploaded image '{fileName}' at '{basePath}'");
 
             var imageUrl =
-                $"{_imageStorageConfiguration.BaseImageUrl}/{_s3configuration.Bucket}/{directory}/{fileName}";
+                $"{_imageStorageConfiguration.Host}/{_s3configuration.Bucket}/{basePath}/{fileName}";
             return imageUrl;
         }
         catch (AmazonS3Exception ex)

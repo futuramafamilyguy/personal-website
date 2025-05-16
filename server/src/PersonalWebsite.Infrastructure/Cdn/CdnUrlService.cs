@@ -24,7 +24,7 @@ public class CdnUrlService : ICdnUrlService
             _ => throw new InvalidOperationException("Storage provider not supported")
         };
 
-        return $"{_cdnConfiguration.BaseUrl.TrimEnd('/')}/{path}";
+        return $"{_cdnConfiguration.Host.TrimEnd('/')}/{path}";
     }
 
     private static string GetObjectKeyFromS3Url(string bucketName, string rawUrl)

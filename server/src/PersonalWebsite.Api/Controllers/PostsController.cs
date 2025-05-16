@@ -110,7 +110,7 @@ public class PostsController : Controller
                 stream,
                 id,
                 extension,
-                _imageStorageConfiguration.PostImageDirectory
+                _imageStorageConfiguration.BasePathPost
             );
 
             return Ok(new { ImageUrl = imageUrl });
@@ -133,7 +133,7 @@ public class PostsController : Controller
         {
             await _postService.DeletePostImageAsync(
                 id,
-                _imageStorageConfiguration.PostImageDirectory
+                _imageStorageConfiguration.BasePathPost
             );
 
             return NoContent();
@@ -165,7 +165,7 @@ public class PostsController : Controller
             var contentUrl = await _postService.UploadPostContentAsync(
                 request.Content,
                 id,
-                _markdownStorageConfiguration.PostMarkdownDirectory
+                _markdownStorageConfiguration.BasePath
             );
 
             return Ok(new { ContentUrl = contentUrl });
@@ -188,7 +188,7 @@ public class PostsController : Controller
         {
             await _postService.DeletePostContentAsync(
                 id,
-                _markdownStorageConfiguration.PostMarkdownDirectory
+                _markdownStorageConfiguration.BasePath
             );
 
             return NoContent();
