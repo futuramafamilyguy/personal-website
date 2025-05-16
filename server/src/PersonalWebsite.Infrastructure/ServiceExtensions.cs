@@ -70,7 +70,7 @@ public static class ServiceExtensions
         services.AddSingleton<AmazonS3ImageStorage>();
         services.AddSingleton<ImageStorageFactory>();
 
-        services.AddSingleton(provider =>
+        services.AddSingleton<IImageStorage>(provider =>
         {
             var factory = provider.GetRequiredService<ImageStorageFactory>();
 
@@ -83,7 +83,7 @@ public static class ServiceExtensions
         services.AddSingleton<AmazonS3MarkdownStorage>();
         services.AddSingleton<MarkdownStorageFactory>();
 
-        services.AddSingleton(provider =>
+        services.AddSingleton<IMarkdownStorage>(provider =>
         {
             var factory = provider.GetRequiredService<MarkdownStorageFactory>();
 
