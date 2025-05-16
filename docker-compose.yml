@@ -27,6 +27,7 @@ services:
       VisitExclusionConfiguration__ExcludeVisitCookieValue: ${EXCLUDE_VISIT_COOKIE}
       AllowedOrigin: ${ALLOWED_ORIGIN}
       AllowedWwwOrigin: ${ALLOWED_WWW_ORIGIN}
+      CdnConfiguration__BaseUrl: ${BASE_CDN_URL}
     volumes:
       - wwwroot-data:/app/wwwroot
     restart: unless-stopped
