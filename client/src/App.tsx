@@ -9,7 +9,7 @@ import NavBar from "./components/NavBar/NavBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import BlogLayout from "./pages/BlogLayout/BlogLayout";
-import LetterboxcPage from "./pages/LetterboxcPage/LetterboxcPage";
+import LetterboxdcPage from "./pages/LetterboxdcPage/LetterboxdcPage";
 import SessionHubPage from "./pages/SessionHubPage/SessionHubPage";
 import StatsPage from "./pages/StatsPage/StatsPage";
 import { MenuItem } from "./types/MenuItem";
@@ -20,7 +20,7 @@ import "./reset.css";
 const App: React.FC = () => {
   const menuItems: MenuItem[] = [
     { label: "about", link: "/about" },
-    { label: "letterboxc", link: "/letterboxc" },
+    { label: "letterboxdc", link: "/letterboxdc" },
     { label: "blog", link: "/blog" },
     { label: "session hub", link: "/session-hub" },
   ];
@@ -34,7 +34,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<AboutPage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/letterboxc" element={<LetterboxcPage />} />
+            <Route path="/letterboxdc" element={<LetterboxdcPage />} />
             <Route element={<BlogLayout />}>
               <Route path="/blog" element={<BlogContainer />} />
               <Route path="/blog/:slug" element={<PostContainer />} />
