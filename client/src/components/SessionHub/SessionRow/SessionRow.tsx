@@ -17,7 +17,7 @@ const SessionRow: React.FC<SessionRowProps> = ({
     return (
       <div
         className={
-          category === "New Releases"
+          category === "new releases"
             ? styles.sessionRow
             : styles.lastSessionRow
         }

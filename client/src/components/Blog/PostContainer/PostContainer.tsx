@@ -77,7 +77,7 @@ const PostContainer: React.FC = () => {
     return (
       <div className={styles.postContainer}>
         <button className={styles.backButton} onClick={handleBackClick}>
-          Back
+          back
         </button>
         <button className={styles.hideButton} onClick={toggleShowLess}>
           {showLess ? "expand" : "collapse"}
