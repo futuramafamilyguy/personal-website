@@ -1,6 +1,5 @@
 import React from "react";
 
-import goingtocinema from "../../../assets/gotocinema.webp";
 import styles from "./NewMediaCard.module.css";
 
 interface NewMediaCardProps {
@@ -11,7 +10,7 @@ const NewMediaCard: React.FC<NewMediaCardProps> = ({ onClick }) => {
   return (
     <div className={styles.newMediaCard} onClick={onClick}>
       <img
-        src={goingtocinema}
+        src={"https://cdn.allenmaygibson.com/images/static/the-fourth.webp"}
         alt={"going to the cinemas"}
         className={styles.image}
       />

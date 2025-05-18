@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import megamind from "../../../assets/megamind.png";
 import { useAuth } from "../../../contexts/AuthContext";
 import usePosts from "../../../hooks/usePosts";
 import Post from "../../../types/Post";
@@ -35,7 +34,9 @@ const PostGallery: React.FC = () => {
         return (
           <MessageDisplay
             message={"no takes?"}
-            imageUrl={megamind}
+            imageUrl={
+              "https://cdn.allenmaygibson.com/images/static/space-mom.jpg"
+            }
           ></MessageDisplay>
         );
       }

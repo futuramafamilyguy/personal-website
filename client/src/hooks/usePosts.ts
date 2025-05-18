@@ -1,9 +1,10 @@
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 
-import notFoundBoy from "../assets/404boy.png";
-import notFoundGirl from "../assets/404girl.png";
-import { debouncedFetchPosts, makeDebouncedRequest } from "../personalWebsiteApi";
+import {
+  debouncedFetchPosts,
+  makeDebouncedRequest,
+} from "../personalWebsiteApi";
 import Post from "../types/Post";
 
 const usePosts = () => {
@@ -38,7 +39,12 @@ const usePosts = () => {
   }, [trigger]);
 
   const setDefaultImageUrl = (imageUrl: string) => {
-    return imageUrl || (Math.random() < 0.5 ? notFoundBoy : notFoundGirl);
+    return (
+      imageUrl ||
+      (Math.random() < 0.5
+        ? "https://cdn.allenmaygibson.com/images/static/sun.jpg"
+        : "https://cdn.allenmaygibson.com/images/static/light.jpg")
+    );
   };
 
   return {

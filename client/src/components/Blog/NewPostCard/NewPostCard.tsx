@@ -1,6 +1,5 @@
 import React from "react";
 
-import writing from "../../../assets/newpost.jpg";
 import styles from "./NewPostCard.module.css";
 
 interface NewPostCardProps {
@@ -10,7 +9,11 @@ interface NewPostCardProps {
 const NewPostCard: React.FC<NewPostCardProps> = ({ onClick }) => {
   return (
     <div className={styles.newPostCard} onClick={onClick}>
-      <img src={writing} alt={"writing"} className={styles.image} />
+      <img
+        src={"https://cdn.allenmaygibson.com/images/static/lofi-hiphop-mix.jpg"}
+        alt={"writing"}
+        className={styles.image}
+      />
       <div className={styles.titleOverlay} />
     </div>
   );

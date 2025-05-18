@@ -381,7 +381,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     orchestrateDeletePicture();
   };
 
-  const isDefaultImage = (url: string) => url.includes("/assets/404");
+  const isDefaultImage = (url: string) => url.includes("/static/");
 
   if (!isOpen) return null;
 

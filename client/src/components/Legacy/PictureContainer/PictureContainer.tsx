@@ -1,4 +1,3 @@
-import megamind from "../../assets/megamind.png";
 import { useEffect, useState } from "react";
 
 import { useAuth } from "../../../contexts/AuthContext";
@@ -147,7 +146,9 @@ const PictureContainer: React.FC = () => {
         return (
           <MessageDisplay
             message={"no pictures?"}
-            imageUrl={megamind}
+            imageUrl={
+              "https://cdn.allenmaygibson.com/images/static/space-mom.jpg"
+            }
           ></MessageDisplay>
         );
       }

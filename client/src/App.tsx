@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 
-import logo from "./assets/face.png";
 import AuthComponent from "./components/AuthComponent";
 import BlogContainer from "./components/Blog/BlogContainer/BlogContainer";
 import PostContainer from "./components/Blog/PostContainer/PostContainer";
@@ -27,7 +26,10 @@ const App: React.FC = () => {
 
   return (
     <>
-      <NavBar logoSrc={logo} menuItems={menuItems} />
+      <NavBar
+        logoSrc={"https://cdn.allenmaygibson.com/images/static/2011.png"}
+        menuItems={menuItems}
+      />
       {/* space dedicated to the navbar when it's at the top of the page */}
       <div style={{ marginTop: "60px" }}>
         <AuthProvider>
