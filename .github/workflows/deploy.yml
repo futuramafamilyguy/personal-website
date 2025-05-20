@@ -50,6 +50,7 @@ jobs:
           script: |
             cd personal-website
             chmod +x scripts/run-certbot.sh
+            docker compose down
+            docker image prune -a -f
             docker compose pull
             docker compose up -d
-            docker image prune -f
