@@ -1,4 +1,4 @@
-.statsPage {
+.boxOfficePage {
   position: relative;
   height: calc(100vh - 60px);
   display: flex;
@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-.statsPage::before {
+.boxOfficePage::before {
   content: "";
   position: absolute;
   top: 0;

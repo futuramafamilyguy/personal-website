@@ -8,9 +8,9 @@ import NavBar from "./components/NavBar/NavBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import BlogLayout from "./pages/BlogLayout/BlogLayout";
+import BoxOfficePage from "./pages/BoxOfficePage/BoxOfficePage";
 import LetterboxdcPage from "./pages/LetterboxdcPage/LetterboxdcPage";
-import SessionHubPage from "./pages/SessionHubPage/SessionHubPage";
-import StatsPage from "./pages/StatsPage/StatsPage";
+import OperationKinoPage from "./pages/OperationKinoPage/OperationKinoPage";
 import { MenuItem } from "./types/MenuItem";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -21,7 +21,7 @@ const App: React.FC = () => {
     { label: "about", link: "/about" },
     { label: "letterboxdc", link: "/letterboxdc" },
     { label: "blog", link: "/blog" },
-    { label: "session hub", link: "/session-hub" },
+    { label: "operation kino", link: "/operation-kino" },
   ];
 
   return (
@@ -41,8 +41,8 @@ const App: React.FC = () => {
               <Route path="/blog" element={<BlogContainer />} />
               <Route path="/blog/:slug" element={<PostContainer />} />
             </Route>
-            <Route path="/session-hub" element={<SessionHubPage />} />
-            <Route path="/stats" element={<StatsPage />} />
+            <Route path="/operation-kino" element={<OperationKinoPage />} />
+            <Route path="/box-office" element={<BoxOfficePage />} />
             <Route path="/disable-tracking" element={<DisableTracking />} />
             <Route path="/login" element={<AuthComponent />} />
             <Route path="/logout" element={<AuthComponent />} />

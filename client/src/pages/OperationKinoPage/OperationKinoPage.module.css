@@ -1,4 +1,4 @@
-.sessionsPage {
+.operationKinoPage {
   position: relative;
   height: calc(100vh - 60px);
   display: flex;
@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-.sessionsPage::before {
+.operationKinoPage::before {
   content: "";
   position: absolute;
   top: 0;

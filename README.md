@@ -1,6 +1,8 @@
 # personal-website
 this is my personal website
 
-come check it out at: https://allenmaygibson.com
+see: https://allenmaygibson.com
 
-also see site visit data: https://allenmaygibson.com/stats
+for essays more over-analyzed than your english teacher ever could: https://allenmaygibson.com/blog
+
+also see site visit data: https://allenmaygibson.com/box-office

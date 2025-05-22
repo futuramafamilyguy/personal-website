@@ -5,7 +5,7 @@ import {
   debouncedFetchStats,
   makeDebouncedRequest,
 } from "../../personalWebsiteApi";
-import styles from "./StatsPage.module.css";
+import styles from "./BoxOfficePage.module.css";
 
 interface Stats {
   totalVisits: number;
@@ -13,7 +13,7 @@ interface Stats {
   trackingStartUtc: Date;
 }
 
-function StatsPage() {
+function BoxOfficePage() {
   const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
@@ -55,9 +55,9 @@ function StatsPage() {
   }
 
   return (
-    <div className={styles.statsPage}>
+    <div className={styles.boxOfficePage}>
       <div className={styles.textBox}>
-        <h3 className={styles.title}>site stats</h3>
+        <h3 className={styles.title}>box office</h3>
         <br />
         <div>
           <h5 className={styles.title}>visits:</h5>{" "}
@@ -76,4 +76,4 @@ function StatsPage() {
   );
 }
 
-export default StatsPage;
+export default BoxOfficePage;
