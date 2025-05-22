@@ -86,7 +86,7 @@ const SessionModal: React.FC<SessionModalProps> = ({
           }`}</h4>
         </div>
         <div className={styles.textContainer} ref={textContainerRef}>
-          <h5 className={styles.subtitle}>Showtimes</h5>
+          <h5 className={styles.subtitle}>showtimes</h5>
           <div className={styles.dateContainer}>
             {session?.showtimes.map((showtime, index) => (
               <div className={styles.dateBox} key={index}>
@@ -95,7 +95,7 @@ const SessionModal: React.FC<SessionModalProps> = ({
             ))}
           </div>
           <hr />
-          <h5 className={styles.subtitle}>Playing at these cinemas</h5>
+          <h5 className={styles.subtitle}>playing at these cinemas</h5>
           <div className={styles.cinemaContainer}>
             <div className={styles.cinemaColumn}>
               {session?.cinemas
