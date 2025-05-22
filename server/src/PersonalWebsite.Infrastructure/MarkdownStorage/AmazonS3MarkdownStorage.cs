@@ -53,7 +53,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
             );
 
             var markdownUrl =
-                $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{basePath}/{newFileName}";
+                $"{_markdownStorageConfiguration.Host}/{_s3configuration.Bucket}/{basePath}/{newFileName}";
 
             return markdownUrl;
         }
@@ -133,7 +133,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
             _logger.LogInformation($"Successfully uploaded markdown '{fileName}' at '{basePath}'");
 
             var markdownUrl =
-                $"{_markdownStorageConfiguration.BaseUrl}/{_s3configuration.Bucket}/{basePath}/{fileName}";
+                $"{_markdownStorageConfiguration.Host}/{_s3configuration.Bucket}/{basePath}/{fileName}";
 
             return markdownUrl;
         }
