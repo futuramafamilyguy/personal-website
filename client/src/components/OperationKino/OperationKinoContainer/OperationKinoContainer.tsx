@@ -64,11 +64,12 @@ const OperationKinoContainer: React.FC = () => {
             }
           >
             <h3>operation kino</h3>
-            <br />
             <h5>
-              latest pictures showing in nz cinemas this week, including
-              re-releases updated every sunday at 12pm nzt (next run in{" "}
+              session data updated every sunday at 12pm, nzt (next run in{" "}
               <b>{calculateNextRun()}</b>)
+            </h5>
+            <h5 className={styles.itsAGoodDayToDance}>
+              thank you miss vito. you've been a lovely, lovely witness
             </h5>
             <RegionsContainer />
           </div>

@@ -71,6 +71,12 @@ function BoxOfficePage() {
           <h5 className={styles.title}>since:</h5>{" "}
           <h5>{convertToNZTime(stats?.trackingStartUtc)} (nzt)</h5>
         </div>
+        <br />
+        <h5>
+          <i>
+            in my memory, she will always be vibrant and young. gone too soon
+          </i>
+        </h5>
       </div>
     </div>
   );

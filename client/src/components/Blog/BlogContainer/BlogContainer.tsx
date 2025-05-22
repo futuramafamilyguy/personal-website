@@ -8,8 +8,10 @@ const BlogContainer: React.FC = () => {
         <div className={styles.postGalleryView}>
           <div className={styles.descriptionBox}>
             <h3>blog</h3>
-            <br />
-            <h5>the hottest media takes on the web</h5>
+            <h5 className={styles.itsAGoodDayToDance}>
+              i'm crazy for trying, and crazy for crying, and i'm crazy for
+              loving you
+            </h5>
           </div>
 
           <PostGallery />

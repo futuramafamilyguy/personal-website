@@ -13,7 +13,10 @@ function AboutPage() {
             visiting *~*
           </h5>
           <h5>
-            <i>life's hard but rewa's harder</i>
+            <i>
+              i was watching you out there before. i've never seen you look so
+              sexy
+            </i>
           </h5>
         </div>
       </div>

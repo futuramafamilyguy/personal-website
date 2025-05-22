@@ -27,8 +27,10 @@ const LetterboxdcContainer: React.FC = () => {
             }
           >
             <h3>letterboxdc (dc for dodging copyright)</h3>
-            <br />
-            <h5>i single-handedly keep the cinema industry alive</h5>
+            <h5 className={styles.itsAGoodDayToDance}>
+              i'd like to dedicate it to a young man who doesn't think he's seen
+              anything good today - cameron frye, this one's for you
+            </h5>
             <ActiveYearsContainer />
           </div>
           <PictureGallery />
