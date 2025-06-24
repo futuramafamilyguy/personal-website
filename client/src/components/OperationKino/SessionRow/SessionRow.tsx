@@ -29,9 +29,9 @@ const SessionRow: React.FC<SessionRowProps> = ({
         <div className={styles.sessionContainer}>
           {sessions.map((session) => (
             <MediaCard
-              key={session.movie.name}
-              imageUrl={session.movie.imageUrl}
-              title={session.movie.name}
+              key={session.title}
+              imageUrl={session.imageUrl}
+              title={session.title}
               onClick={() => sessionOnClick(session)}
               editable={false}
               onClickEdit={() => {}}

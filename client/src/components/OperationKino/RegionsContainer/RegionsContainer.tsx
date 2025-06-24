@@ -1,43 +1,18 @@
-import { AxiosResponse } from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { useRegion, useRegionUpdate } from "../../../contexts/RegionContext";
-import {
-  debouncedFetchRegions,
-  makeDebouncedRequest,
-} from "../../../sessionsApi";
 import CapsuleButton from "../../Common/CapsuleButton/CapsuleButton";
 import styles from "./RegionsContainer.module.css";
+import Region from "../../../types/Region";
 
 const RegionsContainer: React.FC = () => {
   const region = useRegion();
   const updateRegion = useRegionUpdate();
-  const [regions, setRegions] = useState<string[]>([]);
-
-  useEffect(() => {
-    const fetchRegions = () => {
-      makeDebouncedRequest(debouncedFetchRegions, {
-        url: `/regions`,
-      })
-        .then((response: AxiosResponse<string[]>) => {
-          const defaultRegion = "Auckland";
-          const regions = [];
-          regions.push(defaultRegion);
-          response.data.forEach((r) => {
-            if (r != defaultRegion) {
-              regions.push(r);
-            }
-          });
-
-          setRegions(regions);
-        })
-        .catch((error: any) => {
-          console.error("Error fetching regions:", error);
-        });
-    };
-
-    fetchRegions();
-  }, []);
+  const regions: Region[] = [
+    { name: "Auckland", code: "auckland" },
+    { name: "Canterbury", code: "canterbury" },
+    { name: "Brisbane Central", code: "brisbane-central" },
+  ];
 
   if (regions.length === 0) {
     return null;
@@ -47,11 +22,11 @@ const RegionsContainer: React.FC = () => {
     <div className={styles.buttonArea}>
       {regions.map((r) => (
         <CapsuleButton
-          key={r}
-          text={r}
-          onClick={() => updateRegion(r)}
+          key={r.name}
+          text={r.name}
+          onClick={() => updateRegion(r.code)}
           disabled={false}
-          selected={region === r}
+          selected={region === r.code}
         />
       ))}
     </div>

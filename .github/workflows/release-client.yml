@@ -39,4 +39,4 @@ jobs:
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           build-args: |
             VITE_SERVER_URL=${{ secrets.serverUrl }}
-            VITE_SESSION_URL=${{ secrets.sessionUrl }}
+            VITE_OPERATION_KINO_URL=${{ secrets.operationKinoUrl }}

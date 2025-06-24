@@ -1,16 +1,12 @@
 export interface Session {
-  movie: SessionPicture;
+  title: string;
+  releaseYear: number;
+  imageUrl: string;
   cinemas: Cinema[];
   showtimes: Date[];
 }
 
 export interface Cinema {
   name: string;
-  homePageUrl: string;
-}
-
-interface SessionPicture {
-  name: string;
-  yearReleased: number;
-  imageUrl: string;
+  homepageUrl: string;
 }

@@ -20,10 +20,10 @@ const SessionGallery: React.FC = () => {
 
   useEffect(() => {
     setNewReleaseSessions(
-      sessions.filter((s) => s.movie.yearReleased === new Date().getFullYear())
+      sessions.filter((s) => s.releaseYear === new Date().getFullYear())
     );
     setRereleaseSessions(
-      sessions.filter((s) => s.movie.yearReleased !== new Date().getFullYear())
+      sessions.filter((s) => s.releaseYear !== new Date().getFullYear())
     );
   }, [sessions]);
 

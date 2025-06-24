@@ -61,12 +61,13 @@
 .dateContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 14px;
   padding-bottom: 5px;
 }
 
 .dateBox {
   display: inline-block;
+  width: 65px;
   padding: 5px 10px;
   border: 1px solid white;
   border-radius: 10px;

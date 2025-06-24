@@ -34,7 +34,7 @@ const SessionModal: React.FC<SessionModalProps> = ({
   const createCinemaComponent = (cinema: Cinema) => (
     <div key={cinema.name}>
       <a
-        href={cinema.homePageUrl}
+        href={cinema.homepageUrl}
         className={styles.cinemaLink}
         target="_blank"
       >
@@ -73,16 +73,14 @@ const SessionModal: React.FC<SessionModalProps> = ({
       <div className={styles.modal}>
         <div className={styles.imageContainer}>
           <img
-            src={session?.movie.imageUrl}
-            alt={session?.movie.name}
+            src={session?.imageUrl}
+            alt={session?.title}
             className={styles.modalImage}
           />
         </div>
         <div className={styles.titleContainer}>
-          <h4 className={styles.title}>{`${session?.movie.name} ${
-            session?.movie.yearReleased === 0
-              ? ""
-              : `(${session?.movie.yearReleased})`
+          <h4 className={styles.title}>{`${session?.title} ${
+            session?.releaseYear === 0 ? "" : `(${session?.releaseYear})`
           }`}</h4>
         </div>
         <div className={styles.textContainer} ref={textContainerRef}>

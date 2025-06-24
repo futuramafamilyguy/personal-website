@@ -13,9 +13,7 @@ import {
 import { Session } from "../types/Session";
 
 interface AllRegionalSessions {
-  region: string;
-  newMovieSessions: Session[];
-  oldMovieNames: string[];
+  sessions: Session[];
 }
 
 const useSessions = () => {
@@ -29,10 +27,10 @@ const useSessions = () => {
       makeDebouncedSessionRequest(debouncedFetchSessions, {
         url: `/sessions/${region}`,
       })
-        .then((response: AxiosResponse<AllRegionalSessions[]>) => {
-          const sessions = response.data[0].newMovieSessions;
+        .then((response: AxiosResponse<AllRegionalSessions>) => {
+          const sessions = response.data.sessions;
           sessions.forEach((s) => {
-            s.movie.imageUrl = setDefaultImageUrl(s.movie.imageUrl);
+            s.imageUrl = setDefaultImageUrl(s.imageUrl);
           });
 
           setSessions(sessions);

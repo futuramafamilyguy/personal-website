@@ -3,7 +3,7 @@ import { debounce } from "lodash";
 
 const api = axios.create({
   withCredentials: true,
-  baseURL: import.meta.env.VITE_SESSION_URL,
+  baseURL: import.meta.env.VITE_OPERATION_KINO_URL,
 });
 
 const createDebouncedRequest = (delay: number) => {
@@ -25,7 +25,6 @@ const createDebouncedRequest = (delay: number) => {
 };
 
 export const debouncedFetchSessions = createDebouncedRequest(300);
-export const debouncedFetchRegions = createDebouncedRequest(300);
 
 export const makeDebouncedRequest = (
   debouncedFunction: (
