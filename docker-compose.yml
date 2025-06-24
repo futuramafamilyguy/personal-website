@@ -46,7 +46,6 @@ services:
       - SERVER_URL=http://server:${SERVER_PORT}
       - CLIENT_URL=http://client:${CLIENT_PORT}
       - DOMAIN=${DOMAIN}
-      - SESSION_HUB_URL=http://session-hub:${SESSION_HUB_PORT} # sus
     volumes:
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
@@ -55,7 +54,7 @@ services:
       - 443:443
     networks:
       - default
-      - allen-cinematic-universe
+      # - allen-cinematic-universe
 
   certbot:
     image: certbot/certbot:latest
@@ -66,6 +65,8 @@ services:
 volumes:
   wwwroot-data:
 
-networks:
-  allen-cinematic-universe:
-    external: true
+# keeping this in case cross-compose communication is needed again
+
+# networks:
+#   allen-cinematic-universe:
+#     external: true
