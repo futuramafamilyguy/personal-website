@@ -5,31 +5,21 @@ namespace PersonalWebsite.Infrastructure.Cdn;
 public class CdnImageStorageDecorator : IImageStorage
 {
     private readonly IImageStorage _inner;
-    private readonly ICdnUrlService _cdnUrlService;
-    private readonly string _innerStorageProvider;
+    private readonly string _host;
 
-    public CdnImageStorageDecorator(
-        IImageStorage inner,
-        ICdnUrlService cdnUrlService,
-        string innerStorageProvider
-    )
+    public CdnImageStorageDecorator(IImageStorage inner, string host)
     {
         _inner = inner;
-        _cdnUrlService = cdnUrlService;
-        _innerStorageProvider = innerStorageProvider;
+        _host = host;
     }
 
-    public string GetImageFileNameFromUrl(string imageUrl) =>
-        _inner.GetImageFileNameFromUrl(imageUrl);
+    public async Task DeleteObjectAsync(string objectKey) =>
+        await _inner.DeleteObjectAsync(objectKey);
 
-    public bool IsValidImageFormat(string fileName) => _inner.IsValidImageFormat(fileName);
+    public async Task<string> GeneratePresignedUploadUrlAsync(
+        string objectKey,
+        TimeSpan expiration
+    ) => await _inner.GeneratePresignedUploadUrlAsync(objectKey, expiration);
 
-    public Task RemoveImageAsync(string fileName, string directory) =>
-        _inner.RemoveImageAsync(fileName, directory);
-
-    public async Task<string> SaveImageAsync(Stream fileStream, string fileName, string basePath)
-    {
-        var rawUrl = await _inner.SaveImageAsync(fileStream, fileName, basePath);
-        return _cdnUrlService.ConvertToCdnUrl(rawUrl, _innerStorageProvider);
-    }
+    public string GetPublicUrl(string objectKey) => $"{_host}/{objectKey}";
 }

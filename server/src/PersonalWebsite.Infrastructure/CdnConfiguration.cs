@@ -1,4 +1,4 @@
-﻿namespace PersonalWebsite.Infrastructure.Cdn;
+﻿namespace PersonalWebsite.Infrastructure;
 
 public class CdnConfiguration
 {

@@ -3,14 +3,11 @@ using Amazon.S3;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
-using PersonalWebsite.Infrastructure.Cdn;
 using PersonalWebsite.Infrastructure.Data;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
 using PersonalWebsite.Infrastructure.Data.Pictures;
 using PersonalWebsite.Infrastructure.Data.Posts;
 using PersonalWebsite.Infrastructure.Data.Visits;
-using PersonalWebsite.Infrastructure.Images.AmazonS3;
-using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 using PersonalWebsite.Infrastructure.ImageStorage;
 using PersonalWebsite.Infrastructure.MarkdownStorage;
 
@@ -59,15 +56,9 @@ public static class ServiceExtensions
         });
     }
 
-    public static void AddCdnServices(this IServiceCollection services)
-    {
-        services.AddSingleton<ICdnUrlService, CdnUrlService>();
-    }
-
     private static void AddImageStorageServices(this IServiceCollection services)
     {
-        services.AddSingleton<LocalImageStorage>();
-        services.AddSingleton<AmazonS3ImageStorage>();
+        services.AddSingleton<S3ImageStorage>();
         services.AddSingleton<ImageStorageFactory>();
 
         services.AddSingleton<IImageStorage>(provider =>

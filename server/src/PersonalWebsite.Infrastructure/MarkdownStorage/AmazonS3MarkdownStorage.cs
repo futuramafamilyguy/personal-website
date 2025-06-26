@@ -11,13 +11,13 @@ namespace PersonalWebsite.Infrastructure.MarkdownStorage;
 public class AmazonS3MarkdownStorage : IMarkdownStorage
 {
     private readonly IAmazonS3 _s3Client;
-    private readonly AmazonS3Configuration _s3configuration;
+    private readonly S3Configuration _s3configuration;
     private readonly MarkdownStorageConfiguration _markdownStorageConfiguration;
     private readonly ILogger<AmazonS3MarkdownStorage> _logger;
 
     public AmazonS3MarkdownStorage(
         IAmazonS3 s3Client,
-        IOptions<AmazonS3Configuration> s3configuration,
+        IOptions<S3Configuration> s3configuration,
         IOptions<MarkdownStorageConfiguration> markdownStorageConfiguration,
         ILogger<AmazonS3MarkdownStorage> logger
     )
@@ -41,9 +41,9 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
 
             var request = new CopyObjectRequest
             {
-                SourceBucket = _s3configuration.Bucket,
+                SourceBucket = _s3configuration.BucketName,
                 SourceKey = key,
-                DestinationBucket = _s3configuration.Bucket,
+                DestinationBucket = _s3configuration.BucketName,
                 DestinationKey = newKey
             };
 
@@ -53,7 +53,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
             );
 
             var markdownUrl =
-                $"{_markdownStorageConfiguration.Host}/{_s3configuration.Bucket}/{basePath}/{newFileName}";
+                $"{_markdownStorageConfiguration.Host}/{_s3configuration.BucketName}/{basePath}/{newFileName}";
 
             return markdownUrl;
         }
@@ -90,12 +90,10 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
         try
         {
             // DeleteObjectAsync doesn't throw any errors if the key does not exist so have to call GetObjectAsync
-            await _s3Client.GetObjectAsync(_s3configuration.Bucket, key);
+            await _s3Client.GetObjectAsync(_s3configuration.BucketName, key);
 
-            await _s3Client.DeleteObjectAsync(_s3configuration.Bucket, key);
-            _logger.LogInformation(
-                $"Successfully deleted markdown '{fileName}' from '{basePath}'"
-            );
+            await _s3Client.DeleteObjectAsync(_s3configuration.BucketName, key);
+            _logger.LogInformation($"Successfully deleted markdown '{fileName}' from '{basePath}'");
         }
         catch (AmazonS3Exception ex)
         {
@@ -123,7 +121,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
             using var stream = new MemoryStream(byteArray);
             var request = new PutObjectRequest
             {
-                BucketName = _s3configuration.Bucket,
+                BucketName = _s3configuration.BucketName,
                 Key = $"{basePath}/{fileName}",
                 InputStream = stream,
                 ContentType = "text/markdown"
@@ -133,7 +131,7 @@ public class AmazonS3MarkdownStorage : IMarkdownStorage
             _logger.LogInformation($"Successfully uploaded markdown '{fileName}' at '{basePath}'");
 
             var markdownUrl =
-                $"{_markdownStorageConfiguration.Host}/{_s3configuration.Bucket}/{basePath}/{fileName}";
+                $"{_markdownStorageConfiguration.Host}/{_s3configuration.BucketName}/{basePath}/{fileName}";
 
             return markdownUrl;
         }

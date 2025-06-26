@@ -1,49 +1,38 @@
 ﻿using Microsoft.Extensions.Options;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Infrastructure.Cdn;
-using PersonalWebsite.Infrastructure.Images.AmazonS3;
-using PersonalWebsite.Infrastructure.Images.LocalFileSystem;
 
 namespace PersonalWebsite.Infrastructure.ImageStorage;
 
 public class ImageStorageFactory
 {
-    private readonly ICdnUrlService _cdnUrlService;
-    private readonly ImageStorageConfiguration _configuration;
-
-    private readonly LocalImageStorage _localImageStorage;
-    private readonly AmazonS3ImageStorage _amazonS3ImageStorage;
+    private readonly S3ImageStorage _s3ImageStorage;
+    private readonly ImageStorageConfiguration _imageStorageConfiguration;
+    private readonly CdnConfiguration _cdnConfiguration;
 
     public ImageStorageFactory(
-        ICdnUrlService cdnUrlService,
-        IOptions<ImageStorageConfiguration> configuration,
-        LocalImageStorage localImageStorage,
-        AmazonS3ImageStorage amazonS3ImageStorage
+        IOptions<ImageStorageConfiguration> imageStorageConfiguration,
+        IOptions<CdnConfiguration> cdnConfiguration,
+        S3ImageStorage s3ImageStorage
     )
     {
-        _cdnUrlService = cdnUrlService;
-        _configuration = configuration.Value;
-        _localImageStorage = localImageStorage;
-        _amazonS3ImageStorage = amazonS3ImageStorage;
+        _s3ImageStorage = s3ImageStorage;
+        _imageStorageConfiguration = imageStorageConfiguration.Value;
+        _cdnConfiguration = cdnConfiguration.Value;
     }
 
     public IImageStorage CreateImageStorage()
     {
-        var storageProvider = _configuration.Provider;
+        var storageProvider = _imageStorageConfiguration.Provider;
 
         var imageStorage = storageProvider switch
         {
-            "Local" => (IImageStorage)_localImageStorage,
-            "S3" => _amazonS3ImageStorage,
+            "S3" => _s3ImageStorage,
             _ => throw new InvalidOperationException("Image storage provider not supported")
         };
 
-        if (_configuration.CdnEnabled)
-            return new CdnImageStorageDecorator(
-                imageStorage,
-                _cdnUrlService,
-                storageProvider
-            );
+        if (_imageStorageConfiguration.CdnEnabled)
+            return new CdnImageStorageDecorator(imageStorage, _cdnConfiguration.Host);
 
         return imageStorage;
     }

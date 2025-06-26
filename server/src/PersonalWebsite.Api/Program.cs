@@ -6,7 +6,6 @@ using PersonalWebsite.Api.Middlewares;
 using PersonalWebsite.Api.VisitTracking;
 using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
-using PersonalWebsite.Infrastructure.Cdn;
 using PersonalWebsite.Infrastructure.Data;
 using PersonalWebsite.Infrastructure.ImageStorage;
 using PersonalWebsite.Infrastructure.MarkdownStorage;
@@ -29,7 +28,7 @@ builder.Services.Configure<ImageStorageConfiguration>(
 builder.Services.Configure<MarkdownStorageConfiguration>(
     builder.Configuration.GetSection("MarkdownStorageConfiguration")
 );
-builder.Services.Configure<AmazonS3Configuration>(
+builder.Services.Configure<S3Configuration>(
     builder.Configuration.GetSection("AmazonS3Configuration")
 );
 builder.Services.Configure<CdnConfiguration>(builder.Configuration.GetSection("CdnConfiguration"));
@@ -43,7 +42,6 @@ builder.Services.AddCoreServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddVisitTrackingServices();
 builder.Services.AddAmazonS3Services(builder.Configuration.GetAWSOptions());
-builder.Services.AddCdnServices();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
