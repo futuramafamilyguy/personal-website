@@ -13,16 +13,11 @@ public interface IPostService
         string title,
         string? contentUrl,
         string? imageUrl,
+        string? imageObjectKey,
         DateTime createdAtUtc
     );
     Task RemovePostAsync(string id);
-    Task<string> UploadPostImageAsync(
-        Stream imageStream,
-        string id,
-        string imageExtension,
-        string imageDirectory
-    );
-    Task DeletePostImageAsync(string id, string imageDirectory);
     Task<string> UploadPostContentAsync(string content, string id, string contentDirectory);
     Task DeletePostContentAsync(string id, string contentDirectory);
+    Task<string> HandleImageUploadAsync(string id, string imageBasePath, string fileExtension);
 }

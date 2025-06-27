@@ -6,7 +6,7 @@ using PersonalWebsite.Core.Models;
 
 namespace PersonalWebsite.Core.Services;
 
-public class PostService : IPostService
+public class  PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
     private readonly IImageStorage _imageStorage;
@@ -61,13 +61,21 @@ public class PostService : IPostService
         return post;
     }
 
-    public async Task RemovePostAsync(string id) => await _postRepository.RemoveAsync(id);
+    public async Task RemovePostAsync(string id)
+    {
+        var post = await _postRepository.GetAsync(id);
+        if (!string.IsNullOrEmpty(post.ImageObjectKey))
+            await _imageStorage.DeleteObjectAsync(post.ImageObjectKey);
+
+        await _postRepository.RemoveAsync(id);
+    }
 
     public async Task<Post> UpdatePostAsync(
         string id,
         string title,
         string? contentUrl,
         string? imageUrl,
+        string? imageObjectKey,
         DateTime createdAtUtc
     )
     {
@@ -79,6 +87,7 @@ public class PostService : IPostService
                 Title = title,
                 ContentUrl = contentUrl,
                 ImageUrl = imageUrl,
+                ImageObjectKey = imageObjectKey,
                 LastUpdatedUtc = _dateTimeProvider.UtcNow,
                 CreatedAtUtc = createdAtUtc,
                 Slug = GenerateSlug(title)
@@ -88,67 +97,26 @@ public class PostService : IPostService
         return updatedPost;
     }
 
-    public async Task<string> UploadPostImageAsync(
-        Stream imageStream,
+    public async Task<string> HandleImageUploadAsync(
         string id,
-        string imageExtension,
-        string imageDirectory
+        string imageBasePath,
+        string fileExtension
     )
     {
-        try
-        {
-            var imageName = $"{id}{imageExtension}";
-            if (!_imageStorage.IsValidImageFormat(imageName))
-            {
-                _logger.LogError($"Image extension '{imageExtension}' not supported");
-                throw new ValidationException("Invalid image extension");
-            }
+        var post = await _postRepository.GetAsync(id);
+        if (!string.IsNullOrEmpty(post.ImageObjectKey))
+            await _imageStorage.DeleteObjectAsync(post.ImageObjectKey);
 
-            var imageUrl = await _imageStorage.SaveImageAsync(
-                imageStream,
-                imageName,
-                imageDirectory
-            );
+        var objectKey = $"{imageBasePath}/{id}.{fileExtension}";
+        var presignedUrl = await _imageStorage.GeneratePresignedUploadUrlAsync(
+            objectKey,
+            TimeSpan.FromMinutes(5)
+        );
+        var publicUrl = _imageStorage.GetPublicUrl(objectKey);
 
-            return imageUrl;
-        }
-        catch (ValidationException ex)
-        {
-            _logger.LogError(ex, "Image validation failure encountered");
-            throw;
-        }
-        catch (StorageException ex)
-        {
-            _logger.LogError(ex, "An error occurred while saving the image");
-            throw;
-        }
-    }
+        await _postRepository.UpdateImageAsync(id, objectKey, publicUrl);
 
-    public async Task DeletePostImageAsync(string id, string imageDirectory)
-    {
-        var post = await GetPostAsync(id);
-
-        try
-        {
-            if (post.ImageUrl is null)
-            {
-                _logger.LogError($"Post '{id}' does not have an image that can be deleted");
-                throw new ValidationException("No image associated with post");
-            }
-
-            var imageFileName = _imageStorage.GetImageFileNameFromUrl(post.ImageUrl!);
-            await _imageStorage.RemoveImageAsync(imageFileName, imageDirectory);
-        }
-        catch (ValidationException ex)
-        {
-            _logger.LogError(ex, "Image validation failure encountered");
-            throw;
-        }
-        catch (StorageException ex)
-        {
-            _logger.LogError(ex, "An error occurred while deleting the image");
-            throw;
-        }
+        return presignedUrl;
     }
 
     public async Task<string> UploadPostContentAsync(

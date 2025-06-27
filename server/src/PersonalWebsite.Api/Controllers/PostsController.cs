@@ -78,6 +78,7 @@ public class PostsController : Controller
             request.Title,
             request.ContentUrl,
             request.ImageUrl,
+            request.ImageObjectKey,
             request.CreatedAtUtc
         );
 
@@ -94,58 +95,19 @@ public class PostsController : Controller
     }
 
     [Authorize(Policy = "AdminPolicy")]
-    [HttpPost("{id}/image")]
-    public async Task<IActionResult> UploadImageAsync(string id, IFormFile imageFile)
+    [HttpPost("{id}/image-url")]
+    public async Task<IActionResult> GenerateImageUploadUrlAsync(
+        string id,
+        [FromBody] GenerateImageUploadUrlRequest request
+    )
     {
-        if (imageFile is null || imageFile.Length == 0)
-        {
-            return BadRequest("No file uploaded or file is empty");
-        }
+        var uploadUrl = await _postService.HandleImageUploadAsync(
+            id,
+            _imageStorageConfiguration.BasePathPost,
+            request.FileExtension
+        );
 
-        try
-        {
-            using var stream = imageFile.OpenReadStream();
-            var extension = Path.GetExtension(imageFile.FileName);
-            var imageUrl = await _postService.UploadPostImageAsync(
-                stream,
-                id,
-                extension,
-                _imageStorageConfiguration.BasePathPost
-            );
-
-            return Ok(new { ImageUrl = imageUrl });
-        }
-        catch (ValidationException)
-        {
-            return BadRequest("Image failed validation checks");
-        }
-        catch (StorageException)
-        {
-            return StatusCode(500, "An error occurred while uploading the image");
-        }
-    }
-
-    [Authorize(Policy = "AdminPolicy")]
-    [HttpDelete("{id}/image")]
-    public async Task<IActionResult> DeleteImageAsync(string id)
-    {
-        try
-        {
-            await _postService.DeletePostImageAsync(
-                id,
-                _imageStorageConfiguration.BasePathPost
-            );
-
-            return NoContent();
-        }
-        catch (ValidationException)
-        {
-            return BadRequest("Post image failed validation checks");
-        }
-        catch (StorageException)
-        {
-            return StatusCode(500, "An error occurred while deleting the image");
-        }
+        return Ok(new { PresignedUploadUrl = uploadUrl });
     }
 
     [Authorize(Policy = "AdminPolicy")]
@@ -186,10 +148,7 @@ public class PostsController : Controller
     {
         try
         {
-            await _postService.DeletePostContentAsync(
-                id,
-                _markdownStorageConfiguration.BasePath
-            );
+            await _postService.DeletePostContentAsync(id, _markdownStorageConfiguration.BasePath);
 
             return NoContent();
         }

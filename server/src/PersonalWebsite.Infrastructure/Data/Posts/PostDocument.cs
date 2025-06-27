@@ -18,6 +18,9 @@ public class PostDocument
     [BsonElement("image_url")]
     public string? ImageUrl { get; set; }
 
+    [BsonElement("image_object_key")]
+    public string? ImageObjectKey { get; set; }
+
     [BsonElement("last_updated")]
     public required DateTime LastUpdatedUtc { get; set; }
 

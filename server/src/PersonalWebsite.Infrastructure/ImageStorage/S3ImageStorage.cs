@@ -36,9 +36,9 @@ public class S3ImageStorage : IImageStorage
             BucketName = _s3configuration.BucketName,
             Key = objectKey,
             Verb = HttpVerb.PUT,
-            Expires = DateTime.UtcNow.Add(expiration)
+            Expires = DateTime.UtcNow.Add(expiration),
+            ContentType = GetImageMimeType(objectKey)
         };
-        request.Metadata.Add("Content-Type", GetImageMimeType(objectKey));
 
         return await _s3Client.GetPreSignedURLAsync(request);
     }
@@ -48,7 +48,7 @@ public class S3ImageStorage : IImageStorage
 
     private static string GetImageMimeType(string fileName)
     {
-        var extension = Path.GetExtension(fileName).ToLowerInvariant();
+        var extension = Path.GetExtension(fileName).ToLowerInvariant().TrimStart('.');
         extension = extension is "jpg" ? "jpeg" : extension;
 
         return $"image/{extension}";
