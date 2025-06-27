@@ -5,6 +5,7 @@ using PersonalWebsite.Api.DTOs;
 using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
+using PersonalWebsite.Core.Services;
 using PersonalWebsite.Infrastructure.ImageStorage;
 
 namespace PersonalWebsite.Api.Controllers;
@@ -119,7 +120,9 @@ public class PicturesController : ControllerBase
                 request.Zinger,
                 request.Alias,
                 request.ImageUrl,
+                request.ImageObjectKey,
                 request.AltImageUrl,
+                request.AltImageObjectKey,
                 request.IsFavorite ?? false,
                 request.IsKino ?? false,
                 request.IsNewRelease ?? true
@@ -155,80 +158,19 @@ public class PicturesController : ControllerBase
     }
 
     [Authorize(Policy = "AdminPolicy")]
-    [HttpPost("{id}/image")]
-    public async Task<IActionResult> UploadImagesAsync(
+    [HttpPost("{id}/image-url")]
+    public async Task<IActionResult> GenerateImageUploadUrlAsync(
         string id,
-        IFormFile? imageFile = null,
-        IFormFile? altImageFile = null
+        [FromBody] GenerateImageUploadUrlRequest request
     )
     {
-        try
-        {
-            using var stream = imageFile?.OpenReadStream();
-            var extension = imageFile != null ? Path.GetExtension(imageFile.FileName) : null;
+        var uploadUrl = await _pictureService.HandleImageUploadAsync(
+            id,
+            _imageStorageConfiguration.BasePathPicture,
+            request.FileExtension,
+            request.IsAlt ?? false
+        );
 
-            using var altStream = altImageFile?.OpenReadStream();
-            var altExtension =
-                altImageFile != null ? Path.GetExtension(altImageFile.FileName) : null;
-
-            if (stream == null && altStream == null)
-            {
-                return BadRequest("At least one image file is required");
-            }
-
-            var imageUrlPair = await _pictureService.UploadPictureImagesAsync(
-                stream,
-                altStream,
-                id,
-                extension,
-                _imageStorageConfiguration.BasePathPicture,
-                altExtension
-            );
-
-            return Ok(
-                new UploadImagesResponse
-                {
-                    ImageUrl = imageUrlPair.ImageUrl,
-                    AltImageUrl = imageUrlPair.AltImageUrl
-                }
-            );
-        }
-        catch (ValidationException)
-        {
-            return BadRequest("Image failed validation checks");
-        }
-        catch (StorageException)
-        {
-            return StatusCode(500, "An error occurred while uploading the image");
-        }
-    }
-
-    [Authorize(Policy = "AdminPolicy")]
-    [HttpDelete("{id}/image")]
-    public async Task<IActionResult> DeleteImagesAsync(
-        string id,
-        bool deleteImage = false,
-        bool deleteAltImage = false
-    )
-    {
-        try
-        {
-            await _pictureService.DeletePictureImagesAsync(
-                id,
-                _imageStorageConfiguration.BasePathPicture,
-                deleteImage,
-                deleteAltImage
-            );
-
-            return NoContent();
-        }
-        catch (ValidationException)
-        {
-            return BadRequest("Picture image failed validation checks");
-        }
-        catch (StorageException)
-        {
-            return StatusCode(500, "An error occurred while deleting the image");
-        }
+        return Ok(new { PresignedUploadUrl = uploadUrl });
     }
 }

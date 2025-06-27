@@ -12,7 +12,9 @@ public class UpdatePictureRequest
     public string? Zinger { get; set; }
     public string? Alias { get; set; }
     public string? ImageUrl { get; set; }
+    public string? ImageObjectKey { get; set; }
     public string? AltImageUrl { get; set; }
+    public string? AltImageObjectKey { get; set; }
     public bool? IsFavorite { get; set; }
     public bool? IsKino { get; set; }
     public bool? IsNewRelease { get; set; }

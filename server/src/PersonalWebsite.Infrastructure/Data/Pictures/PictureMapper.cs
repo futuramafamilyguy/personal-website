@@ -20,7 +20,9 @@ public static class PictureMapper
             IsNewRelease = document.IsNewRelease,
             Alias = document.Alias,
             ImageUrl = document.ImageUrl,
+            ImageObjectKey = document.ImageObjectKey,
             AltImageUrl = document.AltImageUrl,
+            AltImageObjectKey = document.AltImageObjectKey,
         };
 
     public static PictureDocument ToDocument(Picture picture) =>
@@ -38,6 +40,8 @@ public static class PictureMapper
             IsKino = picture.IsKino,
             Alias = picture.Alias,
             ImageUrl = picture.ImageUrl,
+            ImageObjectKey = picture.ImageObjectKey,
             AltImageUrl = picture.AltImageUrl,
+            AltImageObjectKey = picture.AltImageObjectKey,
         };
 }

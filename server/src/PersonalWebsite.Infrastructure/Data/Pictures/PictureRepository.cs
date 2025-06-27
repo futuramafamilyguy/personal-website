@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
+using PersonalWebsite.Infrastructure.Data.Posts;
 
 namespace PersonalWebsite.Infrastructure.Data.Pictures;
 
@@ -127,6 +128,33 @@ public class PictureRepository : IPictureRepository
         }
 
         return await _pictures.Find(filter).AnyAsync();
+    }
+
+    public async Task UpdateImageInfoAsync(
+        string id,
+        string imageObjectKey,
+        string imageUrl,
+        bool isAlt
+    )
+    {
+        var filter = Builders<PictureDocument>.Filter.Eq(post => post.Id, id);
+
+        if (isAlt)
+        {
+            var updateAlt = Builders<PictureDocument>
+                .Update.Set(picture => picture.AltImageObjectKey, imageObjectKey)
+                .Set(picture => picture.AltImageUrl, imageUrl);
+
+            await _pictures.UpdateOneAsync(filter, updateAlt);
+
+            return;
+        }
+
+        var update = Builders<PictureDocument>
+            .Update.Set(picture => picture.ImageObjectKey, imageObjectKey)
+            .Set(picture => picture.ImageUrl, imageUrl);
+
+        await _pictures.UpdateOneAsync(filter, update);
     }
 
     private static SortDefinition<PictureDocument> SortPicturesByWatchDate() =>

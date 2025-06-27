@@ -34,7 +34,9 @@ public interface IPictureCinemaOrchestrator
         string? zinger,
         string? alias,
         string? imageUrl,
+        string? imageObjectKey,
         string? altImageUrl,
+        string? altImageObjectKey,
         bool isFavorite,
         bool isKino,
         bool isNewRelease

@@ -62,7 +62,9 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         string? zinger,
         string? alias,
         string? imageUrl,
+        string? imageObjectKey,
         string? altImageUrl,
+        string? altImageObjectKey,
         bool isFavorite,
         bool isKino,
         bool isNewRelease
@@ -79,7 +81,9 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
             zinger,
             alias,
             imageUrl,
+            imageObjectKey,
             altImageUrl,
+            altImageObjectKey,
             isFavorite,
             isKino,
             isNewRelease
@@ -111,6 +115,7 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         var cinemaExists = await _pictureService.CheckIfAnyPicturesAssociatedWithCinemaAsync(
             cinemaId
         );
+
         if (cinemaExists)
         {
             throw new InvalidOperationException(

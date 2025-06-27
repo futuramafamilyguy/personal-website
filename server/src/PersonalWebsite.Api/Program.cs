@@ -28,9 +28,7 @@ builder.Services.Configure<ImageStorageConfiguration>(
 builder.Services.Configure<MarkdownStorageConfiguration>(
     builder.Configuration.GetSection("MarkdownStorageConfiguration")
 );
-builder.Services.Configure<S3Configuration>(
-    builder.Configuration.GetSection("S3Configuration")
-);
+builder.Services.Configure<S3Configuration>(builder.Configuration.GetSection("S3Configuration"));
 builder.Services.Configure<CdnConfiguration>(builder.Configuration.GetSection("CdnConfiguration"));
 
 builder.Services.AddMongoClient(

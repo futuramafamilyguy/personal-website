@@ -6,7 +6,7 @@ using PersonalWebsite.Core.Models;
 
 namespace PersonalWebsite.Core.Services;
 
-public class  PostService : IPostService
+public class PostService : IPostService
 {
     private readonly IPostRepository _postRepository;
     private readonly IImageStorage _imageStorage;
@@ -114,7 +114,7 @@ public class  PostService : IPostService
         );
         var publicUrl = _imageStorage.GetPublicUrl(objectKey);
 
-        await _postRepository.UpdateImageAsync(id, objectKey, publicUrl);
+        await _postRepository.UpdateImageInfoAsync(id, objectKey, publicUrl);
 
         return presignedUrl;
     }

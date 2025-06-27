@@ -90,7 +90,9 @@ public class PictureService : IPictureService
         string? zinger,
         string? alias,
         string? imageUrl,
+        string? imageObjectKey,
         string? altImageUrl,
+        string? altImageObjectKey,
         bool isFavorite,
         bool isKino,
         bool isNewRelease
@@ -123,7 +125,9 @@ public class PictureService : IPictureService
                 Zinger = zinger,
                 Alias = alias,
                 ImageUrl = imageUrl,
+                ImageObjectKey = imageObjectKey,
                 AltImageUrl = altImageUrl,
+                AltImageObjectKey = altImageObjectKey,
                 IsFavorite = isFavorite,
                 IsKino = isKino,
                 IsNewRelease = isNewRelease
@@ -136,7 +140,16 @@ public class PictureService : IPictureService
     public async Task<long> UpdateCinemaOfPicturesAsync(string cinemaId, Cinema cinema) =>
         await _pictureRepository.UpdateCinemaInfoAsync(cinemaId, cinema);
 
-    public async Task RemovePictureAsync(string id) => await _pictureRepository.RemoveAsync(id);
+    public async Task RemovePictureAsync(string id)
+    {
+        var picture = await _pictureRepository.GetAsync(id);
+        if (!string.IsNullOrEmpty(picture.ImageObjectKey))
+            await _imageStorage.DeleteObjectAsync(picture.ImageObjectKey);
+        if (!string.IsNullOrEmpty(picture.AltImageObjectKey))
+            await _imageStorage.DeleteObjectAsync(picture.AltImageObjectKey);
+
+        await _pictureRepository.RemoveAsync(id);
+    }
 
     public async Task<bool> CheckIfAnyPicturesAssociatedWithCinemaAsync(string cinemaId) =>
         await _pictureRepository.CheckCinemaAssociationExistenceAsync(cinemaId);
@@ -144,122 +157,37 @@ public class PictureService : IPictureService
     public async Task<IEnumerable<int>> GetActiveYearsAsync() =>
         await _pictureRepository.GetActiveYearsAsync();
 
-    public async Task<(string? ImageUrl, string? AltImageUrl)> UploadPictureImagesAsync(
-        Stream? imageStream,
-        Stream? altImageStream,
+    public async Task<string> HandleImageUploadAsync(
         string id,
-        string? imageExtension,
-        string imageDirectory,
-        string? altImageExtension
+        string imageBasePath,
+        string fileExtension,
+        bool isAlt
     )
     {
-        var picture = await GetPictureAsync(id);
+        var picture = await _pictureRepository.GetAsync(id);
 
-        try
+        if (isAlt)
         {
-            string? imageUrl = null;
-            string? altImageUrl = null;
-
-            if (imageStream is not null)
-            {
-                var imageName = $"{id}{imageExtension}";
-                imageUrl = await PrepareAndSaveImageAsync(
-                    picture,
-                    imageStream,
-                    imageName,
-                    imageExtension!,
-                    imageDirectory
-                );
-            }
-
-            if (altImageStream is not null)
-            {
-                var altImageName = $"alt-{id}{altImageExtension}";
-                altImageUrl = await PrepareAndSaveImageAsync(
-                    picture,
-                    altImageStream,
-                    altImageName,
-                    altImageExtension!,
-                    imageDirectory
-                );
-            }
-
-            return (imageUrl, altImageUrl);
+            if (!string.IsNullOrEmpty(picture.AltImageObjectKey))
+                await _imageStorage.DeleteObjectAsync(picture.AltImageObjectKey);
         }
-        catch (ValidationException ex)
+        else
         {
-            _logger.LogError(ex, "Image validation failure encountered");
-            throw;
-        }
-        catch (StorageException ex)
-        {
-            _logger.LogError(ex, "An error occurred while saving the image");
-            throw;
-        }
-    }
-
-    public async Task DeletePictureImagesAsync(
-        string id,
-        string imageDirectory,
-        bool deleteImage,
-        bool deleteAltImage
-    )
-    {
-        var picture = await GetPictureAsync(id);
-
-        try
-        {
-            if (
-                (deleteImage && picture.ImageUrl is null)
-                || (deleteAltImage && picture.AltImageUrl is null)
-            )
-            {
-                _logger.LogError($"Picture '{id}' does not have an image that can be deleted");
-                throw new ValidationException("No image associated with picture");
-            }
-
-            var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
-
-            if (deleteImage)
-            {
-                var imageFileName = _imageStorage.GetImageFileNameFromUrl(picture.ImageUrl!);
-                await _imageStorage.RemoveImageAsync(imageFileName, imageYearDirectory);
-            }
-
-            if (deleteAltImage)
-            {
-                var altImageFileName = _imageStorage.GetImageFileNameFromUrl(picture.AltImageUrl!);
-                await _imageStorage.RemoveImageAsync(altImageFileName, imageYearDirectory);
-            }
-        }
-        catch (ValidationException ex)
-        {
-            _logger.LogError(ex, "Image validation failure encountered");
-            throw;
-        }
-        catch (StorageException ex)
-        {
-            _logger.LogError(ex, "An error occurred while deleting image");
-            throw;
-        }
-    }
-
-    private async Task<string> PrepareAndSaveImageAsync(
-        Picture picture,
-        Stream imageStream,
-        string imageName,
-        string imageExtension,
-        string imageDirectory
-    )
-    {
-        if (!_imageStorage.IsValidImageFormat(imageName))
-        {
-            _logger.LogError($"Image extension '{imageExtension}' not supported");
-            throw new ValidationException("Invalid image extension");
+            if (!string.IsNullOrEmpty(picture.ImageObjectKey))
+                await _imageStorage.DeleteObjectAsync(picture.ImageObjectKey);
         }
 
-        var imageYearDirectory = $"{imageDirectory}/{picture.YearWatched}";
+        var objectKey = isAlt
+            ? $"{imageBasePath}/{picture.YearWatched}/{id}-alt.{fileExtension}"
+            : $"{imageBasePath}/{picture.YearWatched}/{id}.{fileExtension}";
+        var presignedUrl = await _imageStorage.GeneratePresignedUploadUrlAsync(
+            objectKey,
+            TimeSpan.FromMinutes(5)
+        );
+        var publicUrl = _imageStorage.GetPublicUrl(objectKey);
 
-        return await _imageStorage.SaveImageAsync(imageStream, imageName, imageYearDirectory);
+        await _pictureRepository.UpdateImageInfoAsync(id, objectKey, publicUrl, isAlt);
+
+        return presignedUrl;
     }
 }

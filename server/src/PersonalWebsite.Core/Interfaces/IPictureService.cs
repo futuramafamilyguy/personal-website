@@ -34,7 +34,9 @@ public interface IPictureService
         string? zinger,
         string? alias,
         string? imageUrl,
+        string? imageObjectKey,
         string? altImageUrl,
+        string? altImageObjectKey,
         bool isFavorite,
         bool isKino,
         bool isNewRelease
@@ -43,18 +45,10 @@ public interface IPictureService
     Task RemovePictureAsync(string id);
     Task<bool> CheckIfAnyPicturesAssociatedWithCinemaAsync(string id);
     Task<IEnumerable<int>> GetActiveYearsAsync();
-    Task<(string? ImageUrl, string? AltImageUrl)> UploadPictureImagesAsync(
-        Stream? imageStream,
-        Stream? altImageStream,
+    Task<string> HandleImageUploadAsync(
         string id,
-        string? imageExtension,
-        string imageDirectory,
-        string? altImageExtension
-    );
-    Task DeletePictureImagesAsync(
-        string id,
-        string imageDirectory,
-        bool deleteImage,
-        bool deleteAltImage
+        string imageBasePath,
+        string fileExtension,
+        bool isAlt
     );
 }

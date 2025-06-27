@@ -44,6 +44,12 @@ public class PictureDocument
     [BsonElement("image_url")]
     public string? ImageUrl { get; set; }
 
+    [BsonElement("image_object_key")]
+    public string? ImageObjectKey { get; set; }
+
     [BsonElement("alt_image_url")]
     public string? AltImageUrl { get; set; }
+
+    [BsonElement("alt_image_object_key")]
+    public string? AltImageObjectKey { get; set; }
 }

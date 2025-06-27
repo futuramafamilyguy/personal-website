@@ -62,7 +62,7 @@ public class PostRepository : IPostRepository
         return updatedPost;
     }
 
-    public async Task UpdateImageAsync(string id, string imageObjectKey, string imageUrl)
+    public async Task UpdateImageInfoAsync(string id, string imageObjectKey, string imageUrl)
     {
         var filter = Builders<PostDocument>.Filter.Eq(post => post.Id, id);
         var update = Builders<PostDocument>
