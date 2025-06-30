@@ -12,8 +12,11 @@ public class PostDocument
     [BsonElement("post_title")]
     public required string Title { get; set; }
 
-    [BsonElement("content_url")]
-    public string? ContentUrl { get; set; }
+    [BsonElement("markdown_url")]
+    public string? MarkdownUrl { get; set; }
+
+    [BsonElement("markdown_object_key")]
+    public string? MarkdownObjectKey { get; set; }
 
     [BsonElement("image_url")]
     public string? ImageUrl { get; set; }

@@ -1,0 +1,60 @@
+﻿using Amazon.S3;
+using Amazon.S3.Model;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using PersonalWebsite.Core.Interfaces;
+
+namespace PersonalWebsite.Infrastructure.MarkdownStorage;
+
+public class S3MarkdownStorage : IMarkdownStorage
+{
+    private readonly IAmazonS3 _s3Client;
+    private readonly S3Configuration _s3configuration;
+    private readonly MarkdownStorageConfiguration _markdownStorageConfiguration;
+    private readonly ILogger<S3MarkdownStorage> _logger;
+
+    public S3MarkdownStorage(
+        IAmazonS3 s3Client,
+        IOptions<S3Configuration> s3configuration,
+        IOptions<MarkdownStorageConfiguration> markdownStorageConfiguration,
+        ILogger<S3MarkdownStorage> logger
+    )
+    {
+        _s3Client = s3Client;
+        _s3configuration = s3configuration.Value;
+        _markdownStorageConfiguration = markdownStorageConfiguration.Value;
+        _logger = logger;
+    }
+
+    public async Task ArchiveObjectAsync(string objectKey)
+    {
+        var archiveKey = objectKey.Replace("posts/", "posts/archive/");
+        var request = new CopyObjectRequest
+        {
+            SourceBucket = _s3configuration.BucketName,
+            SourceKey = objectKey,
+            DestinationBucket = _s3configuration.BucketName,
+            DestinationKey = archiveKey
+        };
+        await _s3Client.CopyObjectAsync(request);
+
+        await _s3Client.DeleteObjectAsync(_s3configuration.BucketName, objectKey);
+    }
+
+    public async Task<string> GeneratePresignedUploadUrlAsync(string objectKey, TimeSpan expiration)
+    {
+        var request = new GetPreSignedUrlRequest
+        {
+            BucketName = _s3configuration.BucketName,
+            Key = objectKey,
+            Verb = HttpVerb.PUT,
+            Expires = DateTime.UtcNow.Add(expiration),
+            ContentType = "text/markdown"
+        };
+
+        return await _s3Client.GetPreSignedURLAsync(request);
+    }
+
+    public string GetPublicUrl(string objectKey) =>
+        $"{_markdownStorageConfiguration.Host}/{_s3configuration.BucketName}/{objectKey}";
+}

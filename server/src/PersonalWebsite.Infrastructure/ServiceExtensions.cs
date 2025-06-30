@@ -71,7 +71,7 @@ public static class ServiceExtensions
 
     private static void AddMarkdownStorageServices(this IServiceCollection services)
     {
-        services.AddSingleton<AmazonS3MarkdownStorage>();
+        services.AddSingleton<S3MarkdownStorage>();
         services.AddSingleton<MarkdownStorageFactory>();
 
         services.AddSingleton<IMarkdownStorage>(provider =>

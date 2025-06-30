@@ -76,7 +76,8 @@ public class PostsController : Controller
         var updatedPost = await _postService.UpdatePostAsync(
             id,
             request.Title,
-            request.ContentUrl,
+            request.MarkdownUrl,
+            request.MarkdownObjectKey,
             request.ImageUrl,
             request.ImageObjectKey,
             request.CreatedAtUtc
@@ -95,6 +96,18 @@ public class PostsController : Controller
     }
 
     [Authorize(Policy = "AdminPolicy")]
+    [HttpPost("{id}/markdown-url")]
+    public async Task<IActionResult> GenerateMarkdownUploadUrlAsync(string id)
+    {
+        var uploadUrl = await _postService.HandleMarkdownUploadAsync(
+            id,
+            _markdownStorageConfiguration.BasePath
+        );
+
+        return Ok(new { PresignedUploadUrl = uploadUrl });
+    }
+
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPost("{id}/image-url")]
     public async Task<IActionResult> GenerateImageUploadUrlAsync(
         string id,
@@ -108,57 +121,5 @@ public class PostsController : Controller
         );
 
         return Ok(new { PresignedUploadUrl = uploadUrl });
-    }
-
-    [Authorize(Policy = "AdminPolicy")]
-    [HttpPost("{id}/content")]
-    public async Task<IActionResult> UploadContentAsync(
-        string id,
-        [FromBody] UploadContentRequest request
-    )
-    {
-        if (string.IsNullOrWhiteSpace(request.Content))
-        {
-            return BadRequest("No content uploaded or content is empty");
-        }
-
-        try
-        {
-            var contentUrl = await _postService.UploadPostContentAsync(
-                request.Content,
-                id,
-                _markdownStorageConfiguration.BasePath
-            );
-
-            return Ok(new { ContentUrl = contentUrl });
-        }
-        catch (ValidationException)
-        {
-            return BadRequest("Post content failed validation checks");
-        }
-        catch (StorageException)
-        {
-            return StatusCode(500, "An error occurred while uploading post content");
-        }
-    }
-
-    [Authorize(Policy = "AdminPolicy")]
-    [HttpDelete("{id}/content")]
-    public async Task<IActionResult> DeleteContentAsync(string id)
-    {
-        try
-        {
-            await _postService.DeletePostContentAsync(id, _markdownStorageConfiguration.BasePath);
-
-            return NoContent();
-        }
-        catch (ValidationException)
-        {
-            return BadRequest("Post content failed validation checks");
-        }
-        catch (StorageException)
-        {
-            return StatusCode(500, "An error occurred while deleting post content");
-        }
     }
 }

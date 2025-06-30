@@ -62,6 +62,20 @@ public class PostRepository : IPostRepository
         return updatedPost;
     }
 
+    public async Task UpdateMarkdownInfoAsync(
+        string id,
+        string markdownObjectKey,
+        string markdownUrl
+    )
+    {
+        var filter = Builders<PostDocument>.Filter.Eq(post => post.Id, id);
+        var update = Builders<PostDocument>
+            .Update.Set(post => post.MarkdownObjectKey, markdownObjectKey)
+            .Set(post => post.MarkdownUrl, markdownUrl);
+
+        await _posts.UpdateOneAsync(filter, update);
+    }
+
     public async Task UpdateImageInfoAsync(string id, string imageObjectKey, string imageUrl)
     {
         var filter = Builders<PostDocument>.Filter.Eq(post => post.Id, id);

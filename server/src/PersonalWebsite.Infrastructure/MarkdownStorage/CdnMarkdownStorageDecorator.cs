@@ -1,40 +1,25 @@
 ﻿using PersonalWebsite.Core.Interfaces;
-using PersonalWebsite.Infrastructure.Cdn;
 
 namespace PersonalWebsite.Infrastructure.MarkdownStorage;
 
 public class CdnMarkdownStorageDecorator : IMarkdownStorage
 {
     private readonly IMarkdownStorage _inner;
-    private readonly ICdnUrlService _cdnUrlService;
-    private readonly string _innerStorageProvider;
+    private readonly string _host;
 
-    public CdnMarkdownStorageDecorator(
-        IMarkdownStorage inner,
-        ICdnUrlService cdnUrlService,
-        string innerStorageProvider
-    )
+    public CdnMarkdownStorageDecorator(IMarkdownStorage inner, string host)
     {
         _inner = inner;
-        _cdnUrlService = cdnUrlService;
-        _innerStorageProvider = innerStorageProvider;
+        _host = host;
     }
 
-    public async Task<string> CopyMarkdownAsync(
-        string fileName,
-        string newFileName,
-        string basePath
-    ) => await _inner.CopyMarkdownAsync(fileName, newFileName, basePath);
+    public async Task ArchiveObjectAsync(string objectKey) =>
+        await _inner.ArchiveObjectAsync(objectKey);
 
-    public string GetMarkdownFileNameFromUrl(string postUrl) =>
-        _inner.GetMarkdownFileNameFromUrl(postUrl);
+    public async Task<string> GeneratePresignedUploadUrlAsync(
+        string objectKey,
+        TimeSpan expiration
+    ) => await _inner.GeneratePresignedUploadUrlAsync(objectKey, expiration);
 
-    public async Task RemoveMarkdownAsync(string fileName, string basePath) =>
-        await _inner.RemoveMarkdownAsync(fileName, basePath);
-
-    public async Task<string> SaveMarkdownAsync(string content, string fileName, string basePath)
-    {
-        var rawUrl = await _inner.SaveMarkdownAsync(content, fileName, basePath);
-        return _cdnUrlService.ConvertToCdnUrl(rawUrl, _innerStorageProvider);
-    }
+    public string GetPublicUrl(string objectKey) => $"{_host}/{objectKey}";
 }

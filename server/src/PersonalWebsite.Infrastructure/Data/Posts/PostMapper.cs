@@ -9,7 +9,8 @@ public static class PostMapper
         {
             Id = document.Id,
             Title = document.Title,
-            ContentUrl = document.ContentUrl,
+            MarkdownUrl = document.MarkdownUrl,
+            MarkdownObjectKey = document.MarkdownObjectKey,
             ImageUrl = document.ImageUrl,
             ImageObjectKey = document.ImageObjectKey,
             LastUpdatedUtc = document.LastUpdatedUtc,
@@ -22,7 +23,8 @@ public static class PostMapper
         {
             Id = post.Id,
             Title = post.Title,
-            ContentUrl = post.ContentUrl,
+            MarkdownUrl = post.MarkdownUrl,
+            MarkdownObjectKey = post.MarkdownObjectKey,
             ImageUrl = post.ImageUrl,
             ImageObjectKey = post.ImageObjectKey,
             LastUpdatedUtc = post.LastUpdatedUtc,

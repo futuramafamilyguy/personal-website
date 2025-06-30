@@ -64,6 +64,8 @@ public class PostService : IPostService
     public async Task RemovePostAsync(string id)
     {
         var post = await _postRepository.GetAsync(id);
+        if (!string.IsNullOrEmpty(post.MarkdownObjectKey))
+            await _markdownStorage.ArchiveObjectAsync(post.MarkdownObjectKey);
         if (!string.IsNullOrEmpty(post.ImageObjectKey))
             await _imageStorage.DeleteObjectAsync(post.ImageObjectKey);
 
@@ -73,7 +75,8 @@ public class PostService : IPostService
     public async Task<Post> UpdatePostAsync(
         string id,
         string title,
-        string? contentUrl,
+        string? markdownUrl,
+        string? markdownObjectKey,
         string? imageUrl,
         string? imageObjectKey,
         DateTime createdAtUtc
@@ -85,7 +88,8 @@ public class PostService : IPostService
             {
                 Id = id,
                 Title = title,
-                ContentUrl = contentUrl,
+                MarkdownUrl = markdownUrl,
+                MarkdownObjectKey = markdownObjectKey,
                 ImageUrl = imageUrl,
                 ImageObjectKey = imageObjectKey,
                 LastUpdatedUtc = _dateTimeProvider.UtcNow,
@@ -119,65 +123,19 @@ public class PostService : IPostService
         return presignedUrl;
     }
 
-    public async Task<string> UploadPostContentAsync(
-        string content,
-        string id,
-        string contentDirectory
-    )
+    public async Task<string> HandleMarkdownUploadAsync(string id, string markdownBasePath)
     {
-        try
-        {
-            var fileName = $"{id}.md";
-            var markdownUrl = await _markdownStorage.SaveMarkdownAsync(
-                content,
-                fileName,
-                contentDirectory
-            );
+        var objectKey = $"{markdownBasePath}/{id}.md";
+        var presignedUrl = await _markdownStorage.GeneratePresignedUploadUrlAsync(
+            objectKey,
+            TimeSpan.FromMinutes(5)
+        );
+        var publicUrl = _markdownStorage.GetPublicUrl(objectKey);
 
-            return markdownUrl;
-        }
-        catch (StorageException ex)
-        {
-            _logger.LogError(ex, "An error occurred while saving post content");
-            throw;
-        }
+        await _postRepository.UpdateMarkdownInfoAsync(id, objectKey, publicUrl);
+
+        return presignedUrl;
     }
-
-    public async Task DeletePostContentAsync(string id, string contentDirectory)
-    {
-        var post = await GetPostAsync(id);
-
-        try
-        {
-            if (post.ContentUrl is null)
-            {
-                _logger.LogError($"Post '{id}' does not have content that can be deleted");
-                throw new ValidationException("No content associated with post");
-            }
-
-            var contentFileName = _markdownStorage.GetMarkdownFileNameFromUrl(post.ContentUrl!);
-
-            await _markdownStorage.CopyMarkdownAsync(
-                contentFileName,
-                GenerateArchivedFileName(contentFileName),
-                contentDirectory
-            );
-            await _markdownStorage.RemoveMarkdownAsync(contentFileName, contentDirectory);
-        }
-        catch (ValidationException ex)
-        {
-            _logger.LogError(ex, "Post content validation failure encountered");
-            throw;
-        }
-        catch (StorageException ex)
-        {
-            _logger.LogError(ex, "An error occurred while deleting post content");
-            throw;
-        }
-    }
-
-    private static string GenerateArchivedFileName(string fileName) =>
-        $"{Path.GetFileNameWithoutExtension(fileName)}-archived{Path.GetExtension(fileName)}";
 
     private static string GenerateSlug(string title) =>
         Regex

@@ -11,13 +11,13 @@ public interface IPostService
     Task<Post> UpdatePostAsync(
         string id,
         string title,
-        string? contentUrl,
+        string? markdownUrl,
+        string? markdownObjectKey,
         string? imageUrl,
         string? imageObjectKey,
         DateTime createdAtUtc
     );
     Task RemovePostAsync(string id);
-    Task<string> UploadPostContentAsync(string content, string id, string contentDirectory);
-    Task DeletePostContentAsync(string id, string contentDirectory);
+    Task<string> HandleMarkdownUploadAsync(string id, string markdownBasePath);
     Task<string> HandleImageUploadAsync(string id, string imageBasePath, string fileExtension);
 }
