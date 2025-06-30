@@ -4,6 +4,8 @@ export default interface Post {
   createdAtUtc: Date;
   lastUpdatedUtc: Date;
   imageUrl: string;
-  contentUrl: string;
+  imageObjectKey: string;
+  markdownUrl: string;
+  markdownObjectKey: string;
   slug: string;
 }

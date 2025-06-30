@@ -40,7 +40,7 @@ const PostContainer: React.FC = () => {
   useEffect(() => {
     const fetchMarkdown = async () => {
       try {
-        const response = await axios.get(post.contentUrl);
+        const response = await axios.get(post.markdownUrl);
         setMarkdownContent(response.data);
       } catch (error) {
         console.error("Error fetching markdown content:", error);

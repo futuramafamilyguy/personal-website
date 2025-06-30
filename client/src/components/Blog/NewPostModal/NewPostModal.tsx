@@ -3,15 +3,15 @@ import { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
 import {
-  debouncedCreatePost,
-  debouncedDeleteContent,
-  debouncedDeleteImage,
-  debouncedDeletePost,
-  debouncedUpdatePost,
-  debouncedUploadContent,
-  debouncedUploadImage,
-  makeDebouncedRequest,
-} from "../../../api/debouncedFetch";
+  createPost,
+  deletePost,
+  getPresignedImageUrl,
+  getPresignedMarkdownUrl,
+  updatePost,
+  UpdatePostRequest,
+  uploadImageToPresignedUrl,
+  uploadMarkdownToPresignedUrl,
+} from "../../../api/posts";
 import Post from "../../../types/Post";
 import styles from "./NewPostModal.module.css";
 
@@ -28,30 +28,34 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
   post,
   setTrigger,
 }) => {
-  const [postId, setPostId] = useState("");
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageObjectKey, setImageObjectKey] = useState("");
   const [markdownContent, setMarkdownContent] = useState("");
-  const [contentUrl, setContentUrl] = useState<string | null>(null);
+  const [markdownUrl, setMarkdownUrl] = useState<string | null>(null);
+  const [markdownObjectKey, setMarkdownObjectKey] = useState("");
   const [createdAtUtc, setCreatedAtUtc] = useState<Date | undefined>(undefined);
 
   const [result, setResult] = useState("");
 
   useEffect(() => {
     setResult("");
-    setPostId(post ? post.id : "");
     setTitle(post ? post.title : "");
-    setImage(null);
+    setImageFile(null);
     setImageUrl(post && post.imageUrl ? post.imageUrl : "");
-    setContentUrl(post && post.contentUrl ? post.contentUrl : "");
+    setImageObjectKey(post && post.imageObjectKey ? post.imageObjectKey : "");
+    setMarkdownUrl(post && post.markdownUrl ? post.markdownUrl : "");
     setCreatedAtUtc(post ? post.createdAtUtc : undefined);
+    setMarkdownObjectKey(
+      post && post.markdownObjectKey ? post.markdownObjectKey : ""
+    );
   }, [isOpen]);
 
   useEffect(() => {
     const fetchMarkdown = async () => {
       try {
-        const response = await axios.get(post!.contentUrl);
+        const response = await axios.get(post!.markdownUrl);
         setMarkdownContent(response.data);
       } catch (error) {
         console.error("Error fetching markdown content:", error);
@@ -59,129 +63,28 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     };
 
     setMarkdownContent("");
-    if (post && post.contentUrl) {
+    if (post && post.markdownUrl) {
       fetchMarkdown();
     }
   }, [isOpen]);
 
-  const createPost = () => {
-    return makeDebouncedRequest(debouncedCreatePost, {
-      url: `/posts`,
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        title: title,
-      }),
-    });
-  };
-
-  const uploadImage = (id: string): Promise<string> => {
-    const formData = new FormData();
-    formData.append("imageFile", image!);
-
-    return makeDebouncedRequest(debouncedUploadImage, {
-      url: `/posts/${id}/image`,
-      method: "post",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: formData,
-    }).then((response) => response.data.imageUrl);
-  };
-
-  const uploadContent = (id: string): Promise<string> => {
-    return makeDebouncedRequest(debouncedUploadContent, {
-      url: `/posts/${id}/content`,
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        content: markdownContent,
-      }),
-    }).then((response) => response.data.contentUrl);
-  };
-
-  const deleteImage = (id: string) => {
-    return makeDebouncedRequest(debouncedDeleteImage, {
-      url: `/posts/${id}/image`,
-      method: "delete",
-    });
-  };
-
-  const deleteContent = (id: string) => {
-    return makeDebouncedRequest(debouncedDeleteContent, {
-      url: `/posts/${id}/content`,
-      method: "delete",
-    });
-  };
-
-  const deletePost = (id: string) => {
-    return makeDebouncedRequest(debouncedDeletePost, {
-      url: `/posts/${id}`,
-      method: "delete",
-    });
-  };
-
-  const updatePost = (
-    id: string,
-    updatedTitle?: string,
-    updatedCreatedAtUtc?: Date,
-    updatedImageUrl?: string,
-    updatedContentUrl?: string
-  ) => {
-    return makeDebouncedRequest(debouncedUpdatePost, {
-      url: `/posts/${id}`,
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        title: updatedTitle ? updatedTitle : title,
-        createdAtUtc: updatedCreatedAtUtc ? updatedCreatedAtUtc : createdAtUtc,
-        imageUrl: updatedImageUrl
-          ? updatedImageUrl
-          : imageUrl && !isDefaultImage(imageUrl)
-          ? imageUrl
-          : null,
-        contentUrl: updatedContentUrl ? updatedContentUrl : contentUrl,
-      }),
-    });
-  };
-
   const orchestrateCreatePost = async () => {
     try {
-      const postResponse = await createPost();
-      const newPostId = postResponse.data.id;
-
-      const uploadPromises: Promise<string | undefined>[] = [];
-
-      if (image) {
-        uploadPromises.push(uploadImage(newPostId));
-      } else {
-        uploadPromises.push(Promise.resolve(undefined));
+      if (!markdownContent || markdownContent.trim() === "") {
+        throw new Error("post content is empty");
       }
 
-      if (markdownContent) {
-        uploadPromises.push(uploadContent(newPostId));
-      } else {
-        uploadPromises.push(Promise.resolve(undefined));
+      const newPost = await createPost(title);
+
+      await orchestrateUploadMarkdown(newPost.id, markdownContent);
+
+      if (imageFile) {
+        await orchestrateUploadImage(newPost.id);
       }
 
-      const [imageResponse, contentResponse] = await Promise.all(
-        uploadPromises
-      );
-
-      await updatePost(
-        newPostId,
-        undefined,
-        postResponse.data.createdAtUtc,
-        imageResponse,
-        contentResponse
-      );
-    } catch (error) {
+      setTrigger();
+      onClose();
+    } catch (error: any) {
       console.error("error creating post:", error);
       setResult("error creating post");
     }
@@ -189,56 +92,58 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
 
   const orchestrateUpdatePost = async () => {
     try {
-      const updatePromises: Promise<string | undefined>[] = [];
-
-      if (image) {
-        if (!isDefaultImage(imageUrl!)) {
-          await deleteImage(postId);
-        }
-
-        updatePromises.push(uploadImage(postId));
-      } else {
-        updatePromises.push(Promise.resolve(undefined));
+      if (!markdownContent || markdownContent.trim() === "") {
+        throw new Error("post content is empty");
       }
 
-      if (markdownContent) {
-        updatePromises.push(uploadContent(postId));
-      } else {
-        updatePromises.push(Promise.resolve(undefined));
+      const data: UpdatePostRequest = {
+        id: post!.id,
+        title: title,
+        createdAtUtc: createdAtUtc!,
+        markdownUrl: markdownUrl,
+        markdownObjectKey: markdownObjectKey,
+        imageUrl: imageObjectKey ? imageUrl : null, // use object key to determine image presence due to default image
+        imageObjectKey: imageObjectKey ? imageObjectKey : null,
+      };
+      const updatedPost = await updatePost(data);
+
+      await orchestrateUploadMarkdown(updatedPost.id, markdownContent);
+
+      if (imageFile) {
+        await orchestrateUploadImage(updatedPost.id);
       }
 
-      const [imageResponse, contentResponse] = await Promise.all(
-        updatePromises
-      );
-
-      await updatePost(
-        postId,
-        title,
-        createdAtUtc,
-        imageResponse,
-        contentResponse
-      );
+      setTrigger();
+      onClose();
     } catch (error) {
       console.error("error updating post:", error);
       setResult("error updating post");
     }
   };
 
+  const orchestrateUploadMarkdown = async (
+    id: string,
+    markdownContent: string
+  ) => {
+    const blob = new Blob([markdownContent], { type: "text/markdown" });
+    const { presignedUploadUrl } = await getPresignedMarkdownUrl(id);
+    await uploadMarkdownToPresignedUrl(presignedUploadUrl, blob);
+  };
+
+  const orchestrateUploadImage = async (id: string) => {
+    const extension = imageFile!.name.split(".").pop()?.toLowerCase();
+    const { presignedUploadUrl } = await getPresignedImageUrl(id, extension!);
+
+    await uploadImageToPresignedUrl(presignedUploadUrl, imageFile!);
+  };
+
   const orchestrateDeletePost = async () => {
     try {
-      const deletePromises: Promise<any>[] = [];
+      await deletePost(post!.id);
 
-      if (imageUrl ? !isDefaultImage(imageUrl) : false) {
-        deletePromises.push(deleteImage(postId));
-      }
-
-      if (markdownContent) {
-        deletePromises.push(deleteContent(postId));
-      }
-
-      await Promise.all(deletePromises);
-      await deletePost(postId);
-    } catch (error) {
+      setTrigger();
+      onClose();
+    } catch (error: any) {
       console.error("error deleting post:", error);
       setResult("error deleting post");
     }
@@ -251,20 +156,12 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     } else {
       await orchestrateCreatePost();
     }
-
-    setTrigger();
-    onClose();
   };
 
   const handleDelete = async (event: FormEvent) => {
     event.preventDefault();
     await orchestrateDeletePost();
-
-    setTrigger();
-    onClose();
   };
-
-  const isDefaultImage = (url: string) => url.includes("/static/");
 
   if (!isOpen) return null;
 
@@ -295,7 +192,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
               <input
                 type="file"
                 onChange={(e) =>
-                  setImage(e.target.files ? e.target.files[0] : null)
+                  setImageFile(e.target.files ? e.target.files[0] : null)
                 }
               />
             </div>
