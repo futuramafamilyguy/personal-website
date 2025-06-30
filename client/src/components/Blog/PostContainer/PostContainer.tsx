@@ -7,7 +7,7 @@ import rehypeRaw from "rehype-raw";
 import {
   debouncedFetchPostBySlug,
   makeDebouncedRequest,
-} from "../../../personalWebsiteApi";
+} from "../../../api/debouncedFetch";
 import Post from "../../../types/Post";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import styles from "./PostContainer.module.css";

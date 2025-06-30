@@ -5,7 +5,7 @@ import { useYear, useYearUpdate } from "../../../contexts/YearContext";
 import {
   debouncedFetchActiveYears,
   makeDebouncedRequest,
-} from "../../../personalWebsiteApi";
+} from "../../../api/debouncedFetch";
 import CapsuleButton from "../../Common/CapsuleButton/CapsuleButton";
 import styles from "./ActiveYearsContainer.module.css";
 

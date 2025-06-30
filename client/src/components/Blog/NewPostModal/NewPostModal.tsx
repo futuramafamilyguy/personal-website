@@ -11,7 +11,7 @@ import {
   debouncedUploadContent,
   debouncedUploadImage,
   makeDebouncedRequest,
-} from "../../../personalWebsiteApi";
+} from "../../../api/debouncedFetch";
 import Post from "../../../types/Post";
 import styles from "./NewPostModal.module.css";
 

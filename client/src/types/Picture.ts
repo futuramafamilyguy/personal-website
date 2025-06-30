@@ -4,6 +4,7 @@ export default interface Picture {
   id: string;
   name: string;
   imageUrl: string;
+  imageObjectKey: string;
   alias: string;
   yearReleased: number;
   zinger: string;
@@ -14,4 +15,5 @@ export default interface Picture {
   isNewRelease: boolean;
   yearWatched: number;
   altImageUrl: string;
+  altImageObjectKey: string;
 }

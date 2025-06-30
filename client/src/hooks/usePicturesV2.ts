@@ -5,7 +5,7 @@ import { useYear } from "../contexts/YearContext";
 import {
   debouncedFetchPictures,
   makeDebouncedRequest,
-} from "../personalWebsiteApi";
+} from "../api/debouncedFetch";
 import Picture from "../types/Picture";
 
 interface PictureResponse {

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { useAuthUpdate } from "../contexts/AuthContext";
-import { debouncedLogin, debouncedLogout, makeDebouncedRequest } from "../personalWebsiteApi";
+import {
+  debouncedLogin,
+  debouncedLogout,
+  makeDebouncedRequest,
+} from "../api/debouncedFetch";
 
 const AuthComponent: React.FC = () => {
   const [message, setMessage] = useState("");
@@ -16,7 +20,7 @@ const AuthComponent: React.FC = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem("isLoggedIn", "true");
           updateIsLoggedIn(true);
           setMessage("Admin login successful");
         } else {
@@ -35,7 +39,7 @@ const AuthComponent: React.FC = () => {
       method: "post",
     })
       .then(() => {
-        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem("isLoggedIn");
         updateIsLoggedIn(false);
         setMessage("Admin logout successful");
       })

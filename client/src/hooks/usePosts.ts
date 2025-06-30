@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   debouncedFetchPosts,
   makeDebouncedRequest,
-} from "../personalWebsiteApi";
+} from "../api/debouncedFetch";
 import Post from "../types/Post";
 
 const usePosts = () => {

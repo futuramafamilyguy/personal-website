@@ -5,7 +5,7 @@ import { useRegion } from "../contexts/RegionContext";
 import {
   debouncedIncrementVisitCount,
   makeDebouncedRequest as makeDebouncedApiRequest,
-} from "../personalWebsiteApi";
+} from "../api/debouncedFetch";
 import {
   debouncedFetchSessions,
   makeDebouncedRequest as makeDebouncedSessionRequest,

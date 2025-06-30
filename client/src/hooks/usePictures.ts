@@ -6,7 +6,10 @@ import notFoundGirl from "../assets/404girl.png";
 import { useAuth } from "../contexts/AuthContext";
 import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 import { useYear } from "../contexts/YearContext";
-import { debouncedFetchPictures, makeDebouncedRequest } from "../personalWebsiteApi";
+import {
+  debouncedFetchPictures,
+  makeDebouncedRequest,
+} from "../api/debouncedFetch";
 import Picture from "../types/Picture";
 
 interface PictureResponse {

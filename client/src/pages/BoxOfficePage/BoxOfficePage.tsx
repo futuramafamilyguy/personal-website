@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   debouncedFetchStats,
   makeDebouncedRequest,
-} from "../../personalWebsiteApi";
+} from "../../api/debouncedFetch";
 import styles from "./BoxOfficePage.module.css";
 
 interface Stats {

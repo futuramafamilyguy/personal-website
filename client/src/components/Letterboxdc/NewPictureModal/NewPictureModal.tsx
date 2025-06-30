@@ -2,16 +2,20 @@ import { AxiosResponse } from "axios";
 import React, { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
+import {
+  createPicture,
+  CreatePictureRequest,
+  deletePicture,
+  getPresignedImageUrl,
+  updatePicture,
+  UpdatePictureRequest,
+  uploadImageToPresignedUrl,
+} from "../../../api/pictures";
 import { useYear } from "../../../contexts/YearContext";
 import {
-  debouncedCreatePicture,
-  debouncedDeleteImage,
-  debouncedDeletePicture,
   debouncedFetchCinemas,
-  debouncedUpdatePicture,
-  debouncedUploadImage,
   makeDebouncedRequest,
-} from "../../../personalWebsiteApi";
+} from "../../../api/debouncedFetch";
 import Cinema from "../../../types/Cinema";
 import Picture from "../../../types/Picture";
 import styles from "./NewPictureModal.module.css";
@@ -23,15 +27,6 @@ interface NewPictureModalProps {
   setTrigger: () => void;
 }
 
-interface CreatePictureResponse {
-  id: string;
-}
-
-interface UploadImageResponse {
-  imageUrl: string;
-  altImageUrl: string | null;
-}
-
 const NewPictureModal: React.FC<NewPictureModalProps> = ({
   isOpen,
   onClose,
@@ -40,8 +35,9 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [yearReleased, setYearReleased] = useState("");
-  const [image, setImage] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [imageObjectKey, setImageObjectKey] = useState("");
   const [monthWatched, setMonthWatched] = useState("");
   const [cinemaId, setCinemaId] = useState("");
   const [zinger, setZinger] = useState("");
@@ -49,8 +45,9 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const [isKino, setIsKino] = useState(false);
   const [isNewRelease, setIsNewRelease] = useState(true);
-  const [altImage, setAltImage] = useState<File | null>(null);
+  const [altImageFile, setAltImageFile] = useState<File | null>(null);
   const [altImageUrl, setAltImageUrl] = useState("");
+  const [altImageObjectKey, setAltImageObjectKey] = useState("");
 
   const [result, setResult] = useState("");
 
@@ -61,8 +58,11 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     setResult("");
     setName(picture ? picture.name : "");
     setYearReleased(picture ? picture.yearReleased.toString() : "");
-    setImage(null);
+    setImageFile(null);
     setImageUrl(picture && picture.imageUrl ? picture.imageUrl : "");
+    setImageObjectKey(
+      picture && picture.imageObjectKey ? picture.imageObjectKey : ""
+    );
     setMonthWatched(picture ? picture.monthWatched.toString() : "");
     setCinemaId(picture ? picture.cinema.id : "");
     setZinger(picture && picture.zinger ? picture.zinger : "");
@@ -70,8 +70,11 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     setIsFavorite(picture ? picture.isFavorite : false);
     setIsKino(picture ? picture.isKino : false);
     setIsNewRelease(picture ? picture.isNewRelease : true);
-    setAltImage(null);
+    setAltImageFile(null);
     setAltImageUrl(picture && picture.altImageUrl ? picture.altImageUrl : "");
+    setAltImageObjectKey(
+      picture && picture.altImageObjectKey ? picture.altImageObjectKey : ""
+    );
   }, [isOpen]);
 
   useEffect(() => {
@@ -90,280 +93,110 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     fetchCinemas();
   }, []);
 
-  const createPicture = () => {
-    return makeDebouncedRequest(debouncedCreatePicture, {
-      url: `/pictures/${year}`,
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
+  const orchestrateCreatePicture = async () => {
+    try {
+      const data: CreatePictureRequest = {
+        year: year!,
         name: name,
-        monthWatched: monthWatched ? parseInt(monthWatched, 10) : null,
-        yearReleased: yearReleased,
+        monthWatched: parseInt(monthWatched, 10),
+        yearReleased: parseInt(yearReleased, 10),
         cinemaId: cinemaId,
         zinger: zinger ? zinger : null,
         alias: alias ? alias : null,
-      }),
-    });
-  };
-
-  const uploadImage = (id: string) => {
-    const formData = new FormData();
-    if (image) {
-      formData.append("imageFile", image);
-    }
-    if (altImage) {
-      formData.append("altImageFile", altImage);
-    }
-
-    return makeDebouncedRequest(debouncedUploadImage, {
-      url: `/pictures/${id}/image`,
-      method: "post",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: formData,
-    });
-  };
-
-  const deleteImage = (
-    id: string,
-    deleteImage: boolean,
-    deleteAltImage: boolean
-  ) => {
-    return makeDebouncedRequest(debouncedDeleteImage, {
-      url: `/pictures/${id}/image?deleteImage=${deleteImage}&deleteAltImage=${deleteAltImage}`,
-      method: "delete",
-    });
-  };
-
-  const deletePicture = (id: string) => {
-    return makeDebouncedRequest(debouncedDeletePicture, {
-      url: `/pictures/${id}`,
-      method: "delete",
-    });
-  };
-
-  const updatePicture = (
-    id: string,
-    url: string | null,
-    altUrl: string | null
-  ) => {
-    return makeDebouncedRequest(debouncedUpdatePicture, {
-      url: `/pictures/${id}`,
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        name: name,
-        monthWatched: monthWatched
-          ? parseInt(monthWatched, 10)
-          : new Date().getMonth(),
-        yearReleased: yearReleased,
-        cinemaId: cinemaId,
-        zinger: zinger ? zinger : null,
-        alias: alias ? alias : null,
-        imageUrl: url ? url : !isDefaultImage(imageUrl) ? imageUrl : null,
-        yearWatched: year,
         isFavorite: isFavorite,
         isKino: isKino,
         isNewRelease: isNewRelease,
-        altImageUrl: altUrl ? altUrl : altImageUrl ? altImageUrl : null,
-      }),
-    });
-  };
+      };
+      const newPicture = await createPicture(data);
 
-  const orchestrateCreatePicture = () => {
-    let id: string;
-    createPicture()
-      .then((response: AxiosResponse<CreatePictureResponse>) => {
-        if (response.status === 200) {
-          if (image) {
-            id = response.data.id;
-            return uploadImage(response.data.id);
-          } else {
-            return Promise.resolve({ data: { skip: true } } as AxiosResponse<{
-              skip: boolean;
-            }>);
-          }
-        } else {
-          throw new Error(`Error creating picture ${response.status}`);
-        }
-      })
-      .then(
-        (
-          response:
-            | AxiosResponse<UploadImageResponse>
-            | AxiosResponse<{ skip: boolean }>
-        ) => {
-          if ("skip" in response.data && response.data.skip) {
-            return Promise.resolve({ data: { skip: true } } as AxiosResponse<{
-              skip: boolean;
-            }>);
-          }
-          if ("imageUrl" in response.data && response.status === 200) {
-            return updatePicture(
-              id,
-              response.data.imageUrl,
-              response.data.altImageUrl
-            );
-          } else {
-            throw new Error(`Error uploading image ${response.status}`);
-          }
-        }
-      )
-      .then((response: AxiosResponse | AxiosResponse<{ skip: boolean }>) => {
-        if (
-          ("skip" in response.data && response.data.skip) ||
-          response.status === 200
-        ) {
-          setResult("Successfully created picture");
-          setTrigger();
-          onClose();
-        } else {
-          throw new Error(`Error updating picture ${response.status}`);
-        }
-      })
-      .catch((error: any) => {
-        console.error("Error creating picture:", error);
-        setResult("Error creating picture");
-      });
-  };
-
-  const orchestrateUpdatePicture = () => {
-    if (image || altImage) {
-      if (
-        !(image && !isDefaultImage(picture!.imageUrl)) &&
-        altImage &&
-        !picture!.altImageUrl
-      ) {
-        uploadImage(picture!.id)
-          .then((response: AxiosResponse<UploadImageResponse>) => {
-            if (response.status === 200) {
-              return updatePicture(
-                picture!.id,
-                image ? response.data.imageUrl : picture!.imageUrl,
-                altImage ? response.data.altImageUrl : picture!.altImageUrl
-              );
-            } else {
-              throw new Error(`Error uploading image ${response.status}`);
-            }
-          })
-          .then((response) => {
-            if (response.status === 200) {
-              setResult("Successfully updated picture");
-              setTrigger();
-              onClose();
-            } else {
-              throw new Error(`Error updating picture ${response.status}`);
-            }
-          })
-          .catch((error: any) => {
-            console.error("Error updating picture:", error);
-            setResult("Error updating picture");
-          });
-      } else {
-        deleteImage(
-          picture!.id,
-          image !== null && !isDefaultImage(picture!.imageUrl),
-          altImage !== null && picture!.altImageUrl !== null
-        )
-          .then((response) => {
-            if (response.status === 204) {
-              return uploadImage(picture!.id);
-            } else {
-              throw new Error(
-                `Error deleting picture image ${response.status}`
-              );
-            }
-          })
-          .then((response: AxiosResponse<UploadImageResponse>) => {
-            if (response.status === 200) {
-              return updatePicture(
-                picture!.id,
-                image ? response.data.imageUrl : picture!.imageUrl,
-                altImage ? response.data.altImageUrl : picture!.altImageUrl
-              );
-            } else {
-              throw new Error(`Error uploading image ${response.status}`);
-            }
-          })
-          .then((response) => {
-            if (response.status === 200) {
-              setResult("Successfully updated picture");
-              setTrigger();
-              onClose();
-            } else {
-              throw new Error(`Error updating picture ${response.status}`);
-            }
-          })
-          .catch((error: any) => {
-            console.error("Error updating picture:", error);
-            setResult("Error updating picture");
-          });
-      }
-    } else {
-      updatePicture(picture!.id, null, null)
-        .then((response) => {
-          if (response.status === 200) {
-            setResult("Successfully updated picture");
-            setTrigger();
-            onClose();
-          } else {
-            throw new Error(`Error updating picture ${response.status}`);
-          }
-        })
-        .catch((error: any) => {
-          console.error("Error updating picture:", error);
-          setResult("Error updating picture");
+      if (imageFile) {
+        const extension = imageFile.name.split(".").pop()?.toLowerCase();
+        const { presignedUploadUrl } = await getPresignedImageUrl({
+          id: newPicture.id,
+          extension: extension!,
+          isAlt: false,
         });
+
+        await uploadImageToPresignedUrl(presignedUploadUrl, imageFile);
+      }
+      if (altImageFile) {
+        const extension = altImageFile.name.split(".").pop()?.toLowerCase();
+        const { presignedUploadUrl } = await getPresignedImageUrl({
+          id: newPicture.id,
+          extension: extension!,
+          isAlt: true,
+        });
+
+        await uploadImageToPresignedUrl(presignedUploadUrl, altImageFile);
+      }
+
+      setTrigger();
+      onClose();
+    } catch (error: any) {
+      console.error("error creating picture:", error);
+      setResult("error creating picture");
     }
   };
 
-  const orchestrateDeletePicture = () => {
-    if (!isDefaultImage(picture!.imageUrl)) {
-      deleteImage(
-        picture!.id,
-        !isDefaultImage(picture!.imageUrl),
-        picture!.altImageUrl !== null
-      )
-        .then((response) => {
-          if (response.status === 204) {
-            return deletePicture(picture!.id);
-          } else {
-            throw new Error(`Error deleting picture image ${response.status}`);
-          }
-        })
-        .then((response) => {
-          if (response.status === 204) {
-            setResult("Successfully deleted picture");
-            setTrigger();
-            onClose();
-          } else {
-            throw new Error(`Error deleting picture ${response.status}`);
-          }
-        })
-        .catch((error: any) => {
-          console.error("Error deleting picture:", error);
-          setResult("Error deleting picture");
+  const orchestrateUpdatePicture = async () => {
+    try {
+      const data: UpdatePictureRequest = {
+        id: picture!.id,
+        name: name,
+        year: year!,
+        monthWatched: parseInt(monthWatched, 10),
+        yearReleased: parseInt(yearReleased, 10),
+        cinemaId: cinemaId,
+        zinger: zinger ? zinger : null,
+        alias: alias ? alias : null,
+        isFavorite: isFavorite,
+        isKino: isKino,
+        isNewRelease: isNewRelease,
+        imageUrl: imageObjectKey ? imageUrl : null, // use object key to determine image presence due to default image
+        imageObjectKey: imageObjectKey ? imageObjectKey : null,
+        altImageUrl: altImageObjectKey ? altImageUrl : null,
+        altImageObjectKey: altImageObjectKey ? altImageObjectKey : null,
+      };
+      const updatedPicture = await updatePicture(data);
+
+      if (imageFile) {
+        const extension = imageFile.name.split(".").pop()?.toLowerCase();
+        const { presignedUploadUrl } = await getPresignedImageUrl({
+          id: updatedPicture.id,
+          extension: extension!,
+          isAlt: false,
         });
-    } else {
-      deletePicture(picture!.id)
-        .then((response) => {
-          if (response.status === 204) {
-            setResult("Successfully deleted picture");
-            setTrigger();
-            onClose();
-          } else {
-            throw new Error(`Error deleting picture ${response.status}`);
-          }
-        })
-        .catch((error: any) => {
-          console.error("Error deleting picture:", error);
-          setResult("Error deleting picture");
+
+        await uploadImageToPresignedUrl(presignedUploadUrl, imageFile);
+      }
+      if (altImageFile) {
+        const extension = altImageFile.name.split(".").pop()?.toLowerCase();
+        const { presignedUploadUrl } = await getPresignedImageUrl({
+          id: updatedPicture.id,
+          extension: extension!,
+          isAlt: true,
         });
+
+        await uploadImageToPresignedUrl(presignedUploadUrl, altImageFile);
+      }
+
+      setTrigger();
+      onClose();
+    } catch (error: any) {
+      console.error("error updating picture:", error);
+      setResult("error updating picture");
+    }
+  };
+
+  const orchestrateDeletePicture = async () => {
+    try {
+      await deletePicture(picture!.id);
+
+      setTrigger();
+      onClose();
+    } catch (error: any) {
+      console.error("error deleting picture:", error);
+      setResult("error deleting picture");
     }
   };
 
@@ -380,8 +213,6 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
     event.preventDefault();
     orchestrateDeletePicture();
   };
-
-  const isDefaultImage = (url: string) => url.includes("/static/");
 
   if (!isOpen) return null;
 
@@ -423,7 +254,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 <input
                   type="file"
                   onChange={(e) =>
-                    setImage(e.target.files ? e.target.files[0] : null)
+                    setImageFile(e.target.files ? e.target.files[0] : null)
                   }
                 />
               </div>
@@ -432,7 +263,7 @@ const NewPictureModal: React.FC<NewPictureModalProps> = ({
                 <input
                   type="file"
                   onChange={(e) =>
-                    setAltImage(e.target.files ? e.target.files[0] : null)
+                    setAltImageFile(e.target.files ? e.target.files[0] : null)
                   }
                 />
               </div>

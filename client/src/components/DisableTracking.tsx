@@ -1,7 +1,7 @@
 import {
   debouncedDisableTracking,
   makeDebouncedRequest,
-} from "../personalWebsiteApi";
+} from "../api/debouncedFetch";
 import React, { useEffect } from "react";
 
 const DisableTracking: React.FC = () => {
