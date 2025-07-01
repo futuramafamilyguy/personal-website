@@ -136,6 +136,12 @@ public class PostService : IPostService
         );
         var publicUrl = _markdownStorage.GetPublicUrl(objectKey);
 
+        if (newMarkdownVersion > 1)
+        {
+            var prevObjectKey = $"{markdownBasePath}/{id}-v{newMarkdownVersion - 1}.md";
+            await _markdownStorage.DeleteObjectAsync(prevObjectKey);
+        }
+        
         await _postRepository.UpdateMarkdownInfoAsync(id, objectKey, publicUrl);
 
         return presignedUrl;

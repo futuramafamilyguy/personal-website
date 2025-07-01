@@ -16,6 +16,9 @@ public class CdnMarkdownStorageDecorator : IMarkdownStorage
     public async Task ArchiveObjectAsync(string objectKey) =>
         await _inner.ArchiveObjectAsync(objectKey);
 
+    public async Task DeleteObjectAsync(string objectKey)
+        => await _inner.DeleteObjectAsync(objectKey);
+
     public async Task<string> GeneratePresignedUploadUrlAsync(
         string objectKey,
         TimeSpan expiration

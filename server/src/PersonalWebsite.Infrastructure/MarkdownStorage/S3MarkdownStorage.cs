@@ -38,8 +38,11 @@ public class S3MarkdownStorage : IMarkdownStorage
         };
         await _s3Client.CopyObjectAsync(request);
 
-        await _s3Client.DeleteObjectAsync(_s3configuration.BucketName, objectKey);
+        await DeleteObjectAsync(objectKey);
     }
+
+    public async Task DeleteObjectAsync(string objectKey)
+        => await _s3Client.DeleteObjectAsync(_s3configuration.BucketName, objectKey);
 
     public async Task<string> GeneratePresignedUploadUrlAsync(string objectKey, TimeSpan expiration)
     {
