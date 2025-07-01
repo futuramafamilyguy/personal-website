@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using PersonalWebsite.Api;
 using PersonalWebsite.Api.Authentication;
+using PersonalWebsite.Api.Filters;
 using PersonalWebsite.Api.Middlewares;
 using PersonalWebsite.Api.VisitTracking;
 using PersonalWebsite.Core;
@@ -42,7 +43,10 @@ builder.Services.AddVisitTrackingServices();
 builder.Services.AddAmazonS3Services(builder.Configuration.GetAWSOptions());
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<GlobalExceptionFilter>();
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

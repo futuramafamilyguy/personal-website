@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PersonalWebsite.Api.DTOs;
 using PersonalWebsite.Core.Enums;
-using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Infrastructure.ImageStorage;
 
@@ -16,19 +15,16 @@ public class PicturesController : ControllerBase
     private readonly IPictureService _pictureService;
     private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
     private readonly ImageStorageConfiguration _imageStorageConfiguration;
-    private readonly ILogger<PicturesController> _logger;
 
     public PicturesController(
         IPictureService pictureTrackingService,
         IPictureCinemaOrchestrator pictureCinemaOrchestrator,
-        IOptions<ImageStorageConfiguration> imageStorageConfiguration,
-        ILogger<PicturesController> logger
+        IOptions<ImageStorageConfiguration> imageStorageConfiguration
     )
     {
         _pictureService = pictureTrackingService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
         _imageStorageConfiguration = imageStorageConfiguration.Value;
-        _logger = logger;
     }
 
     [HttpGet("{year}")]
@@ -68,33 +64,20 @@ public class PicturesController : ControllerBase
         [FromBody] CreatePictureRequest request
     )
     {
-        if (request is null)
-            return BadRequest("Picture data is null");
-        try
-        {
-            var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(
-                request.Name,
-                year,
-                request.MonthWatched ?? (Month)DateTime.Now.Month,
-                request.CinemaId,
-                request.YearReleased ?? DateTime.Now.Year,
-                request.Zinger,
-                request.Alias,
-                request.IsFavorite ?? false,
-                request.IsKino ?? false,
-                request.IsNewRelease ?? true
-            );
+        var picture = await _pictureCinemaOrchestrator.AddPictureWithCinemaAsync(
+            request.Name,
+            year,
+            request.MonthWatched ?? (Month)DateTime.Now.Month,
+            request.CinemaId,
+            request.YearReleased ?? DateTime.Now.Year,
+            request.Zinger,
+            request.Alias,
+            request.IsFavorite ?? false,
+            request.IsKino ?? false,
+            request.IsNewRelease ?? true
+        );
 
-            return Ok(picture);
-        }
-        catch (ArgumentException)
-        {
-            return BadRequest("Invalid arguments for create picture request");
-        }
-        catch (ValidationException)
-        {
-            return BadRequest("Picture failed validation checks");
-        }
+        return Ok(picture);
     }
 
     [Authorize(Policy = "AdminPolicy")]
@@ -104,39 +87,25 @@ public class PicturesController : ControllerBase
         [FromBody] UpdatePictureRequest request
     )
     {
-        if (request is null)
-            return BadRequest("Picture data is null");
+        var picture = await _pictureCinemaOrchestrator.UpdatePictureWithCinemaAsync(
+            id,
+            request.Name,
+            request.YearWatched,
+            request.MonthWatched ?? (Month)DateTime.Now.Month,
+            request.CinemaId,
+            request.YearReleased ?? DateTime.Now.Year,
+            request.Zinger,
+            request.Alias,
+            request.ImageUrl,
+            request.ImageObjectKey,
+            request.AltImageUrl,
+            request.AltImageObjectKey,
+            request.IsFavorite ?? false,
+            request.IsKino ?? false,
+            request.IsNewRelease ?? true
+        );
 
-        try
-        {
-            var picture = await _pictureCinemaOrchestrator.UpdatePictureWithCinemaAsync(
-                id,
-                request.Name,
-                request.YearWatched,
-                request.MonthWatched ?? (Month)DateTime.Now.Month,
-                request.CinemaId,
-                request.YearReleased ?? DateTime.Now.Year,
-                request.Zinger,
-                request.Alias,
-                request.ImageUrl,
-                request.ImageObjectKey,
-                request.AltImageUrl,
-                request.AltImageObjectKey,
-                request.IsFavorite ?? false,
-                request.IsKino ?? false,
-                request.IsNewRelease ?? true
-            );
-
-            return Ok(picture);
-        }
-        catch (ArgumentException)
-        {
-            return BadRequest("Invalid arguments for update picture request");
-        }
-        catch (ValidationException)
-        {
-            return BadRequest("Picture failed validation checks");
-        }
+        return Ok(picture);
     }
 
     [Authorize(Policy = "AdminPolicy")]

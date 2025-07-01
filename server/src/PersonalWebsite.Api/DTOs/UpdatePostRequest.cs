@@ -1,7 +1,10 @@
-﻿namespace PersonalWebsite.Api.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PersonalWebsite.Api.DTOs;
 
 public class UpdatePostRequest
 {
+    [MinLength(1)]
     public required string Title { get; set; }
     public string? MarkdownUrl { get; set; }
     public string? MarkdownObjectKey { get; set; }

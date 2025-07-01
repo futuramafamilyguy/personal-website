@@ -37,24 +37,30 @@ public class CinemaRepository : ICinemaRepository
         return cinemas.Select(CinemaMapper.ToDomain);
     }
 
-    public async Task<Cinema> GetAsync(string id)
+    public async Task<Cinema?> GetAsync(string id)
     {
         var filter = Builders<CinemaDocument>.Filter.Eq(cinema => cinema.Id, id);
         var cinema = await _cinemas.Find(filter).FirstOrDefaultAsync();
+        if (cinema is null)
+            return null;
 
         return CinemaMapper.ToDomain(cinema);
     }
 
-    public async Task RemoveAsync(string id) =>
-        await _cinemas.DeleteOneAsync(cinema => cinema.Id == id);
-
-    public async Task<Cinema> UpdateAsync(string id, Cinema updatedCinema)
+    public async Task<bool> RemoveAsync(string id)
     {
-        await _cinemas.ReplaceOneAsync(
+        var result = await _cinemas.DeleteOneAsync(cinema => cinema.Id == id);
+
+        return result.DeletedCount == 1;
+    }
+
+    public async Task<bool> UpdateAsync(string id, Cinema updatedCinema)
+    {
+        var result = await _cinemas.ReplaceOneAsync(
             cinema => cinema.Id == id,
             CinemaMapper.ToDocument(updatedCinema)
         );
 
-        return updatedCinema;
+        return result.ModifiedCount == 1;
     }
 }

@@ -1,4 +1,5 @@
-﻿using PersonalWebsite.Core.Interfaces;
+﻿using PersonalWebsite.Core.Exceptions;
+using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 
 namespace PersonalWebsite.Core.Services;
@@ -29,23 +30,30 @@ public class CinemaService : ICinemaService
     public async Task<Cinema> GetCinemaAsync(string id)
     {
         var cinema = await _cinemaRepository.GetAsync(id);
+        if (cinema is null)
+            throw new EntityNotFoundException($"cinema not found: {id}");
 
         return cinema;
     }
 
-    public async Task RemoveCinemaAsync(string id) => await _cinemaRepository.RemoveAsync(id);
+    public async Task RemoveCinemaAsync(string id)
+    {
+        var result = await _cinemaRepository.RemoveAsync(id);
+        if (!result)
+            throw new EntityNotFoundException($"cinema not found: {id}");
+    }
 
     public async Task<Cinema> UpdateCinemaAsync(string id, string name, string city)
     {
-        var updatedCinema = await _cinemaRepository.UpdateAsync(
-            id,
-            new Cinema
-            {
-                Id = id,
-                Name = name,
-                City = city
-            }
-        );
+        var updatedCinema = new Cinema
+        {
+            Id = id,
+            Name = name,
+            City = city
+        };
+        var result = await _cinemaRepository.UpdateAsync(id, updatedCinema);
+        if (!result)
+            throw new EntityNotFoundException($"cinema not found: {id}");
 
         return updatedCinema;
     }

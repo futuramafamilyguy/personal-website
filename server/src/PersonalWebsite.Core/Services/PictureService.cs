@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using PersonalWebsite.Core.Enums;
+﻿using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
@@ -10,17 +9,11 @@ public class PictureService : IPictureService
 {
     private readonly IPictureRepository _pictureRepository;
     private readonly IImageStorage _imageStorage;
-    private readonly ILogger<PictureService> _logger;
 
-    public PictureService(
-        IPictureRepository pictureRepository,
-        IImageStorage imageStorage,
-        ILogger<PictureService> logger
-    )
+    public PictureService(IPictureRepository pictureRepository, IImageStorage imageStorage)
     {
         _pictureRepository = pictureRepository;
         _imageStorage = imageStorage;
-        _logger = logger;
     }
 
     public async Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetPicturesAsync(
@@ -29,7 +22,14 @@ public class PictureService : IPictureService
         int pageSize
     ) => await _pictureRepository.GetByYearWatchedAsync(yearWatched, pageNumber, pageSize);
 
-    public async Task<Picture> GetPictureAsync(string id) => await _pictureRepository.GetAsync(id);
+    public async Task<Picture> GetPictureAsync(string id)
+    {
+        var picture = await _pictureRepository.GetAsync(id);
+        if (picture is null)
+            throw new EntityNotFoundException($"picture not found: {id}");
+
+        return picture;
+    }
 
     public async Task<IEnumerable<Picture>> GetFavoritePicturesAsync(int yearWatched) =>
         await _pictureRepository.GetFavoritesByYearWatchedAsync(yearWatched);
@@ -48,18 +48,11 @@ public class PictureService : IPictureService
     )
     {
         if (isKino && !isFavorite)
-        {
-            _logger.LogError($"Picture cannot be KINO if not also a favourite");
-            throw new ArgumentException("Failed to create picture due to invalid arguments");
-        }
-
-        if (isKino && await _pictureRepository.CheckKinoPictureExistenceAsync(yearWatched))
-        {
-            _logger.LogError($"{yearWatched} already has a KINO");
-            throw new ValidationException(
-                "Failed to create picture due to picture validation error"
+            throw new DomainValidationException(
+                "picture cannot be KINO without also being a favorite"
             );
-        }
+        if (isKino && await _pictureRepository.CheckKinoPictureExistenceAsync(yearWatched))
+            throw new DomainValidationException($"{yearWatched} already has a KINO picture");
 
         var picture = await _pictureRepository.AddAsync(
             new Picture
@@ -99,40 +92,33 @@ public class PictureService : IPictureService
     )
     {
         if (isKino && !isFavorite)
-        {
-            _logger.LogError($"Picture `{id}` cannot be KINO if not also a favourite");
-            throw new ArgumentException("Failed to update picture due to invalid arguments");
-        }
-
-        if (isKino && await _pictureRepository.CheckKinoPictureExistenceAsync(yearWatched, id))
-        {
-            _logger.LogError($"{yearWatched} already has a KINO");
-            throw new ValidationException(
-                "Failed to update picture due to picture validation error"
+            throw new DomainValidationException(
+                "picture cannot be KINO without also being a favorite"
             );
-        }
+        if (isKino && await _pictureRepository.CheckKinoPictureExistenceAsync(yearWatched, id))
+            throw new DomainValidationException($"{yearWatched} already has a KINO picture");
 
-        var updatedPicture = await _pictureRepository.UpdateAsync(
-            id,
-            new Picture
-            {
-                Id = id,
-                Name = name,
-                YearWatched = yearWatched,
-                MonthWatched = monthWatched,
-                Cinema = cinema,
-                YearReleased = yearReleased,
-                Zinger = zinger,
-                Alias = alias,
-                ImageUrl = imageUrl,
-                ImageObjectKey = imageObjectKey,
-                AltImageUrl = altImageUrl,
-                AltImageObjectKey = altImageObjectKey,
-                IsFavorite = isFavorite,
-                IsKino = isKino,
-                IsNewRelease = isNewRelease
-            }
-        );
+        var updatedPicture = new Picture
+        {
+            Id = id,
+            Name = name,
+            YearWatched = yearWatched,
+            MonthWatched = monthWatched,
+            Cinema = cinema,
+            YearReleased = yearReleased,
+            Zinger = zinger,
+            Alias = alias,
+            ImageUrl = imageUrl,
+            ImageObjectKey = imageObjectKey,
+            AltImageUrl = altImageUrl,
+            AltImageObjectKey = altImageObjectKey,
+            IsFavorite = isFavorite,
+            IsKino = isKino,
+            IsNewRelease = isNewRelease
+        };
+        var result = await _pictureRepository.UpdateAsync(id, updatedPicture);
+        if (!result)
+            throw new EntityNotFoundException($"picture not found: {id}");
 
         return updatedPicture;
     }
@@ -143,6 +129,9 @@ public class PictureService : IPictureService
     public async Task RemovePictureAsync(string id)
     {
         var picture = await _pictureRepository.GetAsync(id);
+        if (picture is null)
+            throw new EntityNotFoundException($"picture not found: {id}");
+
         if (!string.IsNullOrEmpty(picture.ImageObjectKey))
             await _imageStorage.DeleteObjectAsync(picture.ImageObjectKey);
         if (!string.IsNullOrEmpty(picture.AltImageObjectKey))
@@ -165,6 +154,11 @@ public class PictureService : IPictureService
     )
     {
         var picture = await _pictureRepository.GetAsync(id);
+        if (picture is null)
+            throw new EntityNotFoundException($"picture not found: {id}");
+
+        if (isAlt && !picture.IsFavorite)
+            throw new DomainValidationException($"non-favorite pictures cannot have alt images");
 
         if (isAlt)
         {

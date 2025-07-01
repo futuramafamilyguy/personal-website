@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PersonalWebsite.Api.DTOs;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 
 namespace PersonalWebsite.Api.Controllers;
@@ -11,17 +12,14 @@ public class CinemasController : ControllerBase
 {
     private readonly ICinemaService _cinemaService;
     private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
-    private readonly ILogger<CinemasController> _logger;
 
     public CinemasController(
         ICinemaService cinemaService,
-        IPictureCinemaOrchestrator pictureCinemaOrchestrator,
-        ILogger<CinemasController> logger
+        IPictureCinemaOrchestrator pictureCinemaOrchestrator
     )
     {
         _cinemaService = cinemaService;
         _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
-        _logger = logger;
     }
 
     [HttpGet("")]
@@ -36,9 +34,6 @@ public class CinemasController : ControllerBase
     [HttpPost("")]
     public async Task<IActionResult> CreateCinemaAsync([FromBody] CreateCinemaRequest request)
     {
-        if (request is null)
-            return BadRequest("Cinema data is null");
-
         var cinema = await _cinemaService.AddCinemaAsync(request.Name, request.City);
 
         return Ok(cinema);
@@ -51,9 +46,6 @@ public class CinemasController : ControllerBase
         [FromBody] CreateCinemaRequest request
     )
     {
-        if (request is null)
-            return BadRequest("Cinema data is null");
-
         var updatedCinema = await _pictureCinemaOrchestrator.UpdateCinemaAndAssociatedPicturesAsync(
             id,
             request.Name,
@@ -72,11 +64,9 @@ public class CinemasController : ControllerBase
             await _pictureCinemaOrchestrator.ValidateAndDeleteCinema(id);
 
             return NoContent();
-        }
-        catch (InvalidOperationException ex)
+        } catch (CinemaHasAssociatedPicturesException ex)
         {
-            _logger.LogError(ex, $"Failed to delete cinema {id}");
-            return Conflict($"Failed to delete cinema {id}");
+            return Conflict(ex);
         }
     }
 }

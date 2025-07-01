@@ -1,9 +1,11 @@
-﻿using PersonalWebsite.Core.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using PersonalWebsite.Core.Enums;
 
 namespace PersonalWebsite.Api.DTOs;
 
 public class UpdatePictureRequest
 {
+    [MinLength(1)]
     public required string Name { get; set; }
     public required int YearWatched { get; set; }
     public Month? MonthWatched { get; set; }

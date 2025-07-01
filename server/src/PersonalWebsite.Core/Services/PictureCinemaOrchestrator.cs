@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using PersonalWebsite.Core.Enums;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 
@@ -104,7 +105,7 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
             updatedCinema
         );
         _logger.LogInformation(
-            $"Updated cinema info of {updatedCount} pictures that are associated with cinema {cinemaId}"
+            $"updated cinema info of {updatedCount} pictures that are associated with cinema {cinemaId}"
         );
 
         return updatedCinema;
@@ -117,11 +118,9 @@ public class PictureCinemaOrchestrator : IPictureCinemaOrchestrator
         );
 
         if (cinemaExists)
-        {
-            throw new InvalidOperationException(
-                $"Cinema {cinemaId} cannot be deleted because one or more pictures are still associated with the cinema"
+            throw new CinemaHasAssociatedPicturesException(
+                $"cinema cannot be deleted because one or more pictures are still associated with the cinema: {cinemaId}"
             );
-        }
 
         await _cinemaService.RemoveCinemaAsync(cinemaId);
     }

@@ -19,10 +19,12 @@ public class PictureRepository : IPictureRepository
         _pictures = database.GetCollection<PictureDocument>(_settings.PicturesCollectionName);
     }
 
-    public async Task<Picture> GetAsync(string id)
+    public async Task<Picture?> GetAsync(string id)
     {
         var filter = Builders<PictureDocument>.Filter.Eq(picture => picture.Id, id);
         var picture = await _pictures.Find(filter).FirstOrDefaultAsync();
+        if (picture is null)
+            return null;
 
         return PictureMapper.ToDomain(picture);
     }
@@ -72,14 +74,14 @@ public class PictureRepository : IPictureRepository
     public async Task RemoveAsync(string id) =>
         await _pictures.DeleteOneAsync(picture => picture.Id == id);
 
-    public async Task<Picture> UpdateAsync(string id, Picture updatedPicture)
+    public async Task<bool> UpdateAsync(string id, Picture updatedPicture)
     {
-        await _pictures.ReplaceOneAsync(
+        var result = await _pictures.ReplaceOneAsync(
             picture => picture.Id == id,
             PictureMapper.ToDocument(updatedPicture)
         );
 
-        return updatedPicture;
+        return result.ModifiedCount == 1;
     }
 
     public async Task<long> UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema)

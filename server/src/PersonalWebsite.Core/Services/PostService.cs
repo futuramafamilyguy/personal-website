@@ -12,21 +12,18 @@ public class PostService : IPostService
     private readonly IImageStorage _imageStorage;
     private readonly IMarkdownStorage _markdownStorage;
     private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly ILogger<PostService> _logger;
 
     public PostService(
         IPostRepository postRepository,
         IImageStorage imageStorage,
         IMarkdownStorage markdownStorage,
-        IDateTimeProvider dateTimeProvider,
-        ILogger<PostService> logger
+        IDateTimeProvider dateTimeProvider
     )
     {
         _postRepository = postRepository;
         _imageStorage = imageStorage;
         _markdownStorage = markdownStorage;
         _dateTimeProvider = dateTimeProvider;
-        _logger = logger;
     }
 
     public async Task<Post> AddPostAsync(string title)
@@ -46,18 +43,22 @@ public class PostService : IPostService
         return post;
     }
 
-    public async Task<Post> GetPostAsync(string id) => await _postRepository.GetAsync(id);
-
     public async Task<IEnumerable<Post>> GetPostsAsync() => await _postRepository.GetAsync();
+
+    public async Task<Post> GetPostAsync(string id)
+    {
+        var post = await _postRepository.GetAsync(id);
+        if (post is null)
+            throw new EntityNotFoundException($"post not found: {id}");
+
+        return post;
+    }
 
     public async Task<Post> GetPostBySlugAsync(string slug)
     {
         var post = await _postRepository.GetBySlugAsync(slug);
-
         if (post is null)
-        {
-            throw new EntityNotFoundException($"Post entity with slug '{slug}' not found");
-        }
+            throw new EntityNotFoundException($"post not found: {slug}");
 
         return post;
     }
@@ -65,6 +66,9 @@ public class PostService : IPostService
     public async Task RemovePostAsync(string id)
     {
         var post = await _postRepository.GetAsync(id);
+        if (post is null)
+            throw new EntityNotFoundException($"post not found: {id}");
+
         if (!string.IsNullOrEmpty(post.MarkdownObjectKey))
             await _markdownStorage.ArchiveObjectAsync(post.MarkdownObjectKey);
         if (!string.IsNullOrEmpty(post.ImageObjectKey))
@@ -84,22 +88,22 @@ public class PostService : IPostService
         int markdownVersion
     )
     {
-        var updatedPost = await _postRepository.UpdateAsync(
-            id,
-            new Post
-            {
-                Id = id,
-                Title = title,
-                MarkdownUrl = markdownUrl,
-                MarkdownObjectKey = markdownObjectKey,
-                ImageUrl = imageUrl,
-                ImageObjectKey = imageObjectKey,
-                LastUpdatedUtc = _dateTimeProvider.UtcNow,
-                CreatedAtUtc = createdAtUtc,
-                Slug = GenerateSlug(title),
-                MarkdownVersion = markdownVersion,
-            }
-        );
+        var updatedPost = new Post
+        {
+            Id = id,
+            Title = title,
+            MarkdownUrl = markdownUrl,
+            MarkdownObjectKey = markdownObjectKey,
+            ImageUrl = imageUrl,
+            ImageObjectKey = imageObjectKey,
+            LastUpdatedUtc = _dateTimeProvider.UtcNow,
+            CreatedAtUtc = createdAtUtc,
+            Slug = GenerateSlug(title),
+            MarkdownVersion = markdownVersion,
+        };
+        var result = await _postRepository.UpdateAsync(id, updatedPost);
+        if (!result)
+            throw new EntityNotFoundException($"post not found: {id}");
 
         return updatedPost;
     }
@@ -111,6 +115,9 @@ public class PostService : IPostService
     )
     {
         var post = await _postRepository.GetAsync(id);
+        if (post is null)
+            throw new EntityNotFoundException($"post not found: {id}");
+
         if (!string.IsNullOrEmpty(post.ImageObjectKey))
             await _imageStorage.DeleteObjectAsync(post.ImageObjectKey);
 
@@ -141,7 +148,7 @@ public class PostService : IPostService
             var prevObjectKey = $"{markdownBasePath}/{id}-v{newMarkdownVersion - 1}.md";
             await _markdownStorage.DeleteObjectAsync(prevObjectKey);
         }
-        
+
         await _postRepository.UpdateMarkdownInfoAsync(id, objectKey, publicUrl);
 
         return presignedUrl;

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PersonalWebsite.Api.DTOs;
-using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Infrastructure.ImageStorage;
 using PersonalWebsite.Infrastructure.MarkdownStorage;
@@ -39,25 +38,15 @@ public class PostsController : Controller
     [HttpGet("{slug}")]
     public async Task<IActionResult> GetPostBySlugAsync(string slug)
     {
-        try
-        {
-            var post = await _postService.GetPostBySlugAsync(slug);
+        var post = await _postService.GetPostBySlugAsync(slug);
 
-            return Ok(post);
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound("Post with specified slug was not found");
-        }
+        return Ok(post);
     }
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpPost("")]
     public async Task<IActionResult> CreatePostAsync([FromBody] CreatePostRequest request)
     {
-        if (request is null)
-            return BadRequest("Post data is null");
-
         var post = await _postService.AddPostAsync(request.Title);
 
         return Ok(post);

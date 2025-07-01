@@ -37,10 +37,12 @@ public class PostRepository : IPostRepository
         return posts.Select(PostMapper.ToDomain);
     }
 
-    public async Task<Post> GetAsync(string id)
+    public async Task<Post?> GetAsync(string id)
     {
         var filter = Builders<PostDocument>.Filter.Eq(post => post.Id, id);
         var post = await _posts.Find(filter).FirstOrDefaultAsync();
+        if (post is null)
+            return null;
 
         return PostMapper.ToDomain(post);
     }
@@ -49,17 +51,22 @@ public class PostRepository : IPostRepository
     {
         var filter = Builders<PostDocument>.Filter.Eq(post => post.Slug, slug);
         var post = await _posts.Find(filter).FirstOrDefaultAsync();
+        if (post is null)
+            return null;
 
-        return post == null ? null : PostMapper.ToDomain(post);
+        return PostMapper.ToDomain(post);
     }
 
     public async Task RemoveAsync(string id) => await _posts.DeleteOneAsync(post => post.Id == id);
 
-    public async Task<Post> UpdateAsync(string id, Post updatedPost)
+    public async Task<bool> UpdateAsync(string id, Post updatedPost)
     {
-        await _posts.ReplaceOneAsync(post => post.Id == id, PostMapper.ToDocument(updatedPost));
+        var result = await _posts.ReplaceOneAsync(
+            post => post.Id == id,
+            PostMapper.ToDocument(updatedPost)
+        );
 
-        return updatedPost;
+        return result.ModifiedCount == 1;
     }
 
     public async Task UpdateMarkdownInfoAsync(

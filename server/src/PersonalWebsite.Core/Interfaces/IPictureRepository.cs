@@ -4,7 +4,7 @@ namespace PersonalWebsite.Core.Interfaces;
 
 public interface IPictureRepository
 {
-    Task<Picture> GetAsync(string id);
+    Task<Picture?> GetAsync(string id);
     Task<(IEnumerable<Picture> Pictures, long TotalCount)> GetByYearWatchedAsync(
         int yearWatched,
         int pageNumber,
@@ -12,7 +12,7 @@ public interface IPictureRepository
     );
     Task<IEnumerable<Picture>> GetFavoritesByYearWatchedAsync(int yearWatched);
     Task<Picture> AddAsync(Picture picture);
-    Task<Picture> UpdateAsync(string id, Picture picture);
+    Task<bool> UpdateAsync(string id, Picture picture);
     Task<long> UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema);
     Task RemoveAsync(string id);
     Task<bool> CheckCinemaAssociationExistenceAsync(string cinemaId);
