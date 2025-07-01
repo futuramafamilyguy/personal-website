@@ -118,6 +118,10 @@ input[type="checkbox"]:checked {
   padding-left: 30px;
 }
 
+input[type="file"] {
+  width: 100%;
+}
+
 /* scrollbar styling. these should probably be in their own css file but im not gonna do it ahahaha */
 
 .formFields::-webkit-scrollbar {

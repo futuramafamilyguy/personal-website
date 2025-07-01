@@ -11,6 +11,7 @@ export interface UpdatePostRequest {
   markdownObjectKey: string | null;
   imageUrl: string | null;
   imageObjectKey: string | null;
+  markdownVersion: number;
 }
 
 export const createPost = async (title: string): Promise<Post> => {
@@ -24,11 +25,12 @@ export const createPost = async (title: string): Promise<Post> => {
 export const updatePost = async (data: UpdatePostRequest): Promise<Post> => {
   const res = await api.put<Post>(`/posts/${data.id}`, {
     title: data.title,
+    createdAtUtc: data.createdAtUtc,
     markdownUrl: data.markdownUrl,
     markdownObjectKey: data.markdownObjectKey,
     imageUrl: data.imageUrl,
     imageObjectKey: data.imageObjectKey,
-    createdAtUtc: data.createdAtUtc,
+    markdownVersion: data.markdownVersion,
   });
 
   return res.data;

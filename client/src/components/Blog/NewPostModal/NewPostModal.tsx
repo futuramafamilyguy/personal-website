@@ -36,6 +36,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
   const [markdownUrl, setMarkdownUrl] = useState<string | null>(null);
   const [markdownObjectKey, setMarkdownObjectKey] = useState("");
   const [createdAtUtc, setCreatedAtUtc] = useState<Date | undefined>(undefined);
+  const [markdownVersion, setMarkdownVersion] = useState<number>();
 
   const [result, setResult] = useState("");
 
@@ -50,6 +51,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     setMarkdownObjectKey(
       post && post.markdownObjectKey ? post.markdownObjectKey : ""
     );
+    setMarkdownVersion(post && post.markdownVersion ? post.markdownVersion : 1);
   }, [isOpen]);
 
   useEffect(() => {
@@ -104,6 +106,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         markdownObjectKey: markdownObjectKey,
         imageUrl: imageObjectKey ? imageUrl : null, // use object key to determine image presence due to default image
         imageObjectKey: imageObjectKey ? imageObjectKey : null,
+        markdownVersion: markdownVersion!,
       };
       const updatedPost = await updatePost(data);
 

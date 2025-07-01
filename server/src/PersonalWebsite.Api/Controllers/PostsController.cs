@@ -80,7 +80,8 @@ public class PostsController : Controller
             request.MarkdownObjectKey,
             request.ImageUrl,
             request.ImageObjectKey,
-            request.CreatedAtUtc
+            request.CreatedAtUtc,
+            request.MarkdownVersion
         );
 
         return Ok(updatedPost);

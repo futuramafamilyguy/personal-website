@@ -38,7 +38,8 @@ public class PostService : IPostService
                 Title = title,
                 LastUpdatedUtc = utcNow,
                 CreatedAtUtc = utcNow,
-                Slug = GenerateSlug(title)
+                Slug = GenerateSlug(title),
+                MarkdownVersion = 0,
             }
         );
 
@@ -79,7 +80,8 @@ public class PostService : IPostService
         string? markdownObjectKey,
         string? imageUrl,
         string? imageObjectKey,
-        DateTime createdAtUtc
+        DateTime createdAtUtc,
+        int markdownVersion
     )
     {
         var updatedPost = await _postRepository.UpdateAsync(
@@ -94,7 +96,8 @@ public class PostService : IPostService
                 ImageObjectKey = imageObjectKey,
                 LastUpdatedUtc = _dateTimeProvider.UtcNow,
                 CreatedAtUtc = createdAtUtc,
-                Slug = GenerateSlug(title)
+                Slug = GenerateSlug(title),
+                MarkdownVersion = markdownVersion,
             }
         );
 
@@ -125,7 +128,8 @@ public class PostService : IPostService
 
     public async Task<string> HandleMarkdownUploadAsync(string id, string markdownBasePath)
     {
-        var objectKey = $"{markdownBasePath}/{id}.md";
+        var newMarkdownVersion = await _postRepository.IncrementMarkdownVersionAsync(id);
+        var objectKey = $"{markdownBasePath}/{id}-v{newMarkdownVersion}.md";
         var presignedUrl = await _markdownStorage.GeneratePresignedUploadUrlAsync(
             objectKey,
             TimeSpan.FromMinutes(5)

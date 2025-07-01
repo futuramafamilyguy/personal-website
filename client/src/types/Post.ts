@@ -8,4 +8,5 @@ export default interface Post {
   markdownUrl: string;
   markdownObjectKey: string;
   slug: string;
+  markdownVersion: number;
 }

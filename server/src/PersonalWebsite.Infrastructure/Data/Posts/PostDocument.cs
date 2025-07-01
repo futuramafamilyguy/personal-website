@@ -32,4 +32,7 @@ public class PostDocument
 
     [BsonElement("slug")]
     public required string Slug { get; set; }
+
+    [BsonElement("version")]
+    public required int MarkdownVersion { get; set; }
 }

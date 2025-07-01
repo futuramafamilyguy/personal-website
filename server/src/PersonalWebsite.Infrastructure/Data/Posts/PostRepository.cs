@@ -85,4 +85,17 @@ public class PostRepository : IPostRepository
 
         await _posts.UpdateOneAsync(filter, update);
     }
+
+    public async Task<int> IncrementMarkdownVersionAsync(string id)
+    {
+        var filter = Builders<PostDocument>.Filter.Eq(post => post.Id, id);
+        var update = Builders<PostDocument>.Update.Inc(post => post.MarkdownVersion, 1);
+        var options = new FindOneAndUpdateOptions<PostDocument, int>
+        {
+            ReturnDocument = ReturnDocument.After,
+            Projection = Builders<PostDocument>.Projection.Expression(post => post.MarkdownVersion)
+        };
+
+        return await _posts.FindOneAndUpdateAsync(filter, update, options);
+    }
 }

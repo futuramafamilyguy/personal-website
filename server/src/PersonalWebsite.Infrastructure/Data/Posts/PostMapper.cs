@@ -16,6 +16,7 @@ public static class PostMapper
             LastUpdatedUtc = document.LastUpdatedUtc,
             CreatedAtUtc = document.CreatedAtUtc,
             Slug = document.Slug,
+            MarkdownVersion = document.MarkdownVersion,
         };
 
     public static PostDocument ToDocument(Post post) =>
@@ -30,5 +31,6 @@ public static class PostMapper
             LastUpdatedUtc = post.LastUpdatedUtc,
             CreatedAtUtc = post.CreatedAtUtc,
             Slug = post.Slug,
+            MarkdownVersion = post.MarkdownVersion,
         };
 }

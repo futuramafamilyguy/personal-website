@@ -8,4 +8,5 @@ public class UpdatePostRequest
     public string? ImageUrl { get; set; }
     public string? ImageObjectKey { get; set; }
     public required DateTime CreatedAtUtc { get; set; }
+    public required int MarkdownVersion { get; set; }
 }

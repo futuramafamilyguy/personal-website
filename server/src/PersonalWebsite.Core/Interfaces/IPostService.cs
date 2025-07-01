@@ -15,7 +15,8 @@ public interface IPostService
         string? markdownObjectKey,
         string? imageUrl,
         string? imageObjectKey,
-        DateTime createdAtUtc
+        DateTime createdAtUtc,
+        int markdownVersion
     );
     Task RemovePostAsync(string id);
     Task<string> HandleMarkdownUploadAsync(string id, string markdownBasePath);
