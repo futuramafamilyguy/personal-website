@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using PersonalWebsite.Core.Enums;
+using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 using PersonalWebsite.Core.Services;
@@ -103,7 +104,9 @@ public class PictureCinemaOrchestratorTests
         var zinger = "bazinga";
         var alias = "car";
         var imageUrl = "domain/images/image.jpg";
-        var altImageUrl = "domain/images/alt-image.jpg";
+        var imageObjectKey = "images/image.jpg";
+        var altImageUrl = "domain/images/image-alt.jpg";
+        var altImageObjectKey = "images/image-alt.jpg";
         var isFavorite = false;
         var isKino = false;
         var isNewRelease = false;
@@ -131,7 +134,9 @@ public class PictureCinemaOrchestratorTests
             zinger,
             alias,
             imageUrl,
+            imageObjectKey,
             altImageUrl,
+            altImageObjectKey,
             isFavorite,
             isKino,
             isNewRelease
@@ -151,7 +156,9 @@ public class PictureCinemaOrchestratorTests
                     zinger,
                     alias,
                     imageUrl,
+                    imageObjectKey,
                     altImageUrl,
+                    altImageObjectKey,
                     isFavorite,
                     isKino,
                     isNewRelease
@@ -253,9 +260,9 @@ public class PictureCinemaOrchestratorTests
         // assert
         await action
             .Should()
-            .ThrowAsync<InvalidOperationException>()
+            .ThrowAsync<CinemaHasAssociatedPicturesException>()
             .WithMessage(
-                "Cinema 123 cannot be deleted because one or more pictures are still associated with the cinema"
+                "cinema cannot be deleted because one or more pictures are still associated with the cinema: 123"
             );
     }
 }

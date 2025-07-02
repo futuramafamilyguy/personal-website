@@ -1,6 +1,4 @@
-﻿using System.Text;
-using FluentAssertions;
-using Microsoft.Extensions.Logging;
+﻿using FluentAssertions;
 using Moq;
 using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
@@ -40,26 +38,11 @@ public class PostServiceTests
                             post.Title == title
                             && post.CreatedAtUtc == dateTimeNow
                             && post.Slug == slug
+                            && post.MarkdownVersion == 0
                     )
                 ),
             Times.Once
         );
-    }
-
-    [Fact]
-    public async Task GetPostAsync_ShouldCallGetAsync()
-    {
-        // arrange
-        var postRepositoryMock = new Mock<IPostRepository>();
-        var sut = CreatePostService(postRepositoryMock.Object);
-
-        var id = "123";
-
-        // act
-        await sut.GetPostAsync(id);
-
-        // assert
-        postRepositoryMock.Verify(x => x.GetAsync(id), Times.Once);
     }
 
     [Fact]
@@ -77,31 +60,82 @@ public class PostServiceTests
     }
 
     [Fact]
+    public async Task GetPostAsync_ShouldReturnPost()
+    {
+        // arrange
+        var postRepositoryMock = new Mock<IPostRepository>();
+        var sut = CreatePostService(postRepositoryMock.Object);
+
+        var id = "123";
+        var title = "Cars Review";
+        postRepositoryMock
+            .Setup(x => x.GetAsync(id))
+            .ReturnsAsync(
+                new Post
+                {
+                    Id = id,
+                    Title = title,
+                    Slug = "cars-review",
+                    CreatedAtUtc = new DateTime(2024, 1, 1),
+                    LastUpdatedUtc = new DateTime(2024, 1, 2),
+                    MarkdownVersion = 1
+                }
+            );
+
+        // act
+        var post = await sut.GetPostAsync(id);
+
+        // assert
+        post.Id.Should().Be(id);
+        post.Title.Should().Be(title);
+    }
+
+    [Fact]
+    public async Task GetPostAsync_IfIdDoesNotExist_ShouldThrowEntityNotFoundException()
+    {
+        // arrange
+        var postRepositoryMock = new Mock<IPostRepository>();
+        var sut = CreatePostService(postRepositoryMock.Object);
+
+        var id = "123";
+        postRepositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync((Post?)null);
+
+        // act
+        var act = async () => await sut.GetPostAsync(id);
+
+        // assert
+        await act.Should().ThrowAsync<EntityNotFoundException>();
+    }
+
+    [Fact]
     public async Task GetPostBySlugAsync_ShouldCallGetBySlugAsync()
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
         var sut = CreatePostService(postRepositoryMock.Object);
 
+        var id = "123";
         var slug = "cars-review";
         postRepositoryMock
             .Setup(x => x.GetBySlugAsync(slug))
             .ReturnsAsync(
                 new Post
                 {
-                    Id = "123",
+                    Id = id,
                     Title = "Cars Review",
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
-                    Slug = slug
+                    Slug = slug,
+                    MarkdownVersion = 1
                 }
             );
 
         // act
-        await sut.GetPostBySlugAsync(slug);
+        var post = await sut.GetPostBySlugAsync(slug);
 
         // assert
-        postRepositoryMock.Verify(x => x.GetBySlugAsync(slug), Times.Once);
+        post.Id.Should().Be(id);
+        post.Slug.Should().Be(slug);
     }
 
     [Fact]
@@ -122,299 +156,264 @@ public class PostServiceTests
     }
 
     [Fact]
-    public async Task RemovePostAsync_ShouldCallRemoveAsync()
+    public async Task RemovePostAsync_ShouldCallRemoveAsyncAndDeleteRelatedMedia()
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var sut = CreatePostService(postRepositoryMock.Object);
+        var markdownStorageMock = new Mock<IMarkdownStorage>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePostService(
+            postRepositoryMock.Object,
+            imageStorageMock.Object,
+            markdownStorageMock.Object
+        );
 
         var id = "123";
+        var markdownObjectKey = "markdown/posts/123-v1.md";
+        var imageObjectKey = "image/posts/123.md";
+        postRepositoryMock
+            .Setup(x => x.GetAsync(id))
+            .ReturnsAsync(
+                new Post
+                {
+                    Id = "123",
+                    Title = "Cars Review",
+                    MarkdownUrl = "https://storagehost/markdown/posts/123-v1.md",
+                    MarkdownObjectKey = markdownObjectKey,
+                    ImageUrl = "https://storagehost/images/posts/123.jpg",
+                    ImageObjectKey = imageObjectKey,
+                    CreatedAtUtc = new DateTime(2024, 1, 1),
+                    LastUpdatedUtc = new DateTime(2024, 1, 1),
+                    Slug = "cars-review",
+                    MarkdownVersion = 1
+                }
+            );
 
         // act
         await sut.RemovePostAsync(id);
 
         // assert
         postRepositoryMock.Verify(x => x.RemoveAsync(id), Times.Once);
+        markdownStorageMock.Verify(x => x.ArchiveObjectAsync(markdownObjectKey), Times.Once);
+        imageStorageMock.Verify(x => x.DeleteObjectAsync(imageObjectKey), Times.Once);
     }
 
     [Fact]
-    public async Task UpdatePostAsync_ShouldCallUpdateAsync()
+    public async Task HandleImageUploadAsync_ShouldReturnedPresignedUploadUrl()
     {
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
-        var dateTimeProviderMock = new Mock<IDateTimeProvider>();
-        var sut = CreatePostService(
-            postRepository: postRepositoryMock.Object,
-            dateTimeProvider: dateTimeProviderMock.Object
-        );
-
-        var dateTimeNow = DateTime.UtcNow;
-        dateTimeProviderMock.Setup(x => x.UtcNow).Returns(dateTimeNow);
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePostService(postRepositoryMock.Object, imageStorageMock.Object);
 
         var id = "123";
-        var title = "Cars 2 Review";
-        var contentUrl = "https://storagehost/content/posts/123.jpg";
-        var imageUrl = "https://storagehost/images/posts/123.jpg";
-        var createdAt = new DateTime(2024, 1, 1);
-        var slug = "cars-2-review";
+        postRepositoryMock
+            .Setup(x => x.GetAsync(id))
+            .ReturnsAsync(
+                new Post
+                {
+                    Id = "123",
+                    Title = "Cars Review",
+                    CreatedAtUtc = new DateTime(2024, 1, 1),
+                    LastUpdatedUtc = new DateTime(2024, 1, 1),
+                    Slug = "cars-review",
+                    MarkdownVersion = 1
+                }
+            );
+        var imageBasePath = "image/posts";
+        var extension = "jpg";
+        imageStorageMock
+            .Setup(x => x.GetPublicUrl(It.IsAny<string>()))
+            .Returns((string path) => $"https://storagehost/{path}");
+        imageStorageMock
+            .Setup(x =>
+                x.GeneratePresignedUploadUrlAsync("image/posts/123.jpg", It.IsAny<TimeSpan>())
+            )
+            .ReturnsAsync("https://storagehost/upload");
 
         // act
-        await sut.UpdatePostAsync(id, title, contentUrl, imageUrl, createdAt);
+        var presignedUploadUrl = await sut.HandleImageUploadAsync(id, imageBasePath, extension);
 
         // assert
         postRepositoryMock.Verify(
             x =>
-                x.UpdateAsync(
+                x.UpdateImageInfoAsync(
                     id,
-                    It.Is(
-                        (Post post) =>
-                            post.Id == id
-                            && post.Title == title
-                            && post.ContentUrl == contentUrl
-                            && post.ImageUrl == imageUrl
-                            && post.LastUpdatedUtc == dateTimeNow
-                            && post.CreatedAtUtc == createdAt
-                            && post.Slug == slug
-                    )
+                    "image/posts/123.jpg",
+                    "https://storagehost/image/posts/123.jpg"
                 ),
             Times.Once
         );
+        imageStorageMock.Verify(x => x.DeleteObjectAsync(It.IsAny<string>()), Times.Never);
+        presignedUploadUrl.Should().Be("https://storagehost/upload");
     }
 
     [Fact]
-    public async Task UploadPostImageAsync_ShouldCallSaveImageAsync()
+    public async Task HandleImageUploadAsync_IfPostHasExistingImage_ShouldDeleteImage()
     {
         // arrange
-        var repositoryMock = new Mock<IPostRepository>();
+        var postRepositoryMock = new Mock<IPostRepository>();
         var imageStorageMock = new Mock<IImageStorage>();
-        var sut = CreatePostService(repositoryMock.Object, imageStorageMock.Object);
+        var sut = CreatePostService(postRepositoryMock.Object, imageStorageMock.Object);
 
         var id = "123";
-        var title = "Cars Review";
-        var createdAt = new DateTime(2024, 1, 1);
-        var slug = "cars-review";
-        var post = new Post
-        {
-            Id = id,
-            Title = title,
-            CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt,
-            Slug = slug
-        };
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
-
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
-        var imageExtension = ".jpg";
-        var imageDirectory = "images/posts";
-        imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(true);
+        postRepositoryMock
+            .Setup(x => x.GetAsync(id))
+            .ReturnsAsync(
+                new Post
+                {
+                    Id = "123",
+                    Title = "Cars Review",
+                    ImageUrl = "https://storagehost/images/posts/123.jpg",
+                    ImageObjectKey = "images/posts/123.jpg",
+                    CreatedAtUtc = new DateTime(2024, 1, 1),
+                    LastUpdatedUtc = new DateTime(2024, 1, 1),
+                    Slug = "cars-review",
+                    MarkdownVersion = 1
+                }
+            );
+        var imageBasePath = "image/posts";
+        var extension = "jpg";
+        imageStorageMock
+            .Setup(x => x.GetPublicUrl(It.IsAny<string>()))
+            .Returns((string path) => $"https://storagehost/{path}");
+        imageStorageMock
+            .Setup(x =>
+                x.GeneratePresignedUploadUrlAsync("image/posts/123.jpg", It.IsAny<TimeSpan>())
+            )
+            .ReturnsAsync("https://storagehost/upload");
 
         // act
-        await sut.UploadPostImageAsync(stream, id, imageExtension, imageDirectory);
+        var presignedUploadUrl = await sut.HandleImageUploadAsync(id, imageBasePath, extension);
 
         // assert
-        imageStorageMock.Verify(
-            x => x.SaveImageAsync(stream, "123.jpg", "images/posts"),
-            Times.Once()
+        postRepositoryMock.Verify(
+            x =>
+                x.UpdateImageInfoAsync(
+                    id,
+                    "image/posts/123.jpg",
+                    "https://storagehost/image/posts/123.jpg"
+                ),
+            Times.Once
         );
+        imageStorageMock.Verify(x => x.DeleteObjectAsync("images/posts/123.jpg"), Times.Once);
+        presignedUploadUrl.Should().Be("https://storagehost/upload");
     }
 
     [Fact]
-    public async Task UploadPostImageAsync_IfImageExtensionIsUnsupported_ShouldThrowImageValidationExceptionl()
+    public async Task HandleMarkdownUploadAsync_ShouldReturnedPresignedUploadUrl()
     {
         // arrange
-        var repositoryMock = new Mock<IPostRepository>();
-        var imageStorageMock = new Mock<IImageStorage>();
-        var sut = CreatePostService(repositoryMock.Object, imageStorageMock.Object);
-
-        var id = "123";
-        var title = "Cars Review";
-        var createdAt = new DateTime(2024, 1, 1);
-        var slug = "cars-review";
-        var post = new Post
-        {
-            Id = id,
-            Title = title,
-            CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt,
-            Slug = slug
-        };
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
-
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
-        var imageExtension = ".jpg";
-        var imageDirectory = "images/posts";
-        imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(false);
-
-        // act
-        var act = async () =>
-            await sut.UploadPostImageAsync(stream, id, imageExtension, imageDirectory);
-
-        // assert
-        await act.Should().ThrowAsync<ValidationException>();
-    }
-
-    [Fact]
-    public async Task DeletePostImageAsync_ShouldCallRemoveImageAsync()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPostRepository>();
-        var imageStorageMock = new Mock<IImageStorage>();
-        var sut = CreatePostService(repositoryMock.Object, imageStorageMock.Object);
-
-        var id = "123";
-        var title = "Cars Review";
-        var imageUrl = "https://storagehost/images/posts/123.jpg";
-        var createdAt = new DateTime(2024, 1, 1);
-        var slug = "cars-review";
-        var post = new Post
-        {
-            Id = id,
-            Title = title,
-            ImageUrl = imageUrl,
-            CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt,
-            Slug = slug
-        };
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
-
-        var imageName = "123.jpg";
-        var imageDirectory = "images/posts";
-        imageStorageMock.Setup(x => x.GetImageFileNameFromUrl(imageUrl)).Returns(imageName);
-
-        // act
-        await sut.DeletePostImageAsync(id, imageDirectory);
-
-        // assert
-        imageStorageMock.Verify(x => x.RemoveImageAsync("123.jpg", "images/posts"), Times.Once());
-    }
-
-    [Fact]
-    public async Task DeletePostImageAsync_IfPictureDoesNotHaveAnImage_ShouldThrowValidationException()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPostRepository>();
-        var imageStorageMock = new Mock<IImageStorage>();
-        var sut = CreatePostService(repositoryMock.Object, imageStorageMock.Object);
-
-        var id = "123";
-        var title = "Cars Review";
-        var createdAt = new DateTime(2024, 1, 1);
-        var slug = "cars-review";
-        var post = new Post
-        {
-            Id = id,
-            Title = title,
-            CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt,
-            Slug = slug
-        };
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
-
-        var imageDirectory = "images/posts";
-
-        // act
-        var act = async () => await sut.DeletePostImageAsync(id, imageDirectory);
-
-        // assert
-        await act.Should().ThrowAsync<ValidationException>();
-    }
-
-    [Fact]
-    public async Task UploadPostContentAsync_ShouldCallSaveMarkdownAsync()
-    {
-        // arrange
-        var markdownStorageMock = new Mock<IMarkdownStorage>();
-        var sut = CreatePostService(markdownStorage: markdownStorageMock.Object);
-
-        var id = "123";
-        var content = "Cars is a good movie.";
-        var directory = "markdown/posts";
-
-        // act
-        await sut.UploadPostContentAsync(content, id, directory);
-
-        // assert
-        markdownStorageMock.Verify(
-            x => x.SaveMarkdownAsync(content, "123.md", directory),
-            Times.Once()
-        );
-    }
-
-    [Fact]
-    public async Task DeletePostContentAsync_ShouldCallRemoveMarkdownAsync()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPostRepository>();
+        var postRepositoryMock = new Mock<IPostRepository>();
         var markdownStorageMock = new Mock<IMarkdownStorage>();
         var sut = CreatePostService(
-            repositoryMock.Object,
+            postRepositoryMock.Object,
             markdownStorage: markdownStorageMock.Object
         );
 
         var id = "123";
-        var title = "Cars Review";
-        var contentUrl = "https://storagehost/markdown/posts/123.md";
-        var createdAt = new DateTime(2024, 1, 1);
-        var slug = "cars-review";
-        var post = new Post
-        {
-            Id = id,
-            Title = title,
-            ContentUrl = contentUrl,
-            CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt,
-            Slug = slug
-        };
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
-
-        var markdownName = "123.md";
-        var directory = "markdown/posts";
+        var currentVersion = 0;
+        var newVersion = 1;
+        postRepositoryMock
+            .Setup(x => x.GetAsync(id))
+            .ReturnsAsync(
+                new Post
+                {
+                    Id = "123",
+                    Title = "Cars Review",
+                    CreatedAtUtc = new DateTime(2024, 1, 1),
+                    LastUpdatedUtc = new DateTime(2024, 1, 1),
+                    Slug = "cars-review",
+                    MarkdownVersion = currentVersion
+                }
+            );
+        postRepositoryMock.Setup(x => x.IncrementMarkdownVersionAsync(id)).ReturnsAsync(newVersion);
+        var markdownBasePath = "markdown/posts";
         markdownStorageMock
-            .Setup(x => x.GetMarkdownFileNameFromUrl(contentUrl))
-            .Returns(markdownName);
+            .Setup(x => x.GetPublicUrl(It.IsAny<string>()))
+            .Returns((string path) => $"https://storagehost/{path}");
+        markdownStorageMock
+            .Setup(x =>
+                x.GeneratePresignedUploadUrlAsync("markdown/posts/123-v1.md", It.IsAny<TimeSpan>())
+            )
+            .ReturnsAsync("https://storagehost/upload");
 
         // act
-        await sut.DeletePostContentAsync(id, directory);
+        var presignedUploadUrl = await sut.HandleMarkdownUploadAsync(id, markdownBasePath);
 
         // assert
-        markdownStorageMock.Verify(
-            x => x.RemoveMarkdownAsync("123.md", "markdown/posts"),
-            Times.Once()
+        postRepositoryMock.Verify(
+            x =>
+                x.UpdateMarkdownInfoAsync(
+                    id,
+                    "markdown/posts/123-v1.md",
+                    "https://storagehost/markdown/posts/123-v1.md"
+                ),
+            Times.Once
         );
+        markdownStorageMock.Verify(x => x.DeleteObjectAsync(It.IsAny<string>()), Times.Never);
+        presignedUploadUrl.Should().Be("https://storagehost/upload");
     }
 
     [Fact]
-    public async Task DeletePostContentAsync_IfPostDoesNotHaveContent_ShouldThrowValidationException()
+    public async Task HandleMarkdownUploadAsync_IfMarkdownVersionGreaterThan1_ShouldDeletePreviousMarkdownl()
     {
         // arrange
-        var repositoryMock = new Mock<IPostRepository>();
+        var postRepositoryMock = new Mock<IPostRepository>();
         var markdownStorageMock = new Mock<IMarkdownStorage>();
         var sut = CreatePostService(
-            repositoryMock.Object,
+            postRepositoryMock.Object,
             markdownStorage: markdownStorageMock.Object
         );
 
         var id = "123";
-        var title = "Cars Review";
-        var createdAt = new DateTime(2024, 1, 1);
-        var slug = "cars-review";
-        var post = new Post
-        {
-            Id = id,
-            Title = title,
-            CreatedAtUtc = createdAt,
-            LastUpdatedUtc = createdAt,
-            Slug = slug
-        };
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(post);
-
-        var directory = "markdown/posts";
+        var currentVersion = 1;
+        var newVersion = 2;
+        postRepositoryMock
+            .Setup(x => x.GetAsync(id))
+            .ReturnsAsync(
+                new Post
+                {
+                    Id = "123",
+                    Title = "Cars Review",
+                    CreatedAtUtc = new DateTime(2024, 1, 1),
+                    LastUpdatedUtc = new DateTime(2024, 1, 1),
+                    Slug = "cars-review",
+                    MarkdownVersion = currentVersion
+                }
+            );
+        postRepositoryMock.Setup(x => x.IncrementMarkdownVersionAsync(id)).ReturnsAsync(newVersion);
+        var markdownBasePath = "markdown/posts";
+        markdownStorageMock
+            .Setup(x => x.GetPublicUrl(It.IsAny<string>()))
+            .Returns((string path) => $"https://storagehost/{path}");
+        markdownStorageMock
+            .Setup(x =>
+                x.GeneratePresignedUploadUrlAsync(
+                    $"markdown/posts/123-v{newVersion}.md",
+                    It.IsAny<TimeSpan>()
+                )
+            )
+            .ReturnsAsync("https://storagehost/upload");
 
         // act
-        var act = async () => await sut.DeletePostContentAsync(id, directory);
+        var presignedUploadUrl = await sut.HandleMarkdownUploadAsync(id, markdownBasePath);
 
         // assert
-        await act.Should().ThrowAsync<ValidationException>();
+        postRepositoryMock.Verify(
+            x =>
+                x.UpdateMarkdownInfoAsync(
+                    id,
+                    $"markdown/posts/123-v{newVersion}.md",
+                    $"https://storagehost/markdown/posts/123-v{newVersion}.md"
+                ),
+            Times.Once
+        );
+        markdownStorageMock.Verify(
+            x => x.DeleteObjectAsync($"markdown/posts/123-v{currentVersion}.md"),
+            Times.Once
+        );
+        presignedUploadUrl.Should().Be("https://storagehost/upload");
     }
 
     private static PostService CreatePostService(
@@ -427,7 +426,6 @@ public class PostServiceTests
             postRepository ?? Mock.Of<IPostRepository>(),
             imageStorage ?? Mock.Of<IImageStorage>(),
             markdownStorage ?? Mock.Of<IMarkdownStorage>(),
-            dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
-            Mock.Of<ILogger<PostService>>()
+            dateTimeProvider ?? Mock.Of<IDateTimeProvider>()
         );
 }

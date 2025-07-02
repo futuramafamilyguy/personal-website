@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -42,12 +42,14 @@ public class PictureServiceTests
         var sut = CreatePictureService(repositoryMock.Object);
 
         var id = "123";
+        var pictureBuilder = new PictureBuilder(id);
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(pictureBuilder.Build());
 
         // act
-        await sut.GetPictureAsync(id);
+        var picture = await sut.GetPictureAsync(id);
 
         // assert
-        repositoryMock.Verify(x => x.GetAsync(id), Times.Once());
+        picture.Id.Should().Be(id);
     }
 
     [Fact]
@@ -76,40 +78,30 @@ public class PictureServiceTests
         var repositoryMock = new Mock<IPictureRepository>();
         var sut = CreatePictureService(repositoryMock.Object);
 
-        var pictureName = "cars";
+        var name = "cars 2";
         var yearWatched = 2020;
-        var monthWatched = Month.Jan;
-        var yearReleased = 2020;
-        var zinger = "bazinga";
-        var alias = "car";
-        var isNewRelease = false;
-
-        var cinemaId = "123";
-        var cinemaName = "Alice";
-        var city = "Christchurch";
-        var cinema = new Cinema
-        {
-            Id = cinemaId,
-            Name = cinemaName,
-            City = city
-        };
-
+        var picture = new PictureBuilder("123")
+            .WithName(name)
+            .WithYearWatched(yearWatched)
+            .WithFavorite(isFavorite)
+            .WithKino(isKino)
+            .Build();
         repositoryMock
             .Setup(x => x.CheckKinoPictureExistenceAsync(yearWatched, null))
             .ReturnsAsync(false);
 
         // act
         await sut.AddPictureAsync(
-            pictureName,
-            yearWatched,
-            monthWatched,
-            cinema,
-            yearReleased,
-            zinger,
-            alias,
-            isFavorite,
-            isKino,
-            isNewRelease
+            picture.Name,
+            picture.YearWatched,
+            picture.MonthWatched,
+            picture.Cinema,
+            picture.YearReleased,
+            picture.Zinger,
+            picture.Alias,
+            picture.IsFavorite,
+            picture.IsKino,
+            picture.IsNewRelease
         );
 
         // assert
@@ -118,16 +110,9 @@ public class PictureServiceTests
                 x.AddAsync(
                     It.Is(
                         (Picture picture) =>
-                            picture.Name == pictureName
-                            && picture.YearWatched == yearWatched
-                            && picture.MonthWatched == monthWatched
-                            && picture.Zinger == zinger
-                            && picture.Cinema.Id == cinemaId
-                            && picture.Cinema.Name == cinemaName
-                            && picture.Cinema.City == city
-                            && picture.YearReleased == yearReleased
-                            && picture.Alias == alias
+                            picture.Name == name
                             && picture.IsFavorite == isFavorite
+                            && picture.IsKino == isKino
                     )
                 ),
             Times.Once()
@@ -135,30 +120,18 @@ public class PictureServiceTests
     }
 
     [Fact]
-    public async Task AddPictureAsync_IfKinoWithoutFavourite_ShouldThrowArgumentException()
+    public async Task AddPictureAsync_IfKinoWithoutFavourite_ShouldThrowDomainValidationException()
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
         var sut = CreatePictureService(repositoryMock.Object);
 
-        var pictureName = "cars";
         var yearWatched = 2020;
-        var monthWatched = Month.Jan;
-        var yearReleased = 2020;
-        var isFavorite = false;
-        var isKino = true;
-        var isNewRelease = false;
-
-        var cinemaId = "123";
-        var cinemaName = "Alice";
-        var city = "Christchurch";
-        var cinema = new Cinema
-        {
-            Id = cinemaId,
-            Name = cinemaName,
-            City = city
-        };
-
+        var picture = new PictureBuilder("123")
+            .WithYearWatched(yearWatched)
+            .WithFavorite(false)
+            .WithKino(true)
+            .Build();
         repositoryMock
             .Setup(x => x.CheckKinoPictureExistenceAsync(yearWatched, null))
             .ReturnsAsync(false);
@@ -166,47 +139,35 @@ public class PictureServiceTests
         // act
         var act = async () =>
             await sut.AddPictureAsync(
-                pictureName,
-                yearWatched,
-                monthWatched,
-                cinema,
-                yearReleased,
-                null,
-                null,
-                isFavorite,
-                isKino,
-                isNewRelease
+                picture.Name,
+                picture.YearWatched,
+                picture.MonthWatched,
+                picture.Cinema,
+                picture.YearReleased,
+                picture.Zinger,
+                picture.Alias,
+                picture.IsFavorite,
+                picture.IsKino,
+                picture.IsNewRelease
             );
 
         // assert
-        await act.Should().ThrowAsync<ArgumentException>();
+        await act.Should().ThrowAsync<DomainValidationException>();
     }
 
     [Fact]
-    public async Task AddPictureAsync_IfKinoAlreadyExists_ShouldThrowValidationException()
+    public async Task AddPictureAsync_IfKinoAlreadyExists_ShouldThrowDomainValidationException()
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
         var sut = CreatePictureService(repositoryMock.Object);
 
-        var pictureName = "cars";
         var yearWatched = 2020;
-        var monthWatched = Month.Jan;
-        var yearReleased = 2020;
-        var isFavorite = true;
-        var isKino = true;
-        var isNewRelease = false;
-
-        var cinemaId = "123";
-        var cinemaName = "Alice";
-        var city = "Christchurch";
-        var cinema = new Cinema
-        {
-            Id = cinemaId,
-            Name = cinemaName,
-            City = city
-        };
-
+        var picture = new PictureBuilder("123")
+            .WithYearWatched(yearWatched)
+            .WithFavorite(true)
+            .WithKino(true)
+            .Build();
         repositoryMock
             .Setup(x => x.CheckKinoPictureExistenceAsync(yearWatched, null))
             .ReturnsAsync(true);
@@ -214,222 +175,108 @@ public class PictureServiceTests
         // act
         var act = async () =>
             await sut.AddPictureAsync(
-                pictureName,
-                yearWatched,
-                monthWatched,
-                cinema,
-                yearReleased,
-                null,
-                null,
-                isFavorite,
-                isKino,
-                isNewRelease
+                picture.Name,
+                picture.YearWatched,
+                picture.MonthWatched,
+                picture.Cinema,
+                picture.YearReleased,
+                picture.Zinger,
+                picture.Alias,
+                picture.IsFavorite,
+                picture.IsKino,
+                picture.IsNewRelease
             );
 
         // assert
-        await act.Should().ThrowAsync<ValidationException>();
+        await act.Should().ThrowAsync<DomainValidationException>();
     }
 
     [Theory]
-    [InlineData(false, false)]
-    [InlineData(true, false)]
-    [InlineData(true, true)]
-    public async Task UpdatePictureAsync_ShouldCallUpdateAsync(
-        bool updatedIsFavorite,
-        bool updatedIsKino
+    [InlineData("images/pictures/123.jpg", "images/pictures/123-alt.jpg", 1, 1)]
+    [InlineData("images/pictures/123.jpg", null, 1, 0)]
+    [InlineData(null, null, 0, 0)]
+    public async Task RemovePictureAsync_ShouldCallRemoveAsyncAndDeleteImages(
+        string imageObjectKey,
+        string altImageObjectKey,
+        int expectedDeleteImageCalls,
+        int expectedDeleteAltImageCalls
     )
     {
         // arrange
         var repositoryMock = new Mock<IPictureRepository>();
-        var sut = CreatePictureService(repositoryMock.Object);
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
 
-        var pictureId = "123";
-        var updatedPictureName = "cars";
-        var updatedYearWatched = 2020;
-        var updatedMonthWatched = Month.Jan;
-        var updatedYearReleased = 2020;
-        var updatedZinger = "bazinga";
-        var updatedAlias = "car";
-        var updatedImageUrl = "domain/images/image.jpg";
-        var updatedAltImageUrl = "domain/images/alt-image.jpg";
-        var updatedIsNewRelease = true;
-
-        var cinemaId = "123";
-        var cinemaName = "Alice";
-        var city = "Christchurch";
-        var updatedCinema = new Cinema
-        {
-            Id = cinemaId,
-            Name = cinemaName,
-            City = city
-        };
-
-        repositoryMock
-            .Setup(x => x.CheckKinoPictureExistenceAsync(updatedYearWatched, pictureId))
-            .ReturnsAsync(false);
+        var id = "123";
+        var imageStorageHost = "https://storagehost";
+        var picture = new PictureBuilder(id)
+            .WithImage(imageStorageHost, imageObjectKey)
+            .WithAltImage(imageStorageHost, altImageObjectKey)
+            .Build();
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
 
         // act
-        await sut.UpdatePictureAsync(
-            pictureId,
-            updatedPictureName,
-            updatedYearWatched,
-            updatedMonthWatched,
-            updatedCinema,
-            updatedYearReleased,
-            updatedZinger,
-            updatedAlias,
-            updatedImageUrl,
-            updatedAltImageUrl,
-            updatedIsFavorite,
-            updatedIsKino,
-            updatedIsNewRelease
+        await sut.RemovePictureAsync(id);
+
+        // assert
+        repositoryMock.Verify(x => x.RemoveAsync(id), Times.Once());
+        imageStorageMock.Verify(
+            x => x.DeleteObjectAsync(imageObjectKey),
+            Times.Exactly(expectedDeleteImageCalls)
+        );
+        imageStorageMock.Verify(
+            x => x.DeleteObjectAsync(altImageObjectKey),
+            Times.Exactly(expectedDeleteAltImageCalls)
+        );
+    }
+
+    [Theory]
+    [InlineData(false, false, "image/pictures/2020/123.jpg")]
+    [InlineData(true, true, "image/pictures/2020/123-alt.jpg")]
+    public async Task HandleImageUploadAsync_ShouldReturnPresignedUploadUrl(
+        bool isAlt,
+        bool isFavorite,
+        string expectedImageObjectKey
+    )
+    {
+        // arrange
+        var repositoryMock = new Mock<IPictureRepository>();
+        var imageStorageMock = new Mock<IImageStorage>();
+        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
+
+        var id = "123";
+        var picture = new PictureBuilder(id).WithYearWatched(2020).WithFavorite(isFavorite).Build();
+        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
+        imageStorageMock
+            .Setup(x =>
+                x.GeneratePresignedUploadUrlAsync(expectedImageObjectKey, It.IsAny<TimeSpan>())
+            )
+            .ReturnsAsync("https://storagehost/upload");
+        imageStorageMock
+            .Setup(x => x.GetPublicUrl(It.IsAny<string>()))
+            .Returns((string path) => $"https://storagehost/{path}");
+
+        // act
+        var presignedUploadUrl = await sut.HandleImageUploadAsync(
+            id,
+            "image/pictures",
+            "jpg",
+            isAlt
         );
 
         // assert
         repositoryMock.Verify(
             x =>
-                x.UpdateAsync(
-                    pictureId,
-                    It.Is(
-                        (Picture picture) =>
-                            picture.Name == updatedPictureName
-                            && picture.YearWatched == updatedYearWatched
-                            && picture.MonthWatched == updatedMonthWatched
-                            && picture.Zinger == updatedZinger
-                            && picture.Cinema.Id == cinemaId
-                            && picture.Cinema.Name == cinemaName
-                            && picture.Cinema.City == city
-                            && picture.YearReleased == updatedYearReleased
-                            && picture.Alias == updatedAlias
-                            && picture.IsFavorite == updatedIsFavorite
-                    )
+                x.UpdateImageInfoAsync(
+                    id,
+                    expectedImageObjectKey,
+                    $"https://storagehost/{expectedImageObjectKey}",
+                    isAlt
                 ),
-            Times.Once()
+            Times.Once
         );
-    }
-
-    [Fact]
-    public async Task UpdatePictureAsync_IfKinoWithoutFavourite_ShouldThrowArgumentException()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPictureRepository>();
-        var sut = CreatePictureService(repositoryMock.Object);
-
-        var pictureId = "123";
-        var updatedPictureName = "cars";
-        var updatedYearWatched = 2020;
-        var updatedMonthWatched = Month.Jan;
-        var updatedYearReleased = 2020;
-        var updatedImageUrl = "domain/images/image.jpg";
-        var updatedAltImageUrl = "domain/images/alt-image.jpg";
-        var updatedIsFavorite = false;
-        var updatedIsKino = true;
-        var updatedIsNewRelease = true;
-
-        var cinemaId = "123";
-        var cinemaName = "Alice";
-        var city = "Christchurch";
-        var updatedCinema = new Cinema
-        {
-            Id = cinemaId,
-            Name = cinemaName,
-            City = city
-        };
-
-        repositoryMock
-            .Setup(x => x.CheckKinoPictureExistenceAsync(updatedYearWatched, pictureId))
-            .ReturnsAsync(false);
-
-        // act
-        var act = async () =>
-            await sut.UpdatePictureAsync(
-                pictureId,
-                updatedPictureName,
-                updatedYearWatched,
-                updatedMonthWatched,
-                updatedCinema,
-                updatedYearReleased,
-                null,
-                null,
-                updatedImageUrl,
-                updatedAltImageUrl,
-                updatedIsFavorite,
-                updatedIsKino,
-                updatedIsNewRelease
-            );
-
-        // assert
-        await act.Should().ThrowAsync<ArgumentException>();
-    }
-
-    [Fact]
-    public async Task UpdatePictureAsync_IfKinoAlreadyExists_ShouldThrowValidationException()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPictureRepository>();
-        var sut = CreatePictureService(repositoryMock.Object);
-
-        var pictureId = "123";
-        var updatedPictureName = "cars";
-        var updatedYearWatched = 2020;
-        var updatedMonthWatched = Month.Jan;
-        var updatedYearReleased = 2020;
-        var updatedImageUrl = "domain/images/image.jpg";
-        var updatedAltImageUrl = "domain/images/alt-image.jpg";
-        var updatedIsFavorite = true;
-        var updatedIsKino = true;
-        var updatedIsNewRelease = true;
-
-        var cinemaId = "123";
-        var cinemaName = "Alice";
-        var city = "Christchurch";
-        var updatedCinema = new Cinema
-        {
-            Id = cinemaId,
-            Name = cinemaName,
-            City = city
-        };
-
-        repositoryMock
-            .Setup(x => x.CheckKinoPictureExistenceAsync(updatedYearWatched, pictureId))
-            .ReturnsAsync(true);
-
-        // act
-        var act = async () =>
-            await sut.UpdatePictureAsync(
-                pictureId,
-                updatedPictureName,
-                updatedYearWatched,
-                updatedMonthWatched,
-                updatedCinema,
-                updatedYearReleased,
-                null,
-                null,
-                updatedImageUrl,
-                updatedAltImageUrl,
-                updatedIsFavorite,
-                updatedIsKino,
-                updatedIsNewRelease
-            );
-
-        // assert
-        await act.Should().ThrowAsync<ValidationException>();
-    }
-
-    [Fact]
-    public async Task RemovePictureAsync_ShouldCallRemoveAsync()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPictureRepository>();
-        var sut = CreatePictureService(repositoryMock.Object);
-
-        var pictureId = "123";
-
-        // act
-        await sut.RemovePictureAsync(pictureId);
-
-        // assert
-        repositoryMock.Verify(x => x.RemoveAsync(pictureId), Times.Once());
+        imageStorageMock.Verify(x => x.DeleteObjectAsync(It.IsAny<string>()), Times.Never);
+        presignedUploadUrl.Should().Be("https://storagehost/upload");
     }
 
     [Fact]
@@ -484,145 +331,12 @@ public class PictureServiceTests
         repositoryMock.Verify(x => x.GetActiveYearsAsync(), Times.Once());
     }
 
-    [Fact]
-    public async Task UploadPictureImageAsync_ShouldCallSaveImageAsync()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPictureRepository>();
-        var imageStorageMock = new Mock<IImageStorage>();
-        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
-
-        var id = "123";
-        var yearWatched = 2024;
-        var picture = new PictureBuilder(id).WithYearWatched(yearWatched).Build();
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
-
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
-        var imageExtension = ".jpg";
-        var imageDirectory = "images/pictures";
-        imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(true);
-
-        // act
-        await sut.UploadPictureImagesAsync(
-            stream,
-            altImageStream: null,
-            id,
-            imageExtension,
-            imageDirectory,
-            altImageExtension: null
-        );
-
-        // assert
-        imageStorageMock.Verify(
-            x => x.SaveImageAsync(stream, "123.jpg", "images/pictures/2024"),
-            Times.Once()
-        );
-    }
-
-    [Fact]
-    public async Task UploadPictureImageAsync_IfImageExtensionIsUnsupported_ShouldThrowValidationException()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPictureRepository>();
-        var imageStorageMock = new Mock<IImageStorage>();
-        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
-
-        var id = "123";
-        var yearWatched = 2024;
-        var picture = new PictureBuilder(id).WithYearWatched(yearWatched).Build();
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
-
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes("image content"));
-        var imageExtension = ".txt";
-        var imageDirectory = "images/pictures";
-        imageStorageMock.Setup(x => x.IsValidImageFormat($"{id}{imageExtension}")).Returns(false);
-
-        // act
-        var act = async () =>
-            await sut.UploadPictureImagesAsync(
-                stream,
-                altImageStream: null,
-                id,
-                imageExtension,
-                imageDirectory,
-                altImageExtension: null
-            );
-
-        // assert
-        await act.Should().ThrowAsync<ValidationException>();
-    }
-
-    [Fact]
-    public async Task DeletePictureImageAsync_ShouldCallRemoveImageAsync()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPictureRepository>();
-        var imageStorageMock = new Mock<IImageStorage>();
-        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
-
-        var id = "123";
-        var yearWatched = 2024;
-        var imageUrl = "https://imagehost/images/pictures/2024/123.jpg";
-        var picture = new PictureBuilder(id)
-            .WithYearWatched(yearWatched)
-            .WithImageUrl(imageUrl)
-            .Build();
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
-
-        var imageName = "123.jpg";
-        var imageDirectory = "images/pictures";
-        imageStorageMock.Setup(x => x.GetImageFileNameFromUrl(imageUrl)).Returns(imageName);
-
-        // act
-        await sut.DeletePictureImagesAsync(
-            id,
-            imageDirectory,
-            deleteImage: true,
-            deleteAltImage: false
-        );
-
-        // assert
-        imageStorageMock.Verify(
-            x => x.RemoveImageAsync("123.jpg", "images/pictures/2024"),
-            Times.Once()
-        );
-    }
-
-    [Fact]
-    public async Task DeletePictureImageAsync_IfPictureDoesNotHaveAnImage_ShouldThrowValidationException()
-    {
-        // arrange
-        var repositoryMock = new Mock<IPictureRepository>();
-        var imageStorageMock = new Mock<IImageStorage>();
-        var sut = CreatePictureService(repositoryMock.Object, imageStorageMock.Object);
-
-        var id = "123";
-        var yearWatched = 2024;
-        var picture = new PictureBuilder(id).WithYearWatched(yearWatched).Build();
-        repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(picture);
-
-        var imageDirectory = "images/pictures";
-
-        // act
-        var act = async () =>
-            await sut.DeletePictureImagesAsync(
-                id,
-                imageDirectory,
-                deleteImage: true,
-                deleteAltImage: false
-            );
-
-        // assert
-        await act.Should().ThrowAsync<ValidationException>();
-    }
-
     private static PictureService CreatePictureService(
         IPictureRepository? pictureRepository = null,
         IImageStorage? imageStorage = null
     ) =>
         new PictureService(
             pictureRepository ?? Mock.Of<IPictureRepository>(),
-            imageStorage ?? Mock.Of<IImageStorage>(),
-            Mock.Of<ILogger<PictureService>>()
+            imageStorage ?? Mock.Of<IImageStorage>()
         );
 }

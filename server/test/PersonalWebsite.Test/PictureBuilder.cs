@@ -21,6 +21,12 @@ public class PictureBuilder
         _picture.Id = id;
     }
 
+    public PictureBuilder WithName(string name)
+    {
+        _picture.Name = name;
+        return this;
+    }
+
     public PictureBuilder WithYearWatched(int year)
     {
         _picture.YearWatched = year;
@@ -30,6 +36,32 @@ public class PictureBuilder
     public PictureBuilder WithImageUrl(string url)
     {
         _picture.ImageUrl = url;
+        return this;
+    }
+
+    public PictureBuilder WithFavorite(bool isFavorite)
+    {
+        _picture.IsFavorite = isFavorite;
+        return this;
+    }
+
+    public PictureBuilder WithKino(bool isKino)
+    {
+        _picture.IsKino = isKino;
+        return this;
+    }
+
+    public PictureBuilder WithImage(string imageStorageHost, string objectKey)
+    {
+        _picture.ImageUrl = $"{imageStorageHost}/{objectKey}";
+        _picture.ImageObjectKey = objectKey;
+        return this;
+    }
+
+    public PictureBuilder WithAltImage(string imageStorageHost, string objectKey)
+    {
+        _picture.AltImageUrl = $"{imageStorageHost}/{objectKey}";
+        _picture.AltImageObjectKey = objectKey;
         return this;
     }
 

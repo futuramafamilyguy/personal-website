@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Xml.Linq;
+using Moq;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 using PersonalWebsite.Core.Services;
@@ -49,55 +50,21 @@ public class CinemaServiceTests
         var sut = new CinemaService(cinemaRepositoryMock.Object);
 
         var id = "123";
+        cinemaRepositoryMock
+            .Setup(x => x.GetAsync(id))
+            .ReturnsAsync(
+                new Cinema
+                {
+                    Id = id,
+                    Name = "Alice",
+                    City = "Christchurch"
+                }
+            );
 
         // act
         await sut.GetCinemaAsync(id);
 
         // assert
         cinemaRepositoryMock.Verify(x => x.GetAsync(id), Times.Once());
-    }
-
-    [Fact]
-    public async Task RemoveCinemaAsync_ShouldCallRemoveAsync()
-    {
-        // arrange
-        var cinemaRepositoryMock = new Mock<ICinemaRepository>();
-        var sut = new CinemaService(cinemaRepositoryMock.Object);
-
-        var id = "123";
-
-        // act
-        await sut.RemoveCinemaAsync(id);
-
-        // assert
-        cinemaRepositoryMock.Verify(x => x.RemoveAsync(id), Times.Once());
-    }
-
-    [Fact]
-    public async Task UpdateCinemaAsync_ShouldCallUpdateAsync()
-    {
-        // arrange
-        var cinemaRepositoryMock = new Mock<ICinemaRepository>();
-        var sut = new CinemaService(cinemaRepositoryMock.Object);
-
-        var id = "123";
-        var name = "Alice";
-        var city = "Christchurch";
-
-        // act
-        await sut.UpdateCinemaAsync(id, name, city);
-
-        // assert
-        cinemaRepositoryMock.Verify(
-            x =>
-                x.UpdateAsync(
-                    id,
-                    It.Is(
-                        (Cinema cinema) =>
-                            cinema.Id == id && cinema.Name == name && cinema.City == city
-                    )
-                ),
-            Times.Once()
-        );
     }
 }
