@@ -1,0 +1,25 @@
+.nomineeRow {
+  width: 856px;
+  padding-bottom: 30px;
+}
+
+.movieRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.title {
+  display: flex;
+}
+
+.nomineeRow h5 {
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.heartIcon {
+  margin-left: 10px;
+  height: 24px;
+  width: 24px;
+}

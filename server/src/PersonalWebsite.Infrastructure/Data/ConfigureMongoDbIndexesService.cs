@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using PersonalWebsite.Infrastructure.Data.Pictures;
+using PersonalWebsite.Infrastructure.Data.Movies;
 
 namespace PersonalWebsite.Infrastructure.Data;
 
@@ -22,14 +22,12 @@ public class ConfigureMongoDbIndexesService : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         var database = _client.GetDatabase(_settings.DatabaseName);
-        var collection = database.GetCollection<PictureDocument>(_settings.PicturesCollectionName);
+        var collection = database.GetCollection<MovieDocument>(_settings.MoviesCollectionName);
 
-        var yearIndex = Builders<PictureDocument>.IndexKeys.Ascending(picture =>
-            picture.YearWatched
-        );
-        var indexOptions = new CreateIndexOptions { Name = "pictures_year_watched" };
+        var yearIndex = Builders<MovieDocument>.IndexKeys.Ascending(movie => movie.Year);
+        var indexOptions = new CreateIndexOptions { Name = "year" };
         await collection.Indexes.CreateOneAsync(
-            new CreateIndexModel<PictureDocument>(yearIndex, indexOptions),
+            new CreateIndexModel<MovieDocument>(yearIndex, indexOptions),
             cancellationToken: cancellationToken
         );
     }

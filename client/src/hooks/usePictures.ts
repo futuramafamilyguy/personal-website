@@ -7,17 +7,17 @@ import { useAuth } from "../contexts/AuthContext";
 import { useViewFavorite } from "../contexts/ViewFavoriteContext";
 import { useYear } from "../contexts/YearContext";
 import {
-  debouncedFetchPictures,
+  debouncedFetchMovies,
   makeDebouncedRequest,
 } from "../api/debouncedFetch";
-import Picture from "../types/Picture";
+import Movie from "../types/Movie";
 
-interface PictureResponse {
-  pictures: Picture[];
+interface MovieResponse {
+  movies: Movie[];
   totalCount: number;
 }
 
-const usePictures = (initialPage: number) => {
+const useMovies = (initialPage: number) => {
   const calculateItemsPerPage = () => {
     // using hard-coded values here since flex box dimensions are inconsistent
     // remember to change the width and height offset if any other elements change lol
@@ -35,7 +35,7 @@ const usePictures = (initialPage: number) => {
 
   const [trigger, setTrigger] = useState(false);
 
-  const [pictures, setPictures] = useState<Picture[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(() =>
@@ -47,7 +47,7 @@ const usePictures = (initialPage: number) => {
 
   // fill any empty spaces in the flex content area with empty media cards so the positioning isnt scuffed AF
   const emptyMediaCardArray = Array.from(
-    { length: itemsPerPage - pictures.length },
+    { length: itemsPerPage - movies.length },
     (_, index) => index + 1
   );
 
@@ -64,50 +64,48 @@ const usePictures = (initialPage: number) => {
   }, [year, totalPages]);
 
   useEffect(() => {
-    const fetchPictures = () => {
+    const fetchMovies = () => {
       setLoading(true);
       if (viewFavorite) {
-        makeDebouncedRequest(debouncedFetchPictures, {
-          url: `/pictures/${year}/favorites`,
+        makeDebouncedRequest(debouncedFetchMovies, {
+          url: `/movies/${year}/favorites`,
         })
-          .then((response: AxiosResponse<Picture[]>) => {
+          .then((response: AxiosResponse<Movie[]>) => {
             const data = response.data;
-            const updatedPictures = (<Picture[]>data).map((picture) => ({
-              ...picture,
-              imageUrl: setDefaultImageUrl(picture.imageUrl),
+            const updatedMovies = (<Movie[]>data).map((movie) => ({
+              ...movie,
+              imageUrl: setDefaultImageUrl(movie.imageUrl),
             }));
-            setPictures(updatedPictures);
+            setMovies(updatedMovies);
             setTotalPages(1);
           })
           .catch((error: any) => {
-            setPictures([]);
-            console.error("Error fetching pictures:", error);
+            setMovies([]);
+            console.error("Error fetching movies:", error);
           })
           .finally(() => setLoading(false));
       } else {
-        makeDebouncedRequest(debouncedFetchPictures, {
-          url: `/pictures/${year}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`,
+        makeDebouncedRequest(debouncedFetchMovies, {
+          url: `/movies/${year}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`,
         })
-          .then((response: AxiosResponse<PictureResponse>) => {
+          .then((response: AxiosResponse<MovieResponse>) => {
             const data = response.data;
-            const updatedPictures = (<Picture[]>data.pictures).map(
-              (picture) => ({
-                ...picture,
-                imageUrl: setDefaultImageUrl(picture.imageUrl),
-              })
-            );
-            setPictures(updatedPictures);
+            const updatedMovies = (<Movie[]>data.movies).map((movie) => ({
+              ...movie,
+              imageUrl: setDefaultImageUrl(movie.imageUrl),
+            }));
+            setMovies(updatedMovies);
             setTotalPages(Math.ceil(data.totalCount / itemsPerPage));
           })
           .catch((error: any) => {
-            setPictures([]);
-            console.error("Error fetching pictures:", error);
+            setMovies([]);
+            console.error("Error fetching movies:", error);
           })
           .finally(() => setLoading(false));
       }
     };
 
-    fetchPictures();
+    fetchMovies();
   }, [year, currentPage, itemsPerPage, viewFavorite, trigger]);
 
   const setDefaultImageUrl = (imageUrl: string) => {
@@ -115,7 +113,7 @@ const usePictures = (initialPage: number) => {
   };
 
   return {
-    pictures,
+    movies,
     currentPage,
     totalPages,
     itemsPerPage,
@@ -126,4 +124,4 @@ const usePictures = (initialPage: number) => {
   };
 };
 
-export default usePictures;
+export default useMovies;

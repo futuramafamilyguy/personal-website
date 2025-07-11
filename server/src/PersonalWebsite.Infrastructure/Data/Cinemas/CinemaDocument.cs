@@ -9,7 +9,7 @@ public class CinemaDocument
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
 
-    [BsonElement("cinema_name")]
+    [BsonElement("name")]
     public required string Name { get; set; }
 
     [BsonElement("city")]

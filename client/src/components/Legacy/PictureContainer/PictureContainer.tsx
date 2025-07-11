@@ -5,14 +5,14 @@ import usePictures from "../../../hooks/usePictures";
 import MediaCard from "../../Common/MediaCard/MediaCard";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import NewMediaCard from "../../Letterboxdc/NewMediaCard/NewMediaCard";
-import NewPictureModal from "../../Letterboxdc/NewPictureModal/NewPictureModal";
-import PictureModal from "../../Letterboxdc/PictureModal/PictureModal";
+import NewPictureModal from "../../Letterboxdc/CreateMovieModal/CreateMovieModal";
+import PictureModal from "../../Letterboxdc/MovieModal/MovieModal";
 import Pagination from "../Pagination/Pagination";
 import styles from "./PictureContainer.module.css";
 
 const PictureContainer: React.FC = () => {
   const {
-    pictures,
+    movies,
     currentPage,
     totalPages,
     itemsPerPage,
@@ -48,18 +48,18 @@ const PictureContainer: React.FC = () => {
         handlePrevPage();
         setPictureIndex(itemsPerPage - 1);
       } else {
-        setPictureIndex((pictureIndex - 1 + pictures.length) % pictures.length);
+        setPictureIndex((pictureIndex - 1 + movies.length) % movies.length);
       }
     }
   };
 
   const handleNextPic = () => {
     if (pictureIndex !== null) {
-      if (pictureIndex === pictures.length - 1) {
+      if (pictureIndex === movies.length - 1) {
         handleNextPage();
         setPictureIndex(0);
       } else {
-        setPictureIndex((pictureIndex + 1) % pictures.length);
+        setPictureIndex((pictureIndex + 1) % movies.length);
       }
     }
   };
@@ -85,7 +85,7 @@ const PictureContainer: React.FC = () => {
     if (loading) {
       return <MessageDisplay message={"loading..."} />;
     } else {
-      if (isLoggedIn || pictures.length > 0) {
+      if (isLoggedIn || movies.length > 0) {
         return (
           <>
             <div className={styles.pictureContainer}>
@@ -96,19 +96,17 @@ const PictureContainer: React.FC = () => {
                 <NewPictureModal
                   isOpen={newModalOpen}
                   onClose={() => setNewModalOpen(false)}
-                  picture={
-                    pictureIndex !== null ? pictures[pictureIndex] : null
-                  }
+                  movie={pictureIndex !== null ? movies[pictureIndex] : null}
                   setTrigger={() => setTrigger((prevTrigger) => !prevTrigger)}
                 />
               ) : null}
 
-              {pictures.map((picture, index) => (
+              {movies.map((movie, index) => (
                 <MediaCard
-                  key={picture.id}
-                  imageUrl={picture.imageUrl}
-                  title={picture.alias ?? picture.name}
-                  highlighted={picture.isKino}
+                  key={movie.id}
+                  imageUrl={movie.imageUrl}
+                  title={movie.alias ?? movie.name}
+                  highlighted={movie.isKino}
                   onClick={() => openModal(index)}
                   editable={isLoggedIn}
                   onClickEdit={() => openNewPictureModal(index)}
@@ -122,12 +120,12 @@ const PictureContainer: React.FC = () => {
               <PictureModal
                 isOpen={modalOpen}
                 onClose={closeModal}
-                picture={pictureIndex !== null ? pictures[pictureIndex] : null}
+                movie={pictureIndex !== null ? movies[pictureIndex] : null}
                 handlePrev={handlePrevPic}
                 handleNext={handleNextPic}
                 prev={pictureIndex !== 0 || currentPage !== 1}
                 next={
-                  pictureIndex !== pictures.length - 1 ||
+                  pictureIndex !== movies.length - 1 ||
                   currentPage !== totalPages
                 }
                 isAltImage={false}

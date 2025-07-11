@@ -14,15 +14,15 @@ const SessionGallery: React.FC = () => {
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [sessionIndex, setSessionIndex] = useState<number | null>(null);
 
-  const [newReleaseSessions, setNewReleaseSessions] = useState<Session[]>([]);
-  const [rereleaseSessions, setRereleaseSessions] = useState<Session[]>([]);
+  const [newReleases, setNewReleases] = useState<Session[]>([]);
+  const [retroClassics, setRetroClassics] = useState<Session[]>([]);
   const [isNewReleaseSelected, setIsNewReleaseSelected] = useState(false);
 
   useEffect(() => {
-    setNewReleaseSessions(
+    setNewReleases(
       sessions.filter((s) => s.releaseYear === new Date().getFullYear())
     );
-    setRereleaseSessions(
+    setRetroClassics(
       sessions.filter((s) => s.releaseYear !== new Date().getFullYear())
     );
   }, [sessions]);
@@ -31,9 +31,9 @@ const SessionGallery: React.FC = () => {
     setSelectedSession(session);
     setIsNewReleaseSelected(newRelease);
     if (newRelease) {
-      setSessionIndex(newReleaseSessions.indexOf(session));
+      setSessionIndex(newReleases.indexOf(session));
     } else {
-      setSessionIndex(rereleaseSessions.indexOf(session));
+      setSessionIndex(retroClassics.indexOf(session));
     }
 
     setModalOpen(true);
@@ -48,16 +48,16 @@ const SessionGallery: React.FC = () => {
   const handlePrevSession = () => {
     if (sessionIndex !== null) {
       if (isNewReleaseSelected) {
-        setSelectedSession(newReleaseSessions[sessionIndex - 1]);
+        setSelectedSession(newReleases[sessionIndex - 1]);
         setSessionIndex(sessionIndex - 1);
       } else {
-        var length = newReleaseSessions.length;
+        var length = newReleases.length;
         if (sessionIndex === 0 && length > 0) {
           setIsNewReleaseSelected(true);
-          setSelectedSession(newReleaseSessions[length - 1]);
+          setSelectedSession(newReleases[length - 1]);
           setSessionIndex(length - 1);
         } else {
-          setSelectedSession(rereleaseSessions[sessionIndex - 1]);
+          setSelectedSession(retroClassics[sessionIndex - 1]);
           setSessionIndex(sessionIndex - 1);
         }
       }
@@ -67,17 +67,17 @@ const SessionGallery: React.FC = () => {
   const handleNextSession = () => {
     if (sessionIndex !== null) {
       if (isNewReleaseSelected) {
-        var length = rereleaseSessions.length;
-        if (sessionIndex === newReleaseSessions.length - 1 && length > 0) {
+        var length = retroClassics.length;
+        if (sessionIndex === newReleases.length - 1 && length > 0) {
           setIsNewReleaseSelected(false);
-          setSelectedSession(rereleaseSessions[length - 1]);
+          setSelectedSession(retroClassics[length - 1]);
           setSessionIndex(0);
         } else {
-          setSelectedSession(newReleaseSessions[sessionIndex + 1]);
+          setSelectedSession(newReleases[sessionIndex + 1]);
           setSessionIndex(sessionIndex + 1);
         }
       } else {
-        setSelectedSession(rereleaseSessions[sessionIndex + 1]);
+        setSelectedSession(retroClassics[sessionIndex + 1]);
         setSessionIndex(sessionIndex + 1);
       }
     }
@@ -91,13 +91,13 @@ const SessionGallery: React.FC = () => {
         <>
           <div className={styles.sessionGallery}>
             <SessionRow
-              sessions={newReleaseSessions}
+              sessions={newReleases}
               category="new releases"
               sessionOnClick={(s: Session) => openModal(s, true)}
             />
             <SessionRow
-              sessions={rereleaseSessions}
-              category="re-releases"
+              sessions={retroClassics}
+              category="retro classics"
               sessionOnClick={(s: Session) => openModal(s, false)}
             />
             <SessionModal
@@ -108,14 +108,14 @@ const SessionGallery: React.FC = () => {
               handleNext={handleNextSession}
               prev={
                 sessionIndex !== 0 ||
-                (!isNewReleaseSelected && newReleaseSessions.length > 0)
+                (!isNewReleaseSelected && newReleases.length > 0)
               }
               next={
                 (isNewReleaseSelected &&
-                  (sessionIndex !== newReleaseSessions.length - 1 ||
-                    rereleaseSessions.length > 0)) ||
+                  (sessionIndex !== newReleases.length - 1 ||
+                    retroClassics.length > 0)) ||
                 (!isNewReleaseSelected &&
-                  sessionIndex !== rereleaseSessions.length - 1)
+                  sessionIndex !== retroClassics.length - 1)
               }
             ></SessionModal>
           </div>
