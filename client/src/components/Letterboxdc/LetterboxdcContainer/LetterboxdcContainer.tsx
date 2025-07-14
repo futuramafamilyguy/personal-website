@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { YearProvider } from "../../../contexts/YearContext";
 import ActiveYearsContainer from "../ActiveYearsContainer/ActiveYearsContainer";
-import PictureGallery from "../PictureGallery/PictureGallery";
+import MovieGallery from "../MovieGallery/MovieGallery";
 import styles from "./LetterboxdcContainer.module.css";
 
 const LetterboxdcContainer: React.FC = () => {
@@ -33,7 +33,7 @@ const LetterboxdcContainer: React.FC = () => {
             </h5>
             <ActiveYearsContainer />
           </div>
-          <PictureGallery />
+          <MovieGallery />
         </YearProvider>
       </div>
     );

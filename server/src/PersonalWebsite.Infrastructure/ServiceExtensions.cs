@@ -5,7 +5,7 @@ using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Infrastructure.Data;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
-using PersonalWebsite.Infrastructure.Data.Pictures;
+using PersonalWebsite.Infrastructure.Data.Movies;
 using PersonalWebsite.Infrastructure.Data.Posts;
 using PersonalWebsite.Infrastructure.Data.Visits;
 using PersonalWebsite.Infrastructure.ImageStorage;
@@ -19,7 +19,7 @@ public static class ServiceExtensions
     {
         // repositories are registered as singletons since database interactions are not user-specific
         services.AddSingleton<VisitStatisticsRepository>();
-        services.AddSingleton<IPictureRepository, PictureRepository>();
+        services.AddSingleton<IMovieRepository, MovieRepository>();
         services.AddSingleton<ICinemaRepository, CinemaRepository>();
         services.AddSingleton<IPostRepository, PostRepository>();
 

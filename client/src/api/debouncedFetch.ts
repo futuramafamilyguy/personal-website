@@ -26,7 +26,7 @@ const createDebouncedRequest = (delay: number) => {
 
 export const debouncedFetchStats = createDebouncedRequest(300);
 
-export const debouncedFetchPictures = createDebouncedRequest(300);
+export const debouncedFetchMovies = createDebouncedRequest(300);
 export const debouncedFetchActiveYears = createDebouncedRequest(300);
 export const debouncedFetchCinemas = createDebouncedRequest(300);
 

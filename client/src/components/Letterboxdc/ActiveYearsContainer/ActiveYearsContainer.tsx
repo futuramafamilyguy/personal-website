@@ -21,7 +21,7 @@ const ActiveYearsContainer: React.FC = () => {
   useEffect(() => {
     const fetchActiveYears = () => {
       makeDebouncedRequest(debouncedFetchActiveYears, {
-        url: `/pictures/active-years`,
+        url: `/movies/active-years`,
       })
         .then((response: AxiosResponse<ActiveYearsResponse>) => {
           const startingYear = Math.min(...response.data.activeYears);

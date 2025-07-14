@@ -11,15 +11,15 @@ namespace PersonalWebsite.Api.Controllers;
 public class CinemasController : ControllerBase
 {
     private readonly ICinemaService _cinemaService;
-    private readonly IPictureCinemaOrchestrator _pictureCinemaOrchestrator;
+    private readonly IMovieCinemaOrchestrator _movieCinemaOrchestrator;
 
     public CinemasController(
         ICinemaService cinemaService,
-        IPictureCinemaOrchestrator pictureCinemaOrchestrator
+        IMovieCinemaOrchestrator movieCinemaOrchestrator
     )
     {
         _cinemaService = cinemaService;
-        _pictureCinemaOrchestrator = pictureCinemaOrchestrator;
+        _movieCinemaOrchestrator = movieCinemaOrchestrator;
     }
 
     [HttpGet("")]
@@ -46,7 +46,7 @@ public class CinemasController : ControllerBase
         [FromBody] CreateCinemaRequest request
     )
     {
-        var updatedCinema = await _pictureCinemaOrchestrator.UpdateCinemaAndAssociatedPicturesAsync(
+        var updatedCinema = await _movieCinemaOrchestrator.UpdateCinemaAndAssociatedMoviesAsync(
             id,
             request.Name,
             request.City
@@ -61,10 +61,11 @@ public class CinemasController : ControllerBase
     {
         try
         {
-            await _pictureCinemaOrchestrator.ValidateAndDeleteCinema(id);
+            await _movieCinemaOrchestrator.ValidateAndDeleteCinema(id);
 
             return NoContent();
-        } catch (CinemaHasAssociatedPicturesException ex)
+        }
+        catch (DomainValidationException ex)
         {
             return Conflict(ex);
         }
