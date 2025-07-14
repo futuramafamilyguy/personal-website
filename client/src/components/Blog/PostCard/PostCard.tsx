@@ -24,7 +24,7 @@ const PostCard: React.FC<PostCardProps> = ({
       <img
         data-src={imageUrl}
         src={isInView ? imageUrl : ""}
-        alt={title}
+        alt="where imag"
         className={styles.image}
       />
       {editable ? (
@@ -32,7 +32,7 @@ const PostCard: React.FC<PostCardProps> = ({
           <img
             className={styles.editIcon}
             src={editIcon}
-            alt="mySvgImage"
+            alt="where imag"
             onClick={(e) => {
               e.stopPropagation();
               onClickEdit();

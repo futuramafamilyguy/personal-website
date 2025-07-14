@@ -37,7 +37,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
       <img
         data-src={imageUrl}
         src={isInView ? imageUrl : ""}
-        alt={title}
+        alt="where imag"
         className={styles.mediaImage}
       />
       {editable ? (
@@ -45,7 +45,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
           <img
             className={styles.editIcon}
             src={editIcon}
-            alt="mySvgImage"
+            alt="where imag"
             onClick={(e) => {
               e.stopPropagation();
               onClickEdit();

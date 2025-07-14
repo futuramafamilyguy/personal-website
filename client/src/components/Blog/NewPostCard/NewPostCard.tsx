@@ -11,7 +11,7 @@ const NewPostCard: React.FC<NewPostCardProps> = ({ onClick }) => {
     <div className={styles.newPostCard} onClick={onClick}>
       <img
         src={"https://cdn.allenmaygibson.com/images/static/lofi-hiphop-mix.jpg"}
-        alt={"writing"}
+        alt="where imag"
         className={styles.image}
       />
       <div className={styles.titleOverlay} />

@@ -74,7 +74,7 @@ const SessionModal: React.FC<SessionModalProps> = ({
         <div className={styles.imageContainer}>
           <img
             src={session?.imageUrl}
-            alt={session?.title}
+            alt="where imag"
             className={styles.modalImage}
           />
         </div>

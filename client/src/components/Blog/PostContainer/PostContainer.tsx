@@ -129,7 +129,7 @@ const PostContainer: React.FC = () => {
                         className={className}
                         style={style}
                         {...props}
-                        alt="why isn't the image loading"
+                        alt="where imag"
                       />
                     );
                   },

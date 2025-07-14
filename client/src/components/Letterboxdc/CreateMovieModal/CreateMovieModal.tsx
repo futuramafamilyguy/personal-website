@@ -3,6 +3,10 @@ import React, { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
 import {
+  debouncedFetchCinemas,
+  makeDebouncedRequest,
+} from "../../../api/debouncedFetch";
+import {
   createMovie,
   CreateMovieRequest,
   deleteMovie,
@@ -12,10 +16,6 @@ import {
   uploadImageToPresignedUrl,
 } from "../../../api/movies";
 import { useYear } from "../../../contexts/YearContext";
-import {
-  debouncedFetchCinemas,
-  makeDebouncedRequest,
-} from "../../../api/debouncedFetch";
 import Cinema from "../../../types/Cinema";
 import Movie from "../../../types/Movie";
 import styles from "./CreateMovieModal.module.css";
@@ -69,7 +69,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     setAlias(movie && movie.alias ? movie.alias : "");
     setIsNominated(movie ? movie.isNominated : false);
     setIsKino(movie ? movie.isKino : false);
-    setIsRetro(movie ? movie.isRetro : true);
+    setIsRetro(movie ? movie.isRetro : false);
     setAltImageFile(null);
     setAltImageUrl(movie && movie.altImageUrl ? movie.altImageUrl : "");
     setAltImageObjectKey(

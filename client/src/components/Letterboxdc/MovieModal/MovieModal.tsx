@@ -45,7 +45,7 @@ const MovieModal: React.FC<MovieModalProps> = ({
                 ? movie?.altImageUrl
                 : movie?.imageUrl
             }
-            alt={movie?.alias}
+            alt="where imag"
             className={styles.modalImage}
           />
         </div>

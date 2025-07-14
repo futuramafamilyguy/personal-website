@@ -29,7 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({ logoSrc, menuItems }) => {
   return (
     <nav className={`${styles.navbar} ${isSticky ? styles.sticky : ""}`}>
       <div className={styles.navLeft}>
-        <img src={logoSrc} className={styles.logo} alt="Logo" />
+        <img src={logoSrc} className={styles.logo} alt="where imag" />
 
         <ul className={styles.menu}>
           {menuItems.map((item, index) => (
