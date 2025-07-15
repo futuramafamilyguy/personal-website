@@ -66,7 +66,7 @@ public class PostRepository : IPostRepository
             PostMapper.ToDocument(updatedPost)
         );
 
-        return result.ModifiedCount == 1;
+        return result.MatchedCount == 1;
     }
 
     public async Task UpdateMarkdownInfoAsync(

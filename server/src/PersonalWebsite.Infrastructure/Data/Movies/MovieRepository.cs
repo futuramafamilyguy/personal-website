@@ -78,7 +78,7 @@ public class MovieRepository : IMovieRepository
             MovieMapper.ToDocument(updatedMovie)
         );
 
-        return result.ModifiedCount == 1;
+        return result.MatchedCount == 1;
     }
 
     public async Task<long> UpdateCinemaInfoAsync(string cinemaId, Cinema updatedCinema)
