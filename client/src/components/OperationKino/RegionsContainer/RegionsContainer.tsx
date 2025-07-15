@@ -11,7 +11,7 @@ const RegionsContainer: React.FC = () => {
   const regions: Region[] = [
     { name: "Auckland", code: "auckland" },
     { name: "Canterbury", code: "canterbury" },
-    { name: "Brisbane Central", code: "brisbane-central" },
+    { name: "Brisbane", code: "brisbane-central" },
   ];
 
   if (regions.length === 0) {
