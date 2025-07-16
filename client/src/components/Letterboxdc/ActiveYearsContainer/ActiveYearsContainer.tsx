@@ -1,11 +1,11 @@
 import { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 
-import { useYear, useYearUpdate } from "../../../contexts/YearContext";
 import {
   debouncedFetchActiveYears,
   makeDebouncedRequest,
 } from "../../../api/debouncedFetch";
+import { useYear, useYearUpdate } from "../../../contexts/YearContext";
 import CapsuleButton from "../../Common/CapsuleButton/CapsuleButton";
 import styles from "./ActiveYearsContainer.module.css";
 
@@ -42,21 +42,56 @@ const ActiveYearsContainer: React.FC = () => {
     fetchActiveYears();
   }, []);
 
+  const [startIndex, setStartIndex] = useState(0);
+  const maxVisible = 4;
+
+  const canGoLeft = startIndex > 0;
+  const canGoRight = startIndex + maxVisible < activeYears.length;
+
+  const handleLeft = () => {
+    if (canGoLeft) setStartIndex(startIndex - 1);
+  };
+
+  const handleRight = () => {
+    if (canGoRight) setStartIndex(startIndex + 1);
+  };
+
+  const visibleYears = activeYears.slice(startIndex, startIndex + maxVisible);
+
   if (activeYears.length === 0) {
     return null;
   }
 
   return (
     <div className={styles.buttonArea}>
-      {activeYears.map((y) => (
+      {activeYears.length > maxVisible && (
+        <button
+          onClick={handleLeft}
+          disabled={!canGoLeft}
+          className={styles.arrow}
+        >
+          {"<"}
+        </button>
+      )}
+      {visibleYears.map((y) => (
         <CapsuleButton
           key={y}
           text={y.toString()}
           onClick={() => updateYear(y)}
           disabled={false}
           selected={year === y}
+          width={"78px"}
         />
       ))}
+      {activeYears.length > maxVisible && (
+        <button
+          onClick={handleRight}
+          disabled={!canGoRight}
+          className={styles.arrow}
+        >
+          {">"}
+        </button>
+      )}
     </div>
   );
 };
