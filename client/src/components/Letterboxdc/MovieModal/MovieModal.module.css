@@ -88,7 +88,7 @@
 
 .zinger {
   position: fixed;
-  top: calc(50% + 230px);
+  top: calc(50% + 210px);
   left: 50%;
   transform: translate(-50%, 0);
   width: 750px;
