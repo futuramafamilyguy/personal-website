@@ -3,9 +3,9 @@ import { useState } from "react";
 import { YearProvider } from "../../../contexts/YearContext";
 import ActiveYearsContainer from "../ActiveYearsContainer/ActiveYearsContainer";
 import MovieGallery from "../MovieGallery/MovieGallery";
-import styles from "./LetterboxdcContainer.module.css";
+import styles from "./LetterboxContainer.module.css";
 
-const LetterboxdcContainer: React.FC = () => {
+const LetterboxContainer: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleCollapse = () => {
@@ -14,7 +14,7 @@ const LetterboxdcContainer: React.FC = () => {
 
   const renderContent = () => {
     return (
-      <div className={styles.letterboxdcContainer}>
+      <div className={styles.letterboxContainer}>
         <button className={styles.collapseButton} onClick={toggleCollapse}>
           {isCollapsed ? "expand" : "collapse"}
         </button>
@@ -26,7 +26,7 @@ const LetterboxdcContainer: React.FC = () => {
                 : styles.descriptionBox
             }
           >
-            <h3>letterboxdc (dc for dodging copyright)</h3>
+            <h3>letterbox</h3>
             <h5 className={styles.itsAGoodDayToDance}>
               i'd like to dedicate it to a young man who doesn't think he's seen
               anything good today - cameron frye, this one's for you
@@ -42,4 +42,4 @@ const LetterboxdcContainer: React.FC = () => {
   return renderContent();
 };
 
-export default LetterboxdcContainer;
+export default LetterboxContainer;

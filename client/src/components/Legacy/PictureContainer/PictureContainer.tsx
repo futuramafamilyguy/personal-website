@@ -4,9 +4,9 @@ import { useAuth } from "../../../contexts/AuthContext";
 import usePictures from "../../../hooks/usePictures";
 import MediaCard from "../../Common/MediaCard/MediaCard";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
-import NewMediaCard from "../../Letterboxdc/NewMediaCard/NewMediaCard";
-import NewPictureModal from "../../Letterboxdc/CreateMovieModal/CreateMovieModal";
-import PictureModal from "../../Letterboxdc/MovieModal/MovieModal";
+import NewMediaCard from "../../Letterbox/NewMediaCard/NewMediaCard";
+import NewPictureModal from "../../Letterbox/CreateMovieModal/CreateMovieModal";
+import PictureModal from "../../Letterbox/MovieModal/MovieModal";
 import Pagination from "../Pagination/Pagination";
 import styles from "./PictureContainer.module.css";
 
