@@ -42,10 +42,11 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: opacity 0.1s ease-out;
 }
 
 .postCard:hover .titleOverlay {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  opacity: 0;
 }
 
 .image {
