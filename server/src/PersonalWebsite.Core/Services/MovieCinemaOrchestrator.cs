@@ -100,10 +100,7 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
     )
     {
         var updatedCinema = await _cinemaService.UpdateCinemaAsync(cinemaId, cinemaName, city);
-        var updatedCount = await _movieService.UpdateCinemaOfMoviesAsync(
-            cinemaId,
-            updatedCinema
-        );
+        var updatedCount = await _movieService.UpdateCinemaOfMoviesAsync(cinemaId, updatedCinema);
         _logger.LogInformation(
             $"updated cinema info of {updatedCount} movies that are associated with cinema {cinemaId}"
         );
@@ -113,9 +110,7 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
 
     public async Task ValidateAndDeleteCinema(string cinemaId)
     {
-        var cinemaExists = await _movieService.CheckIfAnyMoviesAssociatedWithCinemaAsync(
-            cinemaId
-        );
+        var cinemaExists = await _movieService.CheckIfAnyMoviesAssociatedWithCinemaAsync(cinemaId);
 
         if (cinemaExists)
             throw new DomainValidationException(

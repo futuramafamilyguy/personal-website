@@ -136,7 +136,7 @@ public class MovieRepository : IMovieRepository
         bool isAlt
     )
     {
-        var filter = Builders<MovieDocument>.Filter.Eq(post => post.Id, id);
+        var filter = Builders<MovieDocument>.Filter.Eq(movie => movie.Id, id);
 
         if (isAlt)
         {
@@ -157,7 +157,5 @@ public class MovieRepository : IMovieRepository
     }
 
     private static SortDefinition<MovieDocument> SortMoviesByWatchDate() =>
-        Builders<MovieDocument>
-            .Sort.Descending(movie => movie.Month)
-            .Descending(movie => movie.Id);
+        Builders<MovieDocument>.Sort.Descending(movie => movie.Month).Descending(movie => movie.Id);
 }

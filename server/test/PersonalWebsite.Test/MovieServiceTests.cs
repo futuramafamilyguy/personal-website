@@ -83,9 +83,7 @@ public class MovieServiceTests
             .WithFavorite(isFavorite)
             .WithKino(isKino)
             .Build();
-        repositoryMock
-            .Setup(x => x.CheckKinoExistenceAsync(yearWatched, null))
-            .ReturnsAsync(false);
+        repositoryMock.Setup(x => x.CheckKinoExistenceAsync(yearWatched, null)).ReturnsAsync(false);
 
         // act
         await sut.AddMovieAsync(
@@ -129,9 +127,7 @@ public class MovieServiceTests
             .WithFavorite(false)
             .WithKino(true)
             .Build();
-        repositoryMock
-            .Setup(x => x.CheckKinoExistenceAsync(yearWatched, null))
-            .ReturnsAsync(false);
+        repositoryMock.Setup(x => x.CheckKinoExistenceAsync(yearWatched, null)).ReturnsAsync(false);
 
         // act
         var act = async () =>
@@ -165,9 +161,7 @@ public class MovieServiceTests
             .WithFavorite(true)
             .WithKino(true)
             .Build();
-        repositoryMock
-            .Setup(x => x.CheckKinoExistenceAsync(yearWatched, null))
-            .ReturnsAsync(true);
+        repositoryMock.Setup(x => x.CheckKinoExistenceAsync(yearWatched, null)).ReturnsAsync(true);
 
         // act
         var act = async () =>
@@ -254,12 +248,7 @@ public class MovieServiceTests
             .Returns((string path) => $"https://storagehost/{path}");
 
         // act
-        var presignedUploadUrl = await sut.HandleImageUploadAsync(
-            id,
-            "image/movies",
-            "jpg",
-            isAlt
-        );
+        var presignedUploadUrl = await sut.HandleImageUploadAsync(id, "image/movies", "jpg", isAlt);
 
         // assert
         repositoryMock.Verify(
