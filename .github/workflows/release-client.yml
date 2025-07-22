@@ -5,7 +5,7 @@ on:
     secrets:
       serverUrl:
         required: true
-      sessionUrl:
+      operationKinoUrl:
         required: true
 
 env:

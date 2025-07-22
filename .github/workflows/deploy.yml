@@ -13,7 +13,7 @@ jobs:
       packages: write
     secrets:
       serverUrl: ${{ secrets.VITE_SERVER_URL }}
-      sessionUrl: ${{ secrets.VITE_SESSION_URL }}
+      operationKinoUrl: ${{ secrets.VITE_OPERATION_KINO_URL }}
 
   wait-for-server:
     uses: futuramafamilyguy/personal-website/.github/workflows/release-server.yml@main
