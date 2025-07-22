@@ -19,7 +19,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
       AWS_SECRET_ACCESS_KEY: ${AWS_ACCESS_SECRET}
       AWS_REGION: ${AWS_REGION}
-      AmazonS3Configuration__Bucket: ${AMAZONS3_BUCKET}
+      S3Configuration__BucketName: ${S3_BUCKET}
       BasicAuthConfiguration__AdminUsername: ${ADMIN_USERNAME}
       BasicAuthConfiguration__AdminPassword: ${ADMIN_PASSWORD}
       BasicAuthConfiguration__DisableTrackingUsername: ${DISABLETRACKING_USERNAME}
