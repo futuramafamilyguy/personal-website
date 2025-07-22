@@ -9,7 +9,7 @@ public class PostDocument
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
 
-    [BsonElement("post_title")]
+    [BsonElement("title")]
     public required string Title { get; set; }
 
     [BsonElement("markdown_url")]
