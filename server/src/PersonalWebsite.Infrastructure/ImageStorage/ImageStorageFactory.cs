@@ -28,7 +28,7 @@ public class ImageStorageFactory
         var imageStorage = storageProvider switch
         {
             "S3" => _s3ImageStorage,
-            _ => throw new InvalidOperationException("Image storage provider not supported")
+            _ => throw new InvalidOperationException("image storage provider not supported")
         };
 
         if (_imageStorageConfiguration.CdnEnabled)
