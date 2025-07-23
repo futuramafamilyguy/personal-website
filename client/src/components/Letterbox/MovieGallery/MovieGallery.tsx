@@ -107,13 +107,15 @@ const MovieGallery: React.FC = () => {
               </div>
             </>
           ) : null}
-          <NomineeRow
-            movies={movies.filter((m: Movie) => m.isNominated === true)}
-            year={year}
-            movieOnClick={(m: Movie) => openModal(m, true)}
-            movieEditable={isLoggedIn}
-            movieOnClickEdit={(m: Movie) => openNewMovieModal(m)}
-          />
+          {nominees && nominees.length > 0 ? (
+            <NomineeRow
+              movies={movies.filter((m: Movie) => m.isNominated === true)}
+              year={year}
+              movieOnClick={(m: Movie) => openModal(m, true)}
+              movieEditable={isLoggedIn}
+              movieOnClickEdit={(m: Movie) => openNewMovieModal(m)}
+            />
+          ) : null}
           {months.map((month, index) => {
             var currentDate = new Date();
             var currentMonth = 12;
