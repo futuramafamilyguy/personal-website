@@ -19,25 +19,26 @@ load() {
         -d $DOMAIN \
         -d www.$DOMAIN \
         -d api.$DOMAIN \
-        -d session-hub.$DOMAIN \
         --agree-tos --non-interactive --email $EMAIL \
         /
     docker compose restart nginx
-}
-
-renew() {
-    docker compose run --rm certbot renew
-    docker exec nginx nginx -s reload
 }
 
 delete() {
     docker compose run --rm certbot delete --cert-name $DOMAIN
 }
 
+install_cron() {
+    sudo cp certbot-renew.cron /etc/cron.d/certbot-renew
+    sudo chmod 644 /etc/cron.d/certbot-renew
+    sudo chown root:root /etc/cron.d/certbot-renew
+    sudo systemctl reload cron
+}
+
 if [ "$1" == "load" ]; then
     load
-elif [ "$1" == "renew" ]; then
-    renew
 elif [ "$1" == "delete" ]; then
     delete
+elif [ "$1" == "install_cron" ]; then
+    install_cron
 fi
