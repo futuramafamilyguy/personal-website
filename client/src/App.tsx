@@ -23,7 +23,7 @@ const App: React.FC = () => {
     { label: "letterbox", link: "/letterbox" },
     { label: "blog", link: "/blog" },
     { label: "operation kino", link: "/operation-kino" },
-    { label: "WGPM FM", link: "/wgpm" },
+    { label: "WGPM FM", link: "/wgpm-fm" },
   ];
 
   return (
@@ -44,7 +44,7 @@ const App: React.FC = () => {
               <Route path="/blog/:slug" element={<PostContainer />} />
             </Route>
             <Route path="/operation-kino" element={<OperationKinoPage />} />
-            <Route path="/wgpm" element={<WgpmFmPage />} />
+            <Route path="/wgpm-fm" element={<WgpmFmPage />} />
             <Route path="/box-office" element={<BoxOfficePage />} />
             <Route path="/disable-tracking" element={<DisableTracking />} />
             <Route path="/login" element={<AuthComponent />} />
