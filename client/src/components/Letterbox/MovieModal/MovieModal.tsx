@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactDom from "react-dom";
 
-import heartIcon from "../../../assets/svg/heart_filled.png";
+import heartIcon from "../../../assets/flower.jpg";
 import Movie from "../../../types/Movie";
 import styles from "./MovieModal.module.css";
 

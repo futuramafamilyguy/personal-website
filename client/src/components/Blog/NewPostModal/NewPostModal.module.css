@@ -29,7 +29,6 @@
   height: auto;
   padding: 20px;
   overflow-y: auto;
-  background-color: #1a1a1a;
   color: white;
   overflow: visible;
   border-radius: 10px;
@@ -82,7 +81,6 @@ label {
 
 .button {
   padding: 7px 15px;
-  background-color: #1a1a1a;
   color: white;
   border: 1px solid white;
   border-radius: 10px;
@@ -92,7 +90,6 @@ label {
 
 .deleteButton {
   padding: 7px 15px;
-  background-color: #1a1a1a;
   color: #c11c1c;
   border: 1px solid #c11c1c;
   border-radius: 10px;

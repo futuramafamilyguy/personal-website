@@ -172,7 +172,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     <>
       <div className={styles.overlay} onClick={onClose}></div>
       <div className={styles.modal}>
-        <div className={styles.textContainer}>
+        <div className={`${styles.textContainer} bg-dark`}>
           {post ? (
             <h5 className={styles.title}>Update Post</h5>
           ) : (
@@ -209,7 +209,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
             </div>
             <div className={styles.buttonContainer}>
               <div>
-                <button className={styles.button} type="submit">
+                <button className={`${styles.button} bg-dark`} type="submit">
                   submit
                 </button>
                 <span className={styles.result} id="result">
@@ -219,7 +219,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
               {post ? (
                 <div>
                   <button
-                    className={styles.deleteButton}
+                    className={`${styles.deleteButton} bg-dark`}
                     onClick={handleDelete}
                   >
                     delete

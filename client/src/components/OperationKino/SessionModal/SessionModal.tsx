@@ -83,7 +83,10 @@ const SessionModal: React.FC<SessionModalProps> = ({
             session?.releaseYear === 0 ? "" : `(${session?.releaseYear})`
           }`}</h4>
         </div>
-        <div className={styles.textContainer} ref={textContainerRef}>
+        <div
+          className={`${styles.textContainer} bg-dark`}
+          ref={textContainerRef}
+        >
           <h5 className={styles.subtitle}>showtimes</h5>
           <div className={styles.dateContainer}>
             {session?.showtimes.map((showtime, index) => (

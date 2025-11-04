@@ -220,7 +220,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     <>
       <div className={styles.overlay} onClick={onClose}></div>
       <div className={styles.modal}>
-        <div className={styles.textContainer}>
+        <div className={`${styles.textContainer} bg-dark`}>
           {movie ? (
             <h5 className={styles.title}>update movie</h5>
           ) : (
@@ -363,7 +363,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
             </div>
             <div className={styles.buttonContainer}>
               <div>
-                <button className={styles.button} type="submit">
+                <button className={`${styles.button} bg-dark`} type="submit">
                   submit
                 </button>
                 <span className={styles.result} id="result">
@@ -373,7 +373,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
               {movie ? (
                 <div>
                   <button
-                    className={styles.deleteButton}
+                    className={`${styles.deleteButton} bg-dark`}
                     onClick={handleDelete}
                   >
                     delete

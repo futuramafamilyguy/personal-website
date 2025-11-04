@@ -27,7 +27,9 @@ const Navbar: React.FC<NavbarProps> = ({ logoSrc, menuItems }) => {
   }, []);
 
   return (
-    <nav className={`${styles.navbar} ${isSticky ? styles.sticky : ""}`}>
+    <nav
+      className={`${styles.navbar} ${isSticky ? styles.sticky : ""} bg-dark`}
+    >
       <div className={styles.navLeft}>
         <img src={logoSrc} className={styles.logo} alt="where imag" />
 
