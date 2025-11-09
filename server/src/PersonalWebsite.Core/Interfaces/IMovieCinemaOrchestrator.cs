@@ -20,6 +20,7 @@ public interface IMovieCinemaOrchestrator
         int releaseYear,
         string? zinger,
         string? alias,
+        string? motif,
         bool isNominated,
         bool isKino,
         bool isRetro
@@ -33,6 +34,7 @@ public interface IMovieCinemaOrchestrator
         int releaseYear,
         string? zinger,
         string? alias,
+        string? motif,
         string? imageUrl,
         string? imageObjectKey,
         string? altImageUrl,

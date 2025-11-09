@@ -42,6 +42,7 @@ public class MovieService : IMovieService
         int releaseYear,
         string? zinger,
         string? alias,
+        string? motif,
         bool isNominated,
         bool isKino,
         bool isRetro
@@ -64,6 +65,7 @@ public class MovieService : IMovieService
                 ReleaseYear = releaseYear,
                 Zinger = zinger,
                 Alias = alias,
+                Motif = motif,
                 IsNominated = isNominated,
                 IsKino = isKino,
                 IsRetro = isRetro
@@ -82,6 +84,7 @@ public class MovieService : IMovieService
         int releaseYear,
         string? zinger,
         string? alias,
+        string? motif,
         string? imageUrl,
         string? imageObjectKey,
         string? altImageUrl,
@@ -108,6 +111,7 @@ public class MovieService : IMovieService
             ReleaseYear = releaseYear,
             Zinger = zinger,
             Alias = alias,
+            Motif = motif,
             ImageUrl = imageUrl,
             ImageObjectKey = imageObjectKey,
             AltImageUrl = altImageUrl,

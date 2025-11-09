@@ -29,6 +29,7 @@ public class MovieCinemaOrchestratorTests
         int yearReleased = 2020;
         var zinger = "bazinga";
         var alias = "car";
+        var motif = "lightning";
         var isFavorite = false;
         var isKino = false;
         var isNewRelease = false;
@@ -54,6 +55,7 @@ public class MovieCinemaOrchestratorTests
             yearReleased,
             zinger,
             alias,
+            motif,
             isFavorite,
             isKino,
             isNewRelease
@@ -76,6 +78,7 @@ public class MovieCinemaOrchestratorTests
                     yearReleased,
                     zinger,
                     alias,
+                    motif,
                     isFavorite,
                     isKino,
                     isNewRelease
@@ -103,6 +106,7 @@ public class MovieCinemaOrchestratorTests
         int yearReleased = 2020;
         var zinger = "bazinga";
         var alias = "car";
+        var motif = "lightning";
         var imageUrl = "domain/images/image.jpg";
         var imageObjectKey = "images/image.jpg";
         var altImageUrl = "domain/images/image-alt.jpg";
@@ -133,6 +137,7 @@ public class MovieCinemaOrchestratorTests
             yearReleased,
             zinger,
             alias,
+            motif,
             imageUrl,
             imageObjectKey,
             altImageUrl,
@@ -155,6 +160,7 @@ public class MovieCinemaOrchestratorTests
                     yearReleased,
                     zinger,
                     alias,
+                    motif,
                     imageUrl,
                     imageObjectKey,
                     altImageUrl,

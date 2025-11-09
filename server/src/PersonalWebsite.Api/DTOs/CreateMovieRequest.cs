@@ -12,6 +12,7 @@ public class CreateMovieRequest
     public int? ReleaseYear { get; set; }
     public string? Zinger { get; set; }
     public string? Alias { get; set; }
+    public string? Motif { get; set; }
     public bool? IsNominated { get; set; }
     public bool? IsKino { get; set; }
     public bool? IsRetro { get; set; }

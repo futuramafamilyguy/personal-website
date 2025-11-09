@@ -31,6 +31,7 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
         int releaseYear,
         string? zinger,
         string? alias,
+        string? motif,
         bool isNominated,
         bool isKino,
         bool isRetro
@@ -45,6 +46,7 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
             releaseYear,
             zinger,
             alias,
+            motif,
             isNominated,
             isKino,
             isRetro
@@ -62,6 +64,7 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
         int releaseYear,
         string? zinger,
         string? alias,
+        string? motif,
         string? imageUrl,
         string? imageObjectKey,
         string? altImageUrl,
@@ -81,6 +84,7 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
             releaseYear,
             zinger,
             alias,
+            motif,
             imageUrl,
             imageObjectKey,
             altImageUrl,

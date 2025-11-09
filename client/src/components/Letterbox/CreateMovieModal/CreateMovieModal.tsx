@@ -42,6 +42,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
   const [cinemaId, setCinemaId] = useState("");
   const [zinger, setZinger] = useState("");
   const [alias, setAlias] = useState("");
+  const [motif, setMotif] = useState("");
   const [isNominated, setIsNominated] = useState(false);
   const [isKino, setIsKino] = useState(false);
   const [isRetro, setIsRetro] = useState(false);
@@ -67,6 +68,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     setCinemaId(movie ? movie.cinema.id : "");
     setZinger(movie && movie.zinger ? movie.zinger : "");
     setAlias(movie && movie.alias ? movie.alias : "");
+    setMotif(movie && movie.motif ? movie.motif : "");
     setIsNominated(movie ? movie.isNominated : false);
     setIsKino(movie ? movie.isKino : false);
     setIsRetro(movie ? movie.isRetro : false);
@@ -103,6 +105,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
         cinemaId: cinemaId,
         zinger: zinger ? zinger : null,
         alias: alias ? alias : null,
+        motif: motif ? motif : null,
         isNominated: isNominated,
         isKino: isKino,
         isRetro: isRetro,
@@ -149,6 +152,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
         cinemaId: cinemaId,
         zinger: zinger ? zinger : null,
         alias: alias ? alias : null,
+        motif: motif ? motif : null,
         isNominated: isNominated,
         isKino: isKino,
         isRetro: isRetro,
@@ -358,6 +362,15 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
                   id="zinger"
                   value={zinger}
                   onChange={(e) => setZinger(e.target.value)}
+                ></input>
+              </div>
+              <div className={styles.formGroup}>
+                <label>motif</label>
+                <input
+                  type="text"
+                  id="motif"
+                  value={motif}
+                  onChange={(e) => setMotif(e.target.value)}
                 ></input>
               </div>
             </div>

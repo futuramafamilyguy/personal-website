@@ -13,6 +13,7 @@ public class UpdateMovieRequest
     public int? ReleaseYear { get; set; }
     public string? Zinger { get; set; }
     public string? Alias { get; set; }
+    public string? Motif { get; set; }
     public string? ImageUrl { get; set; }
     public string? ImageObjectKey { get; set; }
     public string? AltImageUrl { get; set; }

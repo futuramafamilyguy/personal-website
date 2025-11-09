@@ -20,6 +20,7 @@ public interface IMovieService
         int releaseYear,
         string? zinger,
         string? alias,
+        string? motif,
         bool IsNominated,
         bool isKino,
         bool isRetro
@@ -33,6 +34,7 @@ public interface IMovieService
         int releaseYear,
         string? zinger,
         string? alias,
+        string? motif,
         string? imageUrl,
         string? imageObjectKey,
         string? altImageUrl,

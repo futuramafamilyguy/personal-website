@@ -12,6 +12,7 @@ export default interface Movie {
   isKino: boolean;
   isRetro: boolean;
   alias: string;
+  motif: string;
   imageUrl: string;
   imageObjectKey: string;
   altImageUrl: string;

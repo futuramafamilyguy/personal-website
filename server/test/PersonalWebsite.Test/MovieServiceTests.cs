@@ -94,6 +94,7 @@ public class MovieServiceTests
             movie.ReleaseYear,
             movie.Zinger,
             movie.Alias,
+            movie.Motif,
             movie.IsNominated,
             movie.IsKino,
             movie.IsRetro
@@ -139,6 +140,7 @@ public class MovieServiceTests
                 movie.ReleaseYear,
                 movie.Zinger,
                 movie.Alias,
+                movie.Motif,
                 movie.IsNominated,
                 movie.IsKino,
                 movie.IsRetro
@@ -173,6 +175,7 @@ public class MovieServiceTests
                 movie.ReleaseYear,
                 movie.Zinger,
                 movie.Alias,
+                movie.Motif,
                 movie.IsNominated,
                 movie.IsKino,
                 movie.IsRetro

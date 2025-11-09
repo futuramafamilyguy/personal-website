@@ -41,6 +41,9 @@ public class MovieDocument
     [BsonElement("zinger")]
     public string? Zinger { get; set; }
 
+    [BsonElement("motif")]
+    public string? Motif { get; set; }
+
     [BsonElement("image_url")]
     public string? ImageUrl { get; set; }
 

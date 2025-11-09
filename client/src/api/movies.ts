@@ -11,6 +11,7 @@ export interface CreateMovieRequest {
   cinemaId: string;
   zinger: string | null;
   alias: string | null;
+  motif: string | null;
   isNominated: boolean;
   isKino: boolean;
   isRetro: boolean;
@@ -25,6 +26,7 @@ export interface UpdateMovieRequest {
   cinemaId: string;
   zinger: string | null;
   alias: string | null;
+  motif: string | null;
   isNominated: boolean;
   isKino: boolean;
   isRetro: boolean;
@@ -42,6 +44,7 @@ export const createMovie = async (data: CreateMovieRequest): Promise<Movie> => {
     cinemaId: data.cinemaId,
     zinger: data.zinger,
     alias: data.alias,
+    motif: data.motif,
     isNominated: data.isNominated,
     isKino: data.isKino,
     isRetro: data.isRetro,
@@ -59,6 +62,7 @@ export const updateMovie = async (data: UpdateMovieRequest): Promise<Movie> => {
     cinemaId: data.cinemaId,
     zinger: data.zinger,
     alias: data.alias,
+    motif: data.motif,
     isNominated: data.isNominated,
     isKino: data.isKino,
     isRetro: data.isRetro,

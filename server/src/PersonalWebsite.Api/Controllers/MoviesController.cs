@@ -72,6 +72,7 @@ public class MoviesController : ControllerBase
             request.ReleaseYear ?? DateTime.Now.Year,
             request.Zinger,
             request.Alias,
+            request.Motif,
             request.IsNominated ?? false,
             request.IsKino ?? false,
             request.IsRetro ?? true
@@ -96,6 +97,7 @@ public class MoviesController : ControllerBase
             request.ReleaseYear ?? DateTime.Now.Year,
             request.Zinger,
             request.Alias,
+            request.Motif,
             request.ImageUrl,
             request.ImageObjectKey,
             request.AltImageUrl,
