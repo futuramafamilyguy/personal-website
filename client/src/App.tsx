@@ -9,7 +9,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import BlogLayout from "./pages/BlogLayout/BlogLayout";
 import BoxOfficePage from "./pages/BoxOfficePage/BoxOfficePage";
-import WgpmFmPage from "./pages/WgpmFmPage/WgpmFmPage";
+import QstFmPage from "./pages/QstFmPage/QstFmPage";
 import LetterboxPage from "./pages/LetterboxPage/LetterboxPage";
 import OperationKinoPage from "./pages/OperationKinoPage/OperationKinoPage";
 import { MenuItem } from "./types/MenuItem";
@@ -23,7 +23,7 @@ const App: React.FC = () => {
     { label: "letterbox", link: "/letterbox" },
     { label: "blog", link: "/blog" },
     { label: "operation kino", link: "/operation-kino" },
-    { label: "WGPM FM", link: "/wgpm-fm" },
+    { label: "QST FM", link: "/qst-fm" },
   ];
 
   return (
@@ -44,7 +44,7 @@ const App: React.FC = () => {
               <Route path="/blog/:slug" element={<PostContainer />} />
             </Route>
             <Route path="/operation-kino" element={<OperationKinoPage />} />
-            <Route path="/wgpm-fm" element={<WgpmFmPage />} />
+            <Route path="/qst-fm" element={<QstFmPage />} />
             <Route path="/box-office" element={<BoxOfficePage />} />
             <Route path="/disable-tracking" element={<DisableTracking />} />
             <Route path="/login" element={<AuthComponent />} />
