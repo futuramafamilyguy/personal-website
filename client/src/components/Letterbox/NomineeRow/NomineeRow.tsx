@@ -1,4 +1,4 @@
-import heartIcon from "../../../assets/svg/heart_filled.png";
+import heart from "../../../assets/svg/heart.png";
 import Movie from "../../../types/Movie";
 import MediaCard from "../../Common/MediaCard/MediaCard";
 import styles from "./NomineeRow.module.css";
@@ -23,7 +23,7 @@ const NomineeRow: React.FC<NomineeRowProps> = ({
       <div className={styles.nomineeRow}>
         <span className={styles.title}>
           <h5>{`${year}`}</h5>
-          <img className={styles.heartIcon} src={heartIcon} />
+          <img className={styles.heartIcon} src={heart} />
         </span>
         <hr />
         <div className={styles.movieRow}>
