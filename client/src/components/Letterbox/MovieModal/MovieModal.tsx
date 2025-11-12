@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import ReactDom from "react-dom";
 
-import heartIcon from "../../../assets/flower.jpg";
+import heart from "../../../assets//svg/heart.png";
+import flower from "../../../assets/motifs/flower.svg";
 import Movie from "../../../types/Movie";
 import styles from "./MovieModal.module.css";
 
@@ -15,6 +16,11 @@ interface MovieModalProps {
   next: boolean;
   isAltImage: boolean;
 }
+
+const icons: Record<string, string> = {
+  flower,
+  heart,
+};
 
 const MovieModal: React.FC<MovieModalProps> = ({
   isOpen,
@@ -65,7 +71,10 @@ const MovieModal: React.FC<MovieModalProps> = ({
             >{`${movie?.name} (${movie?.releaseYear})`}</h4>
             {movie?.isNominated ? (
               <div className={styles.iconContainer}>
-                <img className={styles.heartIcon} src={heartIcon} />
+                <img
+                  className={styles.favouriteIcon}
+                  src={icons[movie?.motif] || icons["heart"]}
+                />
               </div>
             ) : null}
           </span>
