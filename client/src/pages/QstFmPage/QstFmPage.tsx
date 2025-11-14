@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 
-import QstFm from "../../components/QstFm/QstFm";
+import QstFmContainer from "../../components/QstFm/QstFmContainer";
+import { Track } from "../../types/Radio";
 import styles from "./QstFmPage.module.css";
 
-interface Track {
-  title: string;
-  artist: string;
-  url: string;
-  original: string;
-}
+import { segments } from "../../data/segments";
 
 interface Segment {
   cover: string;
@@ -16,15 +12,18 @@ interface Segment {
   playlist: Track[];
 }
 
-const turtleDoves: Segment = {
-  cover: "https://cdn.allenmaygibson.com/images/static/turtle-doves.jpg",
-  intro:
-    "good evening, queen street. this next one goes out to our loves — the ones we fight with, the ones we dance with, and the ones we still miss. ohia noa atu. my longing for you is unrestricted",
-  playlist: [],
-};
-
 function QstFmPage() {
-  const [segment, setSegment] = useState<Segment>(turtleDoves);
+  const [segment, setSegment] = useState<Segment>(segments.roddy);
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+
+    if (hour >= 6 && hour < 18) {
+      setSegment(segments.roddy);
+    } else {
+      setSegment(segments.turtledoves);
+    }
+  }, []);
 
   return (
     <div
@@ -34,6 +33,7 @@ function QstFmPage() {
       }}
     >
       <div className={styles.centeredContainer}>
+        <QstFmContainer playlist={segment.playlist} />
         <div className={styles.descriptionBox}>
           <h5>
             <i>{segment.intro}</i>
