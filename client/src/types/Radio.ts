@@ -4,3 +4,9 @@ export interface Track {
   url: string;
   original: string;
 }
+
+export interface Segment {
+  cover: string;
+  intro: string;
+  playlist: Track[];
+}

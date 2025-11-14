@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Track } from "../../types/Track";
+import { Track } from "../../types/Radio";
 import Booth from "./Booth/Booth";
 
 interface QstFmProps {
