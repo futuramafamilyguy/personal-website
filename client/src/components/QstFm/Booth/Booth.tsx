@@ -1,64 +1,99 @@
+import { Pause, Play } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { Play, Pause } from "lucide-react";
-import Equaliser from "./Equaliser/Equaliser";
+
+import Equaliser from "../Equaliser/Equaliser";
+import styles from "./Booth.module.css";
 
 interface BoothProps {
   title: string;
   artist: string;
   url: string;
-  isActive?: boolean;
+  original: string;
   onEnded?: () => void;
+  autoPlay?: boolean;
+  onPlayPause?: (playing: boolean) => void;
 }
 
 const Booth: React.FC<BoothProps> = ({
   title,
   artist,
   url,
-  isActive = true,
+  original,
   onEnded,
+  autoPlay = false,
+  onPlayPause,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio(url);
-      audioRef.current.addEventListener("ended", () => {
-        setIsPlaying(false);
-        onEnded?.();
+    if (autoPlay && audioRef.current) {
+      audioRef.current.play().catch(() => {
+        console.warn("waiting on user interaction");
       });
+      setIsPlaying(true);
     } else {
-      audioRef.current.src = url;
-    }
-
-    if (isActive && isPlaying) {
-      audioRef.current.play().catch(() => {});
-    } else {
-      audioRef.current.pause();
-    }
-
-    return () => {
       audioRef.current?.pause();
-    };
-  }, [url, isPlaying, isActive]);
+      setIsPlaying(false);
+    }
+  }, [url, autoPlay]);
+
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+      onPlayPause?.(false);
+    } else {
+      audio.play().catch(() => {});
+      setIsPlaying(true);
+      onPlayPause?.(true);
+    }
+  };
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLAnchorElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    const text = titleRef.current;
+
+    if (!wrapper || !text) return;
+
+    setIsOverflowing(text.scrollWidth > wrapper.clientWidth);
+  }, [title]);
 
   return (
     <div
       className="position-fixed bottom-0 start-0 m-3 d-flex align-items-center justify-content-between bg-dark text-white rounded-3 px-3 py-2 shadow"
-      style={{ width: "300px", zIndex: 1050 }}
+      style={{ width: "310px", zIndex: 1050 }}
     >
       <div className="d-flex align-items-center gap-2">
         <Equaliser isPlaying={isPlaying} />
-        <div>
+        <div
+          ref={wrapperRef}
+          style={{
+            maxWidth: "150px",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+          }}
+        >
           <a
-            href={url}
+            ref={titleRef}
+            href={original}
             target="_blank"
             rel="noopener noreferrer"
-            className="fw-medium small"
+            className={`fw-medium small ${
+              isOverflowing ? styles.scrollText : ""
+            }`}
             style={{
               color: "inherit",
               textDecoration: "none",
               cursor: "pointer",
+              display: "inline-block",
             }}
             onMouseEnter={(e) =>
               (e.currentTarget.style.textDecoration = "underline")
@@ -67,7 +102,14 @@ const Booth: React.FC<BoothProps> = ({
               (e.currentTarget.style.textDecoration = "none")
             }
           >
-            {title}
+            {isOverflowing ? (
+              <>
+                <span style={{ paddingRight: "30px" }}>{title}</span>
+                <span style={{ paddingRight: "30px" }}>{title}</span>
+              </>
+            ) : (
+              <>{title}</>
+            )}
           </a>
           <div
             className="text-secondary text-uppercase"
@@ -106,11 +148,13 @@ const Booth: React.FC<BoothProps> = ({
         <div
           className="position-absolute top-50 end-0 translate-middle-y me-2"
           style={{ cursor: "pointer" }}
-          onClick={() => setIsPlaying((p) => !p)}
+          onClick={togglePlay}
         >
           {isPlaying ? <Pause size={22} /> : <Play size={22} />}
         </div>
       </div>
+
+      <audio ref={audioRef} src={url} onEnded={onEnded} preload="auto" />
     </div>
   );
 };

@@ -1,0 +1,14 @@
+.scrollText {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-continuous 15s linear infinite;
+}
+
+@keyframes scroll-continuous {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
