@@ -20,6 +20,8 @@ import Cinema from "../../../types/Cinema";
 import Movie from "../../../types/Movie";
 import styles from "./CreateMovieModal.module.css";
 
+import { motifs } from "../../../data/motifs";
+
 interface CreateMovieModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -366,12 +368,17 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
               </div>
               <div className={styles.formGroup}>
                 <label>motif</label>
-                <input
-                  type="text"
+                <select
                   id="motif"
                   value={motif}
                   onChange={(e) => setMotif(e.target.value)}
-                ></input>
+                >
+                  {motifs.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className={styles.buttonContainer}>
