@@ -8,7 +8,11 @@ import styles from "./QstFmPage.module.css";
 function QstFmPage() {
   const [segment] = useState<Segment>(() => {
     const hour = new Date().getHours();
-    return hour >= 6 && hour < 18 ? segments.roddy : segments.turtledoves;
+    return hour >= 1 && hour < 6
+      ? segments.raspberryLamingtons
+      : hour >= 6 && hour < 17
+      ? segments.roddy
+      : segments.turtledoves;
   });
 
   const [cover] = useState<string | undefined>(() => {

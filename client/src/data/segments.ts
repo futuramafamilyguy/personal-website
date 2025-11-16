@@ -79,4 +79,50 @@ export const segments: Record<string, Segment> = {
       },
     ],
   },
+
+  raspberryLamingtons: {
+    covers: [
+      "https://cdn.allenmaygibson.com/images/static/lamingtons-rise.jpg",
+      "https://cdn.allenmaygibson.com/images/static/lamingtons-curse.jpeg",
+      "https://cdn.allenmaygibson.com/images/static/lamingtons-heroes.jpg",
+    ],
+    intro:
+      "can't sleep? me neither. come watch the bakers work with me. i hear they're already up making donuts for the morning. QST FM, keeping you company",
+    playlist: [
+      {
+        title: "cry",
+        artist: "cigarettes after sex",
+        url: "https://cdn.allenmaygibson.com/radio/raspberry-lamingtons/cry.mp3",
+        original:
+          "https://www.youtube.com/watch?v=3XqqkrJENB4&list=RD3XqqkrJENB4&start_radio=1",
+      },
+      {
+        title: "aftermath",
+        artist: "dominic fike",
+        url: "https://cdn.allenmaygibson.com/radio/raspberry-lamingtons/aftermath.mp3",
+        original:
+          "https://www.youtube.com/watch?v=bdp4D7d9sRM&list=RDbdp4D7d9sRM&start_radio=1",
+      },
+      {
+        title: "creep",
+        artist: "scala & kolacny bros",
+        url: "https://cdn.allenmaygibson.com/radio/raspberry-lamingtons/creep.mp3",
+        original: "https://www.youtube.com/watch?v=lB95KLmpLR4",
+      },
+      {
+        title: "hidden in the sand",
+        artist: "tally hall",
+        url: "https://cdn.allenmaygibson.com/radio/raspberry-lamingtons/hidden-in-the-sand.mp3",
+        original:
+          "https://www.youtube.com/watch?v=EOFA9kPQ_uU&list=RDEOFA9kPQ_uU&start_radio=1",
+      },
+      {
+        title: "count on me",
+        artist: "bruno mars",
+        url: "https://cdn.allenmaygibson.com/radio/raspberry-lamingtons/count-on-me.mp3",
+        original:
+          "https://www.youtube.com/watch?v=6k8cpUkKK4c&list=RD6k8cpUkKK4c&start_radio=1",
+      },
+    ],
+  },
 };
