@@ -2,7 +2,7 @@ import { Segment } from "../types/Radio";
 
 export const segments: Record<string, Segment> = {
   turtledoves: {
-    cover: "https://cdn.allenmaygibson.com/images/static/turtledoves.jpg",
+    covers: ["https://cdn.allenmaygibson.com/images/static/turtledoves.jpg"],
     intro:
       "good evening, queen street. this next one goes out to our loves — the ones we fight with, the ones we dance with, and the ones far away. ohia noa atu. my longing for you is unrestricted",
     playlist: [
@@ -45,7 +45,7 @@ export const segments: Record<string, Segment> = {
   },
 
   roddy: {
-    cover: "https://cdn.allenmaygibson.com/images/static/roddy.jpg",
+    covers: ["https://cdn.allenmaygibson.com/images/static/roddy.jpg"],
     intro:
       "today on QST FM: smoking kills. counterpoint: it's cool as shit. calm down. take a smoko. over to you callers",
     playlist: [

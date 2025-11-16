@@ -1,35 +1,26 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import QstFmContainer from "../../components/QstFm/QstFmContainer";
-import { Track } from "../../types/Radio";
+import { segments } from "../../data/segments";
+import { Segment } from "../../types/Radio";
 import styles from "./QstFmPage.module.css";
 
-import { segments } from "../../data/segments";
-
-interface Segment {
-  cover: string;
-  intro: string;
-  playlist: Track[];
-}
-
 function QstFmPage() {
-  const [segment, setSegment] = useState<Segment>(segments.roddy);
-
-  useEffect(() => {
+  const [segment] = useState<Segment>(() => {
     const hour = new Date().getHours();
+    return hour >= 6 && hour < 18 ? segments.roddy : segments.turtledoves;
+  });
 
-    if (hour >= 6 && hour < 18) {
-      setSegment(segments.roddy);
-    } else {
-      setSegment(segments.turtledoves);
-    }
-  }, []);
+  const [cover] = useState<string | undefined>(() => {
+    if (!segment.covers || segment.covers.length === 0) return undefined;
+    return segment.covers[Math.floor(Math.random() * segment.covers.length)];
+  });
 
   return (
     <div
       className={styles.qstFmPage}
       style={{
-        ["--bg-image" as any]: `url(${segment.cover})`,
+        ["--bg-image" as any]: `url(${cover})`,
       }}
     >
       <div className={styles.centeredContainer}>

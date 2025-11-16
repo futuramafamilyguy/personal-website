@@ -6,7 +6,7 @@ export interface Track {
 }
 
 export interface Segment {
-  cover: string;
+  covers: string[];
   intro: string;
   playlist: Track[];
 }
