@@ -1,5 +1,7 @@
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.RateLimiting;
 using PersonalWebsite.Api;
 using PersonalWebsite.Api.Authentication;
 using PersonalWebsite.Api.Filters;
@@ -22,6 +24,9 @@ builder.Services.Configure<BasicAuthConfiguration>(
 );
 builder.Services.Configure<VisitExclusionConfiguration>(
     builder.Configuration.GetSection("VisitExclusionConfiguration")
+);
+builder.Services.Configure<RateLimitingConfiguration>(
+    builder.Configuration.GetSection("RateLimiting")
 );
 builder.Services.Configure<ImageStorageConfiguration>(
     builder.Configuration.GetSection("ImageStorageConfiguration")
@@ -130,6 +135,22 @@ builder.Services.AddSession(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
+var rateLimitConfig = builder
+    .Configuration.GetSection("RateLimiting")
+    .Get<RateLimitingConfiguration>();
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter(
+        "loginPolicy",
+        opt =>
+        {
+            opt.PermitLimit = rateLimitConfig.PermitLimit;
+            opt.Window = TimeSpan.FromMinutes(rateLimitConfig.WindowMinutes);
+            opt.QueueLimit = rateLimitConfig.QueueLimit;
+        }
+    );
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -144,6 +165,8 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 

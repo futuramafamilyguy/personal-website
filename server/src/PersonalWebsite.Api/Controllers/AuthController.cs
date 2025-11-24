@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
 using PersonalWebsite.Api.VisitTracking;
 
@@ -20,6 +21,7 @@ public class AuthController : Controller
     }
 
     [Authorize(AuthenticationSchemes = "AdminAuth")]
+    [EnableRateLimiting("loginPolicy")]
     [HttpPost("login")]
     public IActionResult Login()
     {
