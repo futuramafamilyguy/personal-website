@@ -14,7 +14,7 @@ function QstFmPage() {
       ? segments.roddy
       : hour >= 16 && hour < 18
       ? segments.vitaly
-      : segments.hoothoot;
+      : segments.turtledoves;
   });
 
   const [cover] = useState<string | undefined>(() => {
