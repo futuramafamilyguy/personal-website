@@ -4,7 +4,7 @@ export const segments: Record<string, Segment> = {
   turtledoves: {
     covers: ["https://cdn.allenmaygibson.com/images/static/turtledoves.jpg"],
     intro:
-      "good evening, queen street. this next one goes out to our loves — the ones we fight with, the ones we dance with, and the ones far away. ohia noa atu. my longing for you is unrestricted",
+      "good evening, queen street. this next one goes out to our loves—the ones we fight with, the ones we dance with, and the ones far away. ohia noa atu. my longing for you is unrestricted",
     playlist: [
       {
         title: "just the two of us",
@@ -122,6 +122,59 @@ export const segments: Record<string, Segment> = {
         url: "https://cdn.allenmaygibson.com/radio/raspberry-lamingtons/count-on-me.mp3",
         original:
           "https://www.youtube.com/watch?v=6k8cpUkKK4c&list=RD6k8cpUkKK4c&start_radio=1",
+      },
+    ],
+  },
+
+  vitaly: {
+    covers: [
+      "https://cdn.allenmaygibson.com/images/static/vitaly-summer.jpg",
+      "https://cdn.allenmaygibson.com/images/static/vitaly-march.jpg",
+    ],
+    intro:
+      "it's golden hour here on queen street and—oh fuck—WE'RE GOING UP UP UP IT'S OUR MOMENT GONNA BE GONNA BE GOLDEN",
+    playlist: [
+      {
+        title: "pavane de la belle au bois dormant",
+        artist: "maurice ravel",
+        url: "https://cdn.allenmaygibson.com/radio/vitaly/pavane-de-la-belle-au-bois-dormant.mp3",
+        original:
+          "https://www.youtube.com/watch?v=4cd2xMJVeQY&list=RD4cd2xMJVeQY&start_radio=1",
+      },
+      {
+        title: "heavy",
+        artist: "the marías",
+        url: "https://cdn.allenmaygibson.com/radio/vitaly/heavy.mp3",
+        original:
+          "https://www.youtube.com/watch?v=1BCqCgamowo&list=RD1BCqCgamowo&start_radio=1",
+      },
+      {
+        title: "love always comes as a surprise",
+        artist: "peter asher",
+        url: "https://cdn.allenmaygibson.com/radio/vitaly/love-always-comes-as-a-surprise.mp3",
+        original:
+          "https://www.youtube.com/watch?v=SOf5yOZaUto&list=RDSOf5yOZaUto&start_radio=1",
+      },
+      {
+        title: "beastars",
+        artist: "satoru kosaki ",
+        url: "https://cdn.allenmaygibson.com/radio/vitaly/beastars.mp3",
+        original:
+          "https://www.youtube.com/watch?v=-3u2Y5-6I8c&list=RD-3u2Y5-6I8c&start_radio=1",
+      },
+      {
+        title: "golden hour",
+        artist: "jvke",
+        url: "https://cdn.allenmaygibson.com/radio/vitaly/golden-hour.mp3",
+        original:
+          "https://www.youtube.com/watch?v=jYEp86vn9EM&list=RDjYEp86vn9EM&start_radio=1",
+      },
+      {
+        title: "thinuette",
+        artist: "tin hat trio",
+        url: "https://cdn.allenmaygibson.com/radio/vitaly/thinuette.mp3",
+        original:
+          "https://www.youtube.com/watch?v=jd0rT-cPA4Y&list=RDjd0rT-cPA4Y&start_radio=1",
       },
     ],
   },
