@@ -9,12 +9,12 @@ function QstFmPage() {
   const [segment] = useState<Segment>(() => {
     const hour = new Date().getHours();
     return hour >= 1 && hour < 6
-      ? segments.raspberryLamingtons
+      ? segments.hoothoot
       : hour >= 6 && hour < 16
       ? segments.roddy
       : hour >= 16 && hour < 18
       ? segments.vitaly
-      : segments.turtledoves;
+      : segments.hoothoot;
   });
 
   const [cover] = useState<string | undefined>(() => {
