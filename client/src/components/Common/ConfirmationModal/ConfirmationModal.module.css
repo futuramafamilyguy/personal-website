@@ -6,7 +6,7 @@
   width: 300px;
   height: 100%;
   overflow: hidden;
-  z-index: 1007;
+  z-index: 1009;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,7 +31,7 @@
   color: white;
   overflow: visible;
   border-radius: 10px;
-  z-index: 1008;
+  z-index: 1010;
 }
 
 .buttonContainer {

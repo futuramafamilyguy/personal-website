@@ -41,7 +41,22 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
 
   const [result, setResult] = useState("");
 
-  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [confirmationConfig, setConfirmationConfig] = useState({
+    open: false,
+    text: "",
+    onConfirm: () => {},
+  });
+
+  const openConfirmation = (text: string, onConfirm: () => void) => {
+    setConfirmationConfig({
+      open: true,
+      text,
+      onConfirm,
+    });
+  };
+  const closeConfirmation = () => {
+    setConfirmationConfig((prev) => ({ ...prev, open: false }));
+  };
 
   useEffect(() => {
     setResult("");
@@ -164,8 +179,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     }
   };
 
-  const handleDelete = async (event: FormEvent) => {
-    event.preventDefault();
+  const handleDelete = async () => {
     await orchestrateDeletePost();
   };
 
@@ -175,17 +189,17 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     <>
       <div
         className={styles.overlay}
-        onClick={() => setConfirmationModalOpen(true)}
+        onClick={() => openConfirmation("discard changes?", () => onClose())}
       ></div>
-      {confirmationModalOpen && (
+      {confirmationConfig.open && (
         <ConfirmationModal
-          text="discard changes?"
+          text={confirmationConfig.text}
           onConfirm={() => {
-            onClose();
-            setConfirmationModalOpen(false);
+            confirmationConfig.onConfirm();
+            closeConfirmation();
           }}
-          onCancel={() => setConfirmationModalOpen(false)}
-          onClose={() => setConfirmationModalOpen(false)}
+          onCancel={closeConfirmation}
+          onClose={closeConfirmation}
         />
       )}
       <div className={styles.modal}>
@@ -236,8 +250,11 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
               {post ? (
                 <div>
                   <button
+                    type="button"
                     className={`${styles.deleteButton} bg-dark`}
-                    onClick={handleDelete}
+                    onClick={() =>
+                      openConfirmation("delete post?", handleDelete)
+                    }
                   >
                     delete
                   </button>
