@@ -15,7 +15,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 }) => {
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={`${styles.textContainer} bg-dark`}>
           <p>{text}</p>
           <div className={styles.buttonContainer}>
