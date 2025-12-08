@@ -21,6 +21,7 @@ import Movie from "../../../types/Movie";
 import styles from "./CreateMovieModal.module.css";
 
 import { motifs } from "../../../data/motifs";
+import ConfirmationModal from "../../Common/ConfirmationModal/ConfirmationModal";
 
 interface CreateMovieModalProps {
   isOpen: boolean;
@@ -56,6 +57,23 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
 
   const [cinemas, setCinemas] = useState<Cinema[]>([]);
   const year = useYear();
+
+  const [confirmationConfig, setConfirmationConfig] = useState({
+    open: false,
+    text: "",
+    onConfirm: () => {},
+  });
+
+  const openConfirmation = (text: string, onConfirm: () => void) => {
+    setConfirmationConfig({
+      open: true,
+      text,
+      onConfirm,
+    });
+  };
+  const closeConfirmation = () => {
+    setConfirmationConfig((prev) => ({ ...prev, open: false }));
+  };
 
   useEffect(() => {
     setResult("");
@@ -215,9 +233,8 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     }
   };
 
-  const handleDelete = (event: FormEvent) => {
-    event.preventDefault();
-    orchestrateDeleteMovie();
+  const handleDelete = async () => {
+    await orchestrateDeleteMovie();
   };
 
   if (!isOpen) return null;
@@ -393,8 +410,11 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
               {movie ? (
                 <div>
                   <button
+                    type="button"
                     className={`${styles.deleteButton} bg-dark`}
-                    onClick={handleDelete}
+                    onClick={() =>
+                      openConfirmation("delete movie?", handleDelete)
+                    }
                   >
                     delete
                   </button>
@@ -404,6 +424,17 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
           </form>
         </div>
       </div>
+      {confirmationConfig.open && (
+        <ConfirmationModal
+          text={confirmationConfig.text}
+          onConfirm={() => {
+            confirmationConfig.onConfirm();
+            closeConfirmation();
+          }}
+          onCancel={closeConfirmation}
+          onClose={closeConfirmation}
+        />
+      )}
     </>,
     document.getElementById("portal")!
   );
