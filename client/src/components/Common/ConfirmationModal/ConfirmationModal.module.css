@@ -1,0 +1,50 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1007;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1006;
+}
+
+.textContainer {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  overflow-y: auto;
+  color: white;
+  overflow: visible;
+  border-radius: 10px;
+  z-index: 1008;
+}
+
+.buttonContainer {
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  padding: 7px 15px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}

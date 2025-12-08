@@ -14,6 +14,7 @@ import {
 } from "../../../api/posts";
 import Post from "../../../types/Post";
 import styles from "./NewPostModal.module.css";
+import ConfirmationModal from "../../Common/ConfirmationModal/ConfirmationModal";
 
 interface NewPostModalProps {
   isOpen: boolean;
@@ -39,6 +40,8 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
   const [markdownVersion, setMarkdownVersion] = useState<number>();
 
   const [result, setResult] = useState("");
+
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
   useEffect(() => {
     setResult("");
@@ -170,7 +173,21 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
 
   return ReactDom.createPortal(
     <>
-      <div className={styles.overlay} onClick={onClose}></div>
+      <div
+        className={styles.overlay}
+        onClick={() => setConfirmationModalOpen(true)}
+      ></div>
+      {confirmationModalOpen && (
+        <ConfirmationModal
+          text="discard changes?"
+          onConfirm={() => {
+            onClose();
+            setConfirmationModalOpen(false);
+          }}
+          onCancel={() => setConfirmationModalOpen(false)}
+          onClose={() => setConfirmationModalOpen(false)}
+        />
+      )}
       <div className={styles.modal}>
         <div className={`${styles.textContainer} bg-dark`}>
           {post ? (
