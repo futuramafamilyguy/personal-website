@@ -9,35 +9,35 @@ export const segments: Record<string, Segment> = {
       {
         title: "just the two of us",
         artist: "lucy ellis",
-        url: "https://cdn.allenmaygibson.com/radio/turtle-doves/just-the-two-of-us.mp3",
+        url: "https://cdn.allenmaygibson.com/radio/turtledoves/just-the-two-of-us.mp3",
         original:
           "https://www.youtube.com/watch?v=y2u_-QomGXU&list=RDy2u_-QomGXU&start_radio=1",
       },
       {
         title: "the day that i met you",
         artist: "matilda mann",
-        url: "https://cdn.allenmaygibson.com/radio/turtle-doves/the-day-that-i-met-you.mp3",
+        url: "https://cdn.allenmaygibson.com/radio/turtledoves/the-day-that-i-met-you.mp3",
         original:
           "https://www.youtube.com/watch?v=JDqKksYTtYI&list=RDJDqKksYTtYI&start_radio=1",
       },
       {
         title: "the end of the world",
         artist: "skeeter davis",
-        url: "https://cdn.allenmaygibson.com/radio/turtle-doves/the-end-of-the-world.mp3",
+        url: "https://cdn.allenmaygibson.com/radio/turtledoves/the-end-of-the-world.mp3",
         original:
           "https://www.youtube.com/watch?v=DsY_kocbWaM&list=RDDsY_kocbWaM&start_radio=1",
       },
       {
         title: "brother",
         artist: "smashproof",
-        url: "https://cdn.allenmaygibson.com/radio/turtle-doves/brother.mp3",
+        url: "https://cdn.allenmaygibson.com/radio/turtledoves/brother.mp3",
         original:
           "https://www.youtube.com/watch?v=j2ORavsGLro&list=RDj2ORavsGLro&start_radio=1",
       },
       {
         title: "butter-fly",
         artist: "kōji wada",
-        url: "https://cdn.allenmaygibson.com/radio/turtle-doves/butter-fly.mp3",
+        url: "https://cdn.allenmaygibson.com/radio/turtledoves/butter-fly.mp3",
         original:
           "https://www.youtube.com/watch?v=lboUNlnKIlY&list=RDlboUNlnKIlY&start_radio=1",
       },
