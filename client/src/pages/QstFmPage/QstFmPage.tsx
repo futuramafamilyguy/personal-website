@@ -10,7 +10,9 @@ function QstFmPage() {
     const hour = new Date().getHours();
     return hour >= 1 && hour < 6
       ? segments.hoothoot
-      : hour >= 6 && hour < 16
+      : hour >= 6 && hour < 10
+      ? segments.breakfast
+      : hour >= 10 && hour < 16
       ? segments.roddy
       : hour >= 16 && hour < 18
       ? segments.vitaly

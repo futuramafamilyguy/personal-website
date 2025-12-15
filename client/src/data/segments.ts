@@ -156,7 +156,7 @@ export const segments: Record<string, Segment> = {
       },
       {
         title: "beastars",
-        artist: "satoru kosaki ",
+        artist: "satoru kosaki",
         url: "https://cdn.allenmaygibson.com/radio/vitaly/beastars.mp3",
         original:
           "https://www.youtube.com/watch?v=-3u2Y5-6I8c&list=RD-3u2Y5-6I8c&start_radio=1",
@@ -174,6 +174,51 @@ export const segments: Record<string, Segment> = {
         url: "https://cdn.allenmaygibson.com/radio/vitaly/thinuette.mp3",
         original:
           "https://www.youtube.com/watch?v=jd0rT-cPA4Y&list=RDjd0rT-cPA4Y&start_radio=1",
+      },
+    ],
+  },
+
+  breakfast: {
+    covers: [
+      "https://cdn.allenmaygibson.com/images/static/breakfast-mr-postman.jpg",
+    ],
+    intro:
+      "we're opening up shop on queen street and you've just hit snooze for the third time. get your ass up it's time to start the day—i think something good will happen today",
+    playlist: [
+      {
+        title: "the kiss of venus",
+        artist: "dominic fike & paul",
+        url: "https://cdn.allenmaygibson.com/radio/breakfast/the-kiss-of-venus.mp3",
+        original:
+          "https://www.youtube.com/watch?v=4cd2xMJVeQY&list=RD4cd2xMJVeQY&start_radio=1",
+      },
+      {
+        title: "blueless bird",
+        artist: "joni",
+        url: "https://cdn.allenmaygibson.com/radio/breakfast/blueless-bird.mp3",
+        original:
+          "https://www.youtube.com/watch?v=1BCqCgamowo&list=RD1BCqCgamowo&start_radio=1",
+      },
+      {
+        title: "please mr. postman",
+        artist: "carpenters",
+        url: "https://cdn.allenmaygibson.com/radio/breakfast/please-mr-postman.mp3",
+        original:
+          "https://www.youtube.com/watch?v=SOf5yOZaUto&list=RDSOf5yOZaUto&start_radio=1",
+      },
+      {
+        title: "glass ceiling",
+        artist: "matilda mann",
+        url: "https://cdn.allenmaygibson.com/radio/breakfast/glass-ceiling.mp3",
+        original:
+          "https://www.youtube.com/watch?v=-3u2Y5-6I8c&list=RD-3u2Y5-6I8c&start_radio=1",
+      },
+      {
+        title: "the little mess you made",
+        artist: "the favors",
+        url: "https://cdn.allenmaygibson.com/radio/breakfast/the-little-mess-you-made.mp3",
+        original:
+          "https://www.youtube.com/watch?v=jYEp86vn9EM&list=RDjYEp86vn9EM&start_radio=1",
       },
     ],
   },
