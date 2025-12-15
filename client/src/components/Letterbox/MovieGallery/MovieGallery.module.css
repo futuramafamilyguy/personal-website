@@ -25,12 +25,15 @@
   background-color: #555;
 }
 
-.newMovieRow {
+.newEntitiesRow {
   width: 100%;
   padding-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 25px;
 }
 
-.newMovieRow h5 {
+.newEntitiesRow h5 {
   font-weight: 600;
 }
 

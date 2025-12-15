@@ -5,13 +5,14 @@ import { useYear } from "../../../contexts/YearContext";
 import useMoviesV2 from "../../../hooks/useMoviesV2";
 import Movie from "../../../types/Movie";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
-import NomineeRow from "../NomineeRow/NomineeRow";
-import NewMediaCard from "../NewMediaCard/NewMediaCard";
 import CreateMovieModal from "../CreateMovieModal/CreateMovieModal";
-import MovieModal from "../MovieModal/MovieModal";
 import MovieMonthRow from "../MonthRow/MonthRow";
+import MovieModal from "../MovieModal/MovieModal";
+import NewMediaCard from "../NewMediaCard/NewMediaCard";
+import NomineeRow from "../NomineeRow/NomineeRow";
 import MovieStatsRow from "../StatsRow/StatsRow";
 import styles from "./MovieGallery.module.css";
+import CreateCinemaModal from "../CreateCinemaModal/CreateCinemaModal";
 
 const MovieGallery: React.FC = () => {
   const { movies, loading, setTrigger } = useMoviesV2();
@@ -22,7 +23,8 @@ const MovieGallery: React.FC = () => {
   const year = useYear();
   const [modalOpen, setModalOpen] = useState(false);
   const [movieIndex, setMovieIndex] = useState<number | null>(null);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [createMovieModalOpen, setCreateMovieModalOpen] = useState(false);
+  const [createCinemaModalOpen, setCreateCinemaModalOpen] = useState(false);
   const [nominees, setNominees] = useState<Movie[]>();
   const [viewNominees, setViewNominees] = useState(false);
 
@@ -74,7 +76,11 @@ const MovieGallery: React.FC = () => {
 
   const openNewMovieModal = (movie: Movie | null) => {
     setSelectedMovie(movie);
-    setCreateModalOpen(true);
+    setCreateMovieModalOpen(true);
+  };
+
+  const openNewCinemaModal = () => {
+    setCreateCinemaModalOpen(true);
   };
 
   const months: string[] = [
@@ -100,10 +106,21 @@ const MovieGallery: React.FC = () => {
         <div className={styles.movieGallery}>
           {isLoggedIn ? (
             <>
-              <div className={styles.newMovieRow}>
+              <div className={styles.newEntitiesRow}>
                 <h5>after this one, we're watching four more</h5>
                 <hr />
-                <NewMediaCard onClick={() => openNewMovieModal(null)} />
+                <NewMediaCard
+                  imageSrc={
+                    "https://cdn.allenmaygibson.com/images/static/the-fourth.webp"
+                  }
+                  onClick={() => openNewMovieModal(null)}
+                />
+                <NewMediaCard
+                  imageSrc={
+                    "https://cdn.allenmaygibson.com/images/static/archives.jpg"
+                  }
+                  onClick={() => openNewCinemaModal()}
+                />
               </div>
             </>
           ) : null}
@@ -154,12 +171,23 @@ const MovieGallery: React.FC = () => {
           />
           {isLoggedIn ? (
             <CreateMovieModal
-              isOpen={createModalOpen}
+              isOpen={createMovieModalOpen}
               onClose={() => {
-                setCreateModalOpen(false);
+                setCreateMovieModalOpen(false);
                 setSelectedMovie(null);
               }}
               movie={selectedMovie}
+              setTrigger={() =>
+                setTrigger((prevTrigger: boolean) => !prevTrigger)
+              }
+            />
+          ) : null}
+          {isLoggedIn ? (
+            <CreateCinemaModal
+              isOpen={createCinemaModalOpen}
+              onClose={() => {
+                setCreateCinemaModalOpen(false);
+              }}
               setTrigger={() =>
                 setTrigger((prevTrigger: boolean) => !prevTrigger)
               }

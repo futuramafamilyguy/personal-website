@@ -1,0 +1,94 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 750px;
+  height: 100%;
+
+  overflow: hidden;
+  z-index: 1002;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+.textContainer {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  overflow-y: auto;
+  color: white;
+  overflow: visible;
+  border-radius: 10px;
+  z-index: 1005;
+}
+
+.formFields {
+  overflow-y: auto;
+  padding-right: 20px;
+}
+
+.formGroup {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.formGroup label {
+  width: 125px;
+  margin-right: 1rem;
+  text-align: left;
+}
+
+.formGroup input {
+  flex: 1;
+  border-radius: 5px;
+}
+
+.formGroup input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.title {
+  padding-bottom: 30px;
+}
+
+.title,
+label {
+  font-weight: 600;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.button {
+  padding: 7px 15px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.result {
+  padding-left: 30px;
+}
+
+input[type="file"] {
+  width: 100%;
+}
