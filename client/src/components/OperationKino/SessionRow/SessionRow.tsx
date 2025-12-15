@@ -36,6 +36,7 @@ const SessionRow: React.FC<SessionRowProps> = ({
               editable={false}
               onClickEdit={() => {}}
               highlighted={false}
+              motif={null}
             />
           ))}
         </div>

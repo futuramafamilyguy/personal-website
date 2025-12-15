@@ -36,6 +36,7 @@ const NomineeRow: React.FC<NomineeRowProps> = ({
               onClick={() => movieOnClick(movie)}
               editable={movieEditable}
               onClickEdit={() => movieOnClickEdit(movie)}
+              motif={movie.motif}
             />
           ))}
         </div>

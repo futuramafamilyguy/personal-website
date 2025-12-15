@@ -90,7 +90,10 @@ const PictureContainer: React.FC = () => {
           <>
             <div className={styles.pictureContainer}>
               {isLoggedIn ? (
-                <NewMediaCard onClick={() => openNewPictureModal(null)} />
+                <NewMediaCard
+                  imageSrc={""}
+                  onClick={() => openNewPictureModal(null)}
+                />
               ) : null}
               {isLoggedIn ? (
                 <NewPictureModal
@@ -110,6 +113,7 @@ const PictureContainer: React.FC = () => {
                   onClick={() => openModal(index)}
                   editable={isLoggedIn}
                   onClickEdit={() => openNewPictureModal(index)}
+                  motif={null}
                 />
               ))}
               {currentPage === totalPages &&

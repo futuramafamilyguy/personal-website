@@ -3,6 +3,7 @@ import React from "react";
 import editIcon from "../../../assets/svg/edit_icon.svg";
 import useIntersectionObserver from "../../../hooks/useIntersectionObserver";
 import styles from "./MediaCard.module.css";
+import flower from "../../../assets/motifs/flower.svg";
 
 interface MediaCardProps {
   imageUrl: string;
@@ -11,7 +12,12 @@ interface MediaCardProps {
   onClick: () => void;
   editable: boolean;
   onClickEdit: () => void;
+  motif: string | null;
 }
+
+const icons: Record<string, string> = {
+  flower,
+};
 
 const MediaCard: React.FC<MediaCardProps> = ({
   imageUrl,
@@ -20,6 +26,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
   onClick,
   editable,
   onClickEdit,
+  motif,
 }) => {
   const { isInView, ref } = useIntersectionObserver();
 
@@ -51,6 +58,10 @@ const MediaCard: React.FC<MediaCardProps> = ({
               onClickEdit();
             }}
           />
+        </div>
+      ) : motif ? (
+        <div className={styles.edit}>
+          <img className={styles.motif} src={icons[motif]} alt="where imag" />
         </div>
       ) : null}
       <div className={styles.mediaTitle}>

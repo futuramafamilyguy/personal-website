@@ -34,6 +34,7 @@ const MonthRow: React.FC<MonthRowProps> = ({
               onClick={() => movieOnClick(movie)}
               editable={movieEditable}
               onClickEdit={() => movieOnClickEdit(movie)}
+              motif={movie.motif}
             />
           ))}
         </div>
