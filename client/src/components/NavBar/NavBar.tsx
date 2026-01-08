@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import ExternalLinkSvg from "../../assets/svg/icons8-external-link-30.png";
-import { MenuItem } from "../../types/MenuItem";
+import { NavItem } from "../../types/NavItem";
 import styles from "./NavBar.module.css";
 
 interface NavbarProps {
   logoSrc: string;
-  menuItems: MenuItem[];
+  navItems: NavItem[];
 }
 
-const Navbar: React.FC<NavbarProps> = ({ logoSrc, menuItems }) => {
+const Navbar: React.FC<NavbarProps> = ({ logoSrc, navItems }) => {
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
@@ -34,9 +34,9 @@ const Navbar: React.FC<NavbarProps> = ({ logoSrc, menuItems }) => {
         <img src={logoSrc} className={styles.logo} alt="where imag" />
 
         <ul className={styles.menu}>
-          {menuItems.map((item, index) => (
+          {navItems.map((item, index) => (
             <li key={index} className={styles.menuItem}>
-              <Link className={styles.menuLink} to={item.link}>
+              <Link className={styles.menuLink} to={item.path}>
                 {item.label}
               </Link>
             </li>
