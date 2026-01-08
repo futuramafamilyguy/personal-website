@@ -19,3 +19,14 @@
   margin-bottom: 20px;
   z-index: 2;
 }
+
+@media (max-width: 768px) {
+  .textArea {
+    justify-content: flex-start;
+    margin-top: 15vh;
+  }
+
+  .textArea h4 {
+    font-size: 1rem;
+  }
+}

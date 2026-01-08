@@ -85,3 +85,31 @@
   height: 32px;
   width: 32px;
 }
+
+@media (max-width: 768px) {
+  .mediaCard {
+    position: relative;
+    width: 130px;
+    height: 70px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: black;
+    z-index: 99;
+  }
+
+  .mediaTitle {
+    font-size: small;
+    font-weight: 600;
+    width: 70%;
+    left: 7px;
+  }
+
+  .motif {
+    padding-top: 5px;
+    padding-right: 5px;
+    z-index: 3;
+    height: 22px;
+    width: 22px;
+  }
+}
