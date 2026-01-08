@@ -25,10 +25,10 @@ const SessionGallery: React.FC = () => {
 
   useEffect(() => {
     setNewReleases(
-      sessions.filter((s) => s.releaseYear === new Date().getFullYear())
+      sessions.filter((s) => s.releaseYear >= new Date().getFullYear() - 1)
     );
     setRetroClassics(
-      sessions.filter((s) => s.releaseYear !== new Date().getFullYear())
+      sessions.filter((s) => s.releaseYear < new Date().getFullYear() - 1)
     );
   }, [sessions]);
 
