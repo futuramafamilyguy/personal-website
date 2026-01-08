@@ -39,6 +39,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
     volumes:
       - "./data:/data/db"
+    restart: unless-stopped
 
   nginx:
     image: ghcr.io/futuramafamilyguy/personal-website-nginx:latest

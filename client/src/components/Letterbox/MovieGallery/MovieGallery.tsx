@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useAuth } from "../../../contexts/AuthContext";
 import { useYear } from "../../../contexts/YearContext";
@@ -13,6 +13,11 @@ import NomineeRow from "../NomineeRow/NomineeRow";
 import MovieStatsRow from "../StatsRow/StatsRow";
 import styles from "./MovieGallery.module.css";
 import CreateCinemaModal from "../CreateCinemaModal/CreateCinemaModal";
+import { useIsMobile } from "../../../hooks/useIsMobile";
+
+import heart from "../../../assets//svg/heart.png";
+import flower from "../../../assets/motifs/flower.svg";
+import { useNavigate } from "react-router-dom";
 
 const MovieGallery: React.FC = () => {
   const { movies, loading, setTrigger } = useMoviesV2();
@@ -21,12 +26,15 @@ const MovieGallery: React.FC = () => {
 
   const isLoggedIn = useAuth();
   const year = useYear();
-  const [modalOpen, setModalOpen] = useState(false);
+  const modalOpen = window.location.pathname.includes("/focus");
   const [movieIndex, setMovieIndex] = useState<number | null>(null);
   const [createMovieModalOpen, setCreateMovieModalOpen] = useState(false);
   const [createCinemaModalOpen, setCreateCinemaModalOpen] = useState(false);
   const [nominees, setNominees] = useState<Movie[]>();
   const [viewNominees, setViewNominees] = useState(false);
+  const navigate = useNavigate();
+
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setNominees(movies.filter((m: Movie) => m.isNominated));
@@ -42,14 +50,19 @@ const MovieGallery: React.FC = () => {
       setMovieIndex(movies.indexOf(movie));
     }
 
-    setModalOpen(true);
+    navigate(`/letterbox/${year}/focus`);
+  };
+
+  const icons: Record<string, string> = {
+    flower,
+    heart,
   };
 
   const closeModal = () => {
     setViewNominees(false);
     setSelectedMovie(null);
     setMovieIndex(null);
-    setModalOpen(false);
+    navigate(`/letterbox/${year}`);
   };
 
   const handlePrevPic = () => {
@@ -98,9 +111,87 @@ const MovieGallery: React.FC = () => {
     "january",
   ];
 
+  useEffect(() => {
+    closeModal();
+  }, [year]);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({
+        behavior: "auto", // or "smooth" if you want animation
+        block: "center", // vertically center the selected movie
+      });
+    }
+  }, [selectedMovie]);
+
   const renderContent = () => {
     if (loading) {
       return <MessageDisplay message={"loading..."} />;
+    } else if (isMobile && modalOpen) {
+      return (
+        <div className={styles.mobileMovieList}>
+          <div className={styles.mobileMovieHeader}>
+            <span className={styles.headerTitle}>
+              {year}{" "}
+              {viewNominees ? (
+                <img className={styles.favouriteIconMed} src={icons["heart"]} />
+              ) : (
+                "watchlist"
+              )}
+            </span>
+
+            <span className={styles.backButton} onClick={closeModal}>
+              back
+            </span>
+          </div>
+          {(viewNominees ? nominees! : movies).map((movie) => (
+            <div
+              key={movie.id}
+              className={styles.mobileMovieDetails}
+              ref={movie.id === selectedMovie?.id ? scrollRef : null} // <-- attach ref
+            >
+              <div className={styles.imageContainer}>
+                <img
+                  src={
+                    viewNominees && movie?.altImageUrl
+                      ? movie?.altImageUrl
+                      : movie?.imageUrl
+                  }
+                  alt={movie.name}
+                  className={styles.modalImage}
+                  loading="lazy"
+                />
+              </div>
+
+              <div className={styles.textBlock}>
+                <div className={styles.titleRow}>
+                  <h5
+                    className={styles.movieTitle}
+                    style={{
+                      color: movie?.isKino ? "#E3BF46" : "white",
+                    }}
+                  >
+                    {movie.name} ({movie.releaseYear})
+                  </h5>
+
+                  {movie.isNominated && (
+                    <img
+                      className={styles.favouriteIconSmall}
+                      src={icons[movie.motif] || icons["heart"]}
+                    />
+                  )}
+                </div>
+
+                <div className={styles.cinemaInfo}>
+                  {movie.cinema.name}, {movie.cinema.city}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
     } else {
       return (
         <div className={styles.movieGallery}>

@@ -5,9 +5,10 @@ import {
   debouncedFetchActiveYears,
   makeDebouncedRequest,
 } from "../../../api/debouncedFetch";
-import { useYear, useYearUpdate } from "../../../contexts/YearContext";
+import { useYear } from "../../../contexts/YearContext";
 import CapsuleButton from "../../Common/CapsuleButton/CapsuleButton";
 import styles from "./ActiveYearsContainer.module.css";
+import { useNavigate } from "react-router-dom";
 
 interface ActiveYearsResponse {
   activeYears: number[];
@@ -15,8 +16,8 @@ interface ActiveYearsResponse {
 
 const ActiveYearsContainer: React.FC = () => {
   const year = useYear();
-  const updateYear = useYearUpdate();
   const [activeYears, setActiveYears] = useState<number[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchActiveYears = () => {
@@ -77,7 +78,7 @@ const ActiveYearsContainer: React.FC = () => {
         <CapsuleButton
           key={y}
           text={y.toString()}
-          onClick={() => updateYear(y)}
+          onClick={() => navigate(`/letterbox/${y}`)}
           disabled={false}
           selected={year === y}
           width={"78px"}

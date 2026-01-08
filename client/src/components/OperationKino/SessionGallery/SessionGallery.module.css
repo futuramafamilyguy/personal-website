@@ -41,3 +41,168 @@
 .sessionGallery::-ms-scrollbar {
   display: none; /* hides default scrollbar */
 }
+
+@media (max-width: 768px) {
+  .sessionGallery {
+    padding-left: 20px;
+    padding-right: 20px;
+    overflow-y: visible;
+    width: 100%;
+  }
+
+  .sessionGallery hr {
+    width: 100%;
+  }
+
+  .imageContainer {
+    width: 100%;
+    aspect-ratio: 750 / 410; /* fixed ratio container */
+    background: black; /* shows when image is short */
+    overflow: hidden; /* crop anything outside vertically */
+
+    display: flex;
+    align-items: center; /* vertical centering */
+    justify-content: center; /* horizontal centering */
+  }
+
+  .modalImage {
+    width: 100%; /* always fill container width */
+    height: auto; /* scale height proportionally */
+    object-position: center; /* center crop if too tall */
+    display: block;
+  }
+
+  .iconContainer {
+    vertical-align: middle;
+    margin-left: 10px;
+    margin-top: 2px;
+  }
+
+  .mobileMovieDetails {
+    display: flex;
+    flex-direction: column;
+    background: #212529;
+    color: white;
+  }
+
+  .mobileMovieList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    width: 100%;
+  }
+
+  /* LEFT PADDING FOR TEXT */
+  .textBlock {
+    padding: 16px 16px 16px;
+    background-color: #333;
+    border-radius: 0 0 10px 10px;
+  }
+
+  /* TITLE ROW */
+  .titleRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* TITLE — smaller than default h5 */
+  .movieTitle {
+    font-size: 1rem; /* ~16px */
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .mobileMovieHeader {
+    position: relative;
+    width: 100%;
+    padding: 10px 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center; /* center the titleWrapper */
+    align-items: center;
+  }
+
+  /* Title container is centered absolutely */
+  .titleWrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .headerTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px; /* space between year and heart icon */
+  }
+
+  /* Right back button */
+  .backButton {
+    position: absolute;
+    left: 0;
+    cursor: pointer;
+    color: white;
+    font-size: 0.95rem;
+    transition: color 0.2s, text-decoration 0.2s;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 7px;
+    width: 50px;
+    text-align: center;
+  }
+
+  .backButton:hover {
+    color: #e0e0e0;
+  }
+
+  .dateContainer {
+    display: flex;
+    flex-wrap: nowrap; /* single line */
+    overflow-x: auto; /* horizontal scroll */
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background-color: #444;
+    padding: 10px;
+  }
+
+  .dateBox {
+    display: inline-block;
+    font-size: 0.8rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .cinemaContainer:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .cinemaContainer {
+    border-radius: 10px;
+    background-color: #444;
+    padding: 10px;
+  }
+
+  .cinemaColumn {
+    float: left;
+    width: 50%;
+  }
+
+  .cinemaColumn div {
+    padding-bottom: 5px;
+  }
+
+  .cinemaLink {
+    color: #46dae7;
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+}

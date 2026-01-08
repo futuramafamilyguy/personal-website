@@ -1,6 +1,7 @@
 import styles from "./SessionRow.module.css";
 import { Session } from "../../../types/Session";
 import MediaCard from "../../Common/MediaCard/MediaCard";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 interface SessionRowProps {
   sessions: Session[];
@@ -13,6 +14,8 @@ const SessionRow: React.FC<SessionRowProps> = ({
   category,
   sessionOnClick,
 }) => {
+  const isMobile = useIsMobile();
+
   const renderContent = () => {
     return (
       <div
@@ -25,7 +28,7 @@ const SessionRow: React.FC<SessionRowProps> = ({
         <span>
           <h5>{category}</h5>
         </span>
-        <hr />
+        {!isMobile && <hr />}
         <div className={styles.sessionContainer}>
           {sessions.map((session) => (
             <MediaCard

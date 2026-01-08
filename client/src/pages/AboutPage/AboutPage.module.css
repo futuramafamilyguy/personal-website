@@ -58,3 +58,81 @@
 .smallText {
   font-size: 0.6em;
 }
+
+@media (max-width: 768px) {
+  .aboutPage {
+    position: relative; /* same as desktop */
+    width: 100%;
+    max-width: 100%;
+    height: auto; /* grow with content */
+    min-height: 100vh;
+    background: #212529; /* page background */
+    padding-left: 20px; /* text offset from left edge */
+    padding-right: 20px; /* optional right padding */
+    box-sizing: border-box; /* include padding in width calculations */
+
+    display: block; /* remove flex centering */
+    justify-content: unset; /* override desktop flex justify */
+    align-items: unset; /* override desktop flex align */
+    overflow: visible; /* allow scrolling if content overflows */
+    color: white; /* include padding in height calculations */
+  }
+
+  .centeredContainer {
+    display: block !important; /* remove flex */
+    flex-direction: unset !important;
+    align-items: unset !important; /* remove centering */
+    width: 100%;
+  }
+
+  .descriptionBox {
+    display: block !important; /* remove flex */
+    flex-direction: unset !important;
+    align-items: unset !important; /* remove vertical centering */
+    width: 100%; /* take 80% of screen */
+    margin: 0 auto; /* optional horizontal centering */
+    padding: 20px;
+    text-align: left;
+  }
+
+  .descriptionBox h3 {
+    font-size: 1.1rem; /* optional: scale down text for mobile */
+  }
+  .descriptionBox h5 {
+    font-size: 0.9rem; /* optional: scale down text for mobile */
+    padding-top: 5px;
+  }
+
+  .pageList {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* spacing between items */
+    margin-top: 55px;
+  }
+
+  .pageItem {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pageTitle {
+    font-size: 1.3rem; /* bigger than 1.1rem */
+    font-weight: 600;
+    color: #ccc; /* visible grey on #333 bg */
+    margin: 0;
+    transition: color 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .pageTitle:hover {
+    color: #fff; /* hover brighter grey / white */
+  }
+
+  .pageSubtitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #7f7f7f; /* lighter grey for subtitle */
+    margin: 2px 0 0 0;
+  }
+}

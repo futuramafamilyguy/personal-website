@@ -37,7 +37,8 @@ jobs:
           passphrase: ${{ secrets.DROPLET_PASSPHRASE }}
           source: |
             docker-compose.yml,
-            scripts/run-certbot.sh
+            scripts/install-cron.sh
+            scripts/renew-cert.sh
           target: personal-website
 
       - name: deploy

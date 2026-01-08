@@ -38,3 +38,40 @@
 .cinema {
   padding-top: 5px;
 }
+
+@media (max-width: 768px) {
+  .statsRow {
+    width: 100%;
+    padding-bottom: 20px;
+  }
+
+  .statsRow h5 {
+    font-weight: 600;
+  }
+
+  .statsContainer * {
+    font-size: small;
+  }
+
+  .movieRow {
+    display: flex;
+    flex-wrap: nowrap; /* single line */
+    gap: 18px;
+    overflow-x: auto; /* horizontal scroll */
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 20px;
+  }
+
+  .movieRow > * {
+    flex: 0 0 auto; /* prevent shrinking, keep original width */
+  }
+
+  .title h5 {
+    font-size: 1rem;
+  }
+
+  .heartIcon {
+    height: 20px;
+    width: 20px;
+  }
+}

@@ -1,3 +1,4 @@
+import { useIsMobile } from "../../../hooks/useIsMobile";
 import Movie from "../../../types/Movie";
 import MediaCard from "../../Common/MediaCard/MediaCard";
 import styles from "./MonthRow.module.css";
@@ -17,13 +18,15 @@ const MonthRow: React.FC<MonthRowProps> = ({
   movieEditable,
   movieOnClickEdit,
 }) => {
+  const isMobile = useIsMobile();
+
   const renderContent = () => {
     return (
       <div className={styles.monthRow}>
         <span>
           <h5>{month}</h5>
         </span>
-        <hr />
+        {!isMobile && <hr />}
         <div className={styles.movieRow}>
           {movies.map((movie) => (
             <MediaCard

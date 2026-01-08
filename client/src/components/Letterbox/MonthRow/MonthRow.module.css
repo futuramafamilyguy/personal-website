@@ -1,6 +1,6 @@
 .monthRow {
   width: 856px;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 }
 
 .movieRow {
@@ -11,4 +11,30 @@
 
 .monthRow h5 {
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .monthRow {
+    width: 100%;
+  }
+
+  .movieRow {
+    display: flex;
+    flex-wrap: nowrap; /* single line */
+    gap: 18px;
+    overflow-x: auto; /* horizontal scroll */
+    -webkit-overflow-scrolling: touch;
+    margin-top: 15px;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .movieRow > * {
+    flex: 0 0 auto; /* prevent shrinking, keep original width */
+  }
+
+  .monthRow h5 {
+    font-size: 1rem;
+  }
 }

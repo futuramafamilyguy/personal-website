@@ -18,3 +18,34 @@
 .lastSessionRow h5 {
   font-weight: 600;
 }
+
+@media (max-width: 768px) {
+  .sessionRow {
+    width: 100%;
+  }
+
+  .lastSessionRow {
+    width: 100%;
+  }
+
+  .sessionContainer {
+    display: flex;
+    flex-wrap: nowrap; /* single line */
+    gap: 18px;
+    overflow-x: auto; /* horizontal scroll */
+    -webkit-overflow-scrolling: touch;
+    margin-top: 15px;
+    background-color: #333;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .sessionContainer > * {
+    flex: 0 0 auto; /* prevent shrinking, keep original width */
+  }
+
+  .sessionRow h5,
+  .lastSessionRow h5 {
+    font-size: 1rem;
+  }
+}

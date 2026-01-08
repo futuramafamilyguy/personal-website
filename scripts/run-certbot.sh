@@ -25,19 +25,12 @@ load() {
     docker compose restart nginx
 }
 
-renew() {
-    docker compose run --rm certbot renew
-    docker exec nginx nginx -s reload
-}
-
 delete() {
     docker compose run --rm certbot delete --cert-name $DOMAIN
 }
 
 if [ "$1" == "load" ]; then
     load
-elif [ "$1" == "renew" ]; then
-    renew
 elif [ "$1" == "delete" ]; then
     delete
 fi

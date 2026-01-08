@@ -57,3 +57,46 @@
 .itsAGoodDayToDance {
   font-style: italic;
 }
+
+@media (max-width: 768px) {
+  .descriptionBox h3 {
+    display: none;
+  }
+
+  .descriptionBox {
+    padding-top: 15px;
+  }
+
+  .itsAGoodDayToDance {
+    display: none;
+  }
+
+  .descriptionBox h5 {
+    font-size: 0.9rem;
+  }
+
+  .collapseButton {
+    display: none;
+  }
+
+  .collapsedDescriptionBox {
+    height: auto;
+    overflow: visible;
+    padding-top: 0;
+  }
+
+  .operationKinoContainer {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #212529;
+    border-radius: 0;
+  }
+
+  .itsAGoodDayToDance {
+    display: none;
+  }
+}
