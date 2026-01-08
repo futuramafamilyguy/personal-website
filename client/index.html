@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta
+      charset="UTF-8"
+      name="theme-color"
+      content="#212529"
+      media="(prefers-color-scheme: dark)"
+    />
     <link
       rel="icon"
       type="image/jpeg"
@@ -26,9 +31,18 @@
       var Alert = ReactBootstrap.Alert;
     </script>
     <link href="https://fonts.cdnfonts.com/css/segoe-ui-4" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div id="root" style="height: 0px; position: relative"></div>
+    <div
+      id="root"
+      style="height: 0px; position: relative; background-color: #212529"
+    ></div>
     <div id="portal" style="position: absolute"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

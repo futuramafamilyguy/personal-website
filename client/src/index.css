@@ -1,0 +1,6 @@
+/* Mobile override */
+@media (max-width: 768px) {
+  #root {
+    font-family: "Open Sans", system-ui, sans-serif;
+  }
+}
