@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { YearProvider } from "../../../contexts/YearContext";
+import { YearFromUrlBridge, YearProvider } from "../../../contexts/YearContext";
 import ActiveYearsContainer from "../ActiveYearsContainer/ActiveYearsContainer";
 import MovieGallery from "../MovieGallery/MovieGallery";
 import styles from "./LetterboxContainer.module.css";
@@ -19,6 +19,7 @@ const LetterboxContainer: React.FC = () => {
           {isCollapsed ? "expand" : "collapse"}
         </button>
         <YearProvider>
+          <YearFromUrlBridge />
           <div
             className={
               isCollapsed

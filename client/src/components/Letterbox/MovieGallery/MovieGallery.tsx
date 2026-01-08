@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../../contexts/AuthContext";
 import { useYear } from "../../../contexts/YearContext";
 import useMoviesV2 from "../../../hooks/useMoviesV2";
 import Movie from "../../../types/Movie";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
+import CreateCinemaModal from "../CreateCinemaModal/CreateCinemaModal";
 import CreateMovieModal from "../CreateMovieModal/CreateMovieModal";
 import MovieMonthRow from "../MonthRow/MonthRow";
 import MovieModal from "../MovieModal/MovieModal";
@@ -12,7 +14,6 @@ import NewMediaCard from "../NewMediaCard/NewMediaCard";
 import NomineeRow from "../NomineeRow/NomineeRow";
 import MovieStatsRow from "../StatsRow/StatsRow";
 import styles from "./MovieGallery.module.css";
-import CreateCinemaModal from "../CreateCinemaModal/CreateCinemaModal";
 
 const MovieGallery: React.FC = () => {
   const { movies, loading, setTrigger } = useMoviesV2();
@@ -21,12 +22,15 @@ const MovieGallery: React.FC = () => {
 
   const isLoggedIn = useAuth();
   const year = useYear();
-  const [modalOpen, setModalOpen] = useState(false);
+  const location = useLocation();
+  const modalOpen =
+    location.pathname.includes("/focus") && selectedMovie !== null;
   const [movieIndex, setMovieIndex] = useState<number | null>(null);
   const [createMovieModalOpen, setCreateMovieModalOpen] = useState(false);
   const [createCinemaModalOpen, setCreateCinemaModalOpen] = useState(false);
   const [nominees, setNominees] = useState<Movie[]>();
   const [viewNominees, setViewNominees] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setNominees(movies.filter((m: Movie) => m.isNominated));
@@ -42,14 +46,14 @@ const MovieGallery: React.FC = () => {
       setMovieIndex(movies.indexOf(movie));
     }
 
-    setModalOpen(true);
+    navigate(`/letterbox/${year}/focus`);
   };
 
   const closeModal = () => {
     setViewNominees(false);
     setSelectedMovie(null);
     setMovieIndex(null);
-    setModalOpen(false);
+    navigate(`/letterbox/${year}`);
   };
 
   const handlePrevPic = () => {

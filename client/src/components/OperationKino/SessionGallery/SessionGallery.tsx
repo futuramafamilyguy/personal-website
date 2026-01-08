@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import useSessions from "../../../hooks/useSessions";
 import { Session } from "../../../types/Session";
@@ -10,13 +11,17 @@ import styles from "./SessionGallery.module.css";
 const SessionGallery: React.FC = () => {
   const { sessions, loading } = useSessions();
 
-  const [modalOpen, setModalOpen] = useState(false);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [sessionIndex, setSessionIndex] = useState<number | null>(null);
+  const location = useLocation();
+  const modalOpen =
+    location.pathname.includes("/focus") && selectedSession !== null;
 
   const [newReleases, setNewReleases] = useState<Session[]>([]);
   const [retroClassics, setRetroClassics] = useState<Session[]>([]);
   const [isNewReleaseSelected, setIsNewReleaseSelected] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setNewReleases(
@@ -36,13 +41,13 @@ const SessionGallery: React.FC = () => {
       setSessionIndex(retroClassics.indexOf(session));
     }
 
-    setModalOpen(true);
+    navigate("/operation-kino/focus");
   };
 
   const closeModal = () => {
     setSelectedSession(null);
     setSessionIndex(null);
-    setModalOpen(false);
+    navigate("/operation-kino");
   };
 
   const handlePrevSession = () => {

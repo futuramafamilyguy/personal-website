@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useParams } from "react-router-dom";
 
 type UpdateYearContextType = (year: number) => void;
 
@@ -8,7 +15,8 @@ const YearUpdateContext = createContext<UpdateYearContextType>(() => {});
 export function useYear() {
   return useContext(YearContext);
 }
-export function useYearUpdate() {
+
+function useYearUpdate() {
   return useContext(YearUpdateContext);
 }
 
@@ -36,3 +44,12 @@ export const YearProvider = ({ children }: YearProviderProps) => {
     </YearContext.Provider>
   );
 };
+
+export function YearFromUrlBridge() {
+  const { year } = useParams();
+  const updateYear = useYearUpdate();
+  useEffect(() => {
+    if (year) updateYear(Number(year));
+  }, [year]);
+  return null;
+}

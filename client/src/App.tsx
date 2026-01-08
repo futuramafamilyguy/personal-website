@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import AuthComponent from "./components/AuthComponent";
 import BlogContainer from "./components/Blog/BlogContainer/BlogContainer";
@@ -9,9 +9,9 @@ import { AuthProvider } from "./contexts/AuthContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import BlogLayout from "./pages/BlogLayout/BlogLayout";
 import BoxOfficePage from "./pages/BoxOfficePage/BoxOfficePage";
-import QstFmPage from "./pages/QstFmPage/QstFmPage";
 import LetterboxPage from "./pages/LetterboxPage/LetterboxPage";
 import OperationKinoPage from "./pages/OperationKinoPage/OperationKinoPage";
+import QstFmPage from "./pages/QstFmPage/QstFmPage";
 import { MenuItem } from "./types/MenuItem";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -26,6 +26,8 @@ const App: React.FC = () => {
     { label: "QST FM", link: "/qst-fm" },
   ];
 
+  const CURRENT_YEAR = new Date().getFullYear();
+
   return (
     <>
       <NavBar
@@ -38,12 +40,21 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<AboutPage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/letterbox" element={<LetterboxPage />} />
+            <Route
+              path="/letterbox"
+              element={<Navigate to={`/letterbox/${CURRENT_YEAR}`} replace />}
+            />
+            <Route path="/letterbox/:year" element={<LetterboxPage />} />
+            <Route path="/letterbox/:year/focus" element={<LetterboxPage />} />
             <Route element={<BlogLayout />}>
               <Route path="/blog" element={<BlogContainer />} />
               <Route path="/blog/:slug" element={<PostContainer />} />
             </Route>
             <Route path="/operation-kino" element={<OperationKinoPage />} />
+            <Route
+              path="/operation-kino/focus"
+              element={<OperationKinoPage />}
+            />
             <Route path="/qst-fm" element={<QstFmPage />} />
             <Route path="/box-office" element={<BoxOfficePage />} />
             <Route path="/disable-tracking" element={<DisableTracking />} />
