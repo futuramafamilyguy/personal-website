@@ -4,6 +4,8 @@ import { YearFromUrlBridge, YearProvider } from "../../../contexts/YearContext";
 import ActiveYearsContainer from "../ActiveYearsContainer/ActiveYearsContainer";
 import MovieGallery from "../MovieGallery/MovieGallery";
 import styles from "./LetterboxContainer.module.css";
+import { useIsMobile } from "../../../hooks/useIsMobile";
+import MobileActiveYearsContainer from "../MobileActiveYearsContainer/MobileActiveYearsContainer";
 
 const LetterboxContainer: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -11,6 +13,8 @@ const LetterboxContainer: React.FC = () => {
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
+
+  const isMobile = useIsMobile();
 
   const renderContent = () => {
     return (
@@ -32,8 +36,8 @@ const LetterboxContainer: React.FC = () => {
               i'd like to dedicate it to a young man who doesn't think he's seen
               anything good today - cameron frye, this one's for you
             </h5>
-            <ActiveYearsContainer />
           </div>
+          {isMobile ? <MobileActiveYearsContainer /> : <ActiveYearsContainer />}
           <MovieGallery />
         </YearProvider>
       </div>

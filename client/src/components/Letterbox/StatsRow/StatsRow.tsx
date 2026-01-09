@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import Movie from "../../../types/Movie";
 import styles from "./StatsRow.module.css";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 interface StatsRowProps {
   movies: Movie[];
@@ -48,6 +49,8 @@ const StatsRow: React.FC<StatsRowProps> = ({ movies, year }) => {
     return sortedCinemas.slice(0, 3);
   };
 
+  const isMobile = useIsMobile();
+
   const renderContent = () => {
     return (
       <div className={styles.statsRow}>
@@ -66,16 +69,17 @@ const StatsRow: React.FC<StatsRowProps> = ({ movies, year }) => {
           <div className={styles.stat}>
             <span className={styles.statKey}>retro classics</span>: {retroCount}
           </div>
-          <div className={styles.stat}>
-            <span className={styles.statKey}>total spending</span>: no
-          </div>
-          <div className={styles.stat}>
-            <span className={styles.statKey}>unique cinemas</span>:{" "}
-            {cinemaCount}
-          </div>
-          <div className={styles.stat}>
-            <span className={styles.statKey}>unique cities</span>: {cityCount}
-          </div>
+          {isMobile ? null : (
+            <div className={styles.stat}>
+              <span className={styles.statKey}>unique cinemas</span>:{" "}
+              {cinemaCount}
+            </div>
+          )}
+          {isMobile ? null : (
+            <div className={styles.stat}>
+              <span className={styles.statKey}>unique cities</span>: {cityCount}
+            </div>
+          )}
           <div className={styles.lastStat}>
             <div className={styles.statKey}>most frequent cinemas</div>
             {topCinemas.map((cinema, index) => (

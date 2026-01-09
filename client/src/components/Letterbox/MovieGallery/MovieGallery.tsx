@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import heart from "../../../assets//svg/heart.png";
+import flower from "../../../assets/motifs/flower.svg";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useYear } from "../../../contexts/YearContext";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 import useMoviesV2 from "../../../hooks/useMoviesV2";
 import Movie from "../../../types/Movie";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
@@ -43,6 +46,7 @@ const MovieGallery: React.FC = () => {
       setViewNominees(true);
       setMovieIndex(nominees!.indexOf(movie));
     } else {
+      setViewNominees(false);
       setMovieIndex(movies.indexOf(movie));
     }
 
@@ -102,9 +106,90 @@ const MovieGallery: React.FC = () => {
     "january",
   ];
 
+  const isMobile = useIsMobile();
+
+  const icons: Record<string, string> = {
+    flower,
+    heart,
+  };
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({
+        behavior: "auto",
+        block: "center",
+      });
+    }
+  }, [selectedMovie]);
+
   const renderContent = () => {
     if (loading) {
       return <MessageDisplay message={"loading..."} />;
+    } else if (isMobile && modalOpen) {
+      return (
+        <div className={styles.mobileMovieList}>
+          <div className={styles.mobileMovieHeader}>
+            <span className={styles.headerTitle}>
+              {year}{" "}
+              {viewNominees ? (
+                <img className={styles.favouriteIconMed} src={icons["heart"]} />
+              ) : (
+                "watchlist"
+              )}
+            </span>
+
+            <span className={styles.backButton} onClick={closeModal}>
+              back
+            </span>
+          </div>
+          {(viewNominees ? nominees! : movies).map((movie) => (
+            <div
+              key={movie.id}
+              className={styles.mobileMovieDetails}
+              ref={movie.id === selectedMovie?.id ? scrollRef : null} // <-- attach ref
+            >
+              <div className={styles.imageContainer}>
+                <img
+                  src={
+                    viewNominees && movie?.altImageUrl
+                      ? movie?.altImageUrl
+                      : movie?.imageUrl
+                  }
+                  alt={movie.name}
+                  className={styles.modalImage}
+                  loading="lazy"
+                />
+              </div>
+
+              <div className={styles.textBlock}>
+                <div className={styles.titleRow}>
+                  <h5
+                    className={styles.movieTitle}
+                    style={{
+                      color: movie?.isKino ? "#E3BF46" : "white",
+                    }}
+                  >
+                    {movie.name} ({movie.releaseYear})
+                  </h5>
+
+                  {movie.isNominated && (
+                    <img
+                      className={styles.favouriteIconSmall}
+                      src={icons[movie.motif] || icons["heart"]}
+                    />
+                  )}
+                </div>
+
+                <div className={styles.cinemaInfo}>
+                  {movie.cinema.name}, {movie.cinema.city}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
     } else {
       return (
         <div className={styles.movieGallery}>

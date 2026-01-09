@@ -1,4 +1,5 @@
 import heart from "../../../assets/svg/heart.png";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 import Movie from "../../../types/Movie";
 import MediaCard from "../../Common/MediaCard/MediaCard";
 import styles from "./NomineeRow.module.css";
@@ -18,6 +19,8 @@ const NomineeRow: React.FC<NomineeRowProps> = ({
   movieEditable,
   movieOnClickEdit,
 }) => {
+  const isMobile = useIsMobile();
+
   const renderContent = () => {
     return (
       <div className={styles.nomineeRow}>
@@ -25,7 +28,7 @@ const NomineeRow: React.FC<NomineeRowProps> = ({
           <h5>{`${year}`}</h5>
           <img className={styles.heartIcon} src={heart} />
         </span>
-        <hr />
+        {!isMobile && <hr />}
         <div className={styles.movieRow}>
           {movies.map((movie) => (
             <MediaCard

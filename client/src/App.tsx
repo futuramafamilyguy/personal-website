@@ -46,12 +46,14 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<AboutPage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route
-              path="/letterbox"
-              element={<Navigate to={`/letterbox/${CURRENT_YEAR}`} replace />}
-            />
-            <Route path="/letterbox/:year" element={<LetterboxPage />} />
-            <Route path="/letterbox/:year/focus" element={<LetterboxPage />} />
+            <Route path="letterbox">
+              <Route
+                index
+                element={<Navigate to={`${CURRENT_YEAR}`} replace />}
+              />
+              <Route path=":year" element={<LetterboxPage />} />
+              <Route path=":year/focus" element={<LetterboxPage />} />
+            </Route>
             <Route element={<BlogLayout />}>
               <Route path="/blog" element={<BlogContainer />} />
               <Route path="/blog/:slug" element={<PostContainer />} />

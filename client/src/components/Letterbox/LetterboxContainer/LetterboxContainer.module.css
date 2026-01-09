@@ -58,3 +58,38 @@
   width: 70%;
   font-style: italic;
 }
+
+.headerSection {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .descriptionBox {
+    display: none;
+  }
+
+  .collapseButton {
+    display: none;
+  }
+
+  .collapsedDescriptionBox {
+    height: auto;
+    overflow: visible;
+    padding-top: 0;
+  }
+
+  .letterboxContainer {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #212529;
+    border-radius: 0;
+  }
+
+  .itsAGoodDayToDance {
+    display: none;
+  }
+}
