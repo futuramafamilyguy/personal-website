@@ -8,10 +8,10 @@ import {
   debouncedFetchPostBySlug,
   makeDebouncedRequest,
 } from "../../../api/debouncedFetch";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 import Post from "../../../types/Post";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import styles from "./PostContainer.module.css";
-import { useIsMobile } from "../../../hooks/useIsMobile";
 
 const PostContainer: React.FC = () => {
   const { state } = useLocation();
@@ -120,6 +120,14 @@ const PostContainer: React.FC = () => {
                 children={markdownContent}
                 rehypePlugins={[rehypeRaw]}
                 components={{
+                  div: ({ className, ...props }) => {
+                    if (className === "book") {
+                      return <div className={styles.book} {...props} />;
+                    }
+
+                    return <div className={className} {...props} />;
+                  },
+
                   img: ({ alt, ...props }) => {
                     let className;
                     let style = {};

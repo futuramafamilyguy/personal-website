@@ -176,6 +176,10 @@
   padding: 0px;
 }
 
+.book {
+  margin-top: 50px;
+}
+
 .markdownContainer > *:last-child,
 .markdownContainer > *:last-child > *:last-child {
   padding-bottom: 0px;
@@ -261,16 +265,21 @@
     width: 85%;
   }
 
-  .markdownContainer * {
-    font-size: 0.85rem;
-  }
-
   .metadataContainer h3 {
     font-size: 1.2rem;
   }
+
   .metadataContainer p {
     font-size: 0.9rem;
     opacity: 0.8;
+  }
+
+  .markdownContainer h4 b {
+    font-size: 1.1rem !important;
+  }
+
+  .markdownContainer * {
+    font-size: 0.85rem;
   }
 
   .embeddedLandscapeImage {
