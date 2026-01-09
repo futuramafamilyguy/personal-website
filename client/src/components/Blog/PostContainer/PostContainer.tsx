@@ -11,6 +11,7 @@ import {
 import Post from "../../../types/Post";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
 import styles from "./PostContainer.module.css";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 const PostContainer: React.FC = () => {
   const { state } = useLocation();
@@ -69,6 +70,8 @@ const PostContainer: React.FC = () => {
     navigate("/blog");
   };
 
+  const isMobile = useIsMobile();
+
   const renderContent = () => {
     if (!post) {
       return <MessageDisplay message={"loading..."} />;
@@ -76,12 +79,22 @@ const PostContainer: React.FC = () => {
 
     return (
       <div className={styles.postContainer}>
-        <button className={styles.backButton} onClick={handleBackClick}>
-          back
-        </button>
-        <button className={styles.hideButton} onClick={toggleShowLess}>
-          {showLess ? "expand" : "collapse"}
-        </button>
+        {!isMobile ? (
+          <>
+            <button className={styles.backButton} onClick={handleBackClick}>
+              back
+            </button>
+            <button className={styles.hideButton} onClick={toggleShowLess}>
+              {showLess ? "expand" : "collapse"}
+            </button>
+          </>
+        ) : (
+          <div className={styles.backButtonContainer}>
+            <button className={styles.backButton} onClick={handleBackClick}>
+              back
+            </button>
+          </div>
+        )}
 
         <div
           className={

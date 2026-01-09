@@ -31,3 +31,38 @@
   font-style: italic;
   text-align: center;
 }
+
+@media (max-width: 768px) {
+  .blogContainer {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #212529;
+    border-radius: 0;
+  }
+  .descriptionBox {
+    padding-top: 7px;
+    padding-bottom: 10px;
+  }
+  .descriptionBox h5 {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .postGalleryView {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    background: #212529;
+    height: auto;
+    min-height: unset;
+    overflow: visible;
+    display: block;
+    padding: 0;
+  }
+}

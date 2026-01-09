@@ -47,3 +47,69 @@
 .postGallery::-ms-scrollbar {
   display: none; /* hides default scrollbar */
 }
+
+@media (max-width: 768px) {
+  .mobilePostGallery {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    align-items: center;
+    width: 100%;
+    row-gap: 30px;
+  }
+
+  .postDetails {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    row-gap: 100px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    background: #212529;
+    color: white;
+  }
+
+  .imageContainer {
+    width: 120px;
+    height: 90px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .modalImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .titleRow {
+    gap: 8px;
+  }
+
+  .postTitle {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .date {
+    margin-top: 4px;
+    font-size: 0.7rem;
+    opacity: 0.8;
+  }
+
+  .textBlock {
+    flex: 1;
+    min-width: 0;
+    height: 90px;
+    background-color: #333;
+    padding: 8px;
+  }
+}
