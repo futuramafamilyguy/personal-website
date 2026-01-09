@@ -1,0 +1,44 @@
+.buttonArea {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 65%;
+  max-width: 250px;
+  margin: 0 auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  background-color: #333;
+  border-radius: 10px;
+  margin: 10px 0 15px 0;
+}
+
+.buttonArea::-webkit-scrollbar {
+  height: 6px;
+}
+
+.buttonArea::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.regionText {
+  display: inline-block;
+  padding: 12px 14px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+  font-size: small;
+  font-weight: 600;
+}
+
+.regionText:hover {
+  color: #e0e0e0;
+}
+
+.selected {
+  background-color: #444;
+}

@@ -4,6 +4,8 @@ import { RegionProvider } from "../../../contexts/RegionContext";
 import RegionsContainer from "../RegionsContainer/RegionsContainer";
 import SessionContainer from "../SessionGallery/SessionGallery";
 import styles from "./OperationKinoContainer.module.css";
+import { useIsMobile } from "../../../hooks/useIsMobile";
+import MobileRegionsContainer from "../MobileRegionsContainer/MobileRegionsContainer";
 
 const OperationKinoContainer: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -49,6 +51,8 @@ const OperationKinoContainer: React.FC = () => {
     return "7 days";
   };
 
+  const isMobile = useIsMobile();
+
   const renderContent = () => {
     return (
       <div className={styles.operationKinoContainer}>
@@ -71,7 +75,7 @@ const OperationKinoContainer: React.FC = () => {
             <h5 className={styles.itsAGoodDayToDance}>
               thank you miss vito. you've been a lovely, lovely witness
             </h5>
-            <RegionsContainer />
+            {isMobile ? <MobileRegionsContainer /> : <RegionsContainer />}
           </div>
           <SessionContainer />
         </RegionProvider>
