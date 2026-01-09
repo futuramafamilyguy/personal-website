@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Equaliser from "../Equaliser/Equaliser";
 import styles from "./Booth.module.css";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 interface BoothProps {
   title: string;
@@ -66,9 +67,13 @@ const Booth: React.FC<BoothProps> = ({
     setIsOverflowing(text.scrollWidth > wrapper.clientWidth);
   }, [title]);
 
+  const isMobile = useIsMobile();
+
   return (
     <div
-      className="position-fixed bottom-0 start-0 m-3 d-flex align-items-center justify-content-between bg-dark text-white rounded-3 px-3 py-2 shadow"
+      className={`position-fixed bottom-0 start-0 m-3 d-flex align-items-center justify-content-between bg-dark text-white rounded-3 px-3 py-2${
+        !isMobile ? " shadow" : ""
+      }`}
       style={{ width: "310px", zIndex: 1050 }}
     >
       <div className="d-flex align-items-center gap-2">

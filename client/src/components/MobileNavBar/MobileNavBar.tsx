@@ -18,6 +18,7 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ navItems }) => {
     "/blog": "crazy.jpg",
     "/operation-kino": "pontiac.jpg",
     "/box-office": "amanda.jpg",
+    "/qst-fm": "qst.jpg",
   };
 
   return (
