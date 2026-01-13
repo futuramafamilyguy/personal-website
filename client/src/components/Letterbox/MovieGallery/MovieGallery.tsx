@@ -172,14 +172,13 @@ const MovieGallery: React.FC = () => {
                     }}
                   >
                     {movie.name} ({movie.releaseYear})
+                    {movie.isNominated && (
+                      <img
+                        className={styles.favouriteIconSmall}
+                        src={icons[movie.motif] || icons["heart"]}
+                      />
+                    )}
                   </h5>
-
-                  {movie.isNominated && (
-                    <img
-                      className={styles.favouriteIconSmall}
-                      src={icons[movie.motif] || icons["heart"]}
-                    />
-                  )}
                 </div>
 
                 <div className={styles.cinemaInfo}>
