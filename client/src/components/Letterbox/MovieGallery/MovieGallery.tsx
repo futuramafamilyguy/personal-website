@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import heart from "../../../assets//svg/heart.png";
@@ -144,49 +145,63 @@ const MovieGallery: React.FC = () => {
               back
             </span>
           </div>
-          {(viewNominees ? nominees! : movies).map((movie) => (
-            <div
-              key={movie.id}
-              className={styles.mobileMovieDetails}
-              ref={movie.id === selectedMovie?.id ? scrollRef : null} // <-- attach ref
-            >
-              <div className={styles.imageContainer}>
-                <img
-                  src={
-                    viewNominees && movie?.altImageUrl
-                      ? movie?.altImageUrl
-                      : movie?.imageUrl
-                  }
-                  alt={movie.name}
-                  className={styles.modalImage}
-                  loading="lazy"
-                />
-              </div>
 
-              <div className={styles.textBlock}>
-                <div className={styles.titleRow}>
-                  <h5
-                    className={styles.movieTitle}
-                    style={{
-                      color: movie?.isKino ? "#E3BF46" : "white",
-                    }}
-                  >
-                    {movie.name} ({movie.releaseYear})
-                    {movie.isNominated && (
-                      <img
-                        className={styles.favouriteIconSmall}
-                        src={icons[movie.motif] || icons["heart"]}
-                      />
-                    )}
-                  </h5>
-                </div>
+          {(viewNominees ? nominees! : movies).map((movie, index, list) => {
+            const showMonthHeader =
+              !viewNominees &&
+              (index === 0 || movie.month !== list[index - 1].month);
 
-                <div className={styles.cinemaInfo}>
-                  {movie.cinema.name}, {movie.cinema.city}
+            return (
+              <React.Fragment key={movie.id}>
+                {showMonthHeader && (
+                  <h4 className={styles.monthHeader}>
+                    {months[12 - movie.month]}
+                  </h4>
+                )}
+
+                <div
+                  className={styles.mobileMovieDetails}
+                  ref={movie.id === selectedMovie?.id ? scrollRef : null}
+                >
+                  <div className={styles.imageContainer}>
+                    <img
+                      src={
+                        viewNominees && movie?.altImageUrl
+                          ? movie?.altImageUrl
+                          : movie?.imageUrl
+                      }
+                      alt={movie.name}
+                      className={styles.modalImage}
+                      loading="lazy"
+                    />
+                  </div>
+
+                  <div className={styles.textBlock}>
+                    <div className={styles.titleRow}>
+                      <h5
+                        className={styles.movieTitle}
+                        style={{
+                          color: movie?.isKino ? "#E3BF46" : "white",
+                        }}
+                      >
+                        {movie.name} ({movie.releaseYear})
+                        {movie.isNominated && (
+                          <img
+                            className={styles.favouriteIconSmall}
+                            src={icons[movie.motif] || icons["heart"]}
+                          />
+                        )}
+                      </h5>
+                    </div>
+
+                    <div className={styles.cinemaInfo}>
+                      {movie.cinema.name}, {movie.cinema.city}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </React.Fragment>
+            );
+          })}
         </div>
       );
     } else {
