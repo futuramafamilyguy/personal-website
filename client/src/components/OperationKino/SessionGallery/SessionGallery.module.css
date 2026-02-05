@@ -46,6 +46,7 @@
   .sessionGallery {
     padding-left: 20px;
     padding-right: 20px;
+    padding-bottom: 50px;
     overflow-y: visible;
     width: 100%;
     max-width: 500px;
@@ -182,12 +183,6 @@
     content: "";
     display: table;
     clear: both;
-  }
-
-  .cinemaContainer {
-    border-radius: 10px;
-    background-color: #444;
-    padding: 10px;
   }
 
   .cinemaColumn {
