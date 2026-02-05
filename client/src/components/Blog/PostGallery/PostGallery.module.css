@@ -57,6 +57,7 @@
     align-items: center;
     width: 100%;
     row-gap: 30px;
+    max-width: 500px;
   }
 
   .postDetails {

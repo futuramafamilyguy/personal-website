@@ -93,6 +93,7 @@
     margin: 0 auto;
     padding: 20px;
     text-align: left;
+    max-width: 500px;
   }
 
   .descriptionBox h3 {

@@ -63,6 +63,7 @@
   flex-grow: 1;
   padding-bottom: 30px;
   overflow-y: auto;
+  margin: 0 auto;
 }
 
 .moreTextContainerWrapper {
@@ -119,7 +120,10 @@
   cursor: pointer;
   font-size: 16px;
   text-decoration: none;
-  text-shadow: 0 0 10px black, 0 0 20px black, 0 0 30px black;
+  text-shadow:
+    0 0 10px black,
+    0 0 20px black,
+    0 0 30px black;
 }
 
 .backButton {
@@ -241,24 +245,43 @@
   display: none; /* hides default scrollbar */
 }
 
+@media (max-width: 500px) {
+  .backButtonContainer {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding-left: 12px;
+  }
+}
+
 @media (max-width: 768px) {
   .postContainer {
     width: 100%;
-    max-width: 100%;
     height: auto;
     min-height: 100vh;
     margin: 0;
     padding: 0;
     background: #212529;
     border-radius: 0;
+    padding-left: 0px;
   }
 
   .imageContainer {
-    height: 200px;
+    height: 210px;
     position: relative;
     overflow: hidden;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 500px;
+  }
+
+  .textContainerWrapper {
+    max-width: 500px;
   }
 
   .textContainer {
@@ -300,19 +323,23 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    max-width: 500px;
+    margin: 0 auto;
   }
 
   .backButton {
     cursor: pointer;
     color: white;
     font-size: 0.95rem;
-    transition: color 0.2s, text-decoration 0.2s;
+    transition:
+      color 0.2s,
+      text-decoration 0.2s;
     top: unset;
     background-color: #333;
     border-radius: 10px;
     padding: 7px;
     width: 50px;
+    left: unset;
   }
 
   .backButton:hover {

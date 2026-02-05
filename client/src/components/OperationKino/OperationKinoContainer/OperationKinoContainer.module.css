@@ -99,4 +99,8 @@
   .itsAGoodDayToDance {
     display: none;
   }
+
+  h5 {
+    max-width: 360px;
+  }
 }
