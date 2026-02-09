@@ -7,14 +7,15 @@ import {
   deletePost,
   getPresignedImageUrl,
   getPresignedMarkdownUrl,
+  publishPost,
   updatePost,
   UpdatePostRequest,
   uploadImageToPresignedUrl,
   uploadMarkdownToPresignedUrl,
 } from "../../../api/posts";
 import Post from "../../../types/Post";
-import styles from "./NewPostModal.module.css";
 import ConfirmationModal from "../../Common/ConfirmationModal/ConfirmationModal";
+import styles from "./NewPostModal.module.css";
 
 interface NewPostModalProps {
   isOpen: boolean;
@@ -38,6 +39,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
   const [markdownObjectKey, setMarkdownObjectKey] = useState("");
   const [createdAtUtc, setCreatedAtUtc] = useState<Date | undefined>(undefined);
   const [markdownVersion, setMarkdownVersion] = useState<number>();
+  const [isPublished, setIsPublished] = useState<boolean>(false);
 
   const [result, setResult] = useState("");
 
@@ -67,9 +69,10 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     setMarkdownUrl(post && post.markdownUrl ? post.markdownUrl : "");
     setCreatedAtUtc(post ? post.createdAtUtc : undefined);
     setMarkdownObjectKey(
-      post && post.markdownObjectKey ? post.markdownObjectKey : ""
+      post && post.markdownObjectKey ? post.markdownObjectKey : "",
     );
     setMarkdownVersion(post && post.markdownVersion ? post.markdownVersion : 1);
+    setIsPublished(post && post.isPublished ? post.isPublished : false);
   }, [isOpen]);
 
   useEffect(() => {
@@ -125,6 +128,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         imageUrl: imageObjectKey ? imageUrl : null, // use object key to determine image presence due to default image
         imageObjectKey: imageObjectKey ? imageObjectKey : null,
         markdownVersion: markdownVersion!,
+        isPublished: isPublished,
       };
       const updatedPost = await updatePost(data);
 
@@ -144,7 +148,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
 
   const orchestrateUploadMarkdown = async (
     id: string,
-    markdownContent: string
+    markdownContent: string,
   ) => {
     const blob = new Blob([markdownContent], { type: "text/markdown" });
     const { presignedUploadUrl } = await getPresignedMarkdownUrl(id);
@@ -181,6 +185,18 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
 
   const handleDelete = async () => {
     await orchestrateDeletePost();
+  };
+
+  const handlePublish = async () => {
+    try {
+      await publishPost(post!.id);
+
+      setTrigger();
+      onClose();
+    } catch (error: any) {
+      console.error("error publishing post:", error);
+      setResult("error publishing post");
+    }
   };
 
   if (!isOpen) return null;
@@ -247,6 +263,19 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
                   {result}
                 </span>
               </div>
+              {post && !post.isPublished ? (
+                <div>
+                  <button
+                    type="button"
+                    className={`${styles.button} bg-dark`}
+                    onClick={() =>
+                      openConfirmation("publish post?", handlePublish)
+                    }
+                  >
+                    publish
+                  </button>
+                </div>
+              ) : null}
               {post ? (
                 <div>
                   <button
@@ -265,7 +294,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         </div>
       </div>
     </>,
-    document.getElementById("portal")!
+    document.getElementById("portal")!,
   );
 };
 

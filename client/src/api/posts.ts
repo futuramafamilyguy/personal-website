@@ -12,6 +12,7 @@ export interface UpdatePostRequest {
   imageUrl: string | null;
   imageObjectKey: string | null;
   markdownVersion: number;
+  isPublished: boolean;
 }
 
 export const createPost = async (title: string): Promise<Post> => {
@@ -31,6 +32,7 @@ export const updatePost = async (data: UpdatePostRequest): Promise<Post> => {
     imageUrl: data.imageUrl,
     imageObjectKey: data.imageObjectKey,
     markdownVersion: data.markdownVersion,
+    isPublished: data.isPublished,
   });
 
   return res.data;
@@ -41,7 +43,7 @@ export const deletePost = async (id: string): Promise<void> => {
 };
 
 export const getPresignedMarkdownUrl = async (
-  id: string
+  id: string,
 ): Promise<{ presignedUploadUrl: string }> => {
   const res = await api.post(`/posts/${id}/markdown-url`);
 
@@ -50,7 +52,7 @@ export const getPresignedMarkdownUrl = async (
 
 export const uploadMarkdownToPresignedUrl = async (
   presignedUrl: string,
-  data: Blob
+  data: Blob,
 ) => {
   return axios.put(presignedUrl, data, {
     headers: {
@@ -61,7 +63,7 @@ export const uploadMarkdownToPresignedUrl = async (
 
 export const getPresignedImageUrl = async (
   id: string,
-  extension: string
+  extension: string,
 ): Promise<{ presignedUploadUrl: string }> => {
   const res = await api.post(`/posts/${id}/image-url`, {
     fileExtension: extension,
@@ -72,11 +74,15 @@ export const getPresignedImageUrl = async (
 
 export const uploadImageToPresignedUrl = async (
   presignedUrl: string,
-  file: File
+  file: File,
 ) => {
   return axios.put(presignedUrl, file, {
     headers: {
       "Content-Type": file.type,
     },
   });
+};
+
+export const publishPost = async (id: string): Promise<void> => {
+  await api.patch(`/posts/${id}/publish`);
 };
