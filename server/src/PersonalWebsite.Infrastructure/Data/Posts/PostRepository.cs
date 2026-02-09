@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 
@@ -26,13 +27,13 @@ public class PostRepository : IPostRepository
         return post;
     }
 
-    public async Task<IEnumerable<Post>> GetAsync()
+    public async Task<IEnumerable<Post>> GetAsync(bool includeDrafts)
     {
         var sort = Builders<PostDocument>.Sort.Descending(post => post.CreatedAtUtc);
-        var posts = await _posts
-            .Find(FilterDefinition<PostDocument>.Empty)
-            .Sort(sort)
-            .ToListAsync();
+        var filter = includeDrafts
+            ? FilterDefinition<PostDocument>.Empty
+            : Builders<PostDocument>.Filter.Eq(post => post.IsPublished, true);
+        var posts = await _posts.Find(filter).Sort(sort).ToListAsync();
 
         return posts.Select(PostMapper.ToDomain);
     }
@@ -104,5 +105,22 @@ public class PostRepository : IPostRepository
         };
 
         return await _posts.FindOneAndUpdateAsync(filter, update, options);
+    }
+
+    public async Task<PublishResult> PublishAsync(string id, DateTime publishedAtUtc)
+    {
+        var filter = Builders<PostDocument>.Filter.Eq(post => post.Id, id);
+        var update = Builders<PostDocument>
+            .Update.Set(post => post.IsPublished, true)
+            .Set(post => post.CreatedAtUtc, publishedAtUtc);
+        var result = await _posts.UpdateOneAsync(filter, update);
+
+        if (result.MatchedCount == 0)
+            return PublishResult.NotFound;
+
+        if (result.ModifiedCount == 0)
+            return PublishResult.AlreadyPublished;
+
+        return PublishResult.Success;
     }
 }

@@ -30,7 +30,8 @@ public class PostsController : Controller
     [HttpGet("")]
     public async Task<IActionResult> GetPostsAsync()
     {
-        var posts = await _postService.GetPostsAsync();
+        bool isAdmin = User.HasClaim(c => c.Type == "Admin" && c.Value == "true");
+        var posts = await _postService.GetPostsAsync(isAdmin);
 
         return Ok(posts);
     }
@@ -70,7 +71,8 @@ public class PostsController : Controller
             request.ImageUrl,
             request.ImageObjectKey,
             request.CreatedAtUtc,
-            request.MarkdownVersion
+            request.MarkdownVersion,
+            request.IsPublished
         );
 
         return Ok(updatedPost);
@@ -111,5 +113,14 @@ public class PostsController : Controller
         );
 
         return Ok(new { PresignedUploadUrl = uploadUrl });
+    }
+
+    [Authorize(Policy = "AdminPolicy")]
+    [HttpPatch("{id}/publish")]
+    public async Task<IActionResult> PublishPostAsync(string id)
+    {
+        await _postService.PublishPostAsync(id);
+
+        return NoContent();
     }
 }

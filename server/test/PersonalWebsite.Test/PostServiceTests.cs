@@ -39,6 +39,7 @@ public class PostServiceTests
                             && post.CreatedAtUtc == dateTimeNow
                             && post.Slug == slug
                             && post.MarkdownVersion == 0
+                            && post.IsPublished == false
                     )
                 ),
             Times.Once
@@ -51,12 +52,13 @@ public class PostServiceTests
         // arrange
         var postRepositoryMock = new Mock<IPostRepository>();
         var sut = CreatePostService(postRepositoryMock.Object);
+        var includeDrafts = false;
 
         // act
-        await sut.GetPostsAsync();
+        await sut.GetPostsAsync(includeDrafts);
 
         // assert
-        postRepositoryMock.Verify(x => x.GetAsync(), Times.Once);
+        postRepositoryMock.Verify(x => x.GetAsync(includeDrafts), Times.Once);
     }
 
     [Fact]
@@ -78,7 +80,8 @@ public class PostServiceTests
                     Slug = "cars-review",
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 2),
-                    MarkdownVersion = 1
+                    MarkdownVersion = 1,
+                    IsPublished = true
                 }
             );
 
@@ -126,7 +129,8 @@ public class PostServiceTests
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = slug,
-                    MarkdownVersion = 1
+                    MarkdownVersion = 1,
+                    IsPublished = true
                 }
             );
 
@@ -185,7 +189,8 @@ public class PostServiceTests
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
-                    MarkdownVersion = 1
+                    MarkdownVersion = 1,
+                    IsPublished = true
                 }
             );
 
@@ -217,7 +222,8 @@ public class PostServiceTests
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
-                    MarkdownVersion = 1
+                    MarkdownVersion = 1,
+                    IsPublished = true
                 }
             );
         var imageBasePath = "image/posts";
@@ -269,7 +275,8 @@ public class PostServiceTests
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
-                    MarkdownVersion = 1
+                    MarkdownVersion = 1,
+                    IsPublished = true
                 }
             );
         var imageBasePath = "image/posts";
@@ -324,7 +331,8 @@ public class PostServiceTests
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
-                    MarkdownVersion = currentVersion
+                    MarkdownVersion = currentVersion,
+                    IsPublished = true
                 }
             );
         postRepositoryMock.Setup(x => x.IncrementMarkdownVersionAsync(id)).ReturnsAsync(newVersion);
@@ -379,7 +387,8 @@ public class PostServiceTests
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
-                    MarkdownVersion = currentVersion
+                    MarkdownVersion = currentVersion,
+                    IsPublished = true
                 }
             );
         postRepositoryMock.Setup(x => x.IncrementMarkdownVersionAsync(id)).ReturnsAsync(newVersion);

@@ -17,6 +17,7 @@ public static class PostMapper
             CreatedAtUtc = document.CreatedAtUtc,
             Slug = document.Slug,
             MarkdownVersion = document.MarkdownVersion,
+            IsPublished = document.IsPublished,
         };
 
     public static PostDocument ToDocument(Post post) =>
@@ -32,5 +33,6 @@ public static class PostMapper
             CreatedAtUtc = post.CreatedAtUtc,
             Slug = post.Slug,
             MarkdownVersion = post.MarkdownVersion,
+            IsPublished = post.IsPublished,
         };
 }

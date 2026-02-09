@@ -4,7 +4,7 @@ namespace PersonalWebsite.Core.Interfaces;
 
 public interface IPostService
 {
-    Task<IEnumerable<Post>> GetPostsAsync();
+    Task<IEnumerable<Post>> GetPostsAsync(bool includeDrafts);
     Task<Post> GetPostAsync(string id);
     Task<Post> GetPostBySlugAsync(string slug);
     Task<Post> AddPostAsync(string title);
@@ -16,9 +16,11 @@ public interface IPostService
         string? imageUrl,
         string? imageObjectKey,
         DateTime createdAtUtc,
-        int markdownVersion
+        int markdownVersion,
+        bool isPublished
     );
     Task RemovePostAsync(string id);
     Task<string> HandleMarkdownUploadAsync(string id, string markdownBasePath);
     Task<string> HandleImageUploadAsync(string id, string imageBasePath, string fileExtension);
+    Task<bool> PublishPostAsync(string id);
 }

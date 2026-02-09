@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
@@ -36,13 +37,15 @@ public class PostService : IPostService
                 CreatedAtUtc = utcNow,
                 Slug = GenerateSlug(title),
                 MarkdownVersion = 0,
+                IsPublished = false
             }
         );
 
         return post;
     }
 
-    public async Task<IEnumerable<Post>> GetPostsAsync() => await _postRepository.GetAsync();
+    public async Task<IEnumerable<Post>> GetPostsAsync(bool includeDrafts) =>
+        await _postRepository.GetAsync(includeDrafts);
 
     public async Task<Post> GetPostAsync(string id)
     {
@@ -84,7 +87,8 @@ public class PostService : IPostService
         string? imageUrl,
         string? imageObjectKey,
         DateTime createdAtUtc,
-        int markdownVersion
+        int markdownVersion,
+        bool isPublished
     )
     {
         var updatedPost = new Post
@@ -99,6 +103,7 @@ public class PostService : IPostService
             CreatedAtUtc = createdAtUtc,
             Slug = GenerateSlug(title),
             MarkdownVersion = markdownVersion,
+            IsPublished = isPublished,
         };
         var result = await _postRepository.UpdateAsync(id, updatedPost);
         if (!result)
@@ -151,6 +156,16 @@ public class PostService : IPostService
         await _postRepository.UpdateMarkdownInfoAsync(id, objectKey, publicUrl);
 
         return presignedUrl;
+    }
+
+    public async Task<bool> PublishPostAsync(string id)
+    {
+        var result = await _postRepository.PublishAsync(id, _dateTimeProvider.UtcNow);
+
+        if (result is not PublishResult.NotFound)
+            return false;
+
+        return true;
     }
 
     private static string GenerateSlug(string title) =>

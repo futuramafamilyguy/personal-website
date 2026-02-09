@@ -35,4 +35,7 @@ public class PostDocument
 
     [BsonElement("version")]
     public required int MarkdownVersion { get; set; }
+
+    [BsonElement("published")]
+    public required bool IsPublished { get; set; }
 }

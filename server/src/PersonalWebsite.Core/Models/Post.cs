@@ -12,4 +12,5 @@ public class Post
     public required DateTime CreatedAtUtc { get; set; }
     public required string Slug { get; set; }
     public required int MarkdownVersion { get; set; }
+    public required bool IsPublished { get; set; }
 }
