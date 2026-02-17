@@ -210,7 +210,7 @@ const MovieGallery: React.FC = () => {
           {isLoggedIn ? (
             <>
               <div className={styles.newEntitiesRow}>
-                <h5>after this one, we're watching four more</h5>
+                <h5>playing hooky to watch movies</h5>
                 <hr />
                 <NewMediaCard
                   imageSrc={
