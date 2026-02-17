@@ -209,4 +209,15 @@
     background-color: #333;
     padding: 16px;
   }
+
+  .newEntitiesRow {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    padding-bottom: 45px;
+  }
+
+  .newEntitiesRow h5 {
+    font-size: 1rem;
+  }
 }

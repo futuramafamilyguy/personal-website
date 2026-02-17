@@ -44,3 +44,16 @@
   color: black;
   transform: 0.1s;
 }
+
+@media (max-width: 768px) {
+  .newMediaCard {
+    position: relative;
+    width: 130px;
+    height: 70px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: black;
+    z-index: 99;
+  }
+}
