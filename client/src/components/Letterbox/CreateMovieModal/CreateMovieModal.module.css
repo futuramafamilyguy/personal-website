@@ -83,7 +83,9 @@ label {
   border: 1px solid white;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .deleteButton {
@@ -92,7 +94,9 @@ label {
   border: 1px solid #c11c1c;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .buttonContainer {
@@ -167,4 +171,35 @@ input[type="file"] {
 
 .formFields::-ms-scrollbar {
   display: none; /* hides default scrollbar */
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 90%;
+  }
+
+  .title {
+    padding-bottom: 20sspx;
+  }
+
+  .formGroup {
+    width: 100%;
+    display: unset;
+    align-items: center;
+  }
+
+  .formGroup label {
+    margin-bottom: 10px;
+  }
+
+  .formGroup input {
+    width: 100%;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
 }

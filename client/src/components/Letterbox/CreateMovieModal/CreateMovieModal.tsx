@@ -82,7 +82,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     setImageFile(null);
     setImageUrl(movie && movie.imageUrl ? movie.imageUrl : "");
     setImageObjectKey(
-      movie && movie.imageObjectKey ? movie.imageObjectKey : ""
+      movie && movie.imageObjectKey ? movie.imageObjectKey : "",
     );
     setMonth(movie ? movie.month.toString() : "");
     setCinemaId(movie ? movie.cinema.id : "");
@@ -95,7 +95,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     setAltImageFile(null);
     setAltImageUrl(movie && movie.altImageUrl ? movie.altImageUrl : "");
     setAltImageObjectKey(
-      movie && movie.altImageObjectKey ? movie.altImageObjectKey : ""
+      movie && movie.altImageObjectKey ? movie.altImageObjectKey : "",
     );
   }, [isOpen]);
 
@@ -419,7 +419,17 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
                     delete
                   </button>
                 </div>
-              ) : null}
+              ) : (
+                <div>
+                  <button
+                    type="button"
+                    className={`${styles.button} bg-dark`}
+                    onClick={() => onClose()}
+                  >
+                    cancel
+                  </button>
+                </div>
+              )}
             </div>
           </form>
         </div>
@@ -436,7 +446,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
         />
       )}
     </>,
-    document.getElementById("portal")!
+    document.getElementById("portal")!,
   );
 };
 
