@@ -16,12 +16,12 @@ import {
   uploadImageToPresignedUrl,
 } from "../../../api/movies";
 import { useYear } from "../../../contexts/YearContext";
+import { motifs } from "../../../data/motifs";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 import Cinema from "../../../types/Cinema";
 import Movie from "../../../types/Movie";
-import styles from "./CreateMovieModal.module.css";
-
-import { motifs } from "../../../data/motifs";
 import ConfirmationModal from "../../Common/ConfirmationModal/ConfirmationModal";
+import styles from "./CreateMovieModal.module.css";
 
 interface CreateMovieModalProps {
   isOpen: boolean;
@@ -63,6 +63,8 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     text: "",
     onConfirm: () => {},
   });
+
+  const isMobile = useIsMobile();
 
   const openConfirmation = (text: string, onConfirm: () => void) => {
     setConfirmationConfig({
@@ -243,195 +245,198 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     <>
       <div className={styles.overlay} onClick={onClose}></div>
       <div className={styles.modal}>
-        <div className={`${styles.textContainer} bg-dark`}>
-          {movie ? (
-            <h5 className={styles.title}>update movie</h5>
-          ) : (
-            <h5 className={styles.title}>add new movie</h5>
-          )}
-          <form onSubmit={handleSubmit}>
-            <div className={styles.formFields}>
-              <div className={styles.formGroup}>
-                <label>name</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  className={styles.inputField}
-                ></input>
-              </div>
-              <div className={styles.formGroup}>
-                <label>release year</label>
-                <input
-                  type="text"
-                  id="release_year"
-                  value={releaseYear}
-                  onChange={(e) => setReleaseYear(e.target.value)}
-                  required
-                ></input>
-              </div>
-              <div className={styles.formGroup}>
-                <label>image</label>
-                <input
-                  type="file"
-                  onChange={(e) =>
-                    setImageFile(e.target.files ? e.target.files[0] : null)
-                  }
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>alt image</label>
-                <input
-                  type="file"
-                  onChange={(e) =>
-                    setAltImageFile(e.target.files ? e.target.files[0] : null)
-                  }
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label>month</label>
-                <input
-                  type="text"
-                  id="month"
-                  value={month}
-                  onChange={(e) => setMonth(e.target.value)}
-                ></input>
-              </div>
-              <div className={styles.formGroup}>
-                <label>cinema</label>
-                <input
-                  type="text"
-                  id="cinema_id"
-                  value={
-                    cinemaId !== ""
-                      ? cinemas.filter((cinema) => cinema.id === cinemaId)[0]
-                          .name
-                      : ""
-                  }
-                  onChange={(e) => setCinemaId(e.target.value)}
-                  className={styles.hiddenInput}
-                ></input>
-                <select
-                  id="cinema_id"
-                  value={cinemaId}
-                  onChange={(e) => setCinemaId(e.target.value)}
-                  required
-                >
-                  <option value="">
-                    {cinemaId !== ""
-                      ? cinemas.filter((cinema) => cinema.id === cinemaId)[0]
-                          .name
-                      : "select a cinema"}
-                  </option>
-                  {cinemas.map((cinema) => (
-                    <option key={cinema.id} value={cinema.id}>
-                      {cinema.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className={styles.formGroup}>
-                <label>nominated</label>
-                <div>
+        <div className={styles.container}>
+          {isMobile ? <div className={styles.header}></div> : null}
+          <div className={`${styles.textContainer} bg-dark`}>
+            {isMobile ? null : movie ? (
+              <h5 className={styles.title}>update movie</h5>
+            ) : (
+              <h5 className={styles.title}>add new movie</h5>
+            )}
+            <form onSubmit={handleSubmit}>
+              <div className={styles.formFields}>
+                <div className={styles.formGroup}>
+                  <label>name</label>
                   <input
-                    type="checkbox"
-                    id="nominated"
-                    checked={isNominated}
-                    onChange={() => setIsNominated(!isNominated)}
-                  />
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className={styles.inputField}
+                  ></input>
                 </div>
-              </div>
-              <div className={styles.formGroup}>
-                <label>KINO</label>
-                <div>
+                <div className={styles.formGroup}>
+                  <label>release year</label>
                   <input
-                    type="checkbox"
-                    id="kino"
-                    checked={isKino}
-                    onChange={() => setIsKino(!isKino)}
-                  />
+                    type="text"
+                    id="release_year"
+                    value={releaseYear}
+                    onChange={(e) => setReleaseYear(e.target.value)}
+                    required
+                  ></input>
                 </div>
-              </div>
-              <div className={styles.formGroup}>
-                <label>retro</label>
-                <div>
+                <div className={styles.formGroup}>
+                  <label>image</label>
                   <input
-                    type="checkbox"
-                    id="retro"
-                    checked={isRetro}
-                    onChange={() => setIsRetro(!isRetro)}
-                  />
-                </div>
-              </div>
-              <div className={styles.formGroup}>
-                <label>alias</label>
-                <input
-                  type="text"
-                  id="alias"
-                  value={alias}
-                  onChange={(e) => setAlias(e.target.value)}
-                ></input>
-              </div>
-              <div className={styles.formGroup}>
-                <label>zinger</label>
-                <input
-                  type="text"
-                  id="zinger"
-                  value={zinger}
-                  onChange={(e) => setZinger(e.target.value)}
-                ></input>
-              </div>
-              <div className={styles.formGroup}>
-                <label>motif</label>
-                <select
-                  id="motif"
-                  value={motif}
-                  onChange={(e) => setMotif(e.target.value)}
-                >
-                  {motifs.map((m) => (
-                    <option key={m} value={m}>
-                      {m}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className={styles.buttonContainer}>
-              <div>
-                <button className={`${styles.button} bg-dark`} type="submit">
-                  submit
-                </button>
-                <span className={styles.result} id="result">
-                  {result}
-                </span>
-              </div>
-              {movie ? (
-                <div>
-                  <button
-                    type="button"
-                    className={`${styles.deleteButton} bg-dark`}
-                    onClick={() =>
-                      openConfirmation("delete movie?", handleDelete)
+                    type="file"
+                    onChange={(e) =>
+                      setImageFile(e.target.files ? e.target.files[0] : null)
                     }
-                  >
-                    delete
-                  </button>
+                  />
                 </div>
-              ) : (
+                <div className={styles.formGroup}>
+                  <label>alt image</label>
+                  <input
+                    type="file"
+                    onChange={(e) =>
+                      setAltImageFile(e.target.files ? e.target.files[0] : null)
+                    }
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>month</label>
+                  <input
+                    type="text"
+                    id="month"
+                    value={month}
+                    onChange={(e) => setMonth(e.target.value)}
+                  ></input>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>cinema</label>
+                  <input
+                    type="text"
+                    id="cinema_id"
+                    value={
+                      cinemaId !== ""
+                        ? cinemas.filter((cinema) => cinema.id === cinemaId)[0]
+                            .name
+                        : ""
+                    }
+                    onChange={(e) => setCinemaId(e.target.value)}
+                    className={styles.hiddenInput}
+                  ></input>
+                  <select
+                    id="cinema_id"
+                    value={cinemaId}
+                    onChange={(e) => setCinemaId(e.target.value)}
+                    required
+                  >
+                    <option value="">
+                      {cinemaId !== ""
+                        ? cinemas.filter((cinema) => cinema.id === cinemaId)[0]
+                            .name
+                        : "select a cinema"}
+                    </option>
+                    {cinemas.map((cinema) => (
+                      <option key={cinema.id} value={cinema.id}>
+                        {cinema.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>nominated</label>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="nominated"
+                      checked={isNominated}
+                      onChange={() => setIsNominated(!isNominated)}
+                    />
+                  </div>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>KINO</label>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="kino"
+                      checked={isKino}
+                      onChange={() => setIsKino(!isKino)}
+                    />
+                  </div>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>retro</label>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="retro"
+                      checked={isRetro}
+                      onChange={() => setIsRetro(!isRetro)}
+                    />
+                  </div>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>alias</label>
+                  <input
+                    type="text"
+                    id="alias"
+                    value={alias}
+                    onChange={(e) => setAlias(e.target.value)}
+                  ></input>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>zinger</label>
+                  <input
+                    type="text"
+                    id="zinger"
+                    value={zinger}
+                    onChange={(e) => setZinger(e.target.value)}
+                  ></input>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>motif</label>
+                  <select
+                    id="motif"
+                    value={motif}
+                    onChange={(e) => setMotif(e.target.value)}
+                  >
+                    {motifs.map((m) => (
+                      <option key={m} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className={styles.buttonContainer}>
                 <div>
-                  <button
-                    type="button"
-                    className={`${styles.button} bg-dark`}
-                    onClick={() => onClose()}
-                  >
-                    cancel
+                  <button className={`${styles.button} bg-dark`} type="submit">
+                    submit
                   </button>
+                  <span className={styles.result} id="result">
+                    {result}
+                  </span>
                 </div>
-              )}
-            </div>
-          </form>
+                {movie ? (
+                  <div>
+                    <button
+                      type="button"
+                      className={`${styles.deleteButton} bg-dark`}
+                      onClick={() =>
+                        openConfirmation("delete movie?", handleDelete)
+                      }
+                    >
+                      delete
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <button
+                      type="button"
+                      className={`${styles.button} bg-dark`}
+                      onClick={() => onClose()}
+                    >
+                      cancel
+                    </button>
+                  </div>
+                )}
+              </div>
+            </form>
+          </div>
         </div>
       </div>
       {confirmationConfig.open && (
