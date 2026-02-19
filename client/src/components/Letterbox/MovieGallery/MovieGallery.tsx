@@ -296,6 +296,11 @@ const MovieGallery: React.FC = () => {
               setTrigger={() =>
                 setTrigger((prevTrigger: boolean) => !prevTrigger)
               }
+              toggleCreateCinemaModal={() => {
+                setCreateMovieModalOpen(false);
+                setSelectedMovie(null);
+                setCreateCinemaModalOpen(true);
+              }}
             />
           ) : null}
           {isLoggedIn ? (
@@ -307,6 +312,10 @@ const MovieGallery: React.FC = () => {
               setTrigger={() =>
                 setTrigger((prevTrigger: boolean) => !prevTrigger)
               }
+              toggleCreateMovieModal={() => {
+                setCreateMovieModalOpen(true);
+                setCreateCinemaModalOpen(false);
+              }}
             />
           ) : null}
         </div>

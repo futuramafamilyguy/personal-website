@@ -28,6 +28,7 @@ interface CreateMovieModalProps {
   onClose: () => void;
   movie: Movie | null;
   setTrigger: () => void;
+  toggleCreateCinemaModal: () => void;
 }
 
 const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
@@ -35,6 +36,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
   onClose,
   movie,
   setTrigger,
+  toggleCreateCinemaModal,
 }) => {
   const [name, setName] = useState("");
   const [releaseYear, setReleaseYear] = useState("");
@@ -246,7 +248,21 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
       <div className={styles.overlay} onClick={onClose}></div>
       <div className={styles.modal}>
         <div className={styles.container}>
-          {isMobile ? <div className={styles.header}></div> : null}
+          {isMobile ? (
+            <div className={styles.header}>
+              {movie ? null : (
+                <div className={styles.navItems}>
+                  <h3>movie</h3>
+                  <h5
+                    className={styles.navItem}
+                    onClick={toggleCreateCinemaModal}
+                  >
+                    cinema
+                  </h5>
+                </div>
+              )}
+            </div>
+          ) : null}
           <div className={`${styles.textContainer} bg-dark`}>
             {isMobile ? null : movie ? (
               <h5 className={styles.title}>update movie</h5>

@@ -3,22 +3,27 @@ import ReactDom from "react-dom";
 
 import { createCinema, CreateCinemaRequest } from "../../../api/cinemas";
 import styles from "./CreateCinemaModal.module.css";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 interface CreateMovieModalProps {
   isOpen: boolean;
   onClose: () => void;
   setTrigger: () => void;
+  toggleCreateMovieModal: () => void;
 }
 
 const CreateCinemaModal: React.FC<CreateMovieModalProps> = ({
   isOpen,
   onClose,
   setTrigger,
+  toggleCreateMovieModal,
 }) => {
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
 
   const [result, setResult] = useState("");
+
+  const isMobile = useIsMobile();
 
   const orchestrateCreateCinema = async () => {
     try {
@@ -47,48 +52,61 @@ const CreateCinemaModal: React.FC<CreateMovieModalProps> = ({
     <>
       <div className={styles.overlay} onClick={onClose}></div>
       <div className={styles.modal}>
-        <div className={`${styles.textContainer} bg-dark`}>
-          <h5 className={styles.title}>create cinema</h5>
-          <form onSubmit={handleSubmit}>
-            <div className={styles.formFields}>
-              <div className={styles.formGroup}>
-                <label>name</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  className={styles.inputField}
-                ></input>
-              </div>
-              <div className={styles.formGroup}>
-                <label>city</label>
-                <input
-                  type="text"
-                  id="city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  required
-                  className={styles.inputField}
-                ></input>
+        <div className={styles.container}>
+          {isMobile ? (
+            <div className={styles.header}>
+              <div className={styles.navItems}>
+                <h5 className={styles.navItem} onClick={toggleCreateMovieModal}>
+                  movie
+                </h5>
+                <h3>cinema</h3>
               </div>
             </div>
-            <div className={styles.buttonContainer}>
-              <div>
-                <button className={`${styles.button} bg-dark`} type="submit">
-                  submit
-                </button>
-                <span className={styles.result} id="result">
-                  {result}
-                </span>
+          ) : null}
+          <div className={`${styles.textContainer} bg-dark`}>
+            {isMobile ? null : <h5 className={styles.title}>create cinema</h5>}
+
+            <form onSubmit={handleSubmit}>
+              <div className={styles.formFields}>
+                <div className={styles.formGroup}>
+                  <label>name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className={styles.inputField}
+                  ></input>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>city</label>
+                  <input
+                    type="text"
+                    id="city"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    required
+                    className={styles.inputField}
+                  ></input>
+                </div>
               </div>
-            </div>
-          </form>
+              <div className={styles.buttonContainer}>
+                <div>
+                  <button className={`${styles.button} bg-dark`} type="submit">
+                    submit
+                  </button>
+                  <span className={styles.result} id="result">
+                    {result}
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </>,
-    document.getElementById("portal")!
+    document.getElementById("portal")!,
   );
 };
 

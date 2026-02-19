@@ -23,16 +23,21 @@
   z-index: 1000;
 }
 
-.textContainer {
+.container {
   position: absolute;
   width: 100%;
   height: auto;
-  padding: 20px;
-  overflow-y: auto;
   color: white;
-  overflow: visible;
+
   border-radius: 10px;
   z-index: 1005;
+}
+
+.textContainer {
+  padding: 20px;
+
+  overflow: visible;
+  overflow-y: auto;
 }
 
 .formFields {
@@ -82,7 +87,9 @@ label {
   border: 1px solid white;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .result {
@@ -91,4 +98,90 @@ label {
 
 input[type="file"] {
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 90%;
+    max-width: 330px;
+  }
+
+  .textContainer {
+    height: 50%;
+  }
+
+  .header {
+    height: 125px;
+    background-image: url("https://cdn.allenmaygibson.com/images/static/archives.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+
+  .header::before {
+    height: 125px;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .navItems {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    text-align: right;
+    gap: 11px;
+  }
+
+  .navItems h3 {
+    font-size: 1.35rem;
+    margin: 0;
+    color: white;
+    font-weight: 600;
+  }
+
+  .navItems h5 {
+    margin-bottom: 0px;
+  }
+
+  .navItem {
+    font-size: 0.95rem;
+    color: rgba(220, 220, 220, 0.9);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .navItem:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .formFields {
+    height: 310px;
+  }
+
+  .formGroup {
+    width: 100%;
+    display: unset;
+    align-items: center;
+  }
+
+  .formGroup label {
+    margin-bottom: 10px;
+  }
+
+  .formGroup input {
+    width: 100%;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .buttonContainer {
+    padding-top: 17px;
+  }
 }
