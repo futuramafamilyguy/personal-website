@@ -16,6 +16,7 @@ import {
 import Post from "../../../types/Post";
 import ConfirmationModal from "../../Common/ConfirmationModal/ConfirmationModal";
 import styles from "./NewPostModal.module.css";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 interface NewPostModalProps {
   isOpen: boolean;
@@ -42,6 +43,8 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
   const [isPublished, setIsPublished] = useState<boolean>(false);
 
   const [result, setResult] = useState("");
+
+  const isMobile = useIsMobile();
 
   const [confirmationConfig, setConfirmationConfig] = useState({
     open: false,
@@ -219,78 +222,81 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         />
       )}
       <div className={styles.modal}>
-        <div className={`${styles.textContainer} bg-dark`}>
-          {post ? (
-            <h5 className={styles.title}>Update Post</h5>
-          ) : (
-            <h5 className={styles.title}>Create New Post</h5>
-          )}
-          <form onSubmit={handleSubmit}>
-            <div className={styles.formGroup}>
-              <label>title</label>
-              <input
-                type="text"
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-                className={styles.inputField}
-              ></input>
-            </div>
-            <div className={styles.formGroup}>
-              <label>image</label>
-              <input
-                type="file"
-                onChange={(e) =>
-                  setImageFile(e.target.files ? e.target.files[0] : null)
-                }
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label>take</label>
-              <textarea
-                value={markdownContent}
-                onChange={(e) => setMarkdownContent(e.target.value)}
-                placeholder="drop your take here"
-              />
-            </div>
-            <div className={styles.buttonContainer}>
-              <div>
-                <button className={`${styles.button} bg-dark`} type="submit">
-                  submit
-                </button>
-                <span className={styles.result} id="result">
-                  {result}
-                </span>
+        <div className={styles.container}>
+          {isMobile ? <div className={styles.header} /> : null}
+          <div className={`${styles.textContainer} bg-dark`}>
+            {isMobile ? null : post ? (
+              <h5 className={styles.title}>Update Post</h5>
+            ) : (
+              <h5 className={styles.title}>Create New Post</h5>
+            )}
+            <form onSubmit={handleSubmit}>
+              <div className={styles.formGroup}>
+                <label>title</label>
+                <input
+                  type="text"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  className={styles.inputField}
+                ></input>
               </div>
-              {post && !post.isPublished ? (
+              <div className={styles.formGroup}>
+                <label>image</label>
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setImageFile(e.target.files ? e.target.files[0] : null)
+                  }
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>take</label>
+                <textarea
+                  value={markdownContent}
+                  onChange={(e) => setMarkdownContent(e.target.value)}
+                  placeholder="drop your take here"
+                />
+              </div>
+              <div className={styles.buttonContainer}>
                 <div>
-                  <button
-                    type="button"
-                    className={`${styles.button} bg-dark`}
-                    onClick={() =>
-                      openConfirmation("publish post?", handlePublish)
-                    }
-                  >
-                    publish
+                  <button className={`${styles.button} bg-dark`} type="submit">
+                    submit
                   </button>
+                  <span className={styles.result} id="result">
+                    {result}
+                  </span>
                 </div>
-              ) : null}
-              {post ? (
-                <div>
-                  <button
-                    type="button"
-                    className={`${styles.deleteButton} bg-dark`}
-                    onClick={() =>
-                      openConfirmation("delete post?", handleDelete)
-                    }
-                  >
-                    delete
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          </form>
+                {post && !post.isPublished ? (
+                  <div>
+                    <button
+                      type="button"
+                      className={`${styles.button} bg-dark`}
+                      onClick={() =>
+                        openConfirmation("publish post?", handlePublish)
+                      }
+                    >
+                      publish
+                    </button>
+                  </div>
+                ) : null}
+                {post ? (
+                  <div>
+                    <button
+                      type="button"
+                      className={`${styles.deleteButton} bg-dark`}
+                      onClick={() =>
+                        openConfirmation("delete post?", handleDelete)
+                      }
+                    >
+                      delete
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </>,

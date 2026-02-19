@@ -23,16 +23,21 @@
   z-index: 1000;
 }
 
-.textContainer {
+.container {
   position: absolute;
   width: 100%;
   height: auto;
-  padding: 20px;
-  overflow-y: auto;
   color: white;
-  overflow: visible;
+
   border-radius: 10px;
   z-index: 1005;
+}
+
+.textContainer {
+  padding: 20px;
+
+  overflow: visible;
+  overflow-y: auto;
 }
 
 .formGroup {
@@ -85,7 +90,9 @@ label {
   border: 1px solid white;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .deleteButton {
@@ -94,7 +101,9 @@ label {
   border: 1px solid #c11c1c;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .buttonContainer {
@@ -105,4 +114,62 @@ label {
 
 .result {
   padding-left: 30px;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 90%;
+    max-width: 450px;
+  }
+
+  .header {
+    height: 125px;
+    background-image: url("https://cdn.allenmaygibson.com/images/static/lofi-hiphop-mix.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+  }
+
+  .header::before {
+    height: 125px;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .formFields {
+    height: 290px;
+  }
+
+  .formGroup {
+    width: 100%;
+    display: unset;
+    align-items: center;
+  }
+
+  .formGroup label {
+    margin-bottom: 10px;
+  }
+
+  .formGroup input {
+    width: 100%;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .buttonContainer {
+    padding-top: 17px;
+  }
+
+  textarea {
+    width: 100%;
+    height: 280px;
+    border-radius: 10px;
+  }
+
+  form {
+    height: 300px;
+  }
 }
