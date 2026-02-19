@@ -71,6 +71,12 @@ const PostGallery: React.FC = () => {
         <>
           {isMobile ? (
             <div className={styles.mobilePostGallery}>
+              {isLoggedIn ? (
+                <div
+                  className={styles.newPostCard}
+                  onClick={() => openNewPostModal(null)}
+                />
+              ) : null}
               {posts.map((post) => (
                 <div
                   key={post.id}
@@ -96,6 +102,17 @@ const PostGallery: React.FC = () => {
                   </div>
                 </div>
               ))}
+              {isLoggedIn ? (
+                <NewPostModal
+                  isOpen={newModalOpen}
+                  onClose={() => {
+                    setNewModalOpen(false);
+                    setSelectedPost(null);
+                  }}
+                  post={selectedPost}
+                  setTrigger={() => setTrigger((prevTrigger) => !prevTrigger)}
+                />
+              ) : null}
             </div>
           ) : (
             <>

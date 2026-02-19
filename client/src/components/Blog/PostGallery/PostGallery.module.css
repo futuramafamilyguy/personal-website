@@ -60,6 +60,17 @@
     max-width: 500px;
   }
 
+  .newPostCard {
+    gap: 0;
+    row-gap: 100px;
+    width: 100%;
+    height: 120px;
+    background: url("https://cdn.allenmaygibson.com/images/static/lofi-hiphop-mix.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
   .postDetails {
     display: flex;
     flex-direction: row;
