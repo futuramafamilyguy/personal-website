@@ -212,12 +212,15 @@
 
   .newEntitiesRow {
     display: flex;
-    justify-content: space-between;
-    padding-top: 20px;
-    padding-bottom: 45px;
+    justify-content: center;
+    align-items: center;
   }
 
   .newEntitiesRow h5 {
     font-size: 1rem;
+  }
+
+  .newEntityButtonContainer {
+    padding: 16px;
   }
 }

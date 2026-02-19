@@ -211,19 +211,32 @@ const MovieGallery: React.FC = () => {
             <>
               <div className={styles.newEntitiesRow}>
                 <h5>playing hooky to watch movies</h5>
-                <hr />
-                <NewMediaCard
-                  imageSrc={
-                    "https://cdn.allenmaygibson.com/images/static/the-fourth.webp"
-                  }
-                  onClick={() => openNewMovieModal(null)}
-                />
-                <NewMediaCard
-                  imageSrc={
-                    "https://cdn.allenmaygibson.com/images/static/archives.jpg"
-                  }
-                  onClick={() => openNewCinemaModal()}
-                />
+                {isMobile ? (
+                  <div className={styles.newEntityButtonContainer}>
+                    <NewMediaCard
+                      imageSrc={
+                        "https://cdn.allenmaygibson.com/images/static/the-fourth.webp"
+                      }
+                      onClick={() => openNewMovieModal(null)}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <hr />
+                    <NewMediaCard
+                      imageSrc={
+                        "https://cdn.allenmaygibson.com/images/static/the-fourth.webp"
+                      }
+                      onClick={() => openNewMovieModal(null)}
+                    />
+                    <NewMediaCard
+                      imageSrc={
+                        "https://cdn.allenmaygibson.com/images/static/archives.jpg"
+                      }
+                      onClick={() => openNewCinemaModal()}
+                    />
+                  </>
+                )}
               </div>
             </>
           ) : null}
