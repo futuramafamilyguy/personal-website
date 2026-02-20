@@ -86,7 +86,9 @@ const PostGallery: React.FC = () => {
                 >
                   <div className={styles.textBlock}>
                     <div className={styles.titleRow}>
-                      <h5 className={styles.postTitle}>{post.title}</h5>
+                      <h5
+                        className={styles.postTitle}
+                      >{`${!post.isPublished ? "[DRAFT]" : ""} ${post.title}`}</h5>
                     </div>
                     <span className={styles.date}>
                       {formatDate(post.createdAtUtc)}
@@ -135,7 +137,7 @@ const PostGallery: React.FC = () => {
                   <PostCard
                     key={post.id}
                     imageUrl={post.imageUrl}
-                    title={post.title}
+                    title={`${!post.isPublished ? "[DRAFT]" : ""} ${post.title}`}
                     onClick={() => handlePostClick(post)}
                     editable={isLoggedIn}
                     onClickEdit={() => openNewPostModal(post)}
