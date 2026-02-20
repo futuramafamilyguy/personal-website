@@ -88,9 +88,20 @@ const PostGallery: React.FC = () => {
                     <div className={styles.titleRow}>
                       <h5 className={styles.postTitle}>{post.title}</h5>
                     </div>
-                    <div className={styles.date}>
+                    <span className={styles.date}>
                       {formatDate(post.createdAtUtc)}
-                    </div>
+                    </span>
+                    {isLoggedIn ? (
+                      <span
+                        className={styles.edit}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openNewPostModal(post);
+                        }}
+                      >
+                        EDIT
+                      </span>
+                    ) : null}
                   </div>
                   <div className={styles.imageContainer}>
                     <img

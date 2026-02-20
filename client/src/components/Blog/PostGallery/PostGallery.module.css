@@ -124,4 +124,12 @@
     background-color: #333;
     padding: 8px;
   }
+
+  .edit {
+    margin-left: 20px;
+    margin-top: 4px;
+    font-size: 0.7rem;
+    opacity: 0.8;
+    color: #46dae7;
+  }
 }
