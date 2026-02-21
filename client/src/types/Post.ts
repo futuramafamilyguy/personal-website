@@ -10,4 +10,5 @@ export default interface Post {
   slug: string;
   markdownVersion: number;
   isPublished: boolean;
+  publishedAtUtc: Date;
 }

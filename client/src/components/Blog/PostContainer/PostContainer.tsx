@@ -4,10 +4,7 @@ import ReactMarkdown from "react-markdown";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import rehypeRaw from "rehype-raw";
 
-import {
-  debouncedFetchPostBySlug,
-  makeDebouncedRequest,
-} from "../../../api/debouncedFetch";
+import { debouncedFetchPostBySlug, makeDebouncedRequest } from "../../../api/debouncedFetch";
 import { useIsMobile } from "../../../hooks/useIsMobile";
 import Post from "../../../types/Post";
 import MessageDisplay from "../../Common/MessageDisplay/MessageDisplay";
@@ -113,7 +110,7 @@ const PostContainer: React.FC = () => {
           <div ref={textContainerRef} className={styles.textContainer}>
             <div className={styles.metadataContainer}>
               <h3>{post.title}</h3>
-              <p>{formatDate(post.createdAtUtc)}</p>
+              <p>{formatDate(post.publishedAtUtc)}</p>
             </div>
             <div className={styles.markdownContainer}>
               <ReactMarkdown
