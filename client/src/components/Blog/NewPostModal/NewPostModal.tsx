@@ -2,21 +2,11 @@ import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
-import {
-  createPost,
-  deletePost,
-  getPresignedImageUrl,
-  getPresignedMarkdownUrl,
-  publishPost,
-  updatePost,
-  UpdatePostRequest,
-  uploadImageToPresignedUrl,
-  uploadMarkdownToPresignedUrl,
-} from "../../../api/posts";
+import { createPost, deletePost, getPresignedImageUrl, getPresignedMarkdownUrl, publishPost, updatePost, UpdatePostRequest, uploadImageToPresignedUrl, uploadMarkdownToPresignedUrl } from "../../../api/posts";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 import Post from "../../../types/Post";
 import ConfirmationModal from "../../Common/ConfirmationModal/ConfirmationModal";
 import styles from "./NewPostModal.module.css";
-import { useIsMobile } from "../../../hooks/useIsMobile";
 
 interface NewPostModalProps {
   isOpen: boolean;
@@ -41,6 +31,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
   const [createdAtUtc, setCreatedAtUtc] = useState<Date | undefined>(undefined);
   const [markdownVersion, setMarkdownVersion] = useState<number>();
   const [isPublished, setIsPublished] = useState<boolean>(false);
+  const [slug, setSlug] = useState("");
 
   const [result, setResult] = useState("");
 
@@ -76,6 +67,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     );
     setMarkdownVersion(post && post.markdownVersion ? post.markdownVersion : 1);
     setIsPublished(post && post.isPublished ? post.isPublished : false);
+    setSlug(post ? post.slug : "");
   }, [isOpen]);
 
   useEffect(() => {
@@ -100,7 +92,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         throw new Error("post content is empty");
       }
 
-      const newPost = await createPost(title);
+      const newPost = await createPost(title, slug);
 
       await orchestrateUploadMarkdown(newPost.id, markdownContent);
 
@@ -132,6 +124,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         imageObjectKey: imageObjectKey ? imageObjectKey : null,
         markdownVersion: markdownVersion!,
         isPublished: isPublished,
+        slug: slug,
       };
       const updatedPost = await updatePost(data);
 
@@ -250,6 +243,17 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
                     setImageFile(e.target.files ? e.target.files[0] : null)
                   }
                 />
+              </div>
+              <div className={styles.formGroup}>
+                <label>slug</label>
+                <input
+                  type="text"
+                  id="slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  required
+                  className={styles.inputField}
+                ></input>
               </div>
               <div className={styles.formGroup}>
                 <label>take</label>

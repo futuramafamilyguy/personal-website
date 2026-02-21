@@ -13,11 +13,16 @@ export interface UpdatePostRequest {
   imageObjectKey: string | null;
   markdownVersion: number;
   isPublished: boolean;
+  slug: string;
 }
 
-export const createPost = async (title: string): Promise<Post> => {
+export const createPost = async (
+  title: string,
+  slug: string,
+): Promise<Post> => {
   const res = await api.post<Post>(`/posts`, {
     title: title,
+    slug: slug,
   });
 
   return res.data;
@@ -33,6 +38,7 @@ export const updatePost = async (data: UpdatePostRequest): Promise<Post> => {
     imageObjectKey: data.imageObjectKey,
     markdownVersion: data.markdownVersion,
     isPublished: data.isPublished,
+    slug: data.slug,
   });
 
   return res.data;
