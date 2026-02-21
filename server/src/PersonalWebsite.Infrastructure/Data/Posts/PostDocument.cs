@@ -38,4 +38,7 @@ public class PostDocument
 
     [BsonElement("published")]
     public required bool IsPublished { get; set; }
+
+    [BsonElement("published_at")]
+    public DateTime? PublishedAtUtc { get; set; }
 }

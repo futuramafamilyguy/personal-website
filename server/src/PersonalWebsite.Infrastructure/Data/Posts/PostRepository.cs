@@ -112,7 +112,7 @@ public class PostRepository : IPostRepository
         var filter = Builders<PostDocument>.Filter.Eq(post => post.Id, id);
         var update = Builders<PostDocument>
             .Update.Set(post => post.IsPublished, true)
-            .Set(post => post.CreatedAtUtc, publishedAtUtc);
+            .Set(post => post.PublishedAtUtc, publishedAtUtc);
         var result = await _posts.UpdateOneAsync(filter, update);
 
         if (result.MatchedCount == 0)

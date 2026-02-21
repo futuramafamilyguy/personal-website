@@ -18,6 +18,7 @@ public static class PostMapper
             Slug = document.Slug,
             MarkdownVersion = document.MarkdownVersion,
             IsPublished = document.IsPublished,
+            PublishedAtUtc = document.PublishedAtUtc,
         };
 
     public static PostDocument ToDocument(Post post) =>
