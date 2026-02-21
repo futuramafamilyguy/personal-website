@@ -101,6 +101,7 @@ const PictureContainer: React.FC = () => {
                   onClose={() => setNewModalOpen(false)}
                   movie={pictureIndex !== null ? movies[pictureIndex] : null}
                   setTrigger={() => setTrigger((prevTrigger) => !prevTrigger)}
+                  toggleCreateCinemaModal={() => {}}
                 />
               ) : null}
 
