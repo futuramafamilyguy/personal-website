@@ -48,7 +48,7 @@ public class PostsController : Controller
     [HttpPost("")]
     public async Task<IActionResult> CreatePostAsync([FromBody] CreatePostRequest request)
     {
-        var post = await _postService.AddPostAsync(request.Title);
+        var post = await _postService.AddPostAsync(request.Title, request.Slug);
 
         return Ok(post);
     }
@@ -72,7 +72,8 @@ public class PostsController : Controller
             request.ImageObjectKey,
             request.CreatedAtUtc,
             request.MarkdownVersion,
-            request.IsPublished
+            request.IsPublished,
+            request.Slug
         );
 
         return Ok(updatedPost);

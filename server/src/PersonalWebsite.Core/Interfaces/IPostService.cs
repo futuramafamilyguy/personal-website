@@ -7,7 +7,7 @@ public interface IPostService
     Task<IEnumerable<Post>> GetPostsAsync(bool includeDrafts);
     Task<Post> GetPostAsync(string id);
     Task<Post> GetPostBySlugAsync(string slug);
-    Task<Post> AddPostAsync(string title);
+    Task<Post> AddPostAsync(string title, string slug);
     Task<Post> UpdatePostAsync(
         string id,
         string title,
@@ -17,7 +17,8 @@ public interface IPostService
         string? imageObjectKey,
         DateTime createdAtUtc,
         int markdownVersion,
-        bool isPublished
+        bool isPublished,
+        string slug
     );
     Task RemovePostAsync(string id);
     Task<string> HandleMarkdownUploadAsync(string id, string markdownBasePath);

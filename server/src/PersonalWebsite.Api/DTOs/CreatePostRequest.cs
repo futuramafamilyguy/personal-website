@@ -6,4 +6,7 @@ public class CreatePostRequest
 {
     [MinLength(1)]
     public required string Title { get; set; }
+
+    [MinLength(1)]
+    public required string Slug { get; set; }
 }

@@ -27,7 +27,7 @@ public class PostServiceTests
         var slug = "cars-review";
 
         // act
-        await sut.AddPostAsync(title);
+        await sut.AddPostAsync(title, slug);
 
         // assert
         postRepositoryMock.Verify(

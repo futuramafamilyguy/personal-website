@@ -26,8 +26,11 @@ public class PostService : IPostService
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public async Task<Post> AddPostAsync(string title)
+    public async Task<Post> AddPostAsync(string title, string slug)
     {
+        if (!IsValidSlug(slug))
+            throw new DomainValidationException("invalid slug");
+
         var utcNow = _dateTimeProvider.UtcNow;
         var post = await _postRepository.AddAsync(
             new Post
@@ -35,7 +38,7 @@ public class PostService : IPostService
                 Title = title,
                 LastUpdatedUtc = utcNow,
                 CreatedAtUtc = utcNow,
-                Slug = GenerateSlug(title),
+                Slug = slug,
                 MarkdownVersion = 0,
                 IsPublished = false
             }
@@ -88,9 +91,13 @@ public class PostService : IPostService
         string? imageObjectKey,
         DateTime createdAtUtc,
         int markdownVersion,
-        bool isPublished
+        bool isPublished,
+        string slug
     )
     {
+        if (!IsValidSlug(slug))
+            throw new DomainValidationException("invalid slug");
+
         var updatedPost = new Post
         {
             Id = id,
@@ -101,7 +108,7 @@ public class PostService : IPostService
             ImageObjectKey = imageObjectKey,
             LastUpdatedUtc = _dateTimeProvider.UtcNow,
             CreatedAtUtc = createdAtUtc,
-            Slug = GenerateSlug(title),
+            Slug = slug,
             MarkdownVersion = markdownVersion,
             IsPublished = isPublished,
         };
@@ -168,13 +175,11 @@ public class PostService : IPostService
         return true;
     }
 
-    private static string GenerateSlug(string title) =>
-        Regex
-            .Replace(
-                title.Split(':').Length > 1 ? title.Split(':')[1].Trim() : title.Trim(),
-                @"[^a-zA-Z0-9\s-]",
-                ""
-            )
-            .ToLower()
-            .Replace(" ", "-");
+    private static bool IsValidSlug(string slug)
+    {
+        if (string.IsNullOrEmpty(slug))
+            return false;
+
+        return Regex.IsMatch(slug, "^[a-z0-9_]+(?:-[a-z0-9_]+)*$");
+    }
 }
