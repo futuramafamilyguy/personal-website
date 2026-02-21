@@ -239,7 +239,7 @@ input[type="file"] {
   }
 
   .formFields {
-    max-height: 310px;
+    max-height: 250px;
   }
 
   .formGroup {
