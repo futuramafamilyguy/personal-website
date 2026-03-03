@@ -17,7 +17,6 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ navItems }) => {
     "/letterbox": "danke-schoen.jpg",
     "/blog": "crazy.jpg",
     "/operation-kino": "pontiac.jpg",
-    "/box-office": "amanda.jpg",
     "/qst-fm": "qst.jpg",
   };
 
@@ -42,7 +41,7 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ navItems }) => {
                 {item.label}
               </Link>
             </span>
-          )
+          ),
         )}
       </nav>
     </nav>

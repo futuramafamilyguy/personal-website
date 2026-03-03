@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
-using PersonalWebsite.Api.VisitTracking;
 
 namespace PersonalWebsite.Api.Controllers;
 
@@ -13,12 +12,7 @@ namespace PersonalWebsite.Api.Controllers;
 [Route("")]
 public class AuthController : Controller
 {
-    private readonly VisitExclusionConfiguration _visitExclusionConfiguration;
-
-    public AuthController(IOptions<VisitExclusionConfiguration> visitExclusionConfiguration)
-    {
-        _visitExclusionConfiguration = visitExclusionConfiguration.Value;
-    }
+    public AuthController() { }
 
     [Authorize(AuthenticationSchemes = "AdminAuth")]
     [EnableRateLimiting("loginPolicy")]
@@ -40,17 +34,6 @@ public class AuthController : Controller
                 authProperties
             )
             .Wait();
-
-        HttpContext.Response.Cookies.Append(
-            "ExcludeVisit",
-            _visitExclusionConfiguration.ExcludeVisitCookieValue,
-            new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTimeOffset.UtcNow.AddDays(30),
-                SameSite = SameSiteMode.None
-            }
-        );
 
         return Ok("Admin login successful.");
     }

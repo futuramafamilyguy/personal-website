@@ -48,14 +48,8 @@ public class BasicAuthHandler : AuthenticationHandler<AuthenticationSchemeOption
             var password = credentials[1];
 
             var scheme = Scheme.Name;
-            var configUsername =
-                scheme == "AdminAuth"
-                    ? _configuration.AdminUsername
-                    : _configuration.DisableTrackingUsername;
-            var configPassword =
-                scheme == "AdminAuth"
-                    ? _configuration.AdminPassword
-                    : _configuration.DisableTrackingPassword;
+            var configUsername = _configuration.AdminUsername;
+            var configPassword = _configuration.AdminPassword;
 
             if (username != configUsername || password != configPassword)
             {

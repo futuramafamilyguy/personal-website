@@ -3,14 +3,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import AuthComponent from "./components/AuthComponent";
 import BlogContainer from "./components/Blog/BlogContainer/BlogContainer";
 import PostContainer from "./components/Blog/PostContainer/PostContainer";
-import DisableTracking from "./components/DisableTracking";
 import MobileNavBar from "./components/MobileNavBar/MobileNavBar";
 import NavBar from "./components/NavBar/NavBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import { useIsMobile } from "./hooks/useIsMobile";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import BlogLayout from "./pages/BlogLayout/BlogLayout";
-import BoxOfficePage from "./pages/BoxOfficePage/BoxOfficePage";
 import LetterboxPage from "./pages/LetterboxPage/LetterboxPage";
 import OperationKinoPage from "./pages/OperationKinoPage/OperationKinoPage";
 import QstFmPage from "./pages/QstFmPage/QstFmPage";
@@ -64,8 +62,6 @@ const App: React.FC = () => {
               element={<OperationKinoPage />}
             />
             <Route path="/qst-fm" element={<QstFmPage />} />
-            <Route path="/box-office" element={<BoxOfficePage />} />
-            <Route path="/disable-tracking" element={<DisableTracking />} />
             <Route path="/login" element={<AuthComponent />} />
             <Route path="/logout" element={<AuthComponent />} />
           </Routes>

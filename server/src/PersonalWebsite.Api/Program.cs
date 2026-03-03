@@ -1,4 +1,3 @@
-using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.RateLimiting;
@@ -6,7 +5,6 @@ using PersonalWebsite.Api;
 using PersonalWebsite.Api.Authentication;
 using PersonalWebsite.Api.Filters;
 using PersonalWebsite.Api.Middlewares;
-using PersonalWebsite.Api.VisitTracking;
 using PersonalWebsite.Core;
 using PersonalWebsite.Infrastructure;
 using PersonalWebsite.Infrastructure.Data;
@@ -21,9 +19,6 @@ builder.Services.Configure<MongoDbConfiguration>(
 );
 builder.Services.Configure<BasicAuthConfiguration>(
     builder.Configuration.GetSection("BasicAuthConfiguration")
-);
-builder.Services.Configure<VisitExclusionConfiguration>(
-    builder.Configuration.GetSection("VisitExclusionConfiguration")
 );
 builder.Services.Configure<RateLimitingConfiguration>(
     builder.Configuration.GetSection("RateLimiting")
@@ -44,7 +39,6 @@ builder.Services.AddMongoClient(
 builder.Services.AddHostedService<ConfigureMongoDbIndexesService>();
 builder.Services.AddCoreServices();
 builder.Services.AddInfrastructureServices();
-builder.Services.AddVisitTrackingServices();
 builder.Services.AddAmazonS3Services(builder.Configuration.GetAWSOptions());
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -175,8 +169,6 @@ app.UseSession();
 app.UseAuthorization();
 
 app.UseMiddleware<IpForwardMiddleware>();
-
-app.UseMiddleware<VisitTrackingMiddleware>();
 
 app.MapControllers();
 
