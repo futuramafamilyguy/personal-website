@@ -145,6 +145,8 @@ builder.Services.AddRateLimiter(options =>
     );
 });
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -169,6 +171,8 @@ app.UseSession();
 app.UseAuthorization();
 
 app.UseMiddleware<IpForwardMiddleware>();
+
+app.MapHealthChecks("/health");
 
 app.MapControllers();
 
