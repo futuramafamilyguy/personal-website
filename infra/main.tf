@@ -24,36 +24,6 @@ variable "domain_name" {
   default = "allenmaygibson.com"
 }
 
-resource "aws_lightsail_container_service" "personal_website_client_service" {
-  name  = "personal-website-client-service"
-  power = "small"
-  scale = 1
-}
-
-resource "aws_lightsail_container_service_deployment_version" "personal_website_client_deployment" {
-  container {
-    container_name = "client"
-    image          = "ghcr.io/futuramafamilyguy/personal-website-client:latest"
-
-    ports = {
-      3000 = "HTTP"
-    }
-  }
-
-  public_endpoint {
-    container_name = "client"
-    container_port = 3000
-
-    health_check {
-      unhealthy_threshold = 3
-      timeout_seconds     = 5
-      interval_seconds    = 30
-    }
-  }
-
-  service_name = aws_lightsail_container_service.personal_website_client_service.name
-}
-
 resource "aws_secretsmanager_secret" "personal_website" {
   name = "personal-website"
 }

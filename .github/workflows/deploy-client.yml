@@ -1,0 +1,63 @@
+name: deploy react app to s3
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'client/**'
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ap-southeast-2
+  S3_BUCKET: www.allenmaygibson.com
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-client:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: client
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: build react app
+        run: npm run build
+        env:
+          VITE_SERVER_URL: ${{ secrets.VITE_SERVER_URL }}
+          VITE_OPERATION_KINO_URL: ${{ secrets.VITE_OPERATION_KINO_URL }}
+
+      - name: configure aws creds
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: sync assets to s3
+        run: |
+          aws s3 sync dist/ s3://${{ env.S3_BUCKET }} \
+            --exclude "index.html" \
+            --cache-control "public,max-age=31536000,immutable" \
+            --delete
+
+      - name: upload index.html
+        run: |
+          aws s3 cp dist/index.html s3://${{ env.S3_BUCKET }}/index.html \
+            --cache-control "no-cache"
