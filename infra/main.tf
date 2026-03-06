@@ -40,6 +40,15 @@ resource "aws_lightsail_container_service" "personal_website_server_service" {
   name  = "personal-website-server-service"
   power = "small"
   scale = 1
+
+  public_domain_names {
+    certificate {
+      certificate_name = "api.${var.domain_name}"
+      domain_names = [
+        "api.${var.domain_name}"
+      ]
+    }
+  }
 }
 
 resource "aws_lightsail_container_service_deployment_version" "personal_website_server_deployment" {
@@ -48,6 +57,9 @@ resource "aws_lightsail_container_service_deployment_version" "personal_website_
     image          = "ghcr.io/futuramafamilyguy/personal-website-server:latest"
 
     environment = {
+      ConnectionStrings__PersonalWebsiteDb     = local.secrets["ConnectionStrings__PersonalWebsiteDb"]
+      BasicAuthConfiguration__AdminUsername    = local.secrets["BasicAuthConfiguration__AdminUsername"]
+      BasicAuthConfiguration__AdminPassword    = local.secrets["BasicAuthConfiguration__AdminPassword"]
       ImageStorageConfiguration__Provider      = "S3"
       ImageStorageConfiguration__Host          = "https://s3.ap-southeast-2.amazonaws.com/"
       ImageStorageConfiguration__CdnEnabled    = "true"
@@ -56,13 +68,10 @@ resource "aws_lightsail_container_service_deployment_version" "personal_website_
       MarkdownStorageConfiguration__CdnEnabled = "true"
       AllowedOrigins                           = "https://${var.domain_name},https://www.${var.domain_name}"
       CdnConfiguration__Host                   = "https://cdn.${var.domain_name}"
-      ConnectionStrings__PersonalWebsiteDb     = local.secrets["ConnectionStrings__PersonalWebsiteDb"]
       AWS_ACCESS_KEY_ID                        = local.secrets["AWS_ACCESS_KEY_ID"]
       AWS_SECRET_ACCESS_KEY                    = local.secrets["AWS_SECRET_ACCESS_KEY"]
       AWS_REGION                               = "ap-southeast-2"
       S3Configuration__BucketName              = local.secrets["S3Configuration__BucketName"]
-      BasicAuthConfiguration__AdminUsername    = local.secrets["BasicAuthConfiguration__AdminUsername"]
-      BasicAuthConfiguration__AdminPassword    = local.secrets["BasicAuthConfiguration__AdminPassword"]
     }
 
     ports = {
