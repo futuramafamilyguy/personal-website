@@ -91,7 +91,9 @@ const PostGallery: React.FC = () => {
                       >{`${!post.isPublished ? "[DRAFT]" : ""} ${post.title}`}</h5>
                     </div>
                     <span className={styles.date}>
-                      {formatDate(post.publishedAtUtc)}
+                      {post.isPublished
+                        ? formatDate(post.publishedAtUtc)
+                        : formatDate(post.createdAtUtc)}
                     </span>
                     {isLoggedIn ? (
                       <span
