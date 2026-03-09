@@ -51,19 +51,14 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var origins = builder.Configuration
-    .GetValue<string>("AllowedOrigins")
+var origins = builder
+    .Configuration.GetValue<string>("AllowedOrigins")
     .Split(',', StringSplitOptions.RemoveEmptyEntries);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         "CorsPolicy",
-        policy =>
-            policy
-                .WithOrigins(origins)
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials()
+        policy => policy.WithOrigins(origins).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
     );
 });
 
