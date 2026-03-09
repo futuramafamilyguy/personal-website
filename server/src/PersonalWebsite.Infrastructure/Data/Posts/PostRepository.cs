@@ -29,7 +29,10 @@ public class PostRepository : IPostRepository
 
     public async Task<IEnumerable<Post>> GetAsync(bool includeDrafts)
     {
-        var sort = Builders<PostDocument>.Sort.Descending(post => post.PublishedAtUtc);
+        var sort = Builders<PostDocument>
+            .Sort.Ascending(post => post.IsPublished)
+            .Descending(post => post.CreatedAtUtc)
+            .Descending(post => post.PublishedAtUtc);
         var filter = includeDrafts
             ? FilterDefinition<PostDocument>.Empty
             : Builders<PostDocument>.Filter.Eq(post => post.IsPublished, true);
