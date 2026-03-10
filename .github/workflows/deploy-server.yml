@@ -8,14 +8,13 @@ env:
   SERVICE_NAME: personal-website-server
   AWS_REGION: ap-southeast-2
 
-permissions:
-    contents: read
-    packages: write
-    id-token: write
-
 jobs:
   build:
+    name: build docker image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
@@ -43,7 +42,18 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.SERVICE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
-      
+
+  deploy:
+    name: deploy to lightsail
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
       - name: configure aws creds
         uses: aws-actions/configure-aws-credentials@v2
         with:
