@@ -6,6 +6,7 @@ on:
 env:
   REGISTRY: ghcr.io
   SERVICE_NAME: personal-website-server
+  AWS_REGION: ap-southeast-2
 
 jobs:
   build:
