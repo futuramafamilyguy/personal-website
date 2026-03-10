@@ -73,7 +73,8 @@ public class PostsController : Controller
             request.CreatedAtUtc,
             request.MarkdownVersion,
             request.IsPublished,
-            request.Slug
+            request.Slug,
+            request.PublishedAtUtc
         );
 
         return Ok(updatedPost);

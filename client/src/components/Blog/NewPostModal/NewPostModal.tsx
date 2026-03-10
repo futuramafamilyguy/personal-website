@@ -2,7 +2,17 @@ import axios from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import ReactDom from "react-dom";
 
-import { createPost, deletePost, getPresignedImageUrl, getPresignedMarkdownUrl, publishPost, updatePost, UpdatePostRequest, uploadImageToPresignedUrl, uploadMarkdownToPresignedUrl } from "../../../api/posts";
+import {
+  createPost,
+  deletePost,
+  getPresignedImageUrl,
+  getPresignedMarkdownUrl,
+  publishPost,
+  updatePost,
+  UpdatePostRequest,
+  uploadImageToPresignedUrl,
+  uploadMarkdownToPresignedUrl,
+} from "../../../api/posts";
 import { useIsMobile } from "../../../hooks/useIsMobile";
 import Post from "../../../types/Post";
 import ConfirmationModal from "../../Common/ConfirmationModal/ConfirmationModal";
@@ -32,6 +42,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
   const [markdownVersion, setMarkdownVersion] = useState<number>();
   const [isPublished, setIsPublished] = useState<boolean>(false);
   const [slug, setSlug] = useState("");
+  const [publishedAtUtc, setPublishedAtUtc] = useState<Date | null>(null);
 
   const [result, setResult] = useState("");
 
@@ -68,6 +79,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     setMarkdownVersion(post && post.markdownVersion ? post.markdownVersion : 1);
     setIsPublished(post && post.isPublished ? post.isPublished : false);
     setSlug(post ? post.slug : "");
+    setPublishedAtUtc(post ? post.publishedAtUtc : null);
   }, [isOpen]);
 
   useEffect(() => {
@@ -125,6 +137,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         markdownVersion: markdownVersion!,
         isPublished: isPublished,
         slug: slug,
+        publishedAtUtc: publishedAtUtc,
       };
       const updatedPost = await updatePost(data);
 

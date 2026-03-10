@@ -16,4 +16,6 @@ public class UpdatePostRequest
 
     [MinLength(1)]
     public required string Slug { get; set; }
+
+    public DateTime? PublishedAtUtc { get; set; }
 }

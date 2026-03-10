@@ -92,7 +92,8 @@ public class PostService : IPostService
         DateTime createdAtUtc,
         int markdownVersion,
         bool isPublished,
-        string slug
+        string slug,
+        DateTime? publishedAtUtc
     )
     {
         if (!IsValidSlug(slug))
@@ -111,6 +112,7 @@ public class PostService : IPostService
             Slug = slug,
             MarkdownVersion = markdownVersion,
             IsPublished = isPublished,
+            PublishedAtUtc = publishedAtUtc,
         };
         var result = await _postRepository.UpdateAsync(id, updatedPost);
         if (!result)

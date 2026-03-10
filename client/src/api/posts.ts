@@ -14,6 +14,7 @@ export interface UpdatePostRequest {
   markdownVersion: number;
   isPublished: boolean;
   slug: string;
+  publishedAtUtc: Date | null;
 }
 
 export const createPost = async (
@@ -39,6 +40,7 @@ export const updatePost = async (data: UpdatePostRequest): Promise<Post> => {
     markdownVersion: data.markdownVersion,
     isPublished: data.isPublished,
     slug: data.slug,
+    publishedAtUtc: data.publishedAtUtc,
   });
 
   return res.data;

@@ -18,7 +18,8 @@ public interface IPostService
         DateTime createdAtUtc,
         int markdownVersion,
         bool isPublished,
-        string slug
+        string slug,
+        DateTime? publishedAtUtc
     );
     Task RemovePostAsync(string id);
     Task<string> HandleMarkdownUploadAsync(string id, string markdownBasePath);
