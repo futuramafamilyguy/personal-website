@@ -35,5 +35,6 @@ public static class PostMapper
             Slug = post.Slug,
             MarkdownVersion = post.MarkdownVersion,
             IsPublished = post.IsPublished,
+            PublishedAtUtc = post.PublishedAtUtc,
         };
 }
