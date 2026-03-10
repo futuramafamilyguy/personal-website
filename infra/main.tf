@@ -24,16 +24,16 @@ variable "domain_name" {
   default = "allenmaygibson.com"
 }
 
-resource "aws_secretsmanager_secret" "personal_website" {
-  name = "personal-website"
+resource "aws_secretsmanager_secret" "personal_website_server" {
+  name = "personal-website-server"
 }
 
-data "aws_secretsmanager_secret_version" "personal_website_value" {
-  secret_id = aws_secretsmanager_secret.personal_website.id
+data "aws_secretsmanager_secret_version" "personal_website_server_value" {
+  secret_id = aws_secretsmanager_secret.personal_website_server.id
 }
 
 locals {
-  secrets = jsondecode(data.aws_secretsmanager_secret_version.personal_website_value.secret_string)
+  secrets = jsondecode(data.aws_secretsmanager_secret_version.personal_website_server_value.secret_string)
 }
 
 resource "aws_lightsail_container_service" "personal_website_server_service" {
