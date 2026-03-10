@@ -24,6 +24,10 @@ variable "domain_name" {
   default = "allenmaygibson.com"
 }
 
+variable "image_tag" {
+  type = string
+}
+
 resource "aws_secretsmanager_secret" "personal_website_server" {
   name = "personal-website-server"
 }
@@ -54,7 +58,7 @@ resource "aws_lightsail_container_service" "personal_website_server_service" {
 resource "aws_lightsail_container_service_deployment_version" "personal_website_server_deployment" {
   container {
     container_name = "server"
-    image          = "ghcr.io/futuramafamilyguy/personal-website-server:latest"
+    image          = "ghcr.io/futuramafamilyguy/personal-website-server:${var.image_tag}"
 
     environment = {
       ConnectionStrings__PersonalWebsiteDb     = local.secrets["ConnectionStrings__PersonalWebsiteDb"]
