@@ -1,4 +1,4 @@
-name: build and deploy .net app to lightsail container
+name: deploy .net app to lightsail
 
 on:
   workflow_dispatch:
