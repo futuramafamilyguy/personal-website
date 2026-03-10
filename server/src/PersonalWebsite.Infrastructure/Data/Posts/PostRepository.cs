@@ -31,8 +31,8 @@ public class PostRepository : IPostRepository
     {
         var sort = Builders<PostDocument>
             .Sort.Ascending(post => post.IsPublished)
-            .Descending(post => post.CreatedAtUtc)
-            .Descending(post => post.PublishedAtUtc);
+            .Descending(post => post.PublishedAtUtc)
+            .Descending(post => post.CreatedAtUtc);
         var filter = includeDrafts
             ? FilterDefinition<PostDocument>.Empty
             : Builders<PostDocument>.Filter.Eq(post => post.IsPublished, true);
