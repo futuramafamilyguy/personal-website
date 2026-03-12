@@ -15,6 +15,8 @@ export default interface Movie {
   motif: string;
   imageUrl: string;
   imageObjectKey: string;
+  imageVersion: number;
   altImageUrl: string;
   altImageObjectKey: string;
+  altImageVersion: number;
 }

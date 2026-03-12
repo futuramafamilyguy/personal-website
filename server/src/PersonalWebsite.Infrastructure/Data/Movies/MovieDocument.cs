@@ -50,9 +50,15 @@ public class MovieDocument
     [BsonElement("image_object_key")]
     public string? ImageObjectKey { get; set; }
 
+    [BsonElement("image_version")]
+    public required int ImageVersion { get; set; }
+
     [BsonElement("alt_image_url")]
     public string? AltImageUrl { get; set; }
 
     [BsonElement("alt_image_object_key")]
     public string? AltImageObjectKey { get; set; }
+
+    [BsonElement("alt_image_version")]
+    public required int AltImageVersion { get; set; }
 }

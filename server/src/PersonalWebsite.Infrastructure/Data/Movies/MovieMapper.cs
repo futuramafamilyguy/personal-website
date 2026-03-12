@@ -22,8 +22,10 @@ public static class MovieMapper
             Motif = document.Motif,
             ImageUrl = document.ImageUrl,
             ImageObjectKey = document.ImageObjectKey,
+            ImageVersion = document.ImageVersion,
             AltImageUrl = document.AltImageUrl,
             AltImageObjectKey = document.AltImageObjectKey,
+            AltImageVersion = document.AltImageVersion,
         };
 
     public static MovieDocument ToDocument(Movie movie) =>
@@ -43,7 +45,9 @@ public static class MovieMapper
             Motif = movie.Motif,
             ImageUrl = movie.ImageUrl,
             ImageObjectKey = movie.ImageObjectKey,
+            ImageVersion = movie.ImageVersion,
             AltImageUrl = movie.AltImageUrl,
             AltImageObjectKey = movie.AltImageObjectKey,
+            AltImageVersion = movie.AltImageVersion,
         };
 }

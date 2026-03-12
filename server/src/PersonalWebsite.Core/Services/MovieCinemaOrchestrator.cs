@@ -67,8 +67,10 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
         string? motif,
         string? imageUrl,
         string? imageObjectKey,
+        int imageVersion,
         string? altImageUrl,
         string? altImageObjectKey,
+        int altImageVersion,
         bool isNominated,
         bool isKino,
         bool isRetro
@@ -87,8 +89,10 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
             motif,
             imageUrl,
             imageObjectKey,
+            imageVersion,
             altImageUrl,
             altImageObjectKey,
+            altImageVersion,
             isNominated,
             isKino,
             isRetro

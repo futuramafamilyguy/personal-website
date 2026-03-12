@@ -43,6 +43,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
   const [imageObjectKey, setImageObjectKey] = useState("");
+  const [imageVersion, setImageVersion] = useState(0);
   const [month, setMonth] = useState("");
   const [cinemaId, setCinemaId] = useState("");
   const [zinger, setZinger] = useState("");
@@ -54,7 +55,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
   const [altImageFile, setAltImageFile] = useState<File | null>(null);
   const [altImageUrl, setAltImageUrl] = useState("");
   const [altImageObjectKey, setAltImageObjectKey] = useState("");
-
+  const [altImageVersion, setAltImageVersion] = useState(0);
   const [result, setResult] = useState("");
 
   const [cinemas, setCinemas] = useState<Cinema[]>([]);
@@ -88,6 +89,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     setImageObjectKey(
       movie && movie.imageObjectKey ? movie.imageObjectKey : "",
     );
+    setImageVersion(movie ? movie.imageVersion : 0);
     setMonth(movie ? movie.month.toString() : "");
     setCinemaId(movie ? movie.cinema.id : "");
     setZinger(movie && movie.zinger ? movie.zinger : "");
@@ -101,6 +103,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
     setAltImageObjectKey(
       movie && movie.altImageObjectKey ? movie.altImageObjectKey : "",
     );
+    setAltImageVersion(movie ? movie.altImageVersion : 0);
   }, [isOpen]);
 
   useEffect(() => {
@@ -182,8 +185,10 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
         isRetro: isRetro,
         imageUrl: imageObjectKey ? imageUrl : null, // use object key to determine image presence due to default image
         imageObjectKey: imageObjectKey ? imageObjectKey : null,
+        imageVersion: imageVersion,
         altImageUrl: altImageObjectKey ? altImageUrl : null,
         altImageObjectKey: altImageObjectKey ? altImageObjectKey : null,
+        altImageVersion: altImageVersion,
       };
       const updatedMovie = await updateMovie(data);
 

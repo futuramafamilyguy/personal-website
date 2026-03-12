@@ -16,8 +16,10 @@ public class UpdateMovieRequest
     public string? Motif { get; set; }
     public string? ImageUrl { get; set; }
     public string? ImageObjectKey { get; set; }
+    public required int ImageVersion { get; set; }
     public string? AltImageUrl { get; set; }
     public string? AltImageObjectKey { get; set; }
+    public required int AltImageVersion { get; set; }
     public bool? IsNominated { get; set; }
     public bool? IsKino { get; set; }
     public bool? IsRetro { get; set; }

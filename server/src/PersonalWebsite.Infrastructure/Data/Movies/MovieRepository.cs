@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
-using PersonalWebsite.Infrastructure.Data.Movies;
+using PersonalWebsite.Infrastructure.Data.Posts;
 
 namespace PersonalWebsite.Infrastructure.Data.Movies;
 
@@ -158,4 +158,32 @@ public class MovieRepository : IMovieRepository
 
     private static SortDefinition<MovieDocument> SortMoviesByWatchDate() =>
         Builders<MovieDocument>.Sort.Descending(movie => movie.Month).Descending(movie => movie.Id);
+
+    public async Task<int> IncrementImageVersionAsync(string id, bool isAlt)
+    {
+        var filter = Builders<MovieDocument>.Filter.Eq(movie => movie.Id, id);
+
+        if (isAlt)
+        {
+            var updateAlt = Builders<MovieDocument>.Update.Inc(movie => movie.AltImageVersion, 1);
+            var optionsAlt = new FindOneAndUpdateOptions<MovieDocument, int>
+            {
+                ReturnDocument = ReturnDocument.After,
+                Projection = Builders<MovieDocument>.Projection.Expression(movie =>
+                    movie.AltImageVersion
+                )
+            };
+
+            return await _movies.FindOneAndUpdateAsync(filter, updateAlt, optionsAlt);
+        }
+
+        var update = Builders<MovieDocument>.Update.Inc(movie => movie.ImageVersion, 1);
+        var options = new FindOneAndUpdateOptions<MovieDocument, int>
+        {
+            ReturnDocument = ReturnDocument.After,
+            Projection = Builders<MovieDocument>.Projection.Expression(movie => movie.ImageVersion)
+        };
+
+        return await _movies.FindOneAndUpdateAsync(filter, update, options);
+    }
 }

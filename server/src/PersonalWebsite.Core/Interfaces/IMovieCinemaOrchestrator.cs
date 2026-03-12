@@ -37,8 +37,10 @@ public interface IMovieCinemaOrchestrator
         string? motif,
         string? imageUrl,
         string? imageObjectKey,
+        int imageVersion,
         string? altImageUrl,
         string? altImageObjectKey,
+        int altImageVersion,
         bool isNominated,
         bool isKino,
         bool isRetro

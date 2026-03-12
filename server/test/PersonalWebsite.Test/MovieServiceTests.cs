@@ -225,8 +225,8 @@ public class MovieServiceTests
     }
 
     [Theory]
-    [InlineData(false, false, "image/movies/2020/123.jpg")]
-    [InlineData(true, true, "image/movies/2020/123-alt.jpg")]
+    [InlineData(false, false, "image/movies/2020/123_v1.jpg")]
+    [InlineData(true, true, "image/movies/2020/123-alt_v1.jpg")]
     public async Task HandleImageUploadAsync_ShouldReturnPresignedUploadUrl(
         bool isAlt,
         bool isFavorite,
@@ -241,6 +241,7 @@ public class MovieServiceTests
         var id = "123";
         var movie = new MovieBuilder(id).WithYearWatched(2020).WithFavorite(isFavorite).Build();
         repositoryMock.Setup(x => x.GetAsync(id)).ReturnsAsync(movie);
+        repositoryMock.Setup(x => x.IncrementImageVersionAsync(id, isAlt)).ReturnsAsync(1);
         imageStorageMock
             .Setup(x =>
                 x.GeneratePresignedUploadUrlAsync(expectedImageObjectKey, It.IsAny<TimeSpan>())

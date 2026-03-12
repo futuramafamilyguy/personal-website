@@ -37,8 +37,10 @@ public interface IMovieService
         string? motif,
         string? imageUrl,
         string? imageObjectKey,
+        int imageVersion,
         string? altImageUrl,
         string? altImageObjectKey,
+        int altImageVersion,
         bool IsNominated,
         bool isKino,
         bool isRetro

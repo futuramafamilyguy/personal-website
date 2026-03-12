@@ -100,8 +100,10 @@ public class MoviesController : ControllerBase
             request.Motif,
             request.ImageUrl,
             request.ImageObjectKey,
+            request.ImageVersion,
             request.AltImageUrl,
             request.AltImageObjectKey,
+            request.AltImageVersion,
             request.IsNominated ?? false,
             request.IsKino ?? false,
             request.IsRetro ?? true

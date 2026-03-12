@@ -109,8 +109,10 @@ public class MovieCinemaOrchestratorTests
         var motif = "lightning";
         var imageUrl = "domain/images/image.jpg";
         var imageObjectKey = "images/image.jpg";
+        var imageVersion = 1;
         var altImageUrl = "domain/images/image-alt.jpg";
         var altImageObjectKey = "images/image-alt.jpg";
+        var altImageVersion = 1;
         var isFavorite = false;
         var isKino = false;
         var isNewRelease = false;
@@ -140,8 +142,10 @@ public class MovieCinemaOrchestratorTests
             motif,
             imageUrl,
             imageObjectKey,
+            imageVersion,
             altImageUrl,
             altImageObjectKey,
+            altImageVersion,
             isFavorite,
             isKino,
             isNewRelease
@@ -163,8 +167,10 @@ public class MovieCinemaOrchestratorTests
                     motif,
                     imageUrl,
                     imageObjectKey,
+                    imageVersion,
                     altImageUrl,
                     altImageObjectKey,
+                    altImageVersion,
                     isFavorite,
                     isKino,
                     isNewRelease

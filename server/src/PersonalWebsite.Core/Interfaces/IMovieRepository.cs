@@ -19,4 +19,5 @@ public interface IMovieRepository
     Task<IEnumerable<int>> GetActiveYearsAsync();
     Task<bool> CheckKinoExistenceAsync(int year, string? id = null);
     Task UpdateImageInfoAsync(string id, string imageObjectKey, string imageUrl, bool isAlt);
+    Task<int> IncrementImageVersionAsync(string id, bool isAlt);
 }

@@ -68,7 +68,9 @@ public class MovieService : IMovieService
                 Motif = motif,
                 IsNominated = isNominated,
                 IsKino = isKino,
-                IsRetro = isRetro
+                IsRetro = isRetro,
+                ImageVersion = 0,
+                AltImageVersion = 0,
             }
         );
 
@@ -87,8 +89,10 @@ public class MovieService : IMovieService
         string? motif,
         string? imageUrl,
         string? imageObjectKey,
+        int imageVersion,
         string? altImageUrl,
         string? altImageObjectKey,
+        int altImageVersion,
         bool isNominated,
         bool isKino,
         bool isRetro
@@ -114,8 +118,10 @@ public class MovieService : IMovieService
             Motif = motif,
             ImageUrl = imageUrl,
             ImageObjectKey = imageObjectKey,
+            ImageVersion = imageVersion,
             AltImageUrl = altImageUrl,
             AltImageObjectKey = altImageObjectKey,
+            AltImageVersion = altImageVersion,
             IsNominated = isNominated,
             IsKino = isKino,
             IsRetro = isRetro
@@ -175,9 +181,10 @@ public class MovieService : IMovieService
                 await _imageStorage.DeleteObjectAsync(movie.ImageObjectKey);
         }
 
+        var newMarkdownVersion = await _movieRepository.IncrementImageVersionAsync(id, isAlt);
         var objectKey = isAlt
-            ? $"{imageBasePath}/{movie.Year}/{id}-alt.{fileExtension}"
-            : $"{imageBasePath}/{movie.Year}/{id}.{fileExtension}";
+            ? $"{imageBasePath}/{movie.Year}/{id}-alt_v{newMarkdownVersion}.{fileExtension}"
+            : $"{imageBasePath}/{movie.Year}/{id}_v{newMarkdownVersion}.{fileExtension}";
         var presignedUrl = await _imageStorage.GeneratePresignedUploadUrlAsync(
             objectKey,
             TimeSpan.FromMinutes(5)

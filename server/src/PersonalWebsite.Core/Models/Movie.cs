@@ -18,6 +18,8 @@ public class Movie
     public string? Motif { get; set; }
     public string? ImageUrl { get; set; }
     public string? ImageObjectKey { get; set; }
+    public required int ImageVersion { get; set; }
     public string? AltImageUrl { get; set; }
     public string? AltImageObjectKey { get; set; }
+    public required int AltImageVersion { get; set; }
 }

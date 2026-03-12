@@ -13,7 +13,9 @@ public class MovieBuilder
         ReleaseYear = 2006,
         IsNominated = false,
         IsKino = false,
-        IsRetro = false
+        IsRetro = false,
+        ImageVersion = 0,
+        AltImageVersion = 0
     };
 
     public MovieBuilder(string id)

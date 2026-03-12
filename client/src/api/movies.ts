@@ -32,8 +32,10 @@ export interface UpdateMovieRequest {
   isRetro: boolean;
   imageUrl: string | null;
   imageObjectKey: string | null;
+  imageVersion: number;
   altImageUrl: string | null;
   altImageObjectKey: string | null;
+  altImageVersion: number;
 }
 
 export const createMovie = async (data: CreateMovieRequest): Promise<Movie> => {
@@ -68,8 +70,10 @@ export const updateMovie = async (data: UpdateMovieRequest): Promise<Movie> => {
     isRetro: data.isRetro,
     imageUrl: data.imageUrl,
     imageObjectKey: data.imageObjectKey,
+    imageVersion: data.imageVersion,
     altImageUrl: data.altImageUrl,
     altImageObjectKey: data.altImageObjectKey,
+    altImageVersion: data.altImageVersion,
   });
 
   return res.data;
@@ -98,7 +102,7 @@ export const getPresignedImageUrl = async ({
 
 export const uploadImageToPresignedUrl = async (
   presignedUrl: string,
-  file: File
+  file: File,
 ) => {
   return axios.put(presignedUrl, file, {
     headers: {
