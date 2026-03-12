@@ -105,6 +105,13 @@ public class MovieService : IMovieService
         if (isKino && await _movieRepository.CheckKinoExistenceAsync(year, id))
             throw new DomainValidationException($"{year} has already KINO'd");
 
+        if (altImageObjectKey is not null && !isNominated)
+        {
+            await _imageStorage.DeleteObjectAsync(altImageObjectKey);
+            altImageUrl = null;
+            altImageObjectKey = null;
+        }
+
         var updatedMovie = new Movie
         {
             Id = id,
