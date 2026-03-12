@@ -110,6 +110,19 @@ public class PostRepository : IPostRepository
         return await _posts.FindOneAndUpdateAsync(filter, update, options);
     }
 
+    public async Task<int> IncrementImageVersionAsync(string id)
+    {
+        var filter = Builders<PostDocument>.Filter.Eq(post => post.Id, id);
+        var update = Builders<PostDocument>.Update.Inc(post => post.ImageVersion, 1);
+        var options = new FindOneAndUpdateOptions<PostDocument, int>
+        {
+            ReturnDocument = ReturnDocument.After,
+            Projection = Builders<PostDocument>.Projection.Expression(post => post.ImageVersion)
+        };
+
+        return await _posts.FindOneAndUpdateAsync(filter, update, options);
+    }
+
     public async Task<PublishResult> PublishAsync(string id, DateTime publishedAtUtc)
     {
         var filter = Builders<PostDocument>.Filter.Eq(post => post.Id, id);

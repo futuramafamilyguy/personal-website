@@ -12,6 +12,7 @@ public class UpdatePostRequest
     public string? ImageObjectKey { get; set; }
     public required DateTime CreatedAtUtc { get; set; }
     public required int MarkdownVersion { get; set; }
+    public required int ImageVersion { get; set; }
     public required bool IsPublished { get; set; }
 
     [MinLength(1)]

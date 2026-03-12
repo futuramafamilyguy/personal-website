@@ -72,6 +72,7 @@ public class PostsController : Controller
             request.ImageObjectKey,
             request.CreatedAtUtc,
             request.MarkdownVersion,
+            request.ImageVersion,
             request.IsPublished,
             request.Slug,
             request.PublishedAtUtc

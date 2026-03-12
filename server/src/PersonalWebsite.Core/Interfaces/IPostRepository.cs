@@ -10,6 +10,7 @@ public interface IPostRepository
     Task<Post?> GetBySlugAsync(string slug);
     Task<Post> AddAsync(Post post);
     Task<int> IncrementMarkdownVersionAsync(string id);
+    Task<int> IncrementImageVersionAsync(string id);
     Task<bool> UpdateAsync(string id, Post updatedPost);
     Task UpdateMarkdownInfoAsync(string id, string markdownObjectKey, string markdownUrl);
     Task UpdateImageInfoAsync(string id, string imageObjectKey, string imageUrl);

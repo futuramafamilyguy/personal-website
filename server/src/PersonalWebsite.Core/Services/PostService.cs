@@ -1,8 +1,9 @@
-﻿using System.Text.RegularExpressions;
-using PersonalWebsite.Core.Enums;
+﻿using PersonalWebsite.Core.Enums;
 using PersonalWebsite.Core.Exceptions;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace PersonalWebsite.Core.Services;
 
@@ -40,6 +41,7 @@ public class PostService : IPostService
                 CreatedAtUtc = utcNow,
                 Slug = slug,
                 MarkdownVersion = 0,
+                ImageVersion = 0,
                 IsPublished = false
             }
         );
@@ -91,6 +93,7 @@ public class PostService : IPostService
         string? imageObjectKey,
         DateTime createdAtUtc,
         int markdownVersion,
+        int imageVersion,
         bool isPublished,
         string slug,
         DateTime? publishedAtUtc
@@ -111,6 +114,7 @@ public class PostService : IPostService
             CreatedAtUtc = createdAtUtc,
             Slug = slug,
             MarkdownVersion = markdownVersion,
+            ImageVersion = imageVersion,
             IsPublished = isPublished,
             PublishedAtUtc = publishedAtUtc,
         };
@@ -134,7 +138,8 @@ public class PostService : IPostService
         if (!string.IsNullOrEmpty(post.ImageObjectKey))
             await _imageStorage.DeleteObjectAsync(post.ImageObjectKey);
 
-        var objectKey = $"{imageBasePath}/{id}.{fileExtension}";
+        var newMarkdownVersion = await _postRepository.IncrementImageVersionAsync(id);
+        var objectKey = $"{imageBasePath}/{id}_v{newMarkdownVersion}.{fileExtension}";
         var presignedUrl = await _imageStorage.GeneratePresignedUploadUrlAsync(
             objectKey,
             TimeSpan.FromMinutes(5)

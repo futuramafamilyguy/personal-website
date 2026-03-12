@@ -9,6 +9,7 @@ export default interface Post {
   markdownObjectKey: string;
   slug: string;
   markdownVersion: number;
+  imageVersion: number;
   isPublished: boolean;
   publishedAtUtc: Date;
 }

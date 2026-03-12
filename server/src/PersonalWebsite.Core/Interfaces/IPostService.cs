@@ -17,6 +17,7 @@ public interface IPostService
         string? imageObjectKey,
         DateTime createdAtUtc,
         int markdownVersion,
+        int imageVersion,
         bool isPublished,
         string slug,
         DateTime? publishedAtUtc

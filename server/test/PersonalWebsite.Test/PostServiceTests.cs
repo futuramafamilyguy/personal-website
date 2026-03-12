@@ -81,6 +81,7 @@ public class PostServiceTests
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 2),
                     MarkdownVersion = 1,
+                    ImageVersion = 1,
                     IsPublished = true
                 }
             );
@@ -130,6 +131,7 @@ public class PostServiceTests
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = slug,
                     MarkdownVersion = 1,
+                    ImageVersion = 1,
                     IsPublished = true
                 }
             );
@@ -190,6 +192,7 @@ public class PostServiceTests
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
                     MarkdownVersion = 1,
+                    ImageVersion = 1,
                     IsPublished = true
                 }
             );
@@ -223,9 +226,11 @@ public class PostServiceTests
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
                     MarkdownVersion = 1,
+                    ImageVersion = 1,
                     IsPublished = true
                 }
             );
+        postRepositoryMock.Setup(x => x.IncrementImageVersionAsync(id)).ReturnsAsync(1);
         var imageBasePath = "image/posts";
         var extension = "jpg";
         imageStorageMock
@@ -233,7 +238,7 @@ public class PostServiceTests
             .Returns((string path) => $"https://storagehost/{path}");
         imageStorageMock
             .Setup(x =>
-                x.GeneratePresignedUploadUrlAsync("image/posts/123.jpg", It.IsAny<TimeSpan>())
+                x.GeneratePresignedUploadUrlAsync("image/posts/123_v1.jpg", It.IsAny<TimeSpan>())
             )
             .ReturnsAsync("https://storagehost/upload");
 
@@ -245,8 +250,8 @@ public class PostServiceTests
             x =>
                 x.UpdateImageInfoAsync(
                     id,
-                    "image/posts/123.jpg",
-                    "https://storagehost/image/posts/123.jpg"
+                    "image/posts/123_v1.jpg",
+                    "https://storagehost/image/posts/123_v1.jpg"
                 ),
             Times.Once
         );
@@ -271,14 +276,16 @@ public class PostServiceTests
                     Id = "123",
                     Title = "Cars Review",
                     ImageUrl = "https://storagehost/images/posts/123.jpg",
-                    ImageObjectKey = "images/posts/123.jpg",
+                    ImageObjectKey = "images/posts/123_v1.jpg",
                     CreatedAtUtc = new DateTime(2024, 1, 1),
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
                     MarkdownVersion = 1,
+                    ImageVersion = 1,
                     IsPublished = true
                 }
             );
+        postRepositoryMock.Setup(x => x.IncrementImageVersionAsync(id)).ReturnsAsync(2);
         var imageBasePath = "image/posts";
         var extension = "jpg";
         imageStorageMock
@@ -286,7 +293,7 @@ public class PostServiceTests
             .Returns((string path) => $"https://storagehost/{path}");
         imageStorageMock
             .Setup(x =>
-                x.GeneratePresignedUploadUrlAsync("image/posts/123.jpg", It.IsAny<TimeSpan>())
+                x.GeneratePresignedUploadUrlAsync("image/posts/123_v2.jpg", It.IsAny<TimeSpan>())
             )
             .ReturnsAsync("https://storagehost/upload");
 
@@ -298,12 +305,12 @@ public class PostServiceTests
             x =>
                 x.UpdateImageInfoAsync(
                     id,
-                    "image/posts/123.jpg",
-                    "https://storagehost/image/posts/123.jpg"
+                    "image/posts/123_v2.jpg",
+                    "https://storagehost/image/posts/123_v2.jpg"
                 ),
             Times.Once
         );
-        imageStorageMock.Verify(x => x.DeleteObjectAsync("images/posts/123.jpg"), Times.Once);
+        imageStorageMock.Verify(x => x.DeleteObjectAsync("images/posts/123_v1.jpg"), Times.Once);
         presignedUploadUrl.Should().Be("https://storagehost/upload");
     }
 
@@ -332,6 +339,7 @@ public class PostServiceTests
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
                     MarkdownVersion = currentVersion,
+                    ImageVersion = 1,
                     IsPublished = true
                 }
             );
@@ -388,6 +396,7 @@ public class PostServiceTests
                     LastUpdatedUtc = new DateTime(2024, 1, 1),
                     Slug = "cars-review",
                     MarkdownVersion = currentVersion,
+                    ImageVersion = 1,
                     IsPublished = true
                 }
             );

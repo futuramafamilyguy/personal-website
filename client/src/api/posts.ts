@@ -12,6 +12,7 @@ export interface UpdatePostRequest {
   imageUrl: string | null;
   imageObjectKey: string | null;
   markdownVersion: number;
+  imageVersion: number;
   isPublished: boolean;
   slug: string;
   publishedAtUtc: Date | null;
@@ -38,6 +39,7 @@ export const updatePost = async (data: UpdatePostRequest): Promise<Post> => {
     imageUrl: data.imageUrl,
     imageObjectKey: data.imageObjectKey,
     markdownVersion: data.markdownVersion,
+    imageVersion: data.imageVersion,
     isPublished: data.isPublished,
     slug: data.slug,
     publishedAtUtc: data.publishedAtUtc,

@@ -40,6 +40,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
   const [markdownObjectKey, setMarkdownObjectKey] = useState("");
   const [createdAtUtc, setCreatedAtUtc] = useState<Date | undefined>(undefined);
   const [markdownVersion, setMarkdownVersion] = useState<number>();
+  const [imageVersion, setImageVersion] = useState<number>();
   const [isPublished, setIsPublished] = useState<boolean>(false);
   const [slug, setSlug] = useState("");
   const [publishedAtUtc, setPublishedAtUtc] = useState<Date | null>(null);
@@ -71,6 +72,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
     setImageFile(null);
     setImageUrl(post && post.imageUrl ? post.imageUrl : "");
     setImageObjectKey(post && post.imageObjectKey ? post.imageObjectKey : "");
+    setImageVersion(post && post.imageVersion ? post.imageVersion : 1);
     setMarkdownUrl(post && post.markdownUrl ? post.markdownUrl : "");
     setCreatedAtUtc(post ? post.createdAtUtc : undefined);
     setMarkdownObjectKey(
@@ -135,6 +137,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({
         imageUrl: imageObjectKey ? imageUrl : null, // use object key to determine image presence due to default image
         imageObjectKey: imageObjectKey ? imageObjectKey : null,
         markdownVersion: markdownVersion!,
+        imageVersion: imageVersion!,
         isPublished: isPublished,
         slug: slug,
         publishedAtUtc: publishedAtUtc,

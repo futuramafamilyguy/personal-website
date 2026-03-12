@@ -24,6 +24,9 @@ public class PostDocument
     [BsonElement("image_object_key")]
     public string? ImageObjectKey { get; set; }
 
+    [BsonElement("image_version")]
+    public required int ImageVersion { get; set; }
+
     [BsonElement("last_updated")]
     public required DateTime LastUpdatedUtc { get; set; }
 
