@@ -125,6 +125,10 @@ const MovieGallery: React.FC = () => {
     }
   }, [selectedMovie]);
 
+  useEffect(() => {
+    if (!location.pathname.includes("/focus")) setSelectedMovie(null);
+  }, [location]);
+
   const renderContent = () => {
     if (loading) {
       return <MessageDisplay message={"loading..."} />;
