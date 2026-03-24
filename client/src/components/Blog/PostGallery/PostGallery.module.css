@@ -115,6 +115,8 @@
     margin-top: 4px;
     font-size: 0.7rem;
     opacity: 0.8;
+    width: 80px;
+    display: inline-block;
   }
 
   .textBlock {
