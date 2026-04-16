@@ -277,11 +277,11 @@
     border-top-right-radius: 0;
     width: 100%;
     margin: 0 auto;
-    max-width: 500px;
+    max-width: 435px;
   }
 
   .textContainerWrapper {
-    max-width: 500px;
+    max-width: 435px;
   }
 
   .textContainer {
@@ -323,7 +323,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    max-width: 500px;
+    max-width: 435px;
     margin: 0 auto;
   }
 

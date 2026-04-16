@@ -64,7 +64,7 @@
     padding-right: 20px;
     overflow-y: visible;
     width: 100%;
-    max-width: 500px;
+    max-width: 475px;
   }
 
   .movieGallery hr {
@@ -73,7 +73,7 @@
 
   .imageContainer {
     width: 100%;
-    max-width: 400px;
+    max-width: 430px;
     aspect-ratio: 750 / 410;
     background: black;
     overflow: hidden;
