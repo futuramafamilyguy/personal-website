@@ -21,30 +21,32 @@ const MobileNavBar: React.FC<MobileNavBarProps> = ({ navItems }) => {
   };
 
   return (
-    <nav
-      className={`${styles.mobileNavBar} bg-dark`}
-      style={{
-        backgroundImage: `url(https://cdn.allenmaygibson.com/images/static/${
-          bgMap["/" + location.pathname.split("/")[1]]
-        })`,
-      }}
-    >
-      <nav className={styles.navItems}>
-        {navItems.map((item) =>
-          "/" + location.pathname.split("/")[1] === item.path ? (
-            <h3 key={item.path} className={styles.navItemSelected}>
-              {item.label}
-            </h3>
-          ) : (
-            <span key={item.path} className={styles.navItem}>
-              <Link className={styles.navItem} to={item.path}>
+    <div className={`${styles.mobileNavBarWrapper} bg-dark`}>
+      <nav
+        className={`${styles.mobileNavBar} bg-dark`}
+        style={{
+          backgroundImage: `url(https://cdn.allenmaygibson.com/images/static/${
+            bgMap["/" + location.pathname.split("/")[1]]
+          })`,
+        }}
+      >
+        <nav className={styles.navItems}>
+          {navItems.map((item) =>
+            "/" + location.pathname.split("/")[1] === item.path ? (
+              <h3 key={item.path} className={styles.navItemSelected}>
                 {item.label}
-              </Link>
-            </span>
-          ),
-        )}
+              </h3>
+            ) : (
+              <span key={item.path} className={styles.navItem}>
+                <Link className={styles.navItem} to={item.path}>
+                  {item.label}
+                </Link>
+              </span>
+            ),
+          )}
+        </nav>
       </nav>
-    </nav>
+    </div>
   );
 };
 
