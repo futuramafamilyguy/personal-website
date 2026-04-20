@@ -1,6 +1,4 @@
 # personal-website
-this is my personal website
+kia ora
 
-see: https://allenmaygibson.com
-
-for essays more over-analyzed than your english teacher ever could: https://allenmaygibson.com/blog
+my name is allen, and welcome to my interesting world
