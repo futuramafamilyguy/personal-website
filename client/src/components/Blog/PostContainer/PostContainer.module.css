@@ -162,13 +162,14 @@
 .embeddedPortraitImage {
   display: block;
   width: auto;
-  height: 250px;
+  height: 200px;
   border-radius: 10px;
+  margin: auto;
   margin-top: 17px;
   margin-bottom: 17px;
 }
 
-.embeddedBookImage {
+.book .embeddedBookImage {
   display: block;
   height: 175px;
   border-radius: 10px;
@@ -182,6 +183,11 @@
 
 .book {
   margin-top: 50px;
+}
+
+.bookImages {
+  display: flex;
+  gap: 45px;
 }
 
 .markdownContainer > *:last-child,
@@ -307,6 +313,7 @@
 
   .embeddedLandscapeImage {
     width: 100%;
+    max-width: 100%;
     margin-bottom: 12px;
   }
 

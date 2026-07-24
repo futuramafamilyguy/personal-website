@@ -127,6 +127,8 @@ const PostContainer: React.FC = () => {
                   div: ({ className, ...props }) => {
                     if (className === "book") {
                       return <div className={styles.book} {...props} />;
+                    } else if (className === "bookImages") {
+                      return <div className={styles.bookImages} {...props} />;
                     }
 
                     return <div className={className} {...props} />;
@@ -134,19 +136,62 @@ const PostContainer: React.FC = () => {
 
                   img: ({ alt, ...props }) => {
                     let className;
-                    let style = {};
+                    let style: React.CSSProperties = {};
 
                     if (alt === "book") {
                       className = styles.embeddedBookImage;
-                    } else if (alt === "landscape") {
+                    } else if (alt!.startsWith("landscape")) {
                       className = styles.embeddedLandscapeImage;
+
+                      const parts = alt!.split("-");
+
+                      const width =
+                        parts[1] && !isNaN(Number(parts[1]))
+                          ? parts[1]
+                          : undefined;
+                      const alignment = width ? parts[2] : parts[1];
+
+                      if (width) {
+                        style.width = `${width}px`;
+                      }
+
+                      switch (alignment) {
+                        case "left":
+                          style.marginLeft = 0;
+                          style.marginRight = "auto";
+                          break;
+
+                        case "right":
+                          style.marginLeft = "auto";
+                          style.marginRight = 0;
+                          break;
+                      }
                     } else if (alt!.startsWith("portrait")) {
                       // portrait-500 means portrait styling with 500px height
                       className = styles.embeddedPortraitImage;
 
-                      const portraitHeight = alt!.split("-")[1];
-                      if (portraitHeight) {
-                        style = { height: `${portraitHeight}px` };
+                      const parts = alt!.split("-");
+
+                      const height =
+                        parts[1] && !isNaN(Number(parts[1]))
+                          ? parts[1]
+                          : undefined;
+                      const alignment = height ? parts[2] : parts[1];
+
+                      if (height) {
+                        style.height = `${height}px`;
+                      }
+
+                      switch (alignment) {
+                        case "left":
+                          style.marginLeft = 0;
+                          style.marginRight = "auto";
+                          break;
+
+                        case "right":
+                          style.marginLeft = "auto";
+                          style.marginRight = 0;
+                          break;
                       }
                     }
                     return (
