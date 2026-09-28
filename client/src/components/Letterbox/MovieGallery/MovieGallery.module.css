@@ -135,6 +135,27 @@
     opacity: 0.8;
   }
 
+  .bottomRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ratingIcons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  .illfonded {
+    transform: rotate(180deg);
+  }
+
   .favouriteIconSmall {
     display: inline-block;
     width: 18px;
