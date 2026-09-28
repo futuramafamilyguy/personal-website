@@ -61,4 +61,8 @@ public class MovieDocument
 
     [BsonElement("alt_image_version")]
     public required int AltImageVersion { get; set; }
+
+    [BsonElement("fondhood")]
+    [BsonRepresentation(BsonType.String)]
+    public required Fondhood Fondhood { get; set; }
 }

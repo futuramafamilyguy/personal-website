@@ -23,7 +23,8 @@ public interface IMovieService
         string? motif,
         bool IsNominated,
         bool isKino,
-        bool isRetro
+        bool isRetro,
+        Fondhood fondhood
     );
     Task<Movie> UpdateMovieAsync(
         string id,
@@ -43,7 +44,8 @@ public interface IMovieService
         int altImageVersion,
         bool IsNominated,
         bool isKino,
-        bool isRetro
+        bool isRetro,
+        Fondhood fondhood
     );
     Task<long> UpdateCinemaOfMoviesAsync(string cinemaId, Cinema cinema);
     Task RemoveMovieAsync(string id);

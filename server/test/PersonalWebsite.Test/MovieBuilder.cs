@@ -15,7 +15,8 @@ public class MovieBuilder
         IsKino = false,
         IsRetro = false,
         ImageVersion = 0,
-        AltImageVersion = 0
+        AltImageVersion = 0,
+        Fondhood = Fondhood.Wellfonded,
     };
 
     public MovieBuilder(string id)

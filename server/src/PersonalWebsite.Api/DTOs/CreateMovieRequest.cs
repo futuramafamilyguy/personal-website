@@ -16,4 +16,5 @@ public class CreateMovieRequest
     public bool? IsNominated { get; set; }
     public bool? IsKino { get; set; }
     public bool? IsRetro { get; set; }
+    public Fondhood? Fondhood { get; set; }
 }

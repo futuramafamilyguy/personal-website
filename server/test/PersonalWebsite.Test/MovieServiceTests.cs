@@ -97,7 +97,8 @@ public class MovieServiceTests
             movie.Motif,
             movie.IsNominated,
             movie.IsKino,
-            movie.IsRetro
+            movie.IsRetro,
+            movie.Fondhood
         );
 
         // assert
@@ -143,7 +144,8 @@ public class MovieServiceTests
                 movie.Motif,
                 movie.IsNominated,
                 movie.IsKino,
-                movie.IsRetro
+                movie.IsRetro,
+                movie.Fondhood
             );
 
         // assert
@@ -178,7 +180,8 @@ public class MovieServiceTests
                 movie.Motif,
                 movie.IsNominated,
                 movie.IsKino,
-                movie.IsRetro
+                movie.IsRetro,
+                movie.Fondhood
             );
 
         // assert

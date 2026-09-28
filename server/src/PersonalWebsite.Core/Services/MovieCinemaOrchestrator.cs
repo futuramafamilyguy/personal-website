@@ -34,7 +34,8 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
         string? motif,
         bool isNominated,
         bool isKino,
-        bool isRetro
+        bool isRetro,
+        Fondhood fondhood
     )
     {
         var cinema = await _cinemaService.GetCinemaAsync(cinemaId);
@@ -49,7 +50,8 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
             motif,
             isNominated,
             isKino,
-            isRetro
+            isRetro,
+            fondhood
         );
 
         return movie;
@@ -73,7 +75,8 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
         int altImageVersion,
         bool isNominated,
         bool isKino,
-        bool isRetro
+        bool isRetro,
+        Fondhood fondhood
     )
     {
         var cinema = await _cinemaService.GetCinemaAsync(cinemaId);
@@ -95,7 +98,8 @@ public class MovieCinemaOrchestrator : IMovieCinemaOrchestrator
             altImageVersion,
             isNominated,
             isKino,
-            isRetro
+            isRetro,
+            fondhood
         );
 
         return updatedMovie;

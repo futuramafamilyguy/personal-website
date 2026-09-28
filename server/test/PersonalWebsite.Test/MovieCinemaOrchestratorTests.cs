@@ -33,6 +33,7 @@ public class MovieCinemaOrchestratorTests
         var isFavorite = false;
         var isKino = false;
         var isNewRelease = false;
+        var fondhood = Fondhood.Wellfonded;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -58,7 +59,8 @@ public class MovieCinemaOrchestratorTests
             motif,
             isFavorite,
             isKino,
-            isNewRelease
+            isNewRelease,
+            fondhood
         );
 
         // assert
@@ -81,7 +83,8 @@ public class MovieCinemaOrchestratorTests
                     motif,
                     isFavorite,
                     isKino,
-                    isNewRelease
+                    isNewRelease,
+                    fondhood
                 ),
             Times.Once()
         );
@@ -116,6 +119,7 @@ public class MovieCinemaOrchestratorTests
         var isFavorite = false;
         var isKino = false;
         var isNewRelease = false;
+        var fondhood = Fondhood.Wellfonded;
 
         var cinemaId = "123";
         var cinemaName = "Alice";
@@ -148,7 +152,8 @@ public class MovieCinemaOrchestratorTests
             altImageVersion,
             isFavorite,
             isKino,
-            isNewRelease
+            isNewRelease,
+            fondhood
         );
 
         // assert
@@ -173,7 +178,8 @@ public class MovieCinemaOrchestratorTests
                     altImageVersion,
                     isFavorite,
                     isKino,
-                    isNewRelease
+                    isNewRelease,
+                    fondhood
                 ),
             Times.Once()
         );

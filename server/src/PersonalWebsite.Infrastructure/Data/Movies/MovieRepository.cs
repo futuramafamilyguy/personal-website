@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using PersonalWebsite.Core.Interfaces;
 using PersonalWebsite.Core.Models;
 using PersonalWebsite.Infrastructure.Data.Cinemas;
-using PersonalWebsite.Infrastructure.Data.Posts;
 
 namespace PersonalWebsite.Infrastructure.Data.Movies;
 

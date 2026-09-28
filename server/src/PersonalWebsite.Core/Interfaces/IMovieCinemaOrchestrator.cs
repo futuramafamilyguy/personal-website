@@ -23,7 +23,8 @@ public interface IMovieCinemaOrchestrator
         string? motif,
         bool isNominated,
         bool isKino,
-        bool isRetro
+        bool isRetro,
+        Fondhood fondhood
     );
     Task<Movie> UpdateMovieWithCinemaAsync(
         string id,
@@ -43,7 +44,8 @@ public interface IMovieCinemaOrchestrator
         int altImageVersion,
         bool isNominated,
         bool isKino,
-        bool isRetro
+        bool isRetro,
+        Fondhood fondhood
     );
     Task<Cinema> UpdateCinemaAndAssociatedMoviesAsync(
         string cinemaId,

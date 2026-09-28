@@ -45,7 +45,8 @@ public class MovieService : IMovieService
         string? motif,
         bool isNominated,
         bool isKino,
-        bool isRetro
+        bool isRetro,
+        Fondhood fondhood
     )
     {
         if (isKino && !isNominated)
@@ -71,6 +72,7 @@ public class MovieService : IMovieService
                 IsRetro = isRetro,
                 ImageVersion = 0,
                 AltImageVersion = 0,
+                Fondhood = fondhood
             }
         );
 
@@ -95,7 +97,8 @@ public class MovieService : IMovieService
         int altImageVersion,
         bool isNominated,
         bool isKino,
-        bool isRetro
+        bool isRetro,
+        Fondhood fondhood
     )
     {
         if (isKino && !isNominated)
@@ -131,7 +134,8 @@ public class MovieService : IMovieService
             AltImageVersion = altImageVersion,
             IsNominated = isNominated,
             IsKino = isKino,
-            IsRetro = isRetro
+            IsRetro = isRetro,
+            Fondhood = fondhood
         };
         var result = await _movieRepository.UpdateAsync(id, updatedMovie);
         if (!result)

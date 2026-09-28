@@ -75,7 +75,8 @@ public class MoviesController : ControllerBase
             request.Motif,
             request.IsNominated ?? false,
             request.IsKino ?? false,
-            request.IsRetro ?? true
+            request.IsRetro ?? true,
+            request.Fondhood ?? Fondhood.Unfonded
         );
 
         return Ok(movie);
@@ -106,7 +107,8 @@ public class MoviesController : ControllerBase
             request.AltImageVersion,
             request.IsNominated ?? false,
             request.IsKino ?? false,
-            request.IsRetro ?? true
+            request.IsRetro ?? true,
+            request.Fondhood ?? Fondhood.Unfonded
         );
 
         return Ok(movie);

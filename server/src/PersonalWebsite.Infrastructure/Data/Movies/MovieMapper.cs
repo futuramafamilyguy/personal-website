@@ -26,6 +26,7 @@ public static class MovieMapper
             AltImageUrl = document.AltImageUrl,
             AltImageObjectKey = document.AltImageObjectKey,
             AltImageVersion = document.AltImageVersion,
+            Fondhood = document.Fondhood,
         };
 
     public static MovieDocument ToDocument(Movie movie) =>
@@ -49,5 +50,6 @@ public static class MovieMapper
             AltImageUrl = movie.AltImageUrl,
             AltImageObjectKey = movie.AltImageObjectKey,
             AltImageVersion = movie.AltImageVersion,
+            Fondhood = movie.Fondhood,
         };
 }

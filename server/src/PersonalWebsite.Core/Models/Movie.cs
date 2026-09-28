@@ -22,4 +22,5 @@ public class Movie
     public string? AltImageUrl { get; set; }
     public string? AltImageObjectKey { get; set; }
     public required int AltImageVersion { get; set; }
+    public required Fondhood Fondhood { get; set; }
 }
