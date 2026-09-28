@@ -128,6 +128,10 @@ input[type="file"] {
   width: 100%;
 }
 
+input[type="radio"] {
+  margin-right: 12px;
+}
+
 /* scrollbar styling. these should probably be in their own css file but im not gonna do it ahahaha */
 
 .formFields::-webkit-scrollbar {
@@ -252,7 +256,7 @@ input[type="file"] {
     margin-bottom: 10px;
   }
 
-  .formGroup input {
+  .formGroup input:not([type="radio"]):not([type="checkbox"]) {
     width: 100%;
     align-items: center;
     margin-bottom: 1rem;
