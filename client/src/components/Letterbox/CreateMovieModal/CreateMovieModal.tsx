@@ -56,6 +56,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
   const [altImageUrl, setAltImageUrl] = useState("");
   const [altImageObjectKey, setAltImageObjectKey] = useState("");
   const [altImageVersion, setAltImageVersion] = useState(0);
+  const [fondhood, setFondhood] = useState("unfonded");
   const [result, setResult] = useState("");
 
   const [cinemas, setCinemas] = useState<Cinema[]>([]);
@@ -104,6 +105,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
       movie && movie.altImageObjectKey ? movie.altImageObjectKey : "",
     );
     setAltImageVersion(movie ? movie.altImageVersion : 0);
+    setFondhood(movie ? movie.fondhood : "unfonded");
   }, [isOpen]);
 
   useEffect(() => {
@@ -136,6 +138,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
         isNominated: isNominated,
         isKino: isKino,
         isRetro: isRetro,
+        fondhood: fondhood,
       };
       const newMovie = await createMovie(data);
 
@@ -189,6 +192,7 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
         altImageUrl: altImageObjectKey ? altImageUrl : null,
         altImageObjectKey: altImageObjectKey ? altImageObjectKey : null,
         altImageVersion: altImageVersion,
+        fondhood: fondhood,
       };
       const updatedMovie = await updateMovie(data);
 
@@ -356,6 +360,43 @@ const CreateMovieModal: React.FC<CreateMovieModalProps> = ({
                       </option>
                     ))}
                   </select>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>fondhood</label>
+                  <div>
+                    <label>
+                      <input
+                        type="radio"
+                        name="fondhood"
+                        value="wellfonded"
+                        checked={fondhood === "wellfonded"}
+                        onChange={() => setFondhood("wellfonded")}
+                      />
+                      {":)"}
+                    </label>
+
+                    <label>
+                      <input
+                        type="radio"
+                        name="fondhood"
+                        value="unfonded"
+                        checked={fondhood === "unfonded"}
+                        onChange={() => setFondhood("unfonded")}
+                      />
+                      {":|"}
+                    </label>
+
+                    <label>
+                      <input
+                        type="radio"
+                        name="fondhood"
+                        value="illfonded"
+                        checked={fondhood === "illfonded"}
+                        onChange={() => setFondhood("illfonded")}
+                      />
+                      {":("}
+                    </label>
+                  </div>
                 </div>
                 <div className={styles.formGroup}>
                   <label>nominated</label>

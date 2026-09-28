@@ -15,6 +15,7 @@ export interface CreateMovieRequest {
   isNominated: boolean;
   isKino: boolean;
   isRetro: boolean;
+  fondhood: string;
 }
 
 export interface UpdateMovieRequest {
@@ -36,6 +37,7 @@ export interface UpdateMovieRequest {
   altImageUrl: string | null;
   altImageObjectKey: string | null;
   altImageVersion: number;
+  fondhood: string;
 }
 
 export const createMovie = async (data: CreateMovieRequest): Promise<Movie> => {
@@ -50,6 +52,7 @@ export const createMovie = async (data: CreateMovieRequest): Promise<Movie> => {
     isNominated: data.isNominated,
     isKino: data.isKino,
     isRetro: data.isRetro,
+    fondhood: data.fondhood,
   });
 
   return res.data;
@@ -74,6 +77,7 @@ export const updateMovie = async (data: UpdateMovieRequest): Promise<Movie> => {
     altImageUrl: data.altImageUrl,
     altImageObjectKey: data.altImageObjectKey,
     altImageVersion: data.altImageVersion,
+    fondhood: data.fondhood,
   });
 
   return res.data;

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import ReactDom from "react-dom";
 
 import heart from "../../../assets//svg/heart.png";
+import thumb from "../../../assets//svg/thumb.svg";
+import thumbed from "../../../assets//svg/thumbed.svg";
+import thumbad from "../../../assets//svg/thumbad.svg";
 import flower from "../../../assets/motifs/flower.svg";
 import Movie from "../../../types/Movie";
 import styles from "./MovieModal.module.css";
@@ -78,9 +81,23 @@ const MovieModal: React.FC<MovieModalProps> = ({
               </div>
             ) : null}
           </span>
-          <p
-            className={styles.modalText}
-          >{`${movie?.cinema.name}, ${movie?.cinema.city}`}</p>
+          <div className={styles.bottomRow}>
+            <p className={styles.modalText}>
+              {`${movie?.cinema.name}, ${movie?.cinema.city}`}
+            </p>
+            {!movie?.isNominated && (
+              <div className={styles.fondhoodIcons}>
+                <img
+                  className={`${styles.thumb}`}
+                  src={movie?.fondhood === "wellfonded" ? thumbed : thumb}
+                />
+                <img
+                  className={`${styles.thumb} ${styles.illfonded}`}
+                  src={movie?.fondhood === "illfonded" ? thumbad : thumb}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
       {prev ? (
@@ -108,7 +125,7 @@ const MovieModal: React.FC<MovieModalProps> = ({
       ) : null}
       ;
     </>,
-    document.getElementById("portal")!
+    document.getElementById("portal")!,
   );
 };
 

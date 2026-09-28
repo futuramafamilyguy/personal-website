@@ -19,4 +19,5 @@ export default interface Movie {
   altImageUrl: string;
   altImageObjectKey: string;
   altImageVersion: number;
+  fondhood: string;
 }

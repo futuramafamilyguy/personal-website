@@ -56,6 +56,27 @@
   font-size: 20px;
 }
 
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fondhoodIcons {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.thumb {
+  width: 27px;
+  height: 27px;
+}
+
+.illfonded {
+  transform: rotate(180deg);
+}
+
 .arrowButton {
   position: fixed;
   top: 50%;
