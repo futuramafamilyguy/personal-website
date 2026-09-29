@@ -3,8 +3,8 @@ import ReactDom from "react-dom";
 
 import heart from "../../../assets//svg/heart.png";
 import thumb from "../../../assets//svg/thumb.svg";
-import thumbed from "../../../assets//svg/thumbed.svg";
 import thumbad from "../../../assets//svg/thumbad.svg";
+import thumbed from "../../../assets//svg/thumbed.svg";
 import flower from "../../../assets/motifs/flower.svg";
 import Movie from "../../../types/Movie";
 import styles from "./MovieModal.module.css";
