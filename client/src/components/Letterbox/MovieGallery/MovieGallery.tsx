@@ -3,9 +3,9 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import heart from "../../../assets//svg/heart.png";
-import flower from "../../../assets/motifs/flower.svg";
-import thumbed from "../../../assets//svg/thumbed.svg";
 import thumbad from "../../../assets//svg/thumbad.svg";
+import thumbed from "../../../assets//svg/thumbed.svg";
+import flower from "../../../assets/motifs/flower.svg";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useYear } from "../../../contexts/YearContext";
 import { useIsMobile } from "../../../hooks/useIsMobile";
@@ -191,12 +191,6 @@ const MovieGallery: React.FC = () => {
                         }}
                       >
                         {movie.name} ({movie.releaseYear})
-                        {movie.isNominated && (
-                          <img
-                            className={styles.favouriteIconSmall}
-                            src={icons[movie.motif] || icons["heart"]}
-                          />
-                        )}
                       </h5>
                     </div>
 
@@ -204,14 +198,19 @@ const MovieGallery: React.FC = () => {
                       <p className={styles.cinemaInfo}>
                         {`${movie.cinema.name}, ${movie.cinema.city}`}
                       </p>
-                      {!movie.isNominated && movie.fondhood !== "unfonded" && (
+                      {movie.isNominated ? (
+                        <img
+                          className={styles.favouriteIconSmall}
+                          src={icons[movie.motif] || icons["heart"]}
+                        />
+                      ) : movie.fondhood !== "unfonded" ? (
                         <img
                           className={`${styles.thumb} ${movie.fondhood === "illfonded" ? styles.illfonded : ""}`}
                           src={
-                            movie?.fondhood === "wellfonded" ? thumbed : thumbad
+                            movie.fondhood === "wellfonded" ? thumbed : thumbad
                           }
                         />
-                      )}
+                      ) : null}
                     </div>
                   </div>
                 </div>
