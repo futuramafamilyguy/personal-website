@@ -1,4 +1,4 @@
-import heart from "../../../assets/svg/heart.png";
+import heart from "../../../assets/svg/heart.svg";
 import { useIsMobile } from "../../../hooks/useIsMobile";
 import Movie from "../../../types/Movie";
 import MediaCard from "../../Common/MediaCard/MediaCard";

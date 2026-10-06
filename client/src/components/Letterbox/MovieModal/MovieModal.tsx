@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import ReactDom from "react-dom";
 
-import heart from "../../../assets//svg/heart.png";
+import heart from "../../../assets//svg/heart.svg";
+import heartClassic from "../../../assets//svg/heart_martinlewis.svg";
 import thumb from "../../../assets//svg/thumb.svg";
 import thumbad from "../../../assets//svg/thumbad.svg";
 import thumbed from "../../../assets//svg/thumbed.svg";
@@ -23,6 +24,7 @@ interface MovieModalProps {
 const icons: Record<string, string> = {
   flower,
   heart,
+  heartClassic,
 };
 
 const MovieModal: React.FC<MovieModalProps> = ({
@@ -76,7 +78,10 @@ const MovieModal: React.FC<MovieModalProps> = ({
               <div className={styles.iconContainer}>
                 <img
                   className={styles.favouriteIcon}
-                  src={icons[movie?.motif] || icons["heart"]}
+                  src={
+                    icons[movie?.motif] ||
+                    (movie.isRetro ? icons["heartClassic"] : icons["heart"])
+                  }
                 />
               </div>
             ) : null}

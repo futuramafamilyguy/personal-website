@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import heart from "../../../assets//svg/heart.png";
+import heart from "../../../assets//svg/heart.svg";
+import heartClassic from "../../../assets//svg/heart_martinlewis.svg";
 import thumbad from "../../../assets//svg/thumbad.svg";
 import thumbed from "../../../assets//svg/thumbed.svg";
 import flower from "../../../assets/motifs/flower.svg";
@@ -39,7 +40,7 @@ const MovieGallery: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setNominees(movies.filter((m: Movie) => m.isNominated));
+    setNominees(movies.filter((m: Movie) => m.isNominated && !m.isRetro));
   }, [movies]);
 
   const openModal = (movie: Movie, nominated = false) => {
@@ -114,6 +115,7 @@ const MovieGallery: React.FC = () => {
   const icons: Record<string, string> = {
     flower,
     heart,
+    heartClassic,
   };
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -201,7 +203,12 @@ const MovieGallery: React.FC = () => {
                       {movie.isNominated ? (
                         <img
                           className={styles.favouriteIconSmall}
-                          src={icons[movie.motif] || icons["heart"]}
+                          src={
+                            icons[movie.motif] ||
+                            (movie.isRetro
+                              ? icons["heartClassic"]
+                              : icons["heart"])
+                          }
                         />
                       ) : movie.fondhood !== "unfonded" ? (
                         <img
@@ -257,7 +264,9 @@ const MovieGallery: React.FC = () => {
           ) : null}
           {nominees && nominees.length > 0 ? (
             <NomineeRow
-              movies={movies.filter((m: Movie) => m.isNominated === true)}
+              movies={movies.filter(
+                (m: Movie) => m.isNominated === true && !m.isRetro,
+              )}
               year={year}
               movieOnClick={(m: Movie) => openModal(m, true)}
               movieEditable={isLoggedIn}
