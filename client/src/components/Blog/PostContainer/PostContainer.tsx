@@ -138,12 +138,17 @@ const PostContainer: React.FC = () => {
                     let className;
                     let style: React.CSSProperties = {};
 
-                    if (alt === "book") {
+                    const parts = (alt ?? "").trim().split(/\s+/);
+                    const directive = parts[0];
+                    const description =
+                      parts.slice(1).join(" ") || "where imag";
+
+                    if (directive!.startsWith("book")) {
                       className = styles.embeddedBookImage;
-                    } else if (alt!.startsWith("landscape")) {
+                    } else if (directive!.startsWith("landscape")) {
                       className = styles.embeddedLandscapeImage;
 
-                      const parts = alt!.split("-");
+                      const parts = directive!.split("-");
 
                       const width =
                         parts[1] && !isNaN(Number(parts[1]))
@@ -166,17 +171,19 @@ const PostContainer: React.FC = () => {
                           style.marginRight = 0;
                           break;
                       }
-                    } else if (alt!.startsWith("portrait")) {
-                      // portrait-500 means portrait styling with 500px height
+                    } else if (directive!.startsWith("portrait")) {
+                      // portrait-500-left means portrait styling with 500px height
                       className = styles.embeddedPortraitImage;
 
-                      const parts = alt!.split("-");
+                      const partsDirective = directive!.split("-");
 
                       const height =
-                        parts[1] && !isNaN(Number(parts[1]))
-                          ? parts[1]
+                        partsDirective[1] && !isNaN(Number(partsDirective[1]))
+                          ? partsDirective[1]
                           : undefined;
-                      const alignment = height ? parts[2] : parts[1];
+                      const alignment = height
+                        ? partsDirective[2]
+                        : partsDirective[1];
 
                       if (height) {
                         style.height = `${height}px`;
@@ -199,7 +206,7 @@ const PostContainer: React.FC = () => {
                         className={className}
                         style={style}
                         {...props}
-                        alt="where imag"
+                        alt={description}
                       />
                     );
                   },
