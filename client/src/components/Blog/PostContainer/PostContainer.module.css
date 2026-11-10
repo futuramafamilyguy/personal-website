@@ -168,7 +168,7 @@
   margin-bottom: 17px;
 }
 
-.book .embeddedBookImage {
+.embeddedBookImage {
   display: block;
   height: 175px;
   border-radius: 10px;
@@ -178,10 +178,6 @@
 
 .embeddedQuote p {
   padding: 0px;
-}
-
-.book {
-  margin-top: 50px;
 }
 
 .bookImages {

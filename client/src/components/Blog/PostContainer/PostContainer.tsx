@@ -125,9 +125,7 @@ const PostContainer: React.FC = () => {
                 rehypePlugins={[rehypeRaw]}
                 components={{
                   div: ({ className, ...props }) => {
-                    if (className === "book") {
-                      return <div className={styles.book} {...props} />;
-                    } else if (className === "bookImages") {
+                    if (className === "bookImages") {
                       return <div className={styles.bookImages} {...props} />;
                     }
 
